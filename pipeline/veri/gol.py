@@ -50,5 +50,5 @@ def yaz(cikti: Path) -> bool:
     except BaseException:
         Path(gecici).unlink(missing_ok=True)
         raise
-    ozet_yolu.write_text(ozet + "\n", encoding="utf-8")
+    ozet_yolu.write_text(ozet + "\n", encoding="utf-8", newline="\n")   # Windows'ta da LF
     return True
