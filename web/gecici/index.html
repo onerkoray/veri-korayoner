@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, follow">
+<title>Türkiye Verisi | Koray Öner</title>
+<meta name="description" content="Uluslararası kurumların Türkiye verileri, kaynağıyla ve revizyon geçmişiyle. Yapım aşamasında.">
+<style>
+  :root { --bg: #f5f7f6; --yuzey: #fff; --metin: #17201d; --soluk: #56605c; --cizgi: #dbe4df; --vurgu: #3d4b5c; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #0b0d10; --yuzey: #14181d; --metin: #eef1f4; --soluk: #a4adb6; --cizgi: #2a313a; --vurgu: #a3b1c2; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--metin); font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  main { max-width: 720px; margin: 0 auto; padding: clamp(3rem, 10vw, 7rem) 16px; }
+  .ust { font: 600 .72rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--soluk); margin: 0 0 1.25rem; }
+  h1 { font-size: clamp(2rem, 1.4rem + 3vw, 3.2rem); line-height: 1.1; letter-spacing: -.02em; margin: 0 0 1rem; text-wrap: balance; }
+  p { color: var(--soluk); max-width: 60ch; }
+  ul { list-style: none; padding: 0; margin: 2rem 0; border-top: 1px solid var(--cizgi); }
+  li { padding: .7rem 0; border-bottom: 1px solid var(--cizgi); display: flex; justify-content: space-between; gap: 1rem; }
+  li span { color: var(--soluk); font-size: .9rem; }
+  a { color: var(--metin); text-underline-offset: .2em; }
+  code { font: .85rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+</style>
+</head>
+<body>
+<main>
+  <p class="ust">veri.korayoner.dev · yapım aşamasında</p>
+  <h1>Uluslararası kurumların Türkiye verisi, kaynağıyla.</h1>
+  <p>Dünya Bankası, IMF, BIS, OECD, Eurostat ve TCMB'nin Türkiye serileri; her gözlemin kaynağı, birimi, çekildiği gün, lisansı ve revizyon geçmişiyle. Lisansı doğrulanmamış hiçbir seri yayımlanmaz.</p>
+  <ul>
+    <li><a href="/api/v1/seriler.json">Yayımlanan seriler</a><span><code>/api/v1/seriler.json</code></span></li>
+    <li><a href="/api/v1/kaynaklar.json">Kaynaklar ve lisans durumu</a><span><code>/api/v1/kaynaklar.json</code></span></li>
+    <li><a href="https://korayoner.dev/grafikler/">Bugün: Türkiye ekonomisi grafikleri</a><span>korayoner.dev</span></li>
+  </ul>
+  <p>Hazırlayan <a href="https://korayoner.dev/hakkimda/">Koray Öner</a>. Kaynak kod açık. Kurumlardan bağımsızdır; resmî kurum sitesi değildir.</p>
+</main>
+</body>
+</html>
