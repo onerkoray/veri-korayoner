@@ -6,6 +6,7 @@ import Serit from "../components/Serit.astro";
 import { seriler, kaynaklar, uretildi, TEMA, TEMA_SIRA, deger, degisim, son, tarih, siklikAdi, emsal, emsalNoktalari, noktalar, ulkeAdi, degisiklikler } from "../lib/veri";
 import { sirala, donemAdi, zaman, ek, type Sira } from "../lib/okuma.ts";
 import { reelPaket, isaretSuresi } from "../lib/turetilmis";
+import { KISI } from "../lib/kimlik";
 
 const ss = seriler();
 const ks = kaynaklar();
@@ -40,8 +41,17 @@ const sonVeriler = ss.map((s) => ({ s, sn: son(s)!, dg: degisim(s) })).filter((x
   .sort((a, b) => zaman(b.sn.donem) - zaman(a.sn.donem) || a.s.baslik.localeCompare(b.s.baslik, "tr")).slice(0, 10);
 const baslikOf = (id: string) => ss.find((s) => s.id === id);
 const olaylar = degisiklikler().slice(0, 12);
+const jsonld = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "WebSite", "@id": "https://veri.korayoner.dev/#site", url: "https://veri.korayoner.dev/", name: "Türkiye Verisi",
+      description: "Uluslararası kurumların Türkiye serileri, emsal ülke karşılaştırması ve açık API.", inLanguage: "tr",
+      author: { "@id": KISI["@id"] }, publisher: { "@id": KISI["@id"] } },
+    KISI,
+  ],
+};
 ---
-<Taban baslik="Türkiye Verisi — uluslararası kurumların Türkiye serileri ve emsal karşılaştırması" aciklama="BIS, Dünya Bankası, OECD, ECB ve Eurostat'ın Türkiye verileri: emsal ülkelerle sıralama, reel faiz hesabı, revizyon kaydı, lisansıyla açık API." yol="/">
+<Taban baslik="Türkiye Verisi — uluslararası kurumların Türkiye serileri ve emsal karşılaştırması" aciklama="BIS, Dünya Bankası, OECD, ECB ve Eurostat'ın Türkiye verileri: emsal ülkelerle sıralama, reel faiz hesabı, revizyon kaydı, lisansıyla açık API." yol="/" jsonld={jsonld}>
   <section class="sar giris">
     <p class="etiket">Türkiye · uluslararası kaynaklar</p>
     <h1>Türkiye, kurumların verisiyle ve emsalleriyle.</h1>

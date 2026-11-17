@@ -6,6 +6,7 @@ import Serit from "../../components/Serit.astro";
 import { deger, ulkeAdi, tarih, sayi } from "../../lib/veri";
 import { reelPaket, isaretSuresi } from "../../lib/turetilmis";
 import { oku, sirala, siraCumlesi, donemAdi, ek } from "../../lib/okuma.ts";
+import { KISI_REF } from "../../lib/kimlik";
 
 const p = reelPaket();
 if (!p) throw new Error("reel faiz için BIS politika faizi ve TÜFE serileri gerekli");
@@ -24,7 +25,7 @@ const jsonld = {
   url: new URL("/hesap/reel-politika-faizi", Astro.site).href, inLanguage: "tr", isAccessibleForFree: true,
   temporalCoverage: `${p.r[0].donem}/${son.donem}`, spatialCoverage: { "@type": "Country", name: "Türkiye" },
   isBasedOn: ["https://data.bis.org/topics/CBPOL", "https://data.bis.org/topics/LONG_CPI"],
-  creator: { "@type": "Person", name: "Koray Öner", url: "https://korayoner.dev/hakkimda/" },
+  creator: KISI_REF,
 };
 ---
 <Taban baslik={`${baslik} | Türkiye Verisi`} aciklama={aciklama} yol="/hesap/reel-politika-faizi" jsonld={jsonld}>

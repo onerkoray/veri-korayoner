@@ -5,6 +5,7 @@ import EmsalGrafik from "../../components/EmsalGrafik.astro";
 import Serit from "../../components/Serit.astro";
 import { seriler, deger, degisim, son, dolu, tarih, birimAdi, siklikAdi, TEMA, emsal, emsalNoktalari, noktalar, ulkeAdi, type Seri } from "../../lib/veri";
 import { oku, sirala, siraCumlesi, donemAdi } from "../../lib/okuma.ts";
+import { KISI_REF } from "../../lib/kimlik";
 
 export function getStaticPaths() {
   return seriler().map((s) => ({ params: { id: s.id }, props: { s } }));
@@ -37,6 +38,7 @@ const jsonld = {
   ...(s.kaynak.lisans_kanit ? { license: s.kaynak.lisans_kanit } : {}),
   creator: { "@type": "Organization", name: s.kaynak.kurum, url: s.kaynak.adres },
   isBasedOn: kaynakAdresi,
+  maintainer: KISI_REF, includedInDataCatalog: { "@type": "DataCatalog", name: "Türkiye Verisi", url: "https://veri.korayoner.dev/" },
   ...(s.kaynak_guncelleme ? { dateModified: s.kaynak_guncelleme } : {}),
   ...(api ? { distribution: [{ "@type": "DataDownload", encodingFormat: "application/json", contentUrl: new URL(api, Astro.site).href },
     ...(csv ? [{ "@type": "DataDownload", encodingFormat: "text/csv", contentUrl: new URL(csv, Astro.site).href }] : [])] } : {}),
