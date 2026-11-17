@@ -1,0 +1,76 @@
+---
+import Taban from "../layouts/Taban.astro";
+import Kivilcim from "../components/Kivilcim.astro";
+import { seriler, kaynaklar, uretildi, TEMA, TEMA_SIRA, deger, degisim, son, tarih, siklikAdi } from "../lib/veri";
+
+const ss = seriler();
+const ks = kaynaklar();
+const aktif = ks.filter((k) => k.yayin.gosterim);
+const gruplar = TEMA_SIRA.map((t) => ({ t, ad: TEMA[t], liste: ss.filter((s) => s.tema === t) })).filter((g) => g.liste.length);
+const sonGuncelleme = ss.map((s) => s.kaynak_guncelleme).filter(Boolean).sort().at(-1) ?? null;
+---
+<Taban baslik="Türkiye Verisi — uluslararası kurumların Türkiye serileri" aciklama="Dünya Bankası ve diğer uluslararası kurumların Türkiye verileri: kaynağı, birimi, çekildiği gün, lisansı ve revizyon geçmişiyle." yol="/">
+  <section class="sar giris">
+    <p class="etiket">Türkiye · uluslararası kaynaklar</p>
+    <h1>Kurumların Türkiye verisi, kaynağıyla.</h1>
+    <p class="ozet">Her seri asıl kurumundan çekilir, doğrulanır ve lisansı izin veriyorsa yayımlanır. Değerler kaynaktaki hâliyle, kuruşuna kadar tutulur; her düzeltme tarihiyle saklanır.</p>
+    <dl class="durum">
+      <div><dt>Yayımlanan seri</dt><dd class="sayi">{ss.length}</dd></div>
+      <div><dt>Aktif kaynak</dt><dd class="sayi">{aktif.length} / {ks.length}</dd></div>
+      <div><dt>Kaynağın son güncellemesi</dt><dd>{tarih(sonGuncelleme)}</dd></div>
+      <div><dt>Son kontrol</dt><dd>{tarih(uretildi())}</dd></div>
+    </dl>
+  </section>
+
+  {gruplar.map((g) => (
+    <section class="sar tema" aria-labelledby={`t-${g.t}`}>
+      <h2 id={`t-${g.t}`}>{g.ad}</h2>
+      <ul class="kartlar">
+        {g.liste.map((s) => {
+          const sn = son(s), dg = degisim(s);
+          return (
+            <li class="kart">
+              <a href={`/gosterge/${s.id}`} class="kart-bag">
+                <p class="kart-baslik">{s.baslik}</p>
+                <p class="kart-deger sayi">{deger(s, sn?.deger ?? null)}</p>
+                <p class="kart-alt">
+                  <span>{sn?.donem}</span>
+                  {dg && <span class:list={["deg", dg.yon > 0 ? "art" : dg.yon < 0 ? "dus" : ""]}>{dg.metin}</span>}
+                </p>
+                <Kivilcim seri={s} />
+                <p class="kart-kaynak">{s.kaynak.kurum} · {siklikAdi(s.siklik)}{!s.izin.api && " · yalnız gösterim"}</p>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  ))}
+
+  <section class="sar tema">
+    <h2>Sırada</h2>
+    <p class="ozet">Lisansı ve erişimi doğrulandıkça eklenecek kaynaklar. Planlanan bir kaynak, kullanım şartı okunup kanıt adresi kayda geçmeden yayımlanmaz. <a href="/kaynaklar">Bütün kaynaklar ve durumları</a></p>
+    <ul class="sirada">{ks.filter((k) => !k.yayin.gosterim).map((k) => <li>{k.kurum}</li>)}</ul>
+  </section>
+</Taban>
+<style>
+  .giris { padding-block: clamp(2.5rem, 6vw, 4.5rem) 1.5rem; display: grid; gap: 1rem; }
+  .durum { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: 0 1.5rem; margin: 1rem 0 0; border-top: 1px solid var(--metin); }
+  .durum div { padding: .8rem 0; border-bottom: 1px solid var(--cizgi); }
+  .durum dt { font: 600 .68rem/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--soluk); }
+  .durum dd { margin: .25rem 0 0; font-size: 1.3rem; font-weight: 650; }
+  .tema { padding-block: 2rem 0; }
+  .tema h2 { margin-bottom: 1rem; }
+  .kartlar { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16.5rem), 1fr)); }
+  .kart { background: var(--yuzey); border: 1px solid var(--cizgi); }
+  .kart-bag { display: grid; gap: .35rem; padding: 1rem 1.1rem 1.1rem; text-decoration: none; height: 100%; }
+  .kart-bag:hover { background: var(--yuzey-2); color: inherit; }
+  .kart-baslik { margin: 0; font-size: .9rem; color: var(--soluk); min-height: 2.6em; }
+  .kart-deger { margin: 0; font-size: 1.65rem; font-weight: 700; letter-spacing: -.01em; }
+  .kart-alt { margin: 0; display: flex; gap: .7rem; font-size: .82rem; color: var(--soluk); }
+  .deg.art { color: var(--dv-1); } .deg.dus { color: var(--dv-2); }
+  .kart-kaynak { margin: .2rem 0 0; font: .68rem/1.4 var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--soluk); }
+  .sirada { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; padding: 0; margin: 1rem 0 0; }
+  .sirada li { border: 1px dashed var(--cizgi); padding: .3rem .6rem; font-size: .85rem; color: var(--soluk); }
+</style>

@@ -1,0 +1,41 @@
+/* Tasarım tokenları korayoner.dev'den (style.css :root). Renk yalnız buradan. */
+:root {
+  --bg: #f5f7f6; --yuzey: #fff; --yuzey-2: #eef3f0; --cizgi: #dbe4df;
+  --metin: #17201d; --soluk: #56605c; --vurgu: #3d4b5c; --marka: #0e7c66;
+  --dv-1: #4b64ae; --dv-2: #ca653c; --dv-iyi: #157056; --dv-kotu: #b34806; --izgara: #dbe4df;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --genislik: 1120px; --kenar: clamp(16px, 4vw, 40px);
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b0d10; --yuzey: #14181d; --yuzey-2: #1b2027; --cizgi: #2a313a;
+    --metin: #eef1f4; --soluk: #a4adb6; --vurgu: #a3b1c2; --marka: #3fbf9a;
+    --dv-1: #7b93db; --dv-2: #e08560; --dv-iyi: #5cbb9d; --dv-kotu: #f5843c; --izgara: #2a313a;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--metin); font: 16px/1.6 var(--font); }
+a { color: inherit; text-underline-offset: .2em; text-decoration-thickness: 1px; }
+a:hover { color: var(--vurgu); }
+:focus-visible { outline: 2px solid var(--vurgu); outline-offset: 2px; }
+.sar { max-width: var(--genislik); margin: 0 auto; padding-inline: var(--kenar); }
+.etiket { font: 600 .7rem/1.2 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--soluk); margin: 0; }
+h1, h2, h3 { line-height: 1.15; letter-spacing: -.015em; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2rem, 1.4rem + 2.6vw, 3.2rem); }
+h2 { font-size: clamp(1.3rem, 1.1rem + .9vw, 1.7rem); }
+.ozet { color: var(--soluk); max-width: 62ch; }
+.sayi { font-variant-numeric: tabular-nums; }
+.hap { display: inline-block; padding: .1rem .5rem; border: 1px solid currentColor; border-radius: 2px;
+  font: 600 .66rem/1.5 var(--mono); letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.hap--iyi { color: var(--dv-iyi); } .hap--uyari { color: var(--dv-kotu); } .hap--bilgi { color: var(--dv-1); }
+.hap--soluk { color: var(--soluk); border-style: dashed; }
+table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+th, td { padding: .55rem .6rem; border-bottom: 1px solid var(--cizgi); text-align: left; vertical-align: top; }
+thead th { font: 600 .7rem/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--soluk); border-bottom-color: var(--metin); }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+.kaydir { overflow-x: auto; }
+.gizli { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

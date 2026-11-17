@@ -1,0 +1,363 @@
+{
+ "surum": 1,
+ "id": "wb-ny-gdp-pcap-cd-tur",
+ "baslik": "Kişi başına GSYH, cari ABD doları",
+ "ulke": "TUR",
+ "siklik": "yillik",
+ "birim": "USD",
+ "carpan": 1,
+ "tema": "buyume",
+ "kaynak": {
+  "id": "world_bank",
+  "ad": "Dünya Bankası — Dünya Kalkınma Göstergeleri (WDI)",
+  "kurum": "Dünya Bankası",
+  "adres": "https://data.worldbank.org/",
+  "belge": "https://datahelpdesk.worldbank.org/knowledgebase/articles/889392",
+  "lisans": "CC BY 4.0 (WDI veri seti)",
+  "lisans_kanit": "https://datacatalog.worldbank.org/search/dataset/0037712/World-Development-Indicators",
+  "lisans_inceleme": "2026-11-17",
+  "atif_zorunlu": true
+ },
+ "kaynak_kod": "NY.GDP.PCAP.CD",
+ "kaynak_adi": "GDP per capita (current US$)",
+ "kaynak_not": "Country official statistics, National Statistical Organizations and/or Central Banks;\nNational Accounts data files, Organisation for Economic Co-operation and Development (OECD);\nStaff estimates, World Bank (WB)",
+ "kaynak_guncelleme": "2026-11-11",
+ "cekildi": "2026-11-17T10:39:57.293134Z",
+ "izin": {
+  "gosterim": true,
+  "indirme": true,
+  "api": true
+ },
+ "gozlemler": [
+  {
+   "donem": "1960",
+   "deger": "267.091207552765",
+   "durum": null
+  },
+  {
+   "donem": "1961",
+   "deger": "274.350890943262",
+   "durum": null
+  },
+  {
+   "donem": "1962",
+   "deger": "298.241020884883",
+   "durum": null
+  },
+  {
+   "donem": "1963",
+   "deger": "337.019856859205",
+   "durum": null
+  },
+  {
+   "donem": "1964",
+   "deger": "354.365541117168",
+   "durum": null
+  },
+  {
+   "donem": "1965",
+   "deger": "369.967082204625",
+   "durum": null
+  },
+  {
+   "donem": "1966",
+   "deger": "424.984610131778",
+   "durum": null
+  },
+  {
+   "donem": "1967",
+   "deger": "459.449369053159",
+   "durum": null
+  },
+  {
+   "donem": "1968",
+   "deger": "501.12130904111",
+   "durum": null
+  },
+  {
+   "donem": "1969",
+   "deger": "543.947401329478",
+   "durum": null
+  },
+  {
+   "donem": "1970",
+   "deger": "487.565086682435",
+   "durum": null
+  },
+  {
+   "donem": "1971",
+   "deger": "430.897259673783",
+   "durum": null
+  },
+  {
+   "donem": "1972",
+   "deger": "537.337529232528",
+   "durum": null
+  },
+  {
+   "donem": "1973",
+   "deger": "661.080821885172",
+   "durum": null
+  },
+  {
+   "donem": "1974",
+   "deger": "880.728167716848",
+   "durum": null
+  },
+  {
+   "donem": "1975",
+   "deger": "1121.54326914976",
+   "durum": null
+  },
+  {
+   "donem": "1976",
+   "deger": "1227.92409658199",
+   "durum": null
+  },
+  {
+   "donem": "1977",
+   "deger": "1371.96185651463",
+   "durum": null
+  },
+  {
+   "donem": "1978",
+   "deger": "1510.18531064944",
+   "durum": null
+  },
+  {
+   "donem": "1979",
+   "deger": "2013.37374286503",
+   "durum": null
+  },
+  {
+   "donem": "1980",
+   "deger": "1515.64589850068",
+   "durum": null
+  },
+  {
+   "donem": "1981",
+   "deger": "1536.66562064101",
+   "durum": null
+  },
+  {
+   "donem": "1982",
+   "deger": "1360.23825219775",
+   "durum": null
+  },
+  {
+   "donem": "1983",
+   "deger": "1275.68337617131",
+   "durum": null
+  },
+  {
+   "donem": "1984",
+   "deger": "1209.05149383313",
+   "durum": null
+  },
+  {
+   "donem": "1985",
+   "deger": "1326.42701445307",
+   "durum": null
+  },
+  {
+   "donem": "1986",
+   "deger": "1461.49658654754",
+   "durum": null
+  },
+  {
+   "donem": "1987",
+   "deger": "1649.96264794402",
+   "durum": null
+  },
+  {
+   "donem": "1988",
+   "deger": "1685.69479240535",
+   "durum": null
+  },
+  {
+   "donem": "1989",
+   "deger": "1948.59179454794",
+   "durum": null
+  },
+  {
+   "donem": "1990",
+   "deger": "2689.52621921233",
+   "durum": null
+  },
+  {
+   "donem": "1991",
+   "deger": "2649.27259974439",
+   "durum": null
+  },
+  {
+   "donem": "1992",
+   "deger": "2743.65320297936",
+   "durum": null
+  },
+  {
+   "donem": "1993",
+   "deger": "3057.93737480422",
+   "durum": null
+  },
+  {
+   "donem": "1994",
+   "deger": "2176.2801813809",
+   "durum": null
+  },
+  {
+   "donem": "1995",
+   "deger": "3845.98997887841",
+   "durum": null
+  },
+  {
+   "donem": "1996",
+   "deger": "4041.36210281686",
+   "durum": null
+  },
+  {
+   "donem": "1997",
+   "deger": "4197.37636165642",
+   "durum": null
+  },
+  {
+   "donem": "1998",
+   "deger": "4331.02761275037",
+   "durum": null
+  },
+  {
+   "donem": "1999",
+   "deger": "3973.77763854116",
+   "durum": null
+  },
+  {
+   "donem": "2000",
+   "deger": "4199.3798635759",
+   "durum": null
+  },
+  {
+   "donem": "2001",
+   "deger": "3052.2256706793",
+   "durum": null
+  },
+  {
+   "donem": "2002",
+   "deger": "3591.08628982587",
+   "durum": null
+  },
+  {
+   "donem": "2003",
+   "deger": "4649.63668068586",
+   "durum": null
+  },
+  {
+   "donem": "2004",
+   "deger": "5979.6054216148",
+   "durum": null
+  },
+  {
+   "donem": "2005",
+   "deger": "7331.85429430255",
+   "durum": null
+  },
+  {
+   "donem": "2006",
+   "deger": "7990.08251407245",
+   "durum": null
+  },
+  {
+   "donem": "2007",
+   "deger": "9766.91734545294",
+   "durum": null
+  },
+  {
+   "donem": "2008",
+   "deger": "10913.4079047769",
+   "durum": null
+  },
+  {
+   "donem": "2009",
+   "deger": "9076.92472236977",
+   "durum": null
+  },
+  {
+   "donem": "2010",
+   "deger": "10698.9699409757",
+   "durum": null
+  },
+  {
+   "donem": "2011",
+   "deger": "11373.6355760885",
+   "durum": null
+  },
+  {
+   "donem": "2012",
+   "deger": "11776.7593362033",
+   "durum": null
+  },
+  {
+   "donem": "2013",
+   "deger": "12635.5570016068",
+   "durum": null
+  },
+  {
+   "donem": "2014",
+   "deger": "12209.3862327674",
+   "durum": null
+  },
+  {
+   "donem": "2015",
+   "deger": "11064.6494504662",
+   "durum": null
+  },
+  {
+   "donem": "2016",
+   "deger": "10984.3643169061",
+   "durum": null
+  },
+  {
+   "donem": "2017",
+   "deger": "10756.3877677883",
+   "durum": null
+  },
+  {
+   "donem": "2018",
+   "deger": "9684.11819884721",
+   "durum": null
+  },
+  {
+   "donem": "2019",
+   "deger": "9395.23378001368",
+   "durum": null
+  },
+  {
+   "donem": "2020",
+   "deger": "8798.11791709313",
+   "durum": null
+  },
+  {
+   "donem": "2021",
+   "deger": "9981.76398411336",
+   "durum": null
+  },
+  {
+   "donem": "2022",
+   "deger": "10897.8397861365",
+   "durum": null
+  },
+  {
+   "donem": "2023",
+   "deger": "13375.0947282864",
+   "durum": null
+  },
+  {
+   "donem": "2024",
+   "deger": "15892.7157287241",
+   "durum": null
+  },
+  {
+   "donem": "2025",
+   "deger": "18599.4420922378",
+   "durum": null
+  }
+ ]
+}

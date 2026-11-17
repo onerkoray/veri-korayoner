@@ -1,6 +1,6 @@
 {
  "surum": 1,
- "uretildi": "2026-11-17T09:09:15.854122Z",
+ "uretildi": "2026-11-17T10:39:57.293134Z",
  "seriler": [
   {
    "id": "wb-ny-gdp-mktp-cd-tur",
@@ -15,7 +15,7 @@
     "durum": null
    },
    "kaynak_guncelleme": "2026-11-11",
-   "cekildi": "2026-11-17T09:09:15.854122Z",
+   "cekildi": "2026-11-17T10:39:57.293134Z",
    "izin": {
     "gosterim": true,
     "indirme": true,
@@ -23,6 +23,28 @@
    },
    "api": "/api/v1/seri/wb-ny-gdp-mktp-cd-tur.json",
    "csv": "/api/v1/seri/wb-ny-gdp-mktp-cd-tur.csv"
+  },
+  {
+   "id": "wb-ny-gdp-pcap-cd-tur",
+   "baslik": "Kişi başına GSYH, cari ABD doları",
+   "tema": "buyume",
+   "siklik": "yillik",
+   "birim": "USD",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "18599.4420922378",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-17T10:39:57.293134Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/wb-ny-gdp-pcap-cd-tur.json",
+   "csv": "/api/v1/seri/wb-ny-gdp-pcap-cd-tur.csv"
   },
   {
    "id": "wb-ny-gdp-mktp-kd-zg-tur",
@@ -59,7 +81,7 @@
     "durum": null
    },
    "kaynak_guncelleme": "2026-11-11",
-   "cekildi": "2026-11-17T09:09:15.854122Z",
+   "cekildi": "2026-11-17T10:39:57.293134Z",
    "izin": {
     "gosterim": true,
     "indirme": true,
@@ -81,7 +103,7 @@
     "durum": null
    },
    "kaynak_guncelleme": "2026-11-11",
-   "cekildi": "2026-11-17T09:09:15.854122Z",
+   "cekildi": "2026-11-17T10:39:57.293134Z",
    "izin": {
     "gosterim": true,
     "indirme": true,
@@ -103,7 +125,7 @@
     "durum": null
    },
    "kaynak_guncelleme": "2026-11-11",
-   "cekildi": "2026-11-17T09:09:15.854122Z",
+   "cekildi": "2026-11-17T10:39:57.293134Z",
    "izin": {
     "gosterim": true,
     "indirme": false,

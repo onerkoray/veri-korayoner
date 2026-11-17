@@ -31,15 +31,17 @@ kaynaklar:
     anahtar: false
     durum: gelistiriliyor
     lisans:
-      ad: CC BY 4.0 (Dünya Bankası'nın kendi ürettiği veri setleri için varsayılan)
-      kanit: https://datacatalog.worldbank.org/public-licenses
+      ad: CC BY 4.0 (WDI veri seti)
+      kanit: https://datacatalog.worldbank.org/search/dataset/0037712/World-Development-Indicators
       inceleme_tarihi: 2026-11-17
       atif_zorunlu: true
       not: >-
-        Varsayılan lisans Dünya Bankası'nın kendi ürettiği veri setleri
-        içindir. Üçüncü taraf kaynaklı göstergelerde (ör. IMF, ILO, UN
-        kaynaklı WDI serileri) seri metaverisindeki kaynak notu ayrıca
-        okunur; seri bazında `yayin` geçersiz kılınabilir.
+        WDI veri setinin katalog kaydı lisansı "Creative Commons Attribution
+        4.0" olarak veriyor (setin bütünü). Dünya Bankası kullanım şartları
+        üçüncü taraf içerik sağlayıcılarına da atıf istiyor: her seri sayfası
+        ve dosyası asıl kaynağı (metaveri `sourceOrganization`) taşır ve atıf
+        metnine ekler. Genel lisans sayfası:
+        https://datacatalog.worldbank.org/public-licenses
     yayin: { gosterim: true, indirme: true, api: true }
 
   - id: bis

@@ -1,0 +1,53 @@
+---
+import Taban from "../layouts/Taban.astro";
+import { seriler } from "../lib/veri";
+const ornek = seriler().find((s) => s.izin.api && s.izin.indirme);
+const kok = "https://veri.korayoner.dev";
+---
+<Taban baslik="API | Türkiye Verisi" aciklama="Sürümlü, anahtarsız JSON, CSV ve Parquet uç noktaları; yalnız yeniden yayın izni olan seriler." yol="/api">
+  <article class="sar metin">
+    <p class="etiket">Geliştirici</p>
+    <h1>API</h1>
+    <p class="ozet">Anahtar gerekmez. Dosyalar CDN'den servis edilir, her yanıt bir saat önbelleğe alınır, her kaynaktan (CORS) okunabilir. Yalnız kaynağının lisansı API üzerinden yeniden yayına izin veren seriler listelenir.</p>
+
+    <h2>Uç noktalar</h2>
+    <div class="kaydir"><table>
+      <thead><tr><th scope="col">Adres</th><th scope="col">İçerik</th></tr></thead>
+      <tbody>
+        <tr><th scope="row"><code>/api/v1/seriler.json</code></th><td>API izni olan seriler: son değer, kaynak güncelleme tarihi, çekilme zamanı, dosya adresleri.</td></tr>
+        <tr><th scope="row"><code>/api/v1/kaynaklar.json</code></th><td>Kayıtlı bütün kurumlar, durumları ve izinleri.</td></tr>
+        <tr><th scope="row"><code>/api/v1/seri/&#123;id&#125;.json</code></th><td>Tek seri: metaveri, lisans, bütün gözlemler.</td></tr>
+        <tr><th scope="row"><code>/api/v1/seri/&#123;id&#125;.csv</code></th><td>Aynı seri, CSV (indirme izni varsa).</td></tr>
+        <tr><th scope="row"><code>/api/v1/gozlemler.parquet</code></th><td>API izinli bütün gözlemler, uzun biçim; değer DECIMAL(38,14).</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2>Değerler</h2>
+    <p>Gözlem değeri JSON'da <strong>metin</strong> olarak durur (<code>"1141242864657.45"</code>): kaynaktaki basamaklar kayan nokta yuvarlamasına uğramaz. Yayımlanmamış dönem <code>null</code>'dır, sıfır değildir. <code>donem</code> gözlemin ait olduğu dönem, <code>kaynak_guncelleme</code> kurumun bildirdiği son güncelleme, <code>cekildi</code> bu sitenin çektiği an (UTC).</p>
+
+    {ornek && <>
+      <h2>Örnek</h2>
+      <pre><code>curl {kok}/api/v1/seri/{ornek.id}.json</code></pre>
+      <pre><code>{`import duckdb
+duckdb.sql("""
+  SELECT seri, donem, deger
+  FROM '${kok}/api/v1/gozlemler.parquet'
+  WHERE seri = '${ornek.id}'
+  ORDER BY donem DESC LIMIT 5
+""").show()`}</code></pre>
+    </>}
+
+    <h2>Revizyon geçmişi</h2>
+    <p>Her güncelleme ayrı bir commit'tir ve rakamı değişmeyen seri yeniden yazılmaz. Bir gözlemin ilk açıklanan değerine ve her düzeltmesine depodan ulaşılır: <code>git log -p yayin/site-veri/seri/&#123;id&#125;.json</code>.</p>
+
+    <h2>Atıf ve sürüm</h2>
+    <p>Veriyi kullanırken asıl kaynak kuruma ve seri koduna atıf yapın; her dosya lisansı ve şart metni adresini taşır. <code>v1</code> geriye dönük uyumlu kalır; alan silinmez, yalnız eklenir. Kırıcı değişiklik <code>v2</code> altında yayımlanır.</p>
+  </article>
+</Taban>
+<style>
+  .metin { padding-block: clamp(2.5rem, 6vw, 4rem); display: grid; gap: 1rem; max-width: 860px; }
+  h2 { font-size: 1.2rem; margin-top: 1.25rem; }
+  p { margin: 0; max-width: 70ch; }
+  pre { background: var(--yuzey); border: 1px solid var(--cizgi); padding: 1rem; overflow-x: auto; margin: 0; }
+  code { font: .85rem/1.5 var(--mono); }
+</style>

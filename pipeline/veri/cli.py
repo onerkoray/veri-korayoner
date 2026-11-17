@@ -15,6 +15,7 @@ import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
+from . import gol
 from .baglayicilar import baglayici
 from .kayit import KOK, kaynaklar, seriler
 from .modeller import SeriDosyasi
@@ -48,6 +49,7 @@ def guncelle(secili: list[str] | None, cikti: Path = CIKTI) -> int:
             hata += 1
             print(f"HATA   {s.id}: {type(e).__name__}: {e}", file=sys.stderr)
     katalog(ks, ss, cikti, simdi)
+    print('göl  ' + ('yazıldı' if gol.yaz(cikti) else 'aynı'))
     return 1 if hata else 0
 
 

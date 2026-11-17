@@ -1,0 +1,42 @@
+---
+import Taban from "../layouts/Taban.astro";
+import { kaynaklar, seriler, DURUM, tarih } from "../lib/veri";
+const ks = kaynaklar();
+const say = (id: string) => seriler().filter((s) => s.kaynak.id === id).length;
+const evet = (b: boolean) => (b ? "Evet" : "Hayır");
+---
+<Taban baslik="Kaynaklar ve lisans durumu | Türkiye Verisi" aciklama="Kayıtlı kurumlar, erişim yöntemi, entegrasyon durumu ve yeniden yayın izinleri; her izin kanıt adresiyle." yol="/kaynaklar">
+  <section class="sar giris">
+    <p class="etiket">Kaynak kaydı</p>
+    <h1>Kaynaklar ve lisans durumu</h1>
+    <p class="ozet">Bir kaynağın listede olması verisinin yayımlandığı anlamına gelmez. Gösterim, indirme ve API izni ayrı ayrı açılır; her biri resmî kullanım şartı okunup kanıt adresi kayda geçtikten sonra. API'ye erişebilmek, veriyi yeniden yayımlama hakkı vermez.</p>
+  </section>
+  <section class="sar">
+    <div class="kaydir">
+      <table>
+        <thead><tr><th scope="col">Kurum</th><th scope="col">Durum</th><th scope="col">Erişim</th><th scope="col">Gösterim</th><th scope="col">İndirme</th><th scope="col">API</th><th scope="col" class="n">Seri</th><th scope="col">Lisans</th></tr></thead>
+        <tbody>
+          {ks.map((k) => {
+            const [ad, sinif] = DURUM[k.durum] ?? [k.durum, "soluk"];
+            return (
+              <tr>
+                <th scope="row"><a href={k.adres}>{k.kurum}</a><br /><span class="alt">{k.ad}</span></th>
+                <td><span class={`hap hap--${sinif}`}>{ad}</span></td>
+                <td>{k.erisim}</td>
+                <td>{evet(k.yayin.gosterim)}</td><td>{evet(k.yayin.indirme)}</td><td>{evet(k.yayin.api)}</td>
+                <td class="n">{say(k.id)}</td>
+                <td>{k.lisans ? <>{k.lisans_kanit ? <a href={k.lisans_kanit}>{k.lisans}</a> : k.lisans}<br /><span class="alt">İnceleme: {tarih(k.lisans_inceleme)}</span></> : <span class="alt">İncelenmedi</span>}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+    <p class="ozet dip">Kayıt dosyası: <a href="https://github.com/onerkoray/veri-korayoner/blob/main/registry/kaynaklar.yaml">registry/kaynaklar.yaml</a>. Ticari terminaller ve aracı fiyat servisleri sözleşmesiz kamuya yeniden yayına izin vermediği için kayda alınmadı.</p>
+  </section>
+</Taban>
+<style>
+  .giris { padding-block: clamp(2.5rem, 6vw, 4rem) 1.5rem; display: grid; gap: 1rem; }
+  .alt { color: var(--soluk); font-size: .8rem; }
+  .dip { margin-top: 1.5rem; font-size: .88rem; }
+</style>

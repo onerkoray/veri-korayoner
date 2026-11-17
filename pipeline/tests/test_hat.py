@@ -93,7 +93,7 @@ def test_seri_izni_yalniz_daraltir():
 
 def _dosya(gozlem, **izin_):
     return SeriDosyasi(id="t-seri", baslik="T", ulke="TUR", siklik="yillik", birim="USD", carpan=1, tema="t",
-                       kaynak={"kurum": "K"}, kaynak_kod="X", cekildi=datetime(2026, 11, 17, tzinfo=UTC),
+                       kaynak={"id": "k", "kurum": "K"}, kaynak_kod="X", cekildi=datetime(2026, 11, 17, tzinfo=UTC),
                        izin=Izin(**({"gosterim": True, "indirme": True, "api": True} | izin_)),
                        gozlemler=gozlem)
 
@@ -161,3 +161,20 @@ def test_kayit_gecerli_ve_izinli_kaynak_kanitli():
         if k.yayin.gosterim:
             assert k.lisans.kanit and k.lisans.kanit.startswith("https://")
     assert ks["bist"].yayin == Izin()
+
+
+# ---- analitik göl -------------------------------------------------------------------
+def test_gol_kayipsiz_ve_yalniz_api_izinli(tmp_path):
+    import duckdb
+
+    from veri import gol
+    g, _, _ = ayristir_gozlem(GOZ, "NY.GDP.MKTP.CD", "TUR")
+    yayinla(_dosya(g), tmp_path)
+    yayinla(_dosya(g, api=False).model_copy(update={"id": "gizli"}), tmp_path)
+    assert gol.yaz(tmp_path) is True
+    assert gol.yaz(tmp_path) is False                       # aynı içerik: yeniden yazılmaz
+    con = duckdb.connect()
+    rows = con.execute("SELECT seri, donem, CAST(deger AS VARCHAR) FROM read_parquet(?)",
+                       [str(tmp_path / "api/v1/gozlemler.parquet")]).fetchall()
+    assert {r[0] for r in rows} == {"t-seri"}
+    assert ("t-seri", "2023", "1141242864657.45000000000000") in rows

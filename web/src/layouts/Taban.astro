@@ -1,0 +1,58 @@
+---
+import "../styles/taban.css";
+interface Props { baslik: string; aciklama: string; yol: string; jsonld?: object }
+const { baslik, aciklama, yol, jsonld } = Astro.props;
+const kanonik = new URL(yol, Astro.site).href;
+const menu = [["/", "Panorama"], ["/kaynaklar", "Kaynaklar"], ["/api", "API"], ["/yontem", "Yöntem"]];
+const etkin = (h: string) => (h === "/" ? yol === "/" : yol.startsWith(h));
+---
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{baslik}</title>
+  <meta name="description" content={aciklama}>
+  <link rel="canonical" href={kanonik}>
+  <meta name="robots" content="noindex, follow">
+  <meta property="og:title" content={baslik}>
+  <meta property="og:description" content={aciklama}>
+  <meta property="og:url" content={kanonik}>
+  <meta property="og:locale" content="tr_TR">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  {jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />}
+</head>
+<body>
+  <a class="gizli" href="#ana">İçeriğe geç</a>
+  <header class="ust">
+    <div class="sar ust-ic">
+      <a class="marka" href="/" aria-label="Türkiye Verisi ana sayfa">
+        <span class="marka-isaret" aria-hidden="true"></span><span>Türkiye Verisi</span>
+      </a>
+      <nav aria-label="Birincil">
+        <ul>{menu.map(([h, a]) => <li><a href={h} aria-current={etkin(h) ? "page" : undefined}>{a}</a></li>)}</ul>
+      </nav>
+    </div>
+  </header>
+  <main id="ana"><slot /></main>
+  <footer class="alt">
+    <div class="sar alt-ic">
+      <p>Hazırlayan <a href="https://korayoner.dev/hakkimda/">Koray Öner</a> · <a href="https://korayoner.dev/">korayoner.dev</a> · <a href="https://github.com/onerkoray/veri-korayoner">Kaynak kod</a></p>
+      <p>Kurumlardan bağımsızdır; resmî kurum sitesi değildir. Her seri kendi kaynağının lisansıyla yayımlanır; kullanırken asıl kaynağa atıf yapın. Yatırım tavsiyesi değildir.</p>
+    </div>
+  </footer>
+</body>
+</html>
+<style>
+  .ust { border-bottom: 1px solid var(--cizgi); background: var(--yuzey); }
+  .ust-ic { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 60px; flex-wrap: wrap; }
+  .marka { display: inline-flex; align-items: center; gap: .6rem; font-weight: 700; text-decoration: none; }
+  .marka-isaret { width: 22px; height: 22px; border: 2px solid var(--metin); border-radius: 2px;
+    background: linear-gradient(to top right, transparent 46%, var(--marka) 46% 58%, transparent 58%); }
+  nav ul { display: flex; gap: 1.2rem; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
+  nav a { text-decoration: none; color: var(--soluk); font-size: .95rem; padding-block: .3rem; }
+  nav a[aria-current="page"] { color: var(--metin); box-shadow: inset 0 -2px 0 var(--metin); }
+  main { min-height: 70vh; }
+  .alt { border-top: 1px solid var(--cizgi); margin-top: 4rem; padding-block: 2rem; color: var(--soluk); font-size: .85rem; }
+  .alt p { margin: .3rem 0; max-width: 80ch; }
+</style>

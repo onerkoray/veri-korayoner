@@ -1,0 +1,105 @@
+---
+import Taban from "../../layouts/Taban.astro";
+import SeriGrafik from "../../components/SeriGrafik.astro";
+import { seriler, deger, degisim, son, dolu, tarih, birimAdi, siklikAdi, TEMA, type Seri } from "../../lib/veri";
+
+export function getStaticPaths() {
+  return seriler().map((s) => ({ params: { id: s.id }, props: { s } }));
+}
+const { s } = Astro.props as { s: Seri };
+const sn = son(s), dg = degisim(s), d = dolu(s);
+const yol = `/gosterge/${s.id}`;
+const api = s.izin.api ? `/api/v1/seri/${s.id}.json` : null;
+const csv = s.izin.indirme ? `/api/v1/seri/${s.id}.csv` : null;
+const asil = (s.kaynak_not ?? "").split(/[;\n]/)[0].replace(/,?\s*uri:.*$/, "").trim() || null;
+const kaynakAdresi = s.kaynak.id === "world_bank" ? `https://data.worldbank.org/indicator/${s.kaynak_kod}?locations=TR` : s.kaynak.adres;
+const jsonld = {
+  "@context": "https://schema.org", "@type": "Dataset",
+  name: `${s.baslik} — Türkiye`, description: `${s.baslik}, ${d[0]?.donem}–${sn?.donem}. Kaynak: ${s.kaynak.kurum} (${s.kaynak_kod}).`,
+  url: new URL(yol, Astro.site).href, isAccessibleForFree: true, inLanguage: "tr",
+  temporalCoverage: `${d[0]?.donem}/${sn?.donem}`, spatialCoverage: { "@type": "Country", name: "Türkiye" },
+  ...(s.kaynak.lisans_kanit ? { license: s.kaynak.lisans_kanit } : {}),
+  creator: { "@type": "Organization", name: s.kaynak.kurum, url: s.kaynak.adres },
+  isBasedOn: kaynakAdresi,
+  ...(api ? { distribution: [{ "@type": "DataDownload", encodingFormat: "application/json", contentUrl: new URL(api, Astro.site).href },
+    ...(csv ? [{ "@type": "DataDownload", encodingFormat: "text/csv", contentUrl: new URL(csv, Astro.site).href }] : [])] } : {}),
+};
+---
+<Taban baslik={`${s.baslik} — Türkiye | Türkiye Verisi`} aciklama={`${s.baslik}: ${sn?.donem} ${deger(s, sn?.deger ?? null)}. Kaynak ${s.kaynak.kurum}, ${s.kaynak_kod}. Tarihsel seri, lisans ve indirme.`} yol={yol} jsonld={jsonld}>
+  <article class="sar">
+    <nav class="iz" aria-label="Konum"><a href="/">Panorama</a> › {TEMA[s.tema] ?? s.tema}</nav>
+    <header class="bas">
+      <p class="etiket">{s.kaynak.kurum} · {s.kaynak_kod} · {siklikAdi(s.siklik)}</p>
+      <h1>{s.baslik}</h1>
+      <p class="buyuk sayi">{deger(s, sn?.deger ?? null)} <span>{sn?.donem}</span></p>
+      {dg && <p class="ozet">Bir önceki döneme göre {dg.metin}. {s.birim.startsWith("yuzde") ? "Fark puan olarak: son değer eksi önceki." : "Değişim yüzde olarak: son ÷ önceki − 1."}</p>}
+    </header>
+
+    <SeriGrafik seri={s}>Kaynak: {s.kaynak.kurum}, <a href={kaynakAdresi}>{s.kaynak_kod}</a>. Değerler kaynağın yayımladığı hâliyle; bu sitede hesaplanmış bir seri değildir.</SeriGrafik>
+
+    <div class="iki">
+      <section aria-labelledby="mv">
+        <h2 id="mv">Seri bilgisi</h2>
+        <dl class="bilgi">
+          <div><dt>Kaynağın seri adı</dt><dd>{s.kaynak_adi ?? "—"}</dd></div>
+          <div><dt>Birim</dt><dd>{birimAdi(s.birim)}{s.carpan !== 1 && ` × ${s.carpan}`}</dd></div>
+          <div><dt>Sıklık</dt><dd>{siklikAdi(s.siklik)}</dd></div>
+          <div><dt>Kapsam</dt><dd>{d[0]?.donem}–{sn?.donem}, {d.length} gözlem</dd></div>
+          <div><dt>Kaynağın son güncellemesi</dt><dd>{tarih(s.kaynak_guncelleme)}</dd></div>
+          <div><dt>Bu sitenin son çekimi</dt><dd>{tarih(s.cekildi)}</dd></div>
+          {s.kaynak_not && <div><dt>Kaynağın veri notu</dt><dd class="not">{s.kaynak_not}</dd></div>}
+        </dl>
+      </section>
+      <section aria-labelledby="lis">
+        <h2 id="lis">Lisans ve indirme</h2>
+        <dl class="bilgi">
+          <div><dt>Lisans</dt><dd>{s.kaynak.lisans ?? "—"}{s.kaynak.lisans_kanit && <> · <a href={s.kaynak.lisans_kanit}>şart metni</a></>}</dd></div>
+          <div><dt>İnceleme</dt><dd>{tarih(s.kaynak.lisans_inceleme)}</dd></div>
+          <div><dt>Atıf</dt><dd>{s.kaynak.atif_zorunlu ? `Zorunlu: "${s.kaynak.kurum}, ${s.kaynak_kod}${asil ? "; asıl kaynak: " + asil : ""}"` : "İsteğe bağlı"}</dd></div>
+        </dl>
+        {api ? (
+          <ul class="indir">
+            <li><a href={api}>JSON</a></li>
+            {csv && <li><a href={csv} download>CSV</a></li>}
+            <li><a href="/api/v1/gozlemler.parquet" download>Parquet (bütün seriler)</a></li>
+          </ul>
+        ) : (
+          <p class="ozet">Bu seri yalnız görüntülenebilir. Kaynağın yeniden dağıtım şartı doğrulanana kadar indirme ve API kapalı.</p>
+        )}
+      </section>
+    </div>
+
+    <section aria-labelledby="tb">
+      <h2 id="tb">Gözlemler</h2>
+      <div class="kaydir">
+        <table>
+          <caption class="gizli">{s.baslik}, bütün gözlemler, yeniden eskiye</caption>
+          <thead><tr><th scope="col">Dönem</th><th scope="col" class="n">Değer</th><th scope="col" class="n">Kaynaktaki ham değer</th></tr></thead>
+          <tbody>
+            {s.gozlemler.slice().reverse().map((g) => (
+              <tr><th scope="row">{g.donem}</th><td class="n">{deger(s, g.deger)}</td><td class="n ham">{g.deger ?? "yayımlanmadı"}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </article>
+</Taban>
+<style>
+  .iz { padding-top: 1.5rem; font-size: .85rem; color: var(--soluk); }
+  .bas { display: grid; gap: .6rem; padding-block: 1rem 0; }
+  .buyuk { margin: .4rem 0 0; font-size: clamp(2.2rem, 1.6rem + 3vw, 3.4rem); font-weight: 750; letter-spacing: -.02em; line-height: 1; }
+  .buyuk span { font-size: 1rem; font-weight: 500; color: var(--soluk); letter-spacing: 0; }
+  .iki { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); margin: 1rem 0 2rem; }
+  h2 { font-size: 1.15rem; margin: 0 0 .75rem; }
+  .bilgi { margin: 0; border-top: 1px solid var(--metin); }
+  .bilgi div { display: grid; grid-template-columns: 11rem 1fr; gap: 1rem; padding: .55rem 0; border-bottom: 1px solid var(--cizgi); font-size: .9rem; }
+  .bilgi dt { color: var(--soluk); }
+  .bilgi dd { margin: 0; }
+  .not { font-size: .82rem; color: var(--soluk); }
+  .indir { display: flex; gap: .5rem; flex-wrap: wrap; list-style: none; padding: 0; margin: 1rem 0 0; }
+  .indir a { display: inline-block; border: 1px solid var(--metin); padding: .45rem .8rem; text-decoration: none; font: 600 .78rem/1 var(--mono); }
+  .indir a:hover { background: var(--metin); color: var(--bg); }
+  .ham { color: var(--soluk); font-family: var(--mono); font-size: .8rem; }
+  @media (max-width: 34rem) { .bilgi div { grid-template-columns: 1fr; gap: .15rem; } }
+</style>

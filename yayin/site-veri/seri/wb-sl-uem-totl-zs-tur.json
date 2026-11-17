@@ -13,8 +13,8 @@
   "kurum": "Dünya Bankası",
   "adres": "https://data.worldbank.org/",
   "belge": "https://datahelpdesk.worldbank.org/knowledgebase/articles/889392",
-  "lisans": "CC BY 4.0 (Dünya Bankası'nın kendi ürettiği veri setleri için varsayılan)",
-  "lisans_kanit": "https://datacatalog.worldbank.org/public-licenses",
+  "lisans": "CC BY 4.0 (WDI veri seti)",
+  "lisans_kanit": "https://datacatalog.worldbank.org/search/dataset/0037712/World-Development-Indicators",
   "lisans_inceleme": "2026-11-17",
   "atif_zorunlu": true
  },
@@ -22,7 +22,7 @@
  "kaynak_adi": "Unemployment, total (% of total labor force) (modeled ILO estimate)",
  "kaynak_not": "ILO Modelled Estimates database (ILOEST), International Labour Organization (ILO), uri: https://ilostat.ilo.org/data/bulk/, publisher: ILOSTAT, type: external database, date accessed: January 17, 2026",
  "kaynak_guncelleme": "2026-11-11",
- "cekildi": "2026-11-17T09:09:15.854122Z",
+ "cekildi": "2026-11-17T10:39:57.293134Z",
  "izin": {
   "gosterim": true,
   "indirme": false,

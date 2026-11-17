@@ -1,0 +1,104 @@
+---
+// Seri grafiği: sunucuda çizilen SVG (JS'siz tam), üstüne Observable Plot adası
+// (imleç, ipucu, dönem seçimi). Ada yalnız seçim düğmeleri ve imleç ekler;
+// veri aynı sayfadaki <table>'dan değil, data- özniteliğindeki JSON'dan okunur.
+import { dolu, deger, sayi, type Seri } from "../lib/veri";
+interface Props { seri: Seri }
+const { seri } = Astro.props;
+const d = dolu(seri).map((g) => ({ donem: g.donem, v: Number(g.deger) }));
+const W = 960, H = 340, sol = 64, sag = 18, ust = 16, alt = 30;
+const oran = seri.birim.startsWith("yuzde");
+const lo0 = Math.min(...d.map((p) => p.v)), hi0 = Math.max(...d.map((p) => p.v));
+const lo = oran ? Math.min(0, lo0) : 0, hi = hi0 * 1.06 || 1;
+const adim = (() => { const r = (hi - lo) / 5, us = 10 ** Math.floor(Math.log10(r)), k = r / us; return (k <= 1 ? 1 : k <= 2 ? 2 : k <= 5 ? 5 : 10) * us; })();
+const izgara: number[] = []; for (let v = Math.ceil(lo / adim) * adim; v <= hi; v += adim) izgara.push(v);
+const x = (i: number) => sol + (W - sol - sag) * (d.length > 1 ? i / (d.length - 1) : 0.5);
+const y = (v: number) => H - alt - ((v - lo) / (hi - lo)) * (H - ust - alt);
+const yol = d.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(p.v).toFixed(1)}`).join(" ");
+const yillar = d.map((p, i) => [p.donem, i] as const).filter(([dn]) => Number(dn.slice(0, 4)) % 10 === 0);
+const etiket = `${seri.baslik}, ${d[0]?.donem}–${d.at(-1)?.donem}. Son değer ${deger(seri, d.at(-1)?.v ?? null)}.`;
+const veri = JSON.stringify({ birim: seri.birim, carpan: seri.carpan, d });
+---
+<figure class="grafik" data-seri-grafik={veri}>
+  <div class="grafik-ust">
+    <p class="etiket">{seri.baslik} · {seri.birim === "USD" ? "ABD doları" : "yüzde"}</p>
+    <div class="donem" role="group" aria-label="Dönem" hidden>
+      <button type="button" data-yil="0" aria-pressed="true">Tümü</button>
+      <button type="button" data-yil="20" aria-pressed="false">20 yıl</button>
+      <button type="button" data-yil="10" aria-pressed="false">10 yıl</button>
+    </div>
+  </div>
+  <div class="tuval">
+    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={etiket} class="statik">
+      {izgara.map((v) => <g><line x1={sol} x2={W - sag} y1={y(v)} y2={y(v)} class={v === 0 ? "sifir" : "izgara"} />
+        <text x={sol - 8} y={y(v) + 4} text-anchor="end">{oran ? (v < 0 ? "−%" : "%") + sayi(Math.abs(v)) : deger(seri, v, true).replace(" $", "")}</text></g>)}
+      {yillar.map(([dn, i]) => <text x={x(i)} y={H - 8} text-anchor="middle">{dn}</text>)}
+      <path d={yol} class="cizgi" />
+      {d.length > 0 && <circle cx={x(d.length - 1)} cy={y(d[d.length - 1].v)} r="4" class="son" />}
+    </svg>
+  </div>
+  <figcaption><slot /></figcaption>
+</figure>
+<script>
+  import * as Plot from "@observablehq/plot";
+  const bicim = new Intl.NumberFormat("tr-TR", { maximumFractionDigits: 1 });
+  for (const fig of document.querySelectorAll<HTMLElement>("[data-seri-grafik]")) {
+    const { birim, carpan, d } = JSON.parse(fig.dataset.seriGrafik!) as { birim: string; carpan: number; d: { donem: string; v: number }[] };
+    const oran = birim.startsWith("yuzde");
+    const yaz = (v: number) => {
+      v *= carpan || 1;
+      if (oran) return (v < 0 ? "−%" : "%") + bicim.format(Math.abs(v));
+      const a = Math.abs(v);
+      return a >= 1e12 ? bicim.format(a / 1e12) + " trilyon $" : a >= 1e9 ? bicim.format(a / 1e9) + " milyar $" : bicim.format(a) + " $";
+    };
+    const tuval = fig.querySelector<HTMLElement>(".tuval")!;
+    const ciz = (yil: number) => {
+      const son = Number(d.at(-1)!.donem.slice(0, 4));
+      const g = yil ? d.filter((p) => Number(p.donem.slice(0, 4)) > son - yil) : d;
+      const veri = g.map((p) => ({ yil: new Date(Date.UTC(Number(p.donem.slice(0, 4)), 0, 1)), donem: p.donem, v: p.v }));
+      const plot = Plot.plot({
+        width: tuval.clientWidth || 960, height: 340, marginLeft: 64,
+        style: { background: "transparent", color: "var(--soluk)", fontSize: "12px" },
+        x: { type: "utc", label: null, ticks: 8 },
+        y: { grid: true, label: null, nice: true, zero: !oran || g.some((p) => p.v < 0) ? true : true, tickFormat: (v: number) => yaz(v).replace(" trilyon $", "T").replace(" milyar $", "B") },
+        marks: [
+          Plot.ruleY([0], { stroke: "var(--soluk)", strokeOpacity: oran ? 0.8 : 0 }),
+          Plot.lineY(veri, { x: "yil", y: "v", stroke: "var(--dv-1)", strokeWidth: 2 }),
+          Plot.dot(veri.slice(-1), { x: "yil", y: "v", fill: "var(--dv-1)", r: 4 }),
+          Plot.ruleX(veri, Plot.pointerX({ x: "yil", stroke: "var(--soluk)", strokeDasharray: "3 3" })),
+          Plot.dot(veri, Plot.pointerX({ x: "yil", y: "v", fill: "var(--dv-2)", r: 5 })),
+          Plot.tip(veri, Plot.pointerX({ x: "yil", y: "v", title: (p: { donem: string; v: number }) => `${p.donem}\n${yaz(p.v)}` })),
+        ],
+      });
+      plot.setAttribute("aria-hidden", "true");
+      tuval.querySelector(".plot, figure, svg.canli")?.remove();
+      plot.classList.add("canli");
+      tuval.appendChild(plot);
+      tuval.querySelector<SVGElement>("svg.statik")!.style.display = "none";
+    };
+    ciz(0);
+    const grup = fig.querySelector<HTMLElement>(".donem")!;
+    grup.hidden = false;
+    grup.addEventListener("click", (e) => {
+      const b = (e.target as HTMLElement).closest("button");
+      if (!b) return;
+      grup.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+      ciz(Number(b.dataset.yil));
+    });
+  }
+</script>
+<style>
+  .grafik { margin: 1.5rem 0; background: var(--yuzey); border: 1px solid var(--cizgi); padding: 1rem 1rem .75rem; }
+  .grafik-ust { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: .5rem; }
+  .donem { display: inline-flex; border: 1px solid var(--cizgi); }
+  .donem button { font: 600 .72rem/1 var(--mono); letter-spacing: .05em; padding: .5rem .7rem; background: none; border: 0; color: var(--soluk); cursor: pointer; }
+  .donem button + button { border-left: 1px solid var(--cizgi); }
+  .donem button[aria-pressed="true"] { background: var(--metin); color: var(--bg); }
+  .tuval { width: 100%; }
+  .tuval svg { display: block; width: 100%; height: auto; overflow: visible; }
+  svg text { fill: var(--soluk); font: 12px var(--font); font-variant-numeric: tabular-nums; }
+  .izgara { stroke: var(--izgara); } .sifir { stroke: var(--soluk); }
+  .cizgi { fill: none; stroke: var(--dv-1); stroke-width: 2; stroke-linejoin: round; }
+  .son { fill: var(--dv-1); }
+  figcaption { color: var(--soluk); font-size: .82rem; margin-top: .5rem; }
+</style>
