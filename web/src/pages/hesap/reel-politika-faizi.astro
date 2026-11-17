@@ -1,0 +1,74 @@
+---
+import Taban from "../../layouts/Taban.astro";
+import SeriGrafik from "../../components/SeriGrafik.astro";
+import EmsalGrafik from "../../components/EmsalGrafik.astro";
+import Serit from "../../components/Serit.astro";
+import { deger, ulkeAdi, tarih, sayi } from "../../lib/veri";
+import { reelPaket, isaretSuresi } from "../../lib/turetilmis";
+import { oku, sirala, siraCumlesi, donemAdi, ek } from "../../lib/okuma.ts";
+
+const p = reelPaket();
+if (!p) throw new Error("reel faiz için BIS politika faizi ve TÜFE serileri gerekli");
+const yaz = (v: number) => deger(p.seri, v);
+const son = p.r.at(-1)!;
+const i = Number(p.faiz.gozlemler.find((g) => g.donem === son.donem)!.deger), e = Number(p.enf.gozlemler.find((g) => g.donem === son.donem)!.deger);
+const fark = i - e;
+const isr = isaretSuresi(p.r);
+const okuma = oku(p.r, "aylik", "yuzde", yaz);
+const sira = p.emsal ? sirala(p.r, p.emsal) : null;
+const puan = (v: number) => (v >= 0 ? "+" : "−") + Math.abs(v).toLocaleString("tr-TR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const baslik = "Türkiye'nin reel politika faizi";
+const aciklama = `${donemAdi(son.donem)}: politika faizi %${sayi(i, 1)}, yıllık TÜFE %${sayi(e, 1)}, reel faiz ${yaz(son.v)}. BIS verisiyle Fisher hesabı ve emsal ülkeler.`;
+const jsonld = {
+  "@context": "https://schema.org", "@type": "Dataset", name: `${baslik} (hesaplanmış)`, description: aciklama,
+  url: new URL("/hesap/reel-politika-faizi", Astro.site).href, inLanguage: "tr", isAccessibleForFree: true,
+  temporalCoverage: `${p.r[0].donem}/${son.donem}`, spatialCoverage: { "@type": "Country", name: "Türkiye" },
+  isBasedOn: ["https://data.bis.org/topics/CBPOL", "https://data.bis.org/topics/LONG_CPI"],
+  creator: { "@type": "Person", name: "Koray Öner", url: "https://korayoner.dev/hakkimda/" },
+};
+---
+<Taban baslik={`${baslik} | Türkiye Verisi`} aciklama={aciklama} yol="/hesap/reel-politika-faizi" jsonld={jsonld}>
+  <article class="sar">
+    <nav class="iz" aria-label="Konum"><a href="/">Panorama</a> › Hesaplar</nav>
+    <header class="bas">
+      <p class="etiket">Bu sitenin hesabı · kaynak BIS · aylık</p>
+      <h1>{baslik}</h1>
+      <p class="buyuk sayi">{yaz(son.v)} <span>{donemAdi(son.donem)}</span></p>
+      <p class="ozet">{ek(donemAdi(son.donem), "de")} politika faizi %{sayi(i, 1)}, yıllık tüketici enflasyonu %{sayi(e, 1)}. Faiz, enflasyonun {fark >= 0 ? "üzerinde" : "altında"}: basit farkla {puan(fark)} puan, enflasyonun etkisini tam ayıklayan Fisher formülüyle {yaz(son.v)}. Reel faiz {isr.ay} aydır {isr.isaret > 0 ? "pozitif" : isr.isaret < 0 ? "negatif" : "sıfır"} ({ek(donemAdi(isr.bas), "den")} beri).</p>
+    </header>
+
+    {okuma.length > 0 && <section class="okuma" aria-labelledby="ok"><h2 id="ok">Veri ne söylüyor</h2><ul>{okuma.map((c) => <li>{c}</li>)}</ul></section>}
+
+    <SeriGrafik seri={p.seri}>Hesap: (1 + politika faizi) ÷ (1 + yıllık TÜFE) − 1. Kaynak: BIS, <a href="/gosterge/bis-politika-faizi-tr">politika faizi</a> ve <a href="/gosterge/bis-tufe-yillik-tr">yıllık TÜFE</a>.</SeriGrafik>
+
+    {sira && p.emsal && (
+      <section class="emsal" aria-labelledby="em">
+        <h2 id="em">Emsallerle</h2>
+        <p class="ozet">{siraCumlesi(sira, yaz, ulkeAdi)} Her ülkenin reel faizi aynı formülle, BIS'in o ülke için yayımladığı politika faizi ve TÜFE serilerinden hesaplanır.</p>
+        <Serit sira={sira} yaz={yaz} />
+        <EmsalGrafik tr={p.r} ulkeler={p.emsal} birim="yuzde" baslik="Reel politika faizi" />
+      </section>
+    )}
+
+    <section class="metin" aria-labelledby="yt">
+      <h2 id="yt">Nasıl hesaplanıyor</h2>
+      <p>Reel faiz, nominal faizin enflasyondan arındırılmış hâlidir. Basit yaklaşım iki oranın farkını alır. Enflasyon yüksekken bu fark yanıltır: %50 faiz ve %75 enflasyonda fark −25 puandır, ama paranın satın alma gücündeki gerçek değişim 1,50 ÷ 1,75 − 1, yani −%14,3'tür. Bu sayfa Fisher formülünü kullanır; basit fark yalnız karşılaştırma için yazılır.</p>
+      <p>Kullanılan enflasyon geçmiş on iki ayın gerçekleşmesidir (ex post). Piyasanın beklediği enflasyonla hesaplanan ileriye dönük reel faiz bundan farklıdır ve beklenti verisi bu sitede yoktur.</p>
+      <p>Seri her derlemede iki BIS serisinden yeniden hesaplanır; iki serinin de değeri olan aylar kullanılır. Son veri çekimi: {tarih(p.seri.cekildi)}. Hesaplanmış seri olduğu için API'de yayımlanmaz; iki kaynak seri JSON ve CSV olarak indirilebilir.</p>
+    </section>
+  </article>
+</Taban>
+<style>
+  .iz { padding-top: 1.5rem; font-size: .85rem; color: var(--soluk); }
+  .bas { display: grid; gap: .6rem; padding-block: 1rem 0; }
+  .buyuk { margin: .4rem 0 0; font-size: clamp(2.2rem, 1.6rem + 3vw, 3.4rem); font-weight: 750; letter-spacing: -.02em; line-height: 1; }
+  .buyuk span { font-size: 1rem; font-weight: 500; color: var(--soluk); letter-spacing: 0; }
+  .okuma { margin-top: 1.5rem; padding: 1rem 1.2rem; border-left: 3px solid var(--dv-1); background: var(--yuzey); }
+  .okuma h2 { font: 600 .7rem/1.2 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--soluk); margin-bottom: .6rem; }
+  .okuma ul { margin: 0; padding-left: 1.1rem; display: grid; gap: .35rem; max-width: 70ch; }
+  .emsal { margin: 2rem 0; display: grid; gap: .5rem; }
+  .emsal .ozet { margin: 0 0 .5rem; }
+  .metin { display: grid; gap: .8rem; max-width: 72ch; margin-top: 2rem; }
+  .metin p { margin: 0; }
+  h2 { font-size: 1.15rem; margin: 0 0 .5rem; }
+</style>

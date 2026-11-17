@@ -32,4 +32,10 @@ def baglayici(kaynak_id: str) -> Baglayici:
     if kaynak_id == "oecd":
         from .oecd import OECD
         return OECD()
+    if kaynak_id == "ecb":
+        from .ecb import ECB
+        return ECB()
+    if kaynak_id == "eurostat":
+        from .eurostat import Eurostat
+        return Eurostat()
     raise KeyError(f"bağlayıcı yok: {kaynak_id}")

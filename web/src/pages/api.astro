@@ -18,6 +18,8 @@ const kok = "https://veri.korayoner.dev";
         <tr><th scope="row"><code>/api/v1/kaynaklar.json</code></th><td>Kayıtlı bütün kurumlar, durumları ve izinleri.</td></tr>
         <tr><th scope="row"><code>/api/v1/seri/&#123;id&#125;.json</code></th><td>Tek seri: metaveri, lisans, bütün gözlemler.</td></tr>
         <tr><th scope="row"><code>/api/v1/seri/&#123;id&#125;.csv</code></th><td>Aynı seri, CSV (indirme izni varsa).</td></tr>
+        <tr><th scope="row"><code>/api/v1/emsal/&#123;id&#125;.json</code></th><td>Aynı serinin emsal ülkelerdeki değerleri (alfa-3 ülke kodu → gözlemler). Yalnız emsali tanımlı seriler.</td></tr>
+        <tr><th scope="row"><code>/api/v1/degisiklikler.json</code></th><td>Değişiklik günlüğü: kaynakların açıkladığı yeni dönemler ve önceki değerleri düzelttiği revizyonlar, tarihiyle, yeniden eskiye.</td></tr>
         <tr><th scope="row"><code>/api/v1/gozlemler.parquet</code></th><td>API izinli bütün gözlemler, uzun biçim; değer DECIMAL(38,14).</td></tr>
       </tbody>
     </table></div>
@@ -38,7 +40,7 @@ duckdb.sql("""
     </>}
 
     <h2>Revizyon geçmişi</h2>
-    <p>Her güncelleme ayrı bir commit'tir ve rakamı değişmeyen seri yeniden yazılmaz. Bir gözlemin ilk açıklanan değerine ve her düzeltmesine depodan ulaşılır: <code>git log -p yayin/site-veri/seri/&#123;id&#125;.json</code>.</p>
+    <p>Kaynak bir değeri düzelttiğinde ya da yeni dönem açıkladığında olay <code>degisiklikler.json</code>'a yazılır: <code>&#123;"gun", "seri", "tur": "revizyon" | "yeni-donem", "donem", "onceki", "yeni"&#125;</code>. Tek çekimde 12'den fazla değişiklik tek kayda toplanır (<code>adet</code>, <code>ilk</code>, <code>son</code>). Her güncelleme ayrıca ayrı bir commit'tir ve rakamı değişmeyen seri yeniden yazılmaz. Bir gözlemin ilk açıklanan değerine ve her düzeltmesine depodan ulaşılır: <code>git log -p yayin/site-veri/seri/&#123;id&#125;.json</code>.</p>
 
     <h2>Atıf ve sürüm</h2>
     <p>Veriyi kullanırken asıl kaynak kuruma ve seri koduna atıf yapın; her dosya lisansı ve şart metni adresini taşır. <code>v1</code> geriye dönük uyumlu kalır; alan silinmez, yalnız eklenir. Kırıcı değişiklik <code>v2</code> altında yayımlanır.</p>

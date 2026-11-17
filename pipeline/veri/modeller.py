@@ -88,7 +88,16 @@ class SeriTanimi(Kati):
     birim: str
     carpan: int = 1
     yayin: Izin | None = None
+    baslangic: str | None = Field(default=None, pattern=r"^\d{4}(-\d{2}){0,2}$")   # kaynağa istenen ilk dönem
+    emsal: list[str] = Field(default_factory=list)   # aynı serinin çekileceği karşılaştırma ülkeleri (alfa-3)
     not_: str | None = Field(default=None, alias="not")
+
+    @field_validator("emsal")
+    @classmethod
+    def emsal_kodlari(cls, v: list[str]) -> list[str]:
+        if len(set(v)) != len(v) or any(not re.fullmatch(r"[A-Z]{3}", x) or x == "TUR" for x in v):
+            raise ValueError(f"emsal listesi alfa-3, tekrarsız ve Türkiye'siz olmalı: {v}")
+        return v
 
 
 class Gozlem(Kati):

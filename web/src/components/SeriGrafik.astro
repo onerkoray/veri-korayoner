@@ -24,14 +24,14 @@ const yillar = [] as (readonly [string, number])[];
 for (let yy = Math.ceil(y0 / aralik) * aralik; yy <= y1; yy += aralik) yillar.push([String(yy), xt(String(yy))] as const);
 const etiket = `${seri.baslik}, ${d[0]?.donem}–${d.at(-1)?.donem}. Son değer ${deger(seri, d.at(-1)?.v ?? null)}.`;
 const veri = JSON.stringify({ birim: seri.birim, carpan: seri.carpan, d });
+const secenek: [number, string][] = seri.siklik === "yillik" ? [[0, "Tümü"], [20, "20 yıl"], [10, "10 yıl"]]
+  : [[0, "Tümü"], [10, "10 yıl"], [5, "5 yıl"], [1, "1 yıl"]];
 ---
 <figure class="grafik" data-seri-grafik={veri}>
   <div class="grafik-ust">
-    <p class="etiket">{seri.baslik} · {({ USD: "ABD doları", "TRY/USD": "TL / ABD doları", endeks: "endeks" } as Record<string, string>)[seri.birim] ?? "yüzde"}</p>
+    <p class="etiket">{seri.baslik} · {({ USD: "ABD doları", "TRY/USD": "TL / ABD doları", "TRY/EUR": "TL / euro", endeks: "endeks" } as Record<string, string>)[seri.birim] ?? "yüzde"}</p>
     <div class="donem" role="group" aria-label="Dönem" hidden>
-      <button type="button" data-yil="0" aria-pressed="true">Tümü</button>
-      <button type="button" data-yil="20" aria-pressed="false">20 yıl</button>
-      <button type="button" data-yil="10" aria-pressed="false">10 yıl</button>
+      {secenek.map(([y, a]) => <button type="button" data-yil={y} aria-pressed={String(y === 0)}>{a}</button>)}
     </div>
   </div>
   <div class="tuval">
@@ -55,24 +55,24 @@ const veri = JSON.stringify({ birim: seri.birim, carpan: seri.carpan, d });
     const yaz = (v: number) => {
       v *= carpan || 1;
       if (oran) return (v < 0 ? "−%" : "%") + bicim.format(Math.abs(v));
-      if (birim === "TRY/USD") return iki.format(v) + " TL";
+      if (birim === "TRY/USD" || birim === "TRY/EUR") return iki.format(v) + " TL";
       if (birim !== "USD") return bicim.format(v);
       const a = Math.abs(v);
       return a >= 1e12 ? bicim.format(a / 1e12) + " trilyon $" : a >= 1e9 ? bicim.format(a / 1e9) + " milyar $" : bicim.format(a) + " $";
     };
     const tarihOf = (dn: string) => {
       const yy = Number(dn.slice(0, 4)), q = /-Q([1-4])$/.exec(dn), p = dn.split("-");
-      return q ? new Date(Date.UTC(yy, (Number(q[1]) - 1) * 3, 1)) : new Date(Date.UTC(yy, p[1] ? Number(p[1]) - 1 : 0, 1));
+      return q ? new Date(Date.UTC(yy, (Number(q[1]) - 1) * 3, 1)) : new Date(Date.UTC(yy, p[1] ? Number(p[1]) - 1 : 0, p[2] ? Number(p[2]) : 1));
     };
     const tuval = fig.querySelector<HTMLElement>(".tuval")!;
     const ciz = (yil: number) => {
-      const son = Number(d.at(-1)!.donem.slice(0, 4));
-      const g = yil ? d.filter((p) => Number(p.donem.slice(0, 4)) > son - yil) : d;
+      const sonT = +tarihOf(d.at(-1)!.donem);
+      const g = yil ? d.filter((p) => +tarihOf(p.donem) > sonT - yil * 365.25 * 864e5) : d;
       const veri = g.map((p) => ({ yil: tarihOf(p.donem), donem: p.donem, v: p.v }));
       const plot = Plot.plot({
         width: tuval.clientWidth || 960, height: 340, marginLeft: 64,
         style: { background: "transparent", color: "var(--soluk)", fontSize: "12px" },
-        x: { type: "utc", label: null, ticks: 8 },
+        x: { type: "utc", label: null, ticks: Math.max(3, Math.floor((tuval.clientWidth || 960) / 110)) },
         y: { grid: true, label: null, nice: true, zero: oran || birim === "USD", tickFormat: (v: number) => yaz(v).replace(" trilyon $", "T").replace(" milyar $", "B").replace(" TL", "") },
         marks: [
           Plot.ruleY([0], { stroke: "var(--soluk)", strokeOpacity: oran ? 0.8 : 0 }),
@@ -108,7 +108,9 @@ const veri = JSON.stringify({ birim: seri.birim, carpan: seri.carpan, d });
   .donem button + button { border-left: 1px solid var(--cizgi); }
   .donem button[aria-pressed="true"] { background: var(--metin); color: var(--bg); }
   .tuval { width: 100%; }
-  .tuval svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .tuval { min-width: 0; }
+  .tuval :global(svg) { display: block; width: 100%; max-width: 100%; height: auto; overflow: visible; }
+  .tuval :global(figure) { margin: 0; max-width: 100%; }
   svg text { fill: var(--soluk); font: 12px var(--font); font-variant-numeric: tabular-nums; }
   .izgara { stroke: var(--izgara); } .sifir { stroke: var(--soluk); }
   .cizgi { fill: none; stroke: var(--dv-1); stroke-width: 2; stroke-linejoin: round; }

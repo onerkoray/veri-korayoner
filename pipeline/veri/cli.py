@@ -19,7 +19,7 @@ from . import gol
 from .baglayicilar import baglayici
 from .kayit import KOK, kaynaklar, seriler
 from .modeller import SeriDosyasi
-from .yayin import izin, katalog, kaynak_ozeti, yayinla
+from .yayin import emsal_yaz, farklar, gunluge_ekle, izin, katalog, kaynak_ozeti, onceki, yayinla
 
 CIKTI = KOK / "yayin"
 
@@ -27,7 +27,10 @@ CIKTI = KOK / "yayin"
 def guncelle(secili: list[str] | None, cikti: Path = CIKTI) -> int:
     ks, ss = kaynaklar(), seriler()
     simdi = datetime.now(UTC)
+    gun = simdi.date().isoformat()
     hata = 0
+    olaylar: list[dict] = []
+    bag: dict = {}       # kaynak başına tek bağlayıcı (metaveri önbelleği çekim boyunca yaşar)
     for s in ss:
         if secili and s.id not in secili:
             continue
@@ -37,17 +40,39 @@ def guncelle(secili: list[str] | None, cikti: Path = CIKTI) -> int:
             print(f"atla   {s.id}: yayın izni yok ({k.durum})")
             continue
         try:
-            ham = baglayici(s.kaynak).cek(s)
+            b = bag.setdefault(s.kaynak, baglayici(s.kaynak))
+            ham = b.cek(s)
             d = SeriDosyasi(id=s.id, baslik=s.baslik, ulke=s.ulke, siklik=s.siklik, birim=s.birim, carpan=s.carpan,
                             tema=s.tema, kaynak=kaynak_ozeti(k), kaynak_kod=s.kod, kaynak_adi=ham.kaynak_adi,
                             kaynak_not=ham.kaynak_not, kaynak_guncelleme=ham.kaynak_guncelleme, cekildi=simdi,
                             izin=iz, gozlemler=ham.gozlemler)
+            eski = onceki(cikti / "site-veri" / "seri" / f"{s.id}.json")
             yazilan = yayinla(d, cikti)
+            if yazilan:
+                olaylar += farklar(eski, d, gun)
             son = next((g for g in reversed(d.gozlemler) if g.deger is not None), None)
             print(f"{'yazdı' if yazilan else 'aynı '}  {s.id}: {len(d.gozlemler)} gözlem, son {son.donem if son else '-'}")
         except Exception as e:  # noqa: BLE001 — bir seri düşerse diğerleri sürer
             hata += 1
             print(f"HATA   {s.id}: {type(e).__name__}: {e}", file=sys.stderr)
+            continue
+        # Emsal ülkeler: biri düşerse önceki verisi kalır; Türkiye serisini düşürmez, hata sayılmaz.
+        if s.emsal:
+            alinan = {}
+            if hasattr(b, "cek_coklu"):
+                try:
+                    alinan = b.cek_coklu(s, s.emsal)
+                except Exception as e:  # noqa: BLE001 — toplu istek düşerse ülke ülke denenir
+                    print(f"uyarı  {s.id} [emsal toplu]: {type(e).__name__}: {e}", file=sys.stderr)
+            if not alinan:
+                for u in s.emsal:
+                    try:
+                        alinan[u] = b.cek(s.model_copy(update={"ulke": u})).gozlemler
+                    except Exception as e:  # noqa: BLE001
+                        print(f"uyarı  {s.id} [{u}]: {type(e).__name__}: {e}", file=sys.stderr)
+            yazildi = emsal_yaz(s, iz, alinan, cikti)
+            print(f"emsal  {s.id}: {len(alinan)}/{len(s.emsal)} ülke" + (" yazıldı" if yazildi else " aynı"))
+    gunluge_ekle(olaylar, cikti)
     katalog(ks, ss, cikti, simdi)
     print('göl  ' + ('yazıldı' if gol.yaz(cikti) else 'aynı'))
     return 1 if hata else 0
@@ -67,11 +92,16 @@ def denetle(cikti: Path = CIKTI) -> int:
                     SeriDosyasi.model_validate(json.loads(yol.read_text(encoding="utf-8")))
                 except Exception as e:  # noqa: BLE001
                     sorun.append(f"{yol.relative_to(cikti)}: şemaya uymuyor: {e}")
+        for alt, gerekli in (("site-veri/emsal", iz.gosterim and bool(s.emsal)),
+                             ("api/v1/emsal", iz.api and bool(s.emsal))):
+            yol = cikti / alt / f"{s.id}.json"
+            if yol.exists() and not gerekli:
+                sorun.append(f"{yol.relative_to(cikti)}: izin ya da emsal kaydı yokken yayımlanmış")
         csvyol = cikti / "api" / "v1" / "seri" / f"{s.id}.csv"
         if csvyol.exists() and not iz.indirme:
             sorun.append(f"{csvyol.relative_to(cikti)}: indirme izni yokken yayımlanmış")
     bilinen = {s.id for s in ss}
-    for yol in (cikti / "api" / "v1" / "seri").glob("*") if (cikti / "api" / "v1" / "seri").exists() else []:
+    for yol in [*(cikti / "api" / "v1" / "seri").glob("*"), *(cikti / "api" / "v1" / "emsal").glob("*")]:
         if yol.stem not in bilinen:
             sorun.append(f"{yol.relative_to(cikti)}: kayıtta olmayan seri")
     for x in sorun:

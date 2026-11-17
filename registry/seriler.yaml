@@ -24,6 +24,7 @@ seriler:
     siklik: yillik
     birim: USD
     carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
 
   - id: wb-ny-gdp-mktp-kd-zg-tur
     kaynak: world_bank
@@ -34,6 +35,7 @@ seriler:
     siklik: yillik
     birim: yuzde
     carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
 
   - id: wb-fp-cpi-totl-zg-tur
     kaynak: world_bank
@@ -44,6 +46,7 @@ seriler:
     siklik: yillik
     birim: yuzde
     carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
 
   - id: wb-bn-cab-xoka-gd-zs-tur
     kaynak: world_bank
@@ -54,6 +57,7 @@ seriler:
     siklik: yillik
     birim: yuzde-gsyh
     carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
 
   - id: wb-dt-dod-dect-cd-tur
     kaynak: world_bank
@@ -75,6 +79,7 @@ seriler:
     siklik: yillik
     birim: yuzde
     carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
     yayin: { gosterim: true, indirme: false, api: false }
     not: ILO model tahmini; kaynak ILO. Yeniden yayın şartı ILO tarafında doğrulanana kadar yalnız gösterim.
 
@@ -99,6 +104,7 @@ seriler:
     siklik: aylik
     birim: yuzde
     carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
 
   - id: bis-tufe-yillik-tr
     kaynak: bis
@@ -109,6 +115,7 @@ seriler:
     siklik: aylik
     birim: yuzde
     carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
 
   - id: bis-usd-try-ortalama
     kaynak: bis
@@ -151,6 +158,7 @@ seriler:
     siklik: ceyreklik
     birim: yuzde-gsyh
     carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
 
   - id: bis-borc-servis-orani-tr
     kaynak: bis
@@ -161,6 +169,7 @@ seriler:
     siklik: ceyreklik
     birim: yuzde
     carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN]
     not: Faiz ve anapara ödemelerinin gelire oranı.
 
   # ---- OECD (SDMX; kod = ajans,akış,sürüm/anahtar) --------------------------
@@ -174,3 +183,41 @@ seriler:
     birim: endeks
     carpan: 1
     not: Uzun dönem ortalaması = 100. 100'ün üstü ekonomik faaliyetin eğilimin üzerinde seyredeceğine işaret eder; tahmin değil öncü sinyaldir.
+
+  # ---- ECB (SDMX; kod = akış/anahtar; kurda ülke yerine para birimi) ----------------
+  - id: ecb-eur-try-gunluk
+    kaynak: ecb
+    kod: EXR/D.TRY.EUR.SP00.A
+    ulke: TUR
+    baslik: Euro referans kuru, 1 euro kaç TL
+    tema: doviz-rezerv
+    siklik: gunluk
+    birim: TRY/EUR
+    carpan: 1
+    baslangic: "2005-01-01"
+    not: ECB'nin her iş günü 14.15 CET tespitiyle yayımladığı referans kuru; işlem kuru değildir. 2005 öncesi eski TL milyonda bire bölünmüş olduğundan seri 2005'ten başlatılır.
+
+  # ---- Eurostat (SDMX 2.1; kod = veri seti/anahtar; emsal yalnız AB) -----------------
+  - id: eurostat-hicp-yillik-tr
+    kaynak: eurostat
+    kod: prc_hicp_minr/M.RCH_A.TOTAL.TR
+    ulke: TUR
+    baslik: Uyumlaştırılmış tüketici fiyatları (HICP), yıllık değişim
+    tema: enflasyon
+    siklik: aylik
+    birim: yuzde
+    carpan: 1
+    emsal: [EUU, POL, HUN, ROU]
+    not: AB ülkeleriyle aynı yöntemle derlenen enflasyon ölçüsü; TÜFE ile aynı değildir. Eurostat 2026'da COICOP 2018 sınıflamasına geçti (prc_hicp_minr).
+
+  - id: eurostat-issizlik-aylik-tr
+    kaynak: eurostat
+    kod: une_rt_m/M.SA.TOTAL.PC_ACT.T.TR
+    ulke: TUR
+    baslik: İşsizlik oranı, aylık, mevsimsellikten arındırılmış
+    tema: isgucu
+    siklik: aylik
+    birim: yuzde
+    carpan: 1
+    emsal: [EUU, POL, HUN, ROU]
+    not: 15-74 yaş, işgücüne oran. AB ülkeleriyle karşılaştırılabilir tanım.

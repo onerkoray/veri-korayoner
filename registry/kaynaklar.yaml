@@ -127,27 +127,54 @@ kaynaklar:
 
   - id: eurostat
     ad: Eurostat
-    kurum: Avrupa Birliği İstatistik Ofisi
+    kurum: Avrupa Birliği İstatistik Ofisi (Eurostat)
     adres: https://ec.europa.eu/eurostat
-    api: null
+    api: https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/
     belge: https://ec.europa.eu/eurostat/en/web/user-guides/data-browser/api-data-access/api-introduction
-    erisim: REST / SDMX
+    erisim: SDMX 2.1 REST
     anahtar: false
-    durum: planlandi
-    lisans: { ad: null, kanit: null, inceleme_tarihi: null, atif_zorunlu: true }
-    yayin: { gosterim: false, indirme: false, api: false }
+    durum: aktif
+    lisans:
+      ad: CC BY 4.0 (Komisyon Kararı 2011/833/AB)
+      kanit: https://ec.europa.eu/eurostat/help/copyright-notice
+      inceleme_tarihi: 2026-11-17
+      atif_zorunlu: true
+      kosullar:
+        - "Kaynak: Eurostat."
+        - "Seri adları Türkçeye çevrilmiştir; değerler değiştirilmemiştir."
+        - "Eurostat bu sitenin kullanımından sorumlu değildir."
+      not: >-
+        Şart: istatistik ve metaveri ticari ya da ticari olmayan amaçla, kaynak
+        gösterilerek yeniden kullanılabilir; değişiklik yapılırsa belirtilir.
+        İstisna: AB, EFTA ve resmî aday ülkeler dışındaki ülkelerin verisi
+        ticari kullanılamaz. Türkiye aday ülkedir; emsal kümesi yalnız AB
+        üyeleri ve AB toplamıdır (bağlayıcıda SART_KAPSAMI ile zorlanır).
+    yayin: { gosterim: true, indirme: true, api: true }
 
   - id: ecb
     ad: ECB Veri Portalı
-    kurum: Avrupa Merkez Bankası
+    kurum: Avrupa Merkez Bankası (ECB)
     adres: https://data.ecb.europa.eu/
     api: https://data-api.ecb.europa.eu/service/
-    belge: null
+    belge: https://data.ecb.europa.eu/help/api/overview
     erisim: SDMX REST
     anahtar: false
-    durum: planlandi
-    lisans: { ad: null, kanit: null, inceleme_tarihi: null, atif_zorunlu: true }
-    yayin: { gosterim: false, indirme: false, api: false }
+    durum: aktif
+    lisans:
+      ad: ESCB istatistik kullanım politikası (ücretsiz yeniden kullanım)
+      kanit: https://www.ecb.europa.eu/stats/ecb_statistics/governance_and_quality_framework/html/usage_policy.en.html
+      inceleme_tarihi: 2026-11-17
+      atif_zorunlu: true
+      kosullar:
+        - "Source: ECB statistics."
+        - "İstatistik ve metaverisi değiştirilmeden yayımlanır."
+        - "ECB serilerin sürekliliğini garanti etmez; seriler revize edilebilir."
+      not: >-
+        Şart: kamuya açık istatistik, ticari ya da ticari olmayan kullanımdan
+        bağımsız olarak ücretsiz yeniden kullanılabilir; kaynak gösterilir,
+        istatistik değiştirilmez. Üçüncü taraf verisi kapsam dışıdır; referans
+        kurları ECB'nin kendi yayımıdır.
+    yayin: { gosterim: true, indirme: true, api: true }
 
   - id: tcmb_evds
     ad: TCMB EVDS 3

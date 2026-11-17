@@ -1,6 +1,6 @@
 {
  "surum": 1,
- "uretildi": "2026-11-17T13:41:25.524471Z",
+ "uretildi": "2026-11-17T14:28:19.569872Z",
  "seriler": [
   {
    "id": "wb-ny-gdp-mktp-cd-tur",
@@ -111,6 +111,28 @@
    },
    "api": "/api/v1/seri/wb-bn-cab-xoka-gd-zs-tur.json",
    "csv": "/api/v1/seri/wb-bn-cab-xoka-gd-zs-tur.csv"
+  },
+  {
+   "id": "wb-dt-dod-dect-cd-tur",
+   "baslik": "Toplam dış borç stoku, cari ABD doları",
+   "tema": "dis-sektor",
+   "siklik": "yillik",
+   "birim": "USD",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "572791987609.5",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-17T14:10:36.813524Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/wb-dt-dod-dect-cd-tur.json",
+   "csv": "/api/v1/seri/wb-dt-dod-dect-cd-tur.csv"
   },
   {
    "id": "wb-sl-uem-totl-zs-tur",
@@ -331,6 +353,72 @@
    },
    "api": "/api/v1/seri/oecd-oncu-gosterge-tr.json",
    "csv": "/api/v1/seri/oecd-oncu-gosterge-tr.csv"
+  },
+  {
+   "id": "ecb-eur-try-gunluk",
+   "baslik": "Euro referans kuru, 1 euro kaç TL",
+   "tema": "doviz-rezerv",
+   "siklik": "gunluk",
+   "birim": "TRY/EUR",
+   "kaynak": "ecb",
+   "son": {
+    "donem": "2026-11-16",
+    "deger": "55.502",
+    "durum": "A"
+   },
+   "kaynak_guncelleme": null,
+   "cekildi": "2026-11-17T14:10:36.813524Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/ecb-eur-try-gunluk.json",
+   "csv": "/api/v1/seri/ecb-eur-try-gunluk.csv"
+  },
+  {
+   "id": "eurostat-hicp-yillik-tr",
+   "baslik": "Uyumlaştırılmış tüketici fiyatları (HICP), yıllık değişim",
+   "tema": "enflasyon",
+   "siklik": "aylik",
+   "birim": "yuzde",
+   "kaynak": "eurostat",
+   "son": {
+    "donem": "2026-09",
+    "deger": "29.7",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-04",
+   "cekildi": "2026-11-17T14:10:36.813524Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/eurostat-hicp-yillik-tr.json",
+   "csv": "/api/v1/seri/eurostat-hicp-yillik-tr.csv"
+  },
+  {
+   "id": "eurostat-issizlik-aylik-tr",
+   "baslik": "İşsizlik oranı, aylık, mevsimsellikten arındırılmış",
+   "tema": "isgucu",
+   "siklik": "aylik",
+   "birim": "yuzde",
+   "kaynak": "eurostat",
+   "son": {
+    "donem": "2026-09",
+    "deger": "8.4",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-05",
+   "cekildi": "2026-11-17T14:10:36.813524Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/eurostat-issizlik-aylik-tr.json",
+   "csv": "/api/v1/seri/eurostat-issizlik-aylik-tr.csv"
   }
  ]
 }

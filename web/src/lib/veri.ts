@@ -1,5 +1,6 @@
 // Derleme zamanı veri katmanı: yayin/site-veri (kanonik) ve yayin/api (katalog).
-import { readFileSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
+import type { Nokta } from "./okuma.ts";
 import { join } from "node:path";
 
 const YAYIN = join(process.cwd(), "..", "yayin");
@@ -25,6 +26,28 @@ export function seriler(): Seri[] {
   return k.seriler.map((s: { id: string }) => oku(`site-veri/seri/${s.id}.json`) as Seri);
 }
 export function kaynaklar(): Kaynak[] { return oku("api/v1/kaynaklar.json").kaynaklar; }
+
+export interface Emsal { id: string; birim: string; siklik: string; kaynak: string; ulkeler: Record<string, Gozlem[]> }
+/** Emsal ülke gözlemleri (yalnız kayıtta `emsal` listesi olan seriler). */
+export function emsal(id: string): Emsal | null {
+  const y = `site-veri/emsal/${id}.json`;
+  return existsSync(join(YAYIN, y)) ? oku(y) : null;
+}
+export function emsalNoktalari(e: Emsal): Record<string, Nokta[]> {
+  return Object.fromEntries(Object.entries(e.ulkeler).map(([u, g]) => [u, g.filter((x) => x.deger != null).map((x) => ({ donem: x.donem, v: Number(x.deger) }))]));
+}
+export interface Olay { gun: string; seri: string; tur: "yeni-donem" | "revizyon"; donem?: string; onceki?: string | null; yeni?: string | null; adet?: number; ilk?: string; son?: string }
+export function degisiklikler(): Olay[] {
+  const y = "site-veri/degisiklikler.json";
+  return existsSync(join(YAYIN, y)) ? oku(y).kayitlar : [];
+}
+export function noktalar(s: Seri): Nokta[] { return dolu(s).map((g) => ({ donem: g.donem, v: Number(g.deger) })); }
+
+export const ULKE: Record<string, string> = {
+  TUR: "Türkiye", BRA: "Brezilya", MEX: "Meksika", ZAF: "Güney Afrika", POL: "Polonya", HUN: "Macaristan",
+  IND: "Hindistan", IDN: "Endonezya", CHL: "Şili", COL: "Kolombiya", ROU: "Romanya", EUU: "AB-27",
+};
+export const ulkeAdi = (k: string) => ULKE[k] ?? k;
 export function uretildi(): string { return oku("api/v1/kaynaklar.json").uretildi; }
 
 export const TEMA: Record<string, string> = {
@@ -60,13 +83,13 @@ export function deger(s: Pick<Seri, "birim" | "carpan">, ham: string | number | 
       if (a >= 1e6) return isaret + sayi(a / 1e6, 1) + " milyon $";
       return isaret + sayi(a, 0) + " $";
     }
-    case "TRY/USD": return sayi(v, 2) + " TL";
+    case "TRY/USD": case "TRY/EUR": return sayi(v, 2) + " TL";
     case "endeks": return sayi(v, 1);
     default: return sayi(v, 2) + " " + s.birim;
   }
 }
 export function birimAdi(b: string): string {
-  return ({ yuzde: "yüzde", "yuzde-gsyh": "GSYH'ye oran, yüzde", USD: "ABD doları, cari", "TRY/USD": "1 ABD doları kaç TL", endeks: "endeks" } as Record<string, string>)[b] ?? b;
+  return ({ yuzde: "yüzde", "yuzde-gsyh": "GSYH'ye oran, yüzde", USD: "ABD doları, cari", "TRY/USD": "1 ABD doları kaç TL", "TRY/EUR": "1 euro kaç TL", endeks: "endeks" } as Record<string, string>)[b] ?? b;
 }
 export function siklikAdi(s: string): string {
   return ({ yillik: "Yıllık", ceyreklik: "Çeyreklik", aylik: "Aylık", haftalik: "Haftalık", gunluk: "Günlük" } as Record<string, string>)[s] ?? s;

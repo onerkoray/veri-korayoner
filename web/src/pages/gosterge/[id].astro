@@ -1,42 +1,87 @@
 ---
 import Taban from "../../layouts/Taban.astro";
 import SeriGrafik from "../../components/SeriGrafik.astro";
-import { seriler, deger, degisim, son, dolu, tarih, birimAdi, siklikAdi, TEMA, type Seri } from "../../lib/veri";
+import EmsalGrafik from "../../components/EmsalGrafik.astro";
+import Serit from "../../components/Serit.astro";
+import { seriler, deger, degisim, son, dolu, tarih, birimAdi, siklikAdi, TEMA, emsal, emsalNoktalari, noktalar, ulkeAdi, type Seri } from "../../lib/veri";
+import { oku, sirala, siraCumlesi, donemAdi } from "../../lib/okuma.ts";
 
 export function getStaticPaths() {
   return seriler().map((s) => ({ params: { id: s.id }, props: { s } }));
 }
 const { s } = Astro.props as { s: Seri };
 const sn = son(s), dg = degisim(s), d = dolu(s);
+const yaz = (v: number) => deger(s, v);
+const okuma = oku(noktalar(s), s.siklik, s.birim, yaz);
+const em = emsal(s.id);
+const emN = em ? emsalNoktalari(em) : null;
+const sira = emN ? sirala(noktalar(s), emN) : null;
 const yol = `/gosterge/${s.id}`;
 const api = s.izin.api ? `/api/v1/seri/${s.id}.json` : null;
 const csv = s.izin.indirme ? `/api/v1/seri/${s.id}.csv` : null;
 const asil = (s.kaynak_not ?? "").split(/[;\n]/)[0].replace(/,?\s*uri:.*$/, "").trim() || null;
-const kaynakAdresi = s.kaynak.id === "world_bank" ? `https://data.worldbank.org/indicator/${s.kaynak_kod}?locations=TR`
-  : s.kaynak.id === "bis" ? `https://data.bis.org/topics/${s.kaynak_kod.split("/")[0].replace(/^WS_/, "")}` : s.kaynak.adres;
+const [akis, anahtar] = s.kaynak_kod.split("/");
+const kaynakAdresi = ({
+  world_bank: `https://data.worldbank.org/indicator/${s.kaynak_kod}?locations=TR`,
+  bis: `https://data.bis.org/topics/${akis.replace(/^WS_/, "")}`,
+  ecb: `https://data.ecb.europa.eu/data/datasets/${akis}/${akis}.${anahtar}`,
+  eurostat: `https://ec.europa.eu/eurostat/databrowser/view/${akis}/default/table`,
+} as Record<string, string>)[s.kaynak.id] ?? s.kaynak.adres;
+const gunluk = s.siklik === "gunluk";
+const tablo = s.gozlemler.slice().reverse().slice(0, gunluk ? 90 : undefined);
 const jsonld = {
   "@context": "https://schema.org", "@type": "Dataset",
-  name: `${s.baslik} — Türkiye`, description: `${s.baslik}, ${d[0]?.donem}–${sn?.donem}. Kaynak: ${s.kaynak.kurum} (${s.kaynak_kod}).`,
+  name: `${s.baslik} — Türkiye`, description: `${s.baslik}, ${d[0]?.donem}–${sn?.donem}. Kaynak: ${s.kaynak.kurum} (${s.kaynak_kod}). ${okuma[0] ?? ""}`.trim(),
   url: new URL(yol, Astro.site).href, isAccessibleForFree: true, inLanguage: "tr",
   temporalCoverage: `${d[0]?.donem}/${sn?.donem}`, spatialCoverage: { "@type": "Country", name: "Türkiye" },
   ...(s.kaynak.lisans_kanit ? { license: s.kaynak.lisans_kanit } : {}),
   creator: { "@type": "Organization", name: s.kaynak.kurum, url: s.kaynak.adres },
   isBasedOn: kaynakAdresi,
+  ...(s.kaynak_guncelleme ? { dateModified: s.kaynak_guncelleme } : {}),
   ...(api ? { distribution: [{ "@type": "DataDownload", encodingFormat: "application/json", contentUrl: new URL(api, Astro.site).href },
     ...(csv ? [{ "@type": "DataDownload", encodingFormat: "text/csv", contentUrl: new URL(csv, Astro.site).href }] : [])] } : {}),
 };
+const aciklama = `${s.baslik}: ${sn ? donemAdi(sn.donem) : ""} ${deger(s, sn?.deger ?? null)}. ${okuma[0] ?? ""} Kaynak ${s.kaynak.kurum}.`.replace(/\s+/g, " ").trim();
 ---
-<Taban baslik={`${s.baslik} — Türkiye | Türkiye Verisi`} aciklama={`${s.baslik}: ${sn?.donem} ${deger(s, sn?.deger ?? null)}. Kaynak ${s.kaynak.kurum}, ${s.kaynak_kod}. Tarihsel seri, lisans ve indirme.`} yol={yol} jsonld={jsonld}>
+<Taban baslik={`${s.baslik} — Türkiye | Türkiye Verisi`} aciklama={aciklama} yol={yol} jsonld={jsonld}>
   <article class="sar">
     <nav class="iz" aria-label="Konum"><a href="/">Panorama</a> › {TEMA[s.tema] ?? s.tema}</nav>
     <header class="bas">
       <p class="etiket">{s.kaynak.kurum} · {s.kaynak_kod} · {siklikAdi(s.siklik)}</p>
       <h1>{s.baslik}</h1>
-      <p class="buyuk sayi">{deger(s, sn?.deger ?? null)} <span>{sn?.donem}</span></p>
+      <p class="buyuk sayi">{deger(s, sn?.deger ?? null)} <span>{sn && donemAdi(sn.donem)}</span></p>
       {dg && <p class="ozet">Bir önceki döneme göre {dg.metin}. {s.birim.startsWith("yuzde") ? "Fark puan olarak: son değer eksi önceki." : "Değişim yüzde olarak: son ÷ önceki − 1."}</p>}
     </header>
 
-    <SeriGrafik seri={s}>Kaynak: {s.kaynak.kurum}, <a href={kaynakAdresi}>{s.kaynak_kod}</a>. Değerler kaynağın yayımladığı hâliyle; bu sitede hesaplanmış bir seri değildir.</SeriGrafik>
+    {okuma.length > 0 && (
+      <section class="okuma" aria-labelledby="ok">
+        <h2 id="ok">Veri ne söylüyor</h2>
+        <ul>{okuma.map((c) => <li>{c}</li>)}</ul>
+        <p class="kucuk">Bu cümleler her güncellemede serinin kendisinden yeniden hesaplanır; yorum değil, konum bilgisidir. <a href="/yontem#okuma">Nasıl hesaplanıyor</a></p>
+      </section>
+    )}
+
+    <SeriGrafik seri={s}>Kaynak: {s.kaynak.kurum}, <a href={kaynakAdresi}>{s.kaynak_kod}</a>. Değerler kaynağın yayımladığı hâliyle.</SeriGrafik>
+
+    {sira && emN && (
+      <section class="emsal" aria-labelledby="em">
+        <h2 id="em">Emsallerle</h2>
+        <p class="ozet">{siraCumlesi(sira, yaz, ulkeAdi)} Emsal kümesi, Türkiye'yle sık karşılaştırılan yükselen ekonomilerdir{Object.keys(emN).includes("EUU") ? "; Eurostat serilerinde AB üyeleri ve AB-27 toplamı" : ""}. <a href="/yontem#emsal">Neden bu ülkeler</a></p>
+        <Serit sira={sira} yaz={yaz} />
+        <EmsalGrafik tr={noktalar(s)} ulkeler={emN} birim={s.birim} baslik={s.baslik} />
+        <div class="kaydir">
+          <table class="sira">
+            <caption class="gizli">{donemAdi(sira.donem)} itibarıyla ülkeler, yüksekten düşüğe</caption>
+            <thead><tr><th scope="col">Sıra</th><th scope="col">Ülke</th><th scope="col" class="n">{donemAdi(sira.donem)}</th></tr></thead>
+            <tbody>
+              {sira.satirlar.map((r, i) => <tr class:list={[r.kod === "TUR" && "tr"]}><td class="n">{i + 1}</td><th scope="row">{ulkeAdi(r.kod)}</th><td class="n">{yaz(r.v)}</td></tr>)}
+              {sira.toplamlar.map((t) => <tr class="toplam"><td></td><th scope="row">{ulkeAdi(t.kod)} (toplam)</th><td class="n">{yaz(t.v)}</td></tr>)}
+            </tbody>
+          </table>
+        </div>
+        <p class="kucuk">Emsal verisi aynı kaynaktan, aynı seri tanımıyla çekilir{s.izin.api && <>; API: <a href={`/api/v1/emsal/${s.id}.json`}>emsal/{s.id}.json</a></>}.</p>
+      </section>
+    )}
 
     <div class="iki">
       <section aria-labelledby="mv">
@@ -45,7 +90,7 @@ const jsonld = {
           <div><dt>Kaynağın seri adı</dt><dd>{s.kaynak_adi ?? "—"}</dd></div>
           <div><dt>Birim</dt><dd>{birimAdi(s.birim)}{s.carpan !== 1 && ` × ${s.carpan}`}</dd></div>
           <div><dt>Sıklık</dt><dd>{siklikAdi(s.siklik)}</dd></div>
-          <div><dt>Kapsam</dt><dd>{d[0]?.donem}–{sn?.donem}, {d.length} gözlem</dd></div>
+          <div><dt>Kapsam</dt><dd>{d[0] && donemAdi(d[0].donem)} – {sn && donemAdi(sn.donem)}, {d.length.toLocaleString("tr-TR")} gözlem</dd></div>
           <div><dt>Kaynağın son güncellemesi</dt><dd>{tarih(s.kaynak_guncelleme)}</dd></div>
           <div><dt>Bu sitenin son çekimi</dt><dd>{tarih(s.cekildi)}</dd></div>
           {s.kaynak_not && <div><dt>Kaynağın veri notu</dt><dd class="not">{s.kaynak_not}</dd></div>}
@@ -73,13 +118,14 @@ const jsonld = {
 
     <section aria-labelledby="tb">
       <h2 id="tb">Gözlemler</h2>
+      {gunluk && <p class="kucuk">Son 90 iş günü gösteriliyor; {d.length.toLocaleString("tr-TR")} gözlemin tamamı {csv ? <a href={csv}>CSV</a> : "kaynakta"}.</p>}
       <div class="kaydir">
         <table>
-          <caption class="gizli">{s.baslik}, bütün gözlemler, yeniden eskiye</caption>
+          <caption class="gizli">{s.baslik}, gözlemler, yeniden eskiye</caption>
           <thead><tr><th scope="col">Dönem</th><th scope="col" class="n">Değer</th><th scope="col" class="n">Kaynaktaki ham değer</th></tr></thead>
           <tbody>
-            {s.gozlemler.slice().reverse().map((g) => (
-              <tr><th scope="row">{g.donem}</th><td class="n">{deger(s, g.deger)}</td><td class="n ham">{g.deger ?? "yayımlanmadı"}</td></tr>
+            {tablo.map((g) => (
+              <tr><th scope="row">{g.donem}</th><td class="n">{deger(s, g.deger)}</td><td class="n ham">{g.deger ?? "yayımlanmadı"}{g.durum && g.durum !== "A" && <span class="bayrak" title="Kaynağın gözlem bayrağı (A = normal değer gösterilmez)"> {g.durum}</span>}</td></tr>
             ))}
           </tbody>
         </table>
@@ -92,17 +138,28 @@ const jsonld = {
   .bas { display: grid; gap: .6rem; padding-block: 1rem 0; }
   .buyuk { margin: .4rem 0 0; font-size: clamp(2.2rem, 1.6rem + 3vw, 3.4rem); font-weight: 750; letter-spacing: -.02em; line-height: 1; }
   .buyuk span { font-size: 1rem; font-weight: 500; color: var(--soluk); letter-spacing: 0; }
+  .okuma { margin-top: 1.5rem; padding: 1rem 1.2rem; border-left: 3px solid var(--dv-1); background: var(--yuzey); }
+  .okuma h2 { font-size: .75rem; font: 600 .7rem/1.2 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--soluk); margin-bottom: .6rem; }
+  .okuma ul { margin: 0; padding-left: 1.1rem; display: grid; gap: .35rem; max-width: 70ch; }
+  .okuma li { font-size: 1.02rem; }
+  .kucuk { font-size: .8rem; color: var(--soluk); margin: .6rem 0 0; }
+  .emsal { margin: 2rem 0; display: grid; gap: .5rem; }
+  .emsal .ozet { margin: 0 0 .5rem; }
+  .sira { max-width: 30rem; }
+  .sira tr.tr th, .sira tr.tr td { font-weight: 700; color: var(--dv-1); }
+  .sira tr.toplam th, .sira tr.toplam td { color: var(--soluk); font-style: italic; }
   .iki { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); margin: 1rem 0 2rem; }
   h2 { font-size: 1.15rem; margin: 0 0 .75rem; }
   .bilgi { margin: 0; border-top: 1px solid var(--metin); }
   .bilgi div { display: grid; grid-template-columns: 11rem 1fr; gap: 1rem; padding: .55rem 0; border-bottom: 1px solid var(--cizgi); font-size: .9rem; }
   .bilgi dt { color: var(--soluk); }
-  .bilgi dd { margin: 0; }
+  .bilgi dd { margin: 0; overflow-wrap: anywhere; }
   .not { font-size: .82rem; color: var(--soluk); }
   .indir { display: flex; gap: .5rem; flex-wrap: wrap; list-style: none; padding: 0; margin: 1rem 0 0; }
   .indir a { display: inline-block; border: 1px solid var(--metin); padding: .45rem .8rem; text-decoration: none; font: 600 .78rem/1 var(--mono); }
   .indir a:hover { background: var(--metin); color: var(--bg); }
   .kosul { margin: 1rem 0 0; padding-left: 1.1rem; font-size: .82rem; color: var(--soluk); }
   .ham { color: var(--soluk); font-family: var(--mono); font-size: .8rem; }
+  .bayrak { font-size: .72rem; }
   @media (max-width: 34rem) { .bilgi div { grid-template-columns: 1fr; gap: .15rem; } }
 </style>

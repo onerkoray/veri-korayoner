@@ -1,25 +1,130 @@
 ---
 import Taban from "../layouts/Taban.astro";
 import Kivilcim from "../components/Kivilcim.astro";
-import { seriler, kaynaklar, uretildi, TEMA, TEMA_SIRA, deger, degisim, son, tarih, siklikAdi } from "../lib/veri";
+import SeriGrafik from "../components/SeriGrafik.astro";
+import Serit from "../components/Serit.astro";
+import { seriler, kaynaklar, uretildi, TEMA, TEMA_SIRA, deger, degisim, son, tarih, siklikAdi, emsal, emsalNoktalari, noktalar, ulkeAdi, degisiklikler } from "../lib/veri";
+import { sirala, donemAdi, zaman, ek, type Sira } from "../lib/okuma.ts";
+import { reelPaket, isaretSuresi } from "../lib/turetilmis";
 
 const ss = seriler();
 const ks = kaynaklar();
 const aktif = ks.filter((k) => k.yayin.gosterim);
 const gruplar = TEMA_SIRA.map((t) => ({ t, ad: TEMA[t], liste: ss.filter((s) => s.tema === t) })).filter((g) => g.liste.length);
-const sonGuncelleme = ss.map((s) => s.kaynak_guncelleme).filter(Boolean).sort().at(-1) ?? null;
+const gozlemSayisi = ss.reduce((a, s) => a + s.gozlemler.filter((g) => g.deger != null).length, 0);
+
+// Manşet: bu sitenin hesabı
+const reel = reelPaket();
+const reelSon = reel?.r.at(-1);
+const reelIsaret = reel ? isaretSuresi(reel.r) : null;
+const reelYaz = (v: number) => (reel ? deger(reel.seri, v) : "");
+
+// Türkiye nerede: emsali olan her gösterge bir şerit
+const SIRA = ["bis-politika-faizi-tr", "bis-tufe-yillik-tr", "eurostat-hicp-yillik-tr", "wb-fp-cpi-totl-zg-tur", "wb-ny-gdp-mktp-kd-zg-tur", "wb-ny-gdp-pcap-cd-tur",
+  "wb-bn-cab-xoka-gd-zs-tur", "bis-ozel-kredi-gsyh-tr", "bis-borc-servis-orani-tr", "eurostat-issizlik-aylik-tr", "wb-sl-uem-totl-zs-tur"];
+type Satir = { baslik: string; href: string; sira: Sira; yaz: (v: number) => string; kaynak: string };
+const satirlar: Satir[] = [];
+if (reel?.emsal) {
+  const s = sirala(reel.r, reel.emsal);
+  if (s) satirlar.push({ baslik: "Reel politika faizi (hesap)", href: "/hesap/reel-politika-faizi", sira: s, yaz: reelYaz, kaynak: "BIS verisiyle" });
+}
+for (const s of [...ss].sort((a, b) => (SIRA.indexOf(a.id) + 1 || 99) - (SIRA.indexOf(b.id) + 1 || 99))) {
+  const e = emsal(s.id);
+  if (!e) continue;
+  const sr = sirala(noktalar(s), emsalNoktalari(e));
+  if (sr) satirlar.push({ baslik: s.baslik, href: `/gosterge/${s.id}`, sira: sr, yaz: (v) => deger(s, v, true), kaynak: s.kaynak.kurum });
+}
+
+// Son açıklanan veriler: her serinin son dönemi, en yeniden
+const sonVeriler = ss.map((s) => ({ s, sn: son(s)!, dg: degisim(s) })).filter((x) => x.sn)
+  .sort((a, b) => zaman(b.sn.donem) - zaman(a.sn.donem) || a.s.baslik.localeCompare(b.s.baslik, "tr")).slice(0, 10);
+const baslikOf = (id: string) => ss.find((s) => s.id === id);
+const olaylar = degisiklikler().slice(0, 12);
 ---
-<Taban baslik="Türkiye Verisi — uluslararası kurumların Türkiye serileri" aciklama="Dünya Bankası ve diğer uluslararası kurumların Türkiye verileri: kaynağı, birimi, çekildiği gün, lisansı ve revizyon geçmişiyle." yol="/">
+<Taban baslik="Türkiye Verisi — uluslararası kurumların Türkiye serileri ve emsal karşılaştırması" aciklama="BIS, Dünya Bankası, OECD, ECB ve Eurostat'ın Türkiye verileri: emsal ülkelerle sıralama, reel faiz hesabı, revizyon kaydı, lisansıyla açık API." yol="/">
   <section class="sar giris">
     <p class="etiket">Türkiye · uluslararası kaynaklar</p>
-    <h1>Kurumların Türkiye verisi, kaynağıyla.</h1>
-    <p class="ozet">Her seri asıl kurumundan çekilir, doğrulanır ve lisansı izin veriyorsa yayımlanır. Değerler kaynaktaki hâliyle, kuruşuna kadar tutulur; her düzeltme tarihiyle saklanır.</p>
+    <h1>Türkiye, kurumların verisiyle ve emsalleriyle.</h1>
+    <p class="ozet">BIS, Dünya Bankası, OECD, ECB ve Eurostat'ın Türkiye serileri her iş günü sabah asıl kaynağından çekilir. Her gösterge Türkiye'yle sık karşılaştırılan ekonomilerin aynı serisiyle yan yana durur; sıralama, medyan ve tarihsel konum veriden hesaplanır.</p>
     <dl class="durum">
-      <div><dt>Yayımlanan seri</dt><dd class="sayi">{ss.length}</dd></div>
-      <div><dt>Aktif kaynak</dt><dd class="sayi">{aktif.length} / {ks.length}</dd></div>
-      <div><dt>Kaynağın son güncellemesi</dt><dd>{tarih(sonGuncelleme)}</dd></div>
+      <div><dt>Gösterge</dt><dd class="sayi">{ss.length}</dd></div>
+      <div><dt>Gözlem</dt><dd class="sayi">{gozlemSayisi.toLocaleString("tr-TR")}</dd></div>
+      <div><dt>Kaynak</dt><dd class="sayi">{aktif.length} kurum</dd></div>
       <div><dt>Son kontrol</dt><dd>{tarih(uretildi())}</dd></div>
     </dl>
+  </section>
+
+  {reel && reelSon && reelIsaret && (
+    <section class="sar manset" aria-labelledby="m-baslik">
+      <div class="manset-metin">
+        <p class="etiket">Bu sitenin hesabı · {donemAdi(reelSon.donem)}</p>
+        <h2 id="m-baslik"><a href="/hesap/reel-politika-faizi">Reel politika faizi</a></h2>
+        <p class="manset-sayi sayi">{reelYaz(reelSon.v)}</p>
+        <p>Politika faizi ile yıllık enflasyon arasındaki Fisher farkı. Reel faiz <strong>{reelIsaret.ay} aydır {reelIsaret.isaret > 0 ? "pozitif" : "negatif"}</strong>; {ek(donemAdi(reelIsaret.bas), "den")} beri.</p>
+        <p><a class="ok" href="/hesap/reel-politika-faizi">Hesap, emsal ülkeler ve yöntem →</a></p>
+      </div>
+      <div class="manset-grafik"><SeriGrafik seri={reel.seri}>Kaynak: BIS politika faizi ve yıllık TÜFE; hesap bu siteye aittir.</SeriGrafik></div>
+    </section>
+  )}
+
+  {satirlar.length > 0 && (
+    <section class="sar nerede" aria-labelledby="n-baslik">
+      <h2 id="n-baslik">Türkiye nerede?</h2>
+      <p class="ozet">Her satırda bir gösterge; noktalar emsal ülkeler, mavi nokta Türkiye, dikey çizgi emsal medyanı. Ülke adı ve değer için noktanın üzerine gelin. Emsal kümesi: {["BRA", "MEX", "ZAF", "POL", "HUN", "IND", "IDN", "CHL", "COL"].map(ulkeAdi).join(", ")}; Eurostat satırlarında AB üyeleri ve AB-27.</p>
+      <ul class="satirlar">
+        {satirlar.map((r) => (
+          <li>
+            <div class="satir-bas">
+              <a href={r.href}>{r.baslik}</a>
+              <span class="satir-yer">{donemAdi(r.sira.donem)} · {r.sira.sira === 1 ? "en yüksek" : r.sira.sira === r.sira.toplam ? "en düşük" : `${r.sira.toplam} ülke içinde ${r.sira.sira}.`} · {r.kaynak}</span>
+            </div>
+            <Serit sira={r.sira} yaz={r.yaz} />
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <section class="sar hareket" aria-labelledby="h-baslik">
+    <h2 id="h-baslik">Son açıklanan veriler</h2>
+    <div class="kaydir">
+      <table>
+        <thead><tr><th scope="col">Dönem</th><th scope="col">Gösterge</th><th scope="col" class="n">Değer</th><th scope="col" class="n">Önceki döneme göre</th><th scope="col">Kaynak</th></tr></thead>
+        <tbody>
+          {sonVeriler.map(({ s, sn, dg }) => (
+            <tr>
+              <td class="donem-h">{donemAdi(sn.donem)}</td>
+              <th scope="row"><a href={`/gosterge/${s.id}`}>{s.baslik}</a></th>
+              <td class="n sayi">{deger(s, sn.deger)}</td>
+              <td class="n sayi">{dg?.metin ?? "—"}</td>
+              <td class="kaynak-h">{s.kaynak.kurum.replace(/\s*\(.*\)$/, "")}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    {olaylar.length > 0 && (
+      <>
+        <h3>Kaynakların düzeltmeleri ve yeni dönemleri</h3>
+        <ul class="olaylar">
+          {olaylar.map((o) => {
+            const s = baslikOf(o.seri);
+            if (!s) return null;
+            const yz = (v?: string | null) => deger(s, v ?? null);
+            return (
+              <li>
+                <time datetime={o.gun}>{tarih(o.gun)}</time>
+                <a href={`/gosterge/${s.id}`}>{s.baslik}</a>:
+                {o.tur === "revizyon"
+                  ? (o.adet ? ` ${o.adet} dönem revize edildi (${o.ilk}–${o.son}).` : ` ${o.donem} değeri ${yz(o.onceki)} → ${yz(o.yeni)} revize edildi.`)
+                  : (o.adet ? ` ${o.adet} yeni dönem eklendi (${o.ilk}–${o.son}).` : ` ${o.donem} açıklandı: ${yz(o.yeni)}.`)}
+              </li>
+            );
+          })}
+        </ul>
+      </>
+    )}
+    <p class="kucuk">Revizyon kaydı 17 Kasım 2026'da başladı; daha eski düzeltmeler deponun commit geçmişinde. API: <a href="/api/v1/degisiklikler.json">degisiklikler.json</a></p>
   </section>
 
   {gruplar.map((g) => (
@@ -34,11 +139,11 @@ const sonGuncelleme = ss.map((s) => s.kaynak_guncelleme).filter(Boolean).sort().
                 <p class="kart-baslik">{s.baslik}</p>
                 <p class="kart-deger sayi">{deger(s, sn?.deger ?? null)}</p>
                 <p class="kart-alt">
-                  <span>{sn?.donem}</span>
-                  {dg && <span class:list={["deg", dg.yon > 0 ? "art" : dg.yon < 0 ? "dus" : ""]}>{dg.metin}</span>}
+                  <span>{sn && donemAdi(sn.donem)}</span>
+                  {dg && <span class="deg">{dg.metin}</span>}
                 </p>
-                <Kivilcim seri={s} />
-                <p class="kart-kaynak">{s.kaynak.kurum} · {siklikAdi(s.siklik)}{!s.izin.api && " · yalnız gösterim"}</p>
+                <Kivilcim seri={s} n={s.siklik === "gunluk" ? 250 : s.siklik === "aylik" ? 36 : 20} />
+                <p class="kart-kaynak">{s.kaynak.kurum.replace(/\s*\(.*\)$/, "")} · {siklikAdi(s.siklik)}{!s.izin.api && " · yalnız gösterim"}</p>
               </a>
             </li>
           );
@@ -54,12 +159,34 @@ const sonGuncelleme = ss.map((s) => s.kaynak_guncelleme).filter(Boolean).sort().
   </section>
 </Taban>
 <style>
-  .giris { padding-block: clamp(2.5rem, 6vw, 4.5rem) 1.5rem; display: grid; gap: 1rem; }
-  .durum { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: 0 1.5rem; margin: 1rem 0 0; border-top: 1px solid var(--metin); }
+  .giris { padding-block: clamp(2.5rem, 6vw, 4rem) 1rem; display: grid; gap: 1rem; }
+  .durum { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 0 1.5rem; margin: .5rem 0 0; border-top: 1px solid var(--metin); }
   .durum div { padding: .8rem 0; border-bottom: 1px solid var(--cizgi); }
   .durum dt { font: 600 .68rem/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--soluk); }
   .durum dd { margin: .25rem 0 0; font-size: 1.3rem; font-weight: 650; }
-  .tema { padding-block: 2rem 0; }
+  .manset { display: grid; gap: 1.5rem; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); align-items: center; padding-block: 2rem 1rem; }
+  .manset-metin { display: grid; gap: .6rem; }
+  .manset-metin p { margin: 0; }
+  .manset h2 a { text-decoration: none; }
+  .manset-sayi { font-size: clamp(2.6rem, 2rem + 3vw, 4rem); font-weight: 750; letter-spacing: -.03em; line-height: 1; color: var(--dv-1); }
+  .ok { font-weight: 600; }
+  @media (max-width: 52rem) { .manset { grid-template-columns: minmax(0, 1fr); } }
+  .nerede { padding-block: 2rem 0; }
+  .nerede .ozet { margin: .5rem 0 1rem; }
+  .satirlar { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--metin); }
+  .satirlar li { padding: .9rem 0 .2rem; border-bottom: 1px solid var(--cizgi); }
+  .satir-bas { display: flex; justify-content: space-between; gap: .3rem 1rem; flex-wrap: wrap; align-items: baseline; }
+  .satir-bas a { font-weight: 650; text-decoration: none; }
+  .satir-bas a:hover { text-decoration: underline; }
+  .satir-yer { font-size: .8rem; color: var(--soluk); }
+  .hareket { padding-block: 2.5rem 0; display: grid; gap: .75rem; }
+  .hareket h3 { font-size: 1rem; margin-top: 1rem; }
+  .hareket th a { text-decoration: none; font-weight: 600; }
+  .donem-h, .kaynak-h { white-space: nowrap; color: var(--soluk); font-size: .85rem; }
+  .olaylar { margin: 0; padding-left: 1.1rem; display: grid; gap: .3rem; font-size: .92rem; }
+  .olaylar time { color: var(--soluk); font-size: .82rem; margin-right: .4rem; }
+  .kucuk { font-size: .8rem; color: var(--soluk); margin: 0; }
+  .tema { padding-block: 2.5rem 0; }
   .tema h2 { margin-bottom: 1rem; }
   .kartlar { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem;
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 16.5rem), 1fr)); }
@@ -69,7 +196,6 @@ const sonGuncelleme = ss.map((s) => s.kaynak_guncelleme).filter(Boolean).sort().
   .kart-baslik { margin: 0; font-size: .9rem; color: var(--soluk); min-height: 2.6em; }
   .kart-deger { margin: 0; font-size: 1.65rem; font-weight: 700; letter-spacing: -.01em; }
   .kart-alt { margin: 0; display: flex; gap: .7rem; font-size: .82rem; color: var(--soluk); }
-  .deg.art { color: var(--dv-1); } .deg.dus { color: var(--dv-2); }
   .kart-kaynak { margin: .2rem 0 0; font: .68rem/1.4 var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--soluk); }
   .sirada { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; padding: 0; margin: 1rem 0 0; }
   .sirada li { border: 1px dashed var(--cizgi); padding: .3rem .6rem; font-size: .85rem; color: var(--soluk); }

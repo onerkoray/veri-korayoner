@@ -79,11 +79,15 @@ class DunyaBankasi:
 
     def __init__(self, getirici=getir):
         self._getir = getirici
+        self._metaveri: dict[str, tuple[str | None, str | None]] = {}   # emsal ülkelerde tekrar çekilmez
 
     def cek(self, seri: SeriTanimi) -> HamSeri:
         if seri.siklik != "yillik":
             raise KaynakUyusmazligi("WDI bağlayıcısı bu sürümde yalnız yıllık seri alır")
-        ad, kaynak = ayristir_metaveri(self._getir(f"{TABAN}/indicator/{seri.kod}?format=json"), seri.kod)
+        if seri.kod not in self._metaveri:
+            self._metaveri[seri.kod] = ayristir_metaveri(
+                self._getir(f"{TABAN}/indicator/{seri.kod}?format=json"), seri.kod)
+        ad, kaynak = self._metaveri[seri.kod]
         gozlem, guncelleme, sayfa = ayristir_gozlem(
             self._getir(f"{TABAN}/country/{seri.ulke}/indicator/{seri.kod}?format=json&per_page={SAYFA}"),
             seri.kod, seri.ulke)
@@ -93,3 +97,39 @@ class DunyaBankasi:
         while gozlem and gozlem[-1].deger is None:
             gozlem.pop()
         return HamSeri(kaynak_adi=ad, kaynak_not=kaynak, kaynak_guncelleme=guncelleme, gozlemler=gozlem)
+
+    def cek_coklu(self, seri: SeriTanimi, ulkeler: list[str]) -> dict[str, list[Gozlem]]:
+        """Emsal ülkeler tek istekte: Dünya Bankası yavaşken ülke başına istek saatler sürer."""
+        b = self._getir(f"{TABAN}/country/{';'.join(ulkeler)}/indicator/{seri.kod}?format=json&per_page={SAYFA * 20}")
+        return ayristir_coklu(b, seri.kod, ulkeler)
+
+
+def ayristir_coklu(b: bytes, kod: str, ulkeler: list[str]) -> dict[str, list[Gozlem]]:
+    """Çok ülkeli yanıt (/country/A;B;C/indicator/kod): ülke ülke gruplanır.
+
+    Her satırın göstergesi kayıttaki kod, ülkesi istenen kümede olmalı; sondaki boş yıllar atılır.
+    """
+    v = _json(b)
+    if not isinstance(v, list) or not v or not isinstance(v[0], dict):
+        raise KaynakUyusmazligi(f"{kod}: gözlem yanıtı biçimsiz ({str(v)[:200]})")
+    if "message" in v[0]:
+        raise KaynakUyusmazligi(f"{kod}: kaynak hata döndü: {v[0]['message']}")
+    if int(v[0].get("pages", 1)) > 1:
+        raise KaynakUyusmazligi(f"{kod}: çok ülkeli yanıt birden fazla sayfa")
+    istenen = set(ulkeler)
+    sonuc: dict[str, list[Gozlem]] = {}
+    for k in (v[1] if len(v) > 1 and v[1] else []):
+        if (k.get("indicator") or {}).get("id") != kod:
+            raise KaynakUyusmazligi(f"gözlem göstergesi {k.get('indicator')}, beklenen {kod}")
+        u = k.get("countryiso3code")
+        if u not in istenen:
+            raise KaynakUyusmazligi(f"istenmeyen ülke {u!r}")
+        deger = k.get("value")
+        if deger is not None and not isinstance(deger, Decimal):
+            deger = Decimal(str(deger))
+        sonuc.setdefault(u, []).append(Gozlem(donem=str(k["date"]), deger=deger, durum=k.get("obs_status") or None))
+    for g in sonuc.values():
+        g.sort(key=lambda x: x.donem)
+        while g and g[-1].deger is None:
+            g.pop()
+    return {u: g for u, g in sonuc.items() if g}

@@ -1,0 +1,78 @@
+// node --test test/  (Node ≥ 22.18 tür ayıklamasıyla .ts dosyasını doğrudan koşar)
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { ek, donemAdi, konum, oku, sirala, siraCumlesi, reelFaiz, birYilOnce, seri_yon, type Nokta } from "../src/lib/okuma.ts";
+
+const yuzde = (v: number) => "%" + v.toLocaleString("tr-TR", { maximumFractionDigits: 1, minimumFractionDigits: 1 });
+const yil = (vs: number[], bas = 2000): Nokta[] => vs.map((v, i) => ({ donem: String(bas + i), v }));
+const ay = (vs: number[], y = 2024, m = 1): Nokta[] =>
+  vs.map((v, i) => { const t = (m - 1) + i; return { donem: `${y + Math.floor(t / 12)}-${String((t % 12) + 1).padStart(2, "0")}`, v }; });
+
+test("Türkçe ek uyumu: yıl ve çeyrek", () => {
+  assert.equal(ek("2002", "de"), "2002'de");
+  assert.equal(ek("1960", "den"), "1960'tan");
+  assert.equal(ek("2005", "den"), "2005'ten");
+  assert.equal(ek("1990", "de"), "1990'da");
+  assert.equal(ek("2000", "den"), "2000'den");
+  assert.equal(ek("Mart 2023", "de"), "Mart 2023'te");
+  assert.equal(ek("1986", "de"), "1986'da");
+  assert.equal(ek("2024 2. çeyrek", "de"), "2024 2. çeyrekte");
+  assert.equal(donemAdi("2026-03-04"), "4 Mart 2026");
+  assert.equal(donemAdi("2025-Q3"), "2025 3. çeyrek");
+});
+
+test("konum: zirve, dip ve en son ne zaman", () => {
+  assert.equal(konum(yil([1, 2, 3, 4]), "yillik").tur, "zirve");
+  assert.equal(konum(yil([4, 3, 2, 1]), "yillik").tur, "dip");
+  // 2001'de 9; sonra hep düşük; son değer 8 → "en son 2001'de".
+  const k = konum(yil([5, 9, 3, 2, 2, 3, 8]), "yillik");
+  assert.deepEqual(k, { tur: "yuksek", donem: "2001" });
+  // Eşik altı (yakın geçmiş) cümle üretmez: dün de bu kadar yüksekti demek bilgi değil.
+  assert.equal(konum(yil([1, 2, 9, 3, 8]), "yillik").tur, null);
+});
+
+test("oku: oran serisinde bir yıl önce ve ortalama; sayılar seriden", () => {
+  const d = ay([60, 70, 75, 72, 70, 68, 65, 62, 55, 52, 50, 48, 45, 44, 42, 40], 2024, 1);
+  const c = oku(d, "aylik", "yuzde", yuzde);
+  // Son gözlem Nisan 2025 (%40); bir yıl önce Nisan 2024 (%72).
+  assert.deepEqual(c, [
+    "%40,0, serinin Ocak 2024'ten bu yana kayıttaki en düşük değeri.",
+    "Bir yıl önce %72,0 idi; fark −32,0 puan.",
+    "Ocak 2024'ten bu yana ortalama %57,4.",      // seri kısa: "son on yıl" cümlesi yok
+    "Son 13 ay üst üste düştü.",
+  ]);
+});
+
+test("oku: kurda TL değer kaybı ile kur artışı ayrı hesaplanır", () => {
+  const d: Nokta[] = [{ donem: "2025-11-14", v: 40 }, { donem: "2026-11-16", v: 50 }];
+  const c = oku(d, "gunluk", "TRY/EUR", (v) => v.toFixed(2) + " TL");
+  assert.ok(c.some((x) => x.includes("euro kuru %25,0 arttı") && x.includes("%20,0 değer kaybı")), c.join(" | "));
+});
+
+test("birYilOnce ve seri_yon", () => {
+  assert.equal(birYilOnce(ay([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]), "aylik")?.donem, "2024-01");
+  assert.equal(birYilOnce(yil([1, 2]), "yillik"), null);
+  assert.equal(seri_yon(yil([5, 4, 3, 2])), -3);
+  assert.equal(seri_yon(yil([1, 2, 2])), 0);
+});
+
+test("sirala: emsallerin %60'ı olan en yeni dönem, toplam (AB) sıraya girmez", () => {
+  const tr = yil([10, 30, 35], 2023);
+  const u = {
+    BRA: yil([5, 6], 2023), MEX: yil([4, 5], 2023), ZAF: yil([6, 7, 6], 2023), POL: yil([2, 3], 2023), EUU: yil([3, 2.5], 2023),
+  };
+  const s = sirala(tr, u)!;
+  assert.equal(s.donem, "2024");                     // 2025'te yalnız ZAF var
+  assert.equal(s.sira, 1); assert.equal(s.toplam, 5);
+  assert.equal(s.medyan, 5.5);
+  assert.deepEqual(s.toplamlar, [{ kod: "EUU", v: 2.5 }]);
+  assert.equal(siraCumlesi(s, yuzde, (k) => (k === "EUU" ? "AB" : k)),
+    "2024'te Türkiye 5 ülkenin en yükseği; emsal medyanı %5,5, AB %2,5.");
+});
+
+test("reelFaiz: Fisher formülü, yalnız ortak dönemler", () => {
+  const r = reelFaiz(ay([50, 45]), ay([75], 2024, 2));
+  assert.equal(r.length, 1);
+  assert.equal(r[0].donem, "2024-02");
+  assert.ok(Math.abs(r[0].v - ((1.45 / 1.75 - 1) * 100)) < 1e-9);
+});

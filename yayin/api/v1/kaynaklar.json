@@ -1,6 +1,6 @@
 {
  "surum": 1,
- "uretildi": "2026-11-17T13:41:25.524471Z",
+ "uretildi": "2026-11-17T14:28:19.569872Z",
  "kaynaklar": [
   {
    "id": "world_bank",
@@ -89,39 +89,47 @@
   {
    "id": "eurostat",
    "ad": "Eurostat",
-   "kurum": "Avrupa Birliği İstatistik Ofisi",
+   "kurum": "Avrupa Birliği İstatistik Ofisi (Eurostat)",
    "adres": "https://ec.europa.eu/eurostat",
    "belge": "https://ec.europa.eu/eurostat/en/web/user-guides/data-browser/api-data-access/api-introduction",
-   "lisans": null,
-   "lisans_kanit": null,
-   "lisans_inceleme": null,
+   "lisans": "CC BY 4.0 (Komisyon Kararı 2011/833/AB)",
+   "lisans_kanit": "https://ec.europa.eu/eurostat/help/copyright-notice",
+   "lisans_inceleme": "2026-11-17",
    "atif_zorunlu": true,
-   "kosullar": [],
-   "durum": "planlandi",
-   "erisim": "REST / SDMX",
+   "kosullar": [
+    "Kaynak: Eurostat.",
+    "Seri adları Türkçeye çevrilmiştir; değerler değiştirilmemiştir.",
+    "Eurostat bu sitenin kullanımından sorumlu değildir."
+   ],
+   "durum": "aktif",
+   "erisim": "SDMX 2.1 REST",
    "yayin": {
-    "gosterim": false,
-    "indirme": false,
-    "api": false
+    "gosterim": true,
+    "indirme": true,
+    "api": true
    }
   },
   {
    "id": "ecb",
    "ad": "ECB Veri Portalı",
-   "kurum": "Avrupa Merkez Bankası",
+   "kurum": "Avrupa Merkez Bankası (ECB)",
    "adres": "https://data.ecb.europa.eu/",
-   "belge": null,
-   "lisans": null,
-   "lisans_kanit": null,
-   "lisans_inceleme": null,
+   "belge": "https://data.ecb.europa.eu/help/api/overview",
+   "lisans": "ESCB istatistik kullanım politikası (ücretsiz yeniden kullanım)",
+   "lisans_kanit": "https://www.ecb.europa.eu/stats/ecb_statistics/governance_and_quality_framework/html/usage_policy.en.html",
+   "lisans_inceleme": "2026-11-17",
    "atif_zorunlu": true,
-   "kosullar": [],
-   "durum": "planlandi",
+   "kosullar": [
+    "Source: ECB statistics.",
+    "İstatistik ve metaverisi değiştirilmeden yayımlanır.",
+    "ECB serilerin sürekliliğini garanti etmez; seriler revize edilebilir."
+   ],
+   "durum": "aktif",
    "erisim": "SDMX REST",
    "yayin": {
-    "gosterim": false,
-    "indirme": false,
-    "api": false
+    "gosterim": true,
+    "indirme": true,
+    "api": true
    }
   },
   {

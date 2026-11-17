@@ -36,5 +36,22 @@ for (const s of katalog.seriler) {
   if (!s.izin.indirme && existsSync(api.replace(/\.json$/, ".csv"))) hatalar.push("indirme izni yok ama CSV yayında: " + s.id);
 }
 if (existsSync(join(DIST, "site-veri"))) hatalar.push("site-veri/ yayına çıkmamalı");
+// Emsal API dosyası yalnız API izni olan seriye ait olabilir.
+const emsalDizin = join(DIST, "api", "v1", "emsal");
+const apiIzinli = new Set(katalog.seriler.filter((s) => s.izin.api).map((s) => s.id));
+if (existsSync(emsalDizin)) for (const a of readdirSync(emsalDizin)) {
+  if (!apiIzinli.has(a.replace(/\.json$/, ""))) hatalar.push("API izni yok ama emsal dosyası yayında: " + a);
+}
+// Değişiklik günlüğünün API kopyasında API izni olmayan seri olmamalı.
+const gunluk = join(DIST, "api", "v1", "degisiklikler.json");
+if (existsSync(gunluk)) for (const k of JSON.parse(readFileSync(gunluk, "utf8")).kayitlar) {
+  if (!apiIzinli.has(k.seri)) hatalar.push("API izni yok ama günlükte: " + k.seri);
+}
+// Dizine açılış: hiçbir sayfa noindex taşımaz; site haritası her göstergeyi listeler.
+for (const y of sayfalar) if (/<meta name="robots" content="[^"]*noindex/.test(readFileSync(y, "utf8"))) hatalar.push(y.slice(DIST.length + 1) + ": noindex");
+const harita = existsSync(join(DIST, "sitemap.xml")) ? readFileSync(join(DIST, "sitemap.xml"), "utf8") : "";
+if (!harita) hatalar.push("sitemap.xml yok");
+for (const s of katalog.seriler) if (harita && !harita.includes(`/gosterge/${s.id}</loc>`)) hatalar.push("site haritasında yok: " + s.id);
+if (!/Sitemap: https:\/\/veri\.korayoner\.dev\/sitemap\.xml/.test(readFileSync(join(DIST, "robots.txt"), "utf8"))) hatalar.push("robots.txt site haritasını göstermiyor");
 if (hatalar.length) { console.error(hatalar.map((h) => "  HATA  " + h).join("\n")); process.exit(1); }
 console.log(`denetim: ${sayfalar.length} sayfa, ${katalog.seriler.length} seri — temiz`);

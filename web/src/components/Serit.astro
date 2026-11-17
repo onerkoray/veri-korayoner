@@ -1,0 +1,48 @@
+---
+// Emsal şeridi: bir göstergede her ülke bir nokta, Türkiye vurgulu, medyan çizgisi.
+// HTML ile konumlanır (yüzde sol), telefonda yazı küçülmez; JS gerekmez.
+import { type Sira, type Yaz } from "../lib/okuma.ts";
+import { ulkeAdi } from "../lib/veri";
+interface Props { sira: Sira; yaz: Yaz }
+const { sira, yaz } = Astro.props;
+const hepsi = [...sira.satirlar.map((s) => s.v), ...sira.toplamlar.map((t) => t.v), sira.medyan, 0];
+const lo = Math.min(...hepsi), hi = Math.max(...hepsi), pay = (hi - lo) * 0.04 || 1;
+const x = (v: number) => ((v - (lo - pay)) / (hi - lo + 2 * pay)) * 100;
+const yer = (p: number) => (p > 82 ? "sag" : p < 18 ? "sol" : "orta");
+const tr = sira.satirlar.find((s) => s.kod === "TUR")!;
+const pm = x(sira.medyan);
+---
+<div class="serit" role="img" aria-label={`${sira.satirlar.map((s) => `${ulkeAdi(s.kod)} ${yaz(s.v)}`).join(", ")}. Emsal medyanı ${yaz(sira.medyan)}.`}>
+  <span class="eksen"></span>
+  {lo < 0 && <span class="sifir" style={`left:${x(0).toFixed(2)}%`}></span>}
+  <span class:list={["medyan", yer(pm)]} style={`left:${pm.toFixed(2)}%`}><span class="etk">medyan {yaz(sira.medyan)}</span></span>
+  {sira.toplamlar.map((t) => {
+    const p = x(t.v), uzak = Math.abs(p - pm) > 22;
+    return <span class:list={["toplam", yer(p), !uzak && "ust"]} style={`left:${p.toFixed(2)}%`} title={`${ulkeAdi(t.kod)} ${yaz(t.v)}`}><span class="etk">{ulkeAdi(t.kod)}</span></span>;
+  })}
+  {sira.satirlar.filter((s) => s.kod !== "TUR").map((s) => (
+    <span class="nokta" style={`left:${x(s.v).toFixed(2)}%`} title={`${ulkeAdi(s.kod)} ${yaz(s.v)}`}></span>
+  ))}
+  <span class:list={["nokta", "tr", yer(x(tr.v))]} style={`left:${x(tr.v).toFixed(2)}%`} title={`Türkiye ${yaz(tr.v)}`}><span class="etk">Türkiye {yaz(tr.v)}</span></span>
+</div>
+<style>
+  .serit { position: relative; height: 4.6rem; margin: 0 .5rem; }
+  .eksen { position: absolute; left: 0; right: 0; top: 2.3rem; border-top: 1px solid var(--cizgi); }
+  .sifir { position: absolute; top: 1.7rem; height: 1.2rem; border-left: 1px solid var(--soluk); }
+  .nokta, .medyan, .toplam { position: absolute; top: 2.3rem; }
+  .nokta { width: .7rem; height: .7rem; margin: -.35rem 0 0 -.35rem; border-radius: 50%;
+    background: var(--soluk); opacity: .5; box-shadow: 0 0 0 2px var(--yuzey); }
+  .nokta.tr { width: 1rem; height: 1rem; margin: -.5rem 0 0 -.5rem; background: var(--dv-1); opacity: 1; z-index: 2; }
+  .medyan { height: 1.5rem; margin-top: -.75rem; border-left: 2px solid var(--metin); }
+  .toplam::before { content: ""; position: absolute; left: -.4rem; top: -.4rem; width: .8rem; height: .8rem;
+    border: 2px solid var(--metin); background: var(--yuzey); transform: rotate(45deg); z-index: 1; }
+  .etk { position: absolute; white-space: nowrap; font-size: .78rem; line-height: 1; font-variant-numeric: tabular-nums; }
+  .tr .etk { bottom: 1.35rem; left: 50%; transform: translateX(-50%); font-weight: 700; color: var(--metin); font-size: .85rem; }
+  .medyan .etk { top: 1.75rem; left: 0; transform: translateX(-50%); color: var(--soluk); }
+  .toplam .etk { top: .8rem; left: 0; transform: translateX(-50%); color: var(--soluk); }
+  .toplam.ust .etk { top: auto; bottom: .8rem; }
+  .toplam.sag .etk { transform: translateX(-100%); } .toplam.sol .etk { transform: none; }
+  .tr.sag .etk { left: auto; right: -.4rem; transform: none; }
+  .tr.sol .etk { left: -.4rem; transform: none; }
+  .medyan.sag .etk { transform: translateX(-100%); } .medyan.sol .etk { transform: none; }
+</style>

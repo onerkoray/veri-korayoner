@@ -138,3 +138,91 @@ def katalog(kaynaklar: dict[str, Kaynak], seriler: list[SeriTanimi], cikti: Path
                 json.dumps(ust | {"seriler": [s for s in s_liste if s["izin"]["api"]]}, ensure_ascii=False, indent=1) + "\n")
     _yaz_atomik(cikti / "site-veri" / "seriler.json",
                 json.dumps(ust | {"seriler": s_liste}, ensure_ascii=False, indent=1) + "\n")
+    # Değişiklik günlüğünün API kopyası: yalnız API izni olan serilerin kayıtları.
+    gunluk = onceki(cikti / "site-veri" / "degisiklikler.json")
+    if gunluk is None:     # günlük boş da olsa var: API adresi 404 vermesin
+        gunluk = {"surum": 1, "kayitlar": []}
+        _yaz_atomik(cikti / "site-veri" / "degisiklikler.json", json.dumps(gunluk, ensure_ascii=False, indent=1) + "\n")
+    if gunluk is not None:
+        api_ser = {s["id"] for s in s_liste if s["izin"]["api"]}
+        _yaz_atomik(cikti / "api" / "v1" / "degisiklikler.json",
+                    json.dumps({"surum": 1, "kayitlar": [k for k in gunluk["kayitlar"] if k["seri"] in api_ser]},
+                               ensure_ascii=False, indent=1) + "\n")
+
+
+# ---- değişiklik günlüğü: yeni dönem ve revizyon ------------------------------------
+GUNLUK_SINIRI = 400      # günlükte tutulan en fazla kayıt (yeniden eskiye)
+TOPLU = 12               # bir çekimde bundan fazla değişiklik tek kayda toplanır
+
+
+def _d(v) -> Decimal | None:
+    return None if v is None else Decimal(str(v))
+
+
+def _metin(v) -> str | None:
+    return None if v is None else format(v, "f")
+
+
+def farklar(eski: dict | None, d: SeriDosyasi, gun: str) -> list[dict]:
+    """Önceki yayımla yeni seri arasındaki olaylar. İlk yayında olay yok (geçmiş olay sayılmaz)."""
+    if not eski:
+        return []
+    once = {g["donem"]: _d(g["deger"]) for g in eski.get("gozlemler", [])}
+    yeni, rev = [], []
+    for g in d.gozlemler:
+        if g.donem not in once:
+            if g.deger is not None:
+                yeni.append(g)
+        elif once[g.donem] != g.deger:
+            rev.append((g, once[g.donem]))
+    taban = {"gun": gun, "seri": d.id}
+    olay: list[dict] = []
+    if len(yeni) > TOPLU:
+        olay.append(taban | {"tur": "yeni-donem", "adet": len(yeni), "ilk": yeni[0].donem, "son": yeni[-1].donem,
+                             "yeni": _metin(yeni[-1].deger)})
+    else:
+        olay += [taban | {"tur": "yeni-donem", "donem": g.donem, "yeni": _metin(g.deger)} for g in yeni]
+    if len(rev) > TOPLU:
+        olay.append(taban | {"tur": "revizyon", "adet": len(rev), "ilk": rev[0][0].donem, "son": rev[-1][0].donem})
+    else:
+        olay += [taban | {"tur": "revizyon", "donem": g.donem, "onceki": _metin(o), "yeni": _metin(g.deger)}
+                 for g, o in rev]
+    return olay
+
+
+def gunluge_ekle(olaylar: list[dict], cikti: Path) -> None:
+    if not olaylar:
+        return
+    yol = cikti / "site-veri" / "degisiklikler.json"
+    eski = onceki(yol) or {"surum": 1, "kayitlar": []}
+    kayit = (list(reversed(olaylar)) + eski["kayitlar"])[:GUNLUK_SINIRI]
+    _yaz_atomik(yol, json.dumps({"surum": 1, "kayitlar": kayit}, ensure_ascii=False, indent=1) + "\n")
+
+
+# ---- emsal ülkeler -----------------------------------------------------------------
+def emsal_yaz(seri: SeriTanimi, iz: Izin, ulkeler: dict[str, list], cikti: Path) -> bool:
+    """Emsal ülke gözlemlerini yazar. Bu çekimde düşen ülkenin önceki verisi korunur.
+
+    `ulkeler`: alfa-3 → Gozlem listesi. Değişiklik yoksa dosyaya dokunmaz.
+    """
+    if not iz.gosterim or not seri.emsal:
+        return False
+    hedefler = [cikti / "site-veri" / "emsal" / f"{seri.id}.json"]
+    if iz.api:
+        hedefler.append(cikti / "api" / "v1" / "emsal" / f"{seri.id}.json")
+    eski_dosya = onceki(hedefler[0])
+    eski = (eski_dosya or {}).get("ulkeler", {})
+    birlesik = {u: eski[u] for u in seri.emsal if u in eski}
+    for u, gl in ulkeler.items():
+        birlesik[u] = [{"donem": g.donem, "deger": _metin(g.deger)} for g in gl]
+    if not birlesik:          # hiçbir ülke yok: boş dosya yayımlanmaz
+        return False
+    icerik = {"surum": 1, "id": seri.id, "baslik": seri.baslik, "birim": seri.birim, "siklik": seri.siklik,
+              "kaynak": seri.kaynak, "kaynak_kod": seri.kod,
+              "ulkeler": {u: birlesik[u] for u in seri.emsal if u in birlesik}}
+    if eski_dosya == icerik and all(h.exists() for h in hedefler):
+        return False
+    metin = json.dumps(icerik, ensure_ascii=False, indent=1) + "\n"
+    for h in hedefler:
+        _yaz_atomik(h, metin)
+    return True

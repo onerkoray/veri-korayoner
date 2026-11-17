@@ -1,0 +1,122 @@
+---
+// Türkiye ve emsalleri tek grafikte: emsaller soluk ince çizgi, toplam (AB) kesikli,
+// Türkiye vurgulu. Sunucuda SVG (son 20 yıl); Plot adası imleç ipucu ve dönem seçimi ekler.
+import { zaman, TOPLAM, type Nokta } from "../lib/okuma.ts";
+import { sayi, ulkeAdi } from "../lib/veri";
+interface Props { tr: Nokta[]; ulkeler: Record<string, Nokta[]>; birim: string; baslik: string }
+const { tr, ulkeler, birim, baslik } = Astro.props;
+const oran = birim.startsWith("yuzde");
+const sonT = zaman(tr.at(-1)!.donem), basT = sonT - 20 * 365.25 * 864e5;
+const kes = (d: Nokta[]) => d.filter((p) => zaman(p.donem) >= basT && zaman(p.donem) <= sonT);
+const cizgiler = [...Object.entries(ulkeler).map(([k, d]) => ({ k, d: kes(d) })), { k: "TUR", d: kes(tr) }].filter((c) => c.d.length > 1);
+const W = 960, H = 360, sol = 56, sag = 92, ust = 14, alt = 30;
+const tum = cizgiler.flatMap((c) => c.d.map((p) => p.v));
+const lo0 = Math.min(...tum, oran ? 0 : Infinity), hi0 = Math.max(...tum);
+const lo = lo0 - (hi0 - lo0) * 0.04, hi = hi0 + (hi0 - lo0) * 0.04 || 1;
+const t0 = Math.min(...cizgiler.map((c) => zaman(c.d[0].donem)));
+const xt = (dn: string) => sol + (W - sol - sag) * ((zaman(dn) - t0) / (sonT - t0 || 1));
+const y = (v: number) => H - alt - ((v - lo) / (hi - lo)) * (H - ust - alt);
+const adim = (() => { const r = (hi - lo) / 5, us = 10 ** Math.floor(Math.log10(r)), k = r / us; return (k <= 1 ? 1 : k <= 2 ? 2 : k <= 5 ? 5 : 10) * us; })();
+const izgara: number[] = []; for (let v = Math.ceil(lo / adim) * adim; v <= hi; v += adim) izgara.push(v);
+const y0 = new Date(t0).getUTCFullYear(), y1 = new Date(sonT).getUTCFullYear();
+const aralik = y1 - y0 > 12 ? 5 : y1 - y0 > 5 ? 2 : 1;
+const yillar: number[] = []; for (let yy = Math.ceil(y0 / aralik) * aralik; yy <= y1; yy += aralik) yillar.push(yy);
+const yol = (d: Nokta[]) => d.map((p, i) => `${i ? "L" : "M"}${xt(p.donem).toFixed(1)} ${y(p.v).toFixed(1)}`).join(" ");
+const etiket = (v: number) => (oran ? (v < 0 ? "−%" : "%") + sayi(Math.abs(v), Math.abs(v) < 10 && v % 1 ? 1 : 0) : sayi(v, 0));
+const sinif = (k: string) => (k === "TUR" ? "tr" : TOPLAM.has(k) ? "toplam" : "emsal");
+const sirali = [...cizgiler].sort((a, b) => (sinif(a.k) === "tr" ? 1 : 0) - (sinif(b.k) === "tr" ? 1 : 0));
+const veri = JSON.stringify({ birim, cizgiler: [...Object.entries(ulkeler).map(([k, d]) => ({ k, ad: ulkeAdi(k), d })), { k: "TUR", ad: "Türkiye", d: tr }] });
+---
+<figure class="grafik emsal-grafik" data-emsal-grafik={veri}>
+  <div class="grafik-ust">
+    <p class="etiket">{baslik} · Türkiye ve emsalleri</p>
+    <div class="donem" role="group" aria-label="Dönem" hidden>
+      <button type="button" data-yil="0" aria-pressed="false">Tümü</button>
+      <button type="button" data-yil="20" aria-pressed="true">20 yıl</button>
+      <button type="button" data-yil="10" aria-pressed="false">10 yıl</button>
+    </div>
+  </div>
+  <div class="tuval">
+    <svg viewBox={`0 0 ${W} ${H}`} role="img" class="statik" aria-label={`${baslik}: Türkiye ve ${Object.keys(ulkeler).map(ulkeAdi).join(", ")}; son 20 yıl.`}>
+      {izgara.map((v) => <g><line x1={sol} x2={W - sag} y1={y(v)} y2={y(v)} class={v === 0 ? "sifir" : "izgara"} /><text x={sol - 8} y={y(v) + 4} text-anchor="end">{etiket(v)}</text></g>)}
+      {yillar.map((yy) => <text x={xt(String(yy))} y={H - 8} text-anchor="middle">{yy}</text>)}
+      {sirali.map((c) => <path d={yol(c.d)} class={sinif(c.k)}><title>{ulkeAdi(c.k)}</title></path>)}
+      {sirali.filter((c) => sinif(c.k) !== "emsal").map((c) => (
+        <text x={xt(c.d.at(-1)!.donem) + 8} y={y(c.d.at(-1)!.v) + 4} class={`uc ${sinif(c.k)}`}>{ulkeAdi(c.k)}</text>
+      ))}
+    </svg>
+  </div>
+  <figcaption><span class="lej tr"></span> Türkiye <span class="lej emsal"></span> emsal ülkeler{Object.keys(ulkeler).some((k) => TOPLAM.has(k)) && <> <span class="lej toplam"></span> AB-27</>}. Üzerine gelince ülke ve değer görünür.<slot /></figcaption>
+</figure>
+<script>
+  import * as Plot from "@observablehq/plot";
+  const bir = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const tam = new Intl.NumberFormat("tr-TR", { maximumFractionDigits: 1 });
+  const tarih = (dn: string) => {
+    const yy = Number(dn.slice(0, 4)), q = /-Q([1-4])$/.exec(dn), p = dn.split("-");
+    return q ? new Date(Date.UTC(yy, (Number(q[1]) - 1) * 3, 1)) : new Date(Date.UTC(yy, p[1] ? Number(p[1]) - 1 : 0, 1));
+  };
+  for (const fig of document.querySelectorAll<HTMLElement>("[data-emsal-grafik]")) {
+    const { birim, cizgiler } = JSON.parse(fig.dataset.emsalGrafik!) as { birim: string; cizgiler: { k: string; ad: string; d: { donem: string; v: number }[] }[] };
+    const oran = birim.startsWith("yuzde");
+    const yaz = (v: number) => (oran ? (v < 0 ? "−%" : "%") + bir.format(Math.abs(v)) : bir.format(v));
+    const tum = cizgiler.flatMap((c) => c.d.map((p) => ({ k: c.k, ad: c.ad, t: tarih(p.donem), donem: p.donem, v: p.v })));
+    const sonT = Math.max(...tum.filter((p) => p.k === "TUR").map((p) => +p.t));
+    const tuval = fig.querySelector<HTMLElement>(".tuval")!;
+    const ciz = (yil: number) => {
+      const bas = yil ? sonT - yil * 365.25 * 864e5 : -Infinity;
+      const g = tum.filter((p) => +p.t >= bas && +p.t <= sonT);
+      const plot = Plot.plot({
+        width: tuval.clientWidth || 960, height: 360, marginLeft: 56, marginRight: 92,
+        style: { background: "transparent", color: "var(--soluk)", fontSize: "12px" },
+        x: { type: "utc", label: null, ticks: Math.max(3, Math.floor((tuval.clientWidth || 960) / 110)) },
+        y: { grid: true, label: null, nice: true, zero: oran, tickFormat: (v: number) => (oran ? (v < 0 ? "−%" : "%") : "") + tam.format(Math.abs(v)) },
+        marks: [
+          Plot.ruleY([0], { stroke: "var(--soluk)", strokeOpacity: oran ? 0.8 : 0 }),
+          Plot.line(g.filter((p) => p.k !== "TUR" && p.k !== "EUU"), { x: "t", y: "v", z: "k", stroke: "var(--soluk)", strokeOpacity: 0.45, strokeWidth: 1.2 }),
+          Plot.line(g.filter((p) => p.k === "EUU"), { x: "t", y: "v", stroke: "var(--metin)", strokeWidth: 1.5, strokeDasharray: "5 4" }),
+          Plot.line(g.filter((p) => p.k === "TUR"), { x: "t", y: "v", stroke: "var(--dv-1)", strokeWidth: 2.5 }),
+          Plot.text(g.filter((p) => p.k === "TUR" || p.k === "EUU"), Plot.selectLast({ x: "t", y: "v", z: "k", text: "ad", dx: 8, textAnchor: "start", fill: (p: { k: string }) => (p.k === "TUR" ? "var(--dv-1)" : "var(--metin)") })),
+          Plot.dot(g, Plot.pointer({ x: "t", y: "v", r: 4, fill: (p: { k: string }) => (p.k === "TUR" ? "var(--dv-1)" : "var(--metin)") })),
+          Plot.tip(g, Plot.pointer({ x: "t", y: "v", title: (p: { ad: string; donem: string; v: number }) => `${p.ad}\n${p.donem}: ${yaz(p.v)}` })),
+        ],
+      });
+      plot.setAttribute("aria-hidden", "true");
+      tuval.querySelector("svg.canli, figure.canli")?.remove();
+      plot.classList.add("canli");
+      tuval.appendChild(plot);
+      tuval.querySelector<SVGElement>("svg.statik")!.style.display = "none";
+    };
+    ciz(20);
+    const grup = fig.querySelector<HTMLElement>(".donem")!;
+    grup.hidden = false;
+    grup.addEventListener("click", (e) => {
+      const b = (e.target as HTMLElement).closest("button");
+      if (!b) return;
+      grup.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+      ciz(Number(b.dataset.yil));
+    });
+  }
+</script>
+<style>
+  .grafik { margin: 1rem 0; background: var(--yuzey); border: 1px solid var(--cizgi); padding: 1rem 1rem .75rem; }
+  .grafik-ust { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: .5rem; }
+  .donem { display: inline-flex; border: 1px solid var(--cizgi); }
+  .donem button { font: 600 .72rem/1 var(--mono); letter-spacing: .05em; padding: .5rem .7rem; background: none; border: 0; color: var(--soluk); cursor: pointer; }
+  .donem button + button { border-left: 1px solid var(--cizgi); }
+  .donem button[aria-pressed="true"] { background: var(--metin); color: var(--bg); }
+  .tuval { min-width: 0; }
+  .tuval :global(svg) { display: block; width: 100%; max-width: 100%; height: auto; overflow: visible; }
+  .tuval :global(figure) { margin: 0; max-width: 100%; }
+  svg text { fill: var(--soluk); font: 12px var(--font); font-variant-numeric: tabular-nums; }
+  .izgara { stroke: var(--izgara); } .sifir { stroke: var(--soluk); }
+  path { fill: none; stroke-linejoin: round; }
+  path.emsal { stroke: var(--soluk); stroke-opacity: .45; stroke-width: 1.2; }
+  path.toplam { stroke: var(--metin); stroke-width: 1.5; stroke-dasharray: 5 4; }
+  path.tr { stroke: var(--dv-1); stroke-width: 2.5; }
+  text.uc.tr { fill: var(--dv-1); font-weight: 700; } text.uc.toplam { fill: var(--metin); }
+  figcaption { color: var(--soluk); font-size: .82rem; margin-top: .5rem; }
+  .lej { display: inline-block; width: 1.4rem; height: 0; vertical-align: middle; margin-left: .3rem; }
+  .lej.tr { border-top: 3px solid var(--dv-1); } .lej.emsal { border-top: 1.5px solid var(--soluk); opacity: .6; }
+  .lej.toplam { border-top: 2px dashed var(--metin); }
+</style>
