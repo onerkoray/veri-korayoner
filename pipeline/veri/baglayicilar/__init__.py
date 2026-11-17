@@ -29,4 +29,7 @@ def baglayici(kaynak_id: str) -> Baglayici:
     if kaynak_id == "bis":
         from .bis import BIS
         return BIS()
+    if kaynak_id == "oecd":
+        from .oecd import OECD
+        return OECD()
     raise KeyError(f"bağlayıcı yok: {kaynak_id}")

@@ -1,6 +1,6 @@
 {
  "surum": 1,
- "uretildi": "2026-11-17T10:55:40.719594Z",
+ "uretildi": "2026-11-17T13:41:25.524471Z",
  "kaynaklar": [
   {
    "id": "world_bank",
@@ -51,9 +51,9 @@
    "kurum": "Uluslararası Para Fonu (IMF)",
    "adres": "https://data.imf.org/",
    "belge": "https://data.imf.org/en/Resource-Pages/IMF-API",
-   "lisans": null,
-   "lisans_kanit": null,
-   "lisans_inceleme": null,
+   "lisans": "IMF Special Terms for Statistical Data",
+   "lisans_kanit": "https://www.imf.org/en/About/copyright-and-terms",
+   "lisans_inceleme": "2026-11-17",
    "atif_zorunlu": true,
    "kosullar": [],
    "durum": "planlandi",
@@ -70,17 +70,20 @@
    "kurum": "OECD",
    "adres": "https://data-explorer.oecd.org/",
    "belge": null,
-   "lisans": null,
-   "lisans_kanit": null,
-   "lisans_inceleme": null,
+   "lisans": "OECD Terms and Conditions (veri)",
+   "lisans_kanit": "https://www.oecd.org/en/about/terms-conditions.html",
+   "lisans_inceleme": "2026-11-17",
    "atif_zorunlu": true,
-   "kosullar": [],
-   "durum": "planlandi",
+   "kosullar": [
+    "Kaynak: OECD; veri setinin önerdiği atıf biçimiyle.",
+    "Seri adları Türkçeye çevrilmiştir."
+   ],
+   "durum": "aktif",
    "erisim": "SDMX REST",
    "yayin": {
-    "gosterim": false,
-    "indirme": false,
-    "api": false
+    "gosterim": true,
+    "indirme": true,
+    "api": true
    }
   },
   {

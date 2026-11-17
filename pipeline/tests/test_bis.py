@@ -63,3 +63,19 @@ def test_kod_bicimi_ve_adres():
     assert istenen == ["https://stats.bis.org/api/v2/data/dataflow/BIS/WS_CBPOL/1.0/M.TR?format=csv"]
     with pytest.raises(KaynakUyusmazligi):
         BIS(getirici=lambda u: CBPOL).cek(_seri("WS_CBPOL", "aylik"))
+
+
+# ---- OECD (aynı SDMX-CSV ayrıştırıcısı, alfa-3 ülke kodu) ----------------------------
+def test_oecd_cli_alfa3_ve_adres():
+    from veri.baglayicilar.oecd import OECD
+    b = (FIX / "oecd-cli-tr.csv").read_bytes()
+    seri = SeriTanimi(id="t-oecd", kaynak="oecd", kod="OECD.SDD.STES,DSD_STES@DF_CLI,/TUR.M.LI...AA...H",
+                      ulke="TUR", baslik="T", tema="t", siklik="aylik", birim="endeks")
+    istenen = []
+    h = OECD(getirici=lambda u: istenen.append(u) or b).cek(seri)
+    assert istenen == ["https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_CLI,/TUR.M.LI...AA...H?format=csvfile"]
+    assert h.gozlemler and all(g.donem.startswith("2026-") for g in h.gozlemler)
+    with pytest.raises(KaynakUyusmazligi, match="kayıt yok"):
+        OECD(getirici=lambda u: b"NoRecordsFound").cek(seri)
+    with pytest.raises(KaynakUyusmazligi):
+        OECD(getirici=lambda u: b).cek(seri.model_copy(update={"kod": "DF_CLI/TUR"}))

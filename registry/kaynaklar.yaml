@@ -81,20 +81,49 @@ kaynaklar:
     erisim: SDMX
     anahtar: null
     durum: planlandi
-    lisans: { ad: null, kanit: null, inceleme_tarihi: null, atif_zorunlu: true }
+    lisans:
+      ad: IMF Special Terms for Statistical Data
+      kanit: https://www.imf.org/en/About/copyright-and-terms
+      inceleme_tarihi: 2026-11-17
+      atif_zorunlu: true
+      not: >-
+        İncelendi, AÇILMADI. Veri şartı yeniden yayına izin veriyor (atıf,
+        değiştirmeme, platform kullanıcılarına şartları iletme). Ancak (1)
+        "potential commercial reuse" için copyright@imf.org'dan izin
+        isteniyor; açık API'mizi ticari kullanıcılar da okuyabilir. (2)
+        Genel şartlar, açık izin olmadan otomatik araçla toplu indirmeyi
+        yasaklıyor. Açmak için IMF'den yazılı izin (e-posta) gerekir;
+        alınana kadar seri yok. WDI içindeki IMF kaynaklı seriler WDI'nın
+        CC BY 4.0 lisansıyla yayımlanıyor.
     yayin: { gosterim: false, indirme: false, api: false }
 
   - id: oecd
     ad: OECD Data Explorer
     kurum: OECD
     adres: https://data-explorer.oecd.org/
-    api: null
+    api: https://sdmx.oecd.org/public/rest/
     belge: null
     erisim: SDMX REST
     anahtar: false
-    durum: planlandi
-    lisans: { ad: null, kanit: null, inceleme_tarihi: null, atif_zorunlu: true }
-    yayin: { gosterim: false, indirme: false, api: false }
+    durum: aktif
+    lisans:
+      ad: OECD Terms and Conditions (veri)
+      kanit: https://www.oecd.org/en/about/terms-conditions.html
+      inceleme_tarihi: 2026-11-17
+      atif_zorunlu: true
+      kosullar:
+        - "Kaynak: OECD; veri setinin önerdiği atıf biçimiyle."
+        - "Seri adları Türkçeye çevrilmiştir."
+      not: >-
+        Şart: OECD verisi ticari kullanım dahil her amaçla çıkarılabilir,
+        indirilebilir, uyarlanabilir ve paylaşılabilir; OECD'ye atıf yapılır
+        ve atıf şartı alt kullanıcılara aktarılır. Belirli veri setlerinde
+        üçüncü taraf hakları ek kısıt getirebilir. ÖNEMLİ: şart sayfası
+        otomatik istemcilere 403 dönüyor; metin 17 Kasım 2026'da arama
+        dizinindeki kopyadan okundu. Tarayıcıdan elle teyit bekleniyor.
+        Bkz. OECD açık erişim duyurusu (Temmuz 2024):
+        https://www.oecd.org/en/about/news/press-releases/2024/07/oecd-data-publications-and-analysis-become-freely-accessible.html
+    yayin: { gosterim: true, indirme: true, api: true }
 
   - id: eurostat
     ad: Eurostat

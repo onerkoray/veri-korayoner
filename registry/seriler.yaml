@@ -162,3 +162,15 @@ seriler:
     birim: yuzde
     carpan: 1
     not: Faiz ve anapara ödemelerinin gelire oranı.
+
+  # ---- OECD (SDMX; kod = ajans,akış,sürüm/anahtar) --------------------------
+  - id: oecd-oncu-gosterge-tr
+    kaynak: oecd
+    kod: OECD.SDD.STES,DSD_STES@DF_CLI,/TUR.M.LI...AA...H
+    ulke: TUR
+    baslik: Bileşik öncü gösterge (CLI), genlik ayarlı
+    tema: buyume
+    siklik: aylik
+    birim: endeks
+    carpan: 1
+    not: Uzun dönem ortalaması = 100. 100'ün üstü ekonomik faaliyetin eğilimin üzerinde seyredeceğine işaret eder; tahmin değil öncü sinyaldir.

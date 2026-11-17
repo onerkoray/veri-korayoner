@@ -1,6 +1,6 @@
 {
  "surum": 1,
- "uretildi": "2026-11-17T10:55:40.719594Z",
+ "uretildi": "2026-11-17T13:41:25.524471Z",
  "seriler": [
   {
    "id": "wb-ny-gdp-mktp-cd-tur",
@@ -287,6 +287,28 @@
    },
    "api": "/api/v1/seri/bis-borc-servis-orani-tr.json",
    "csv": "/api/v1/seri/bis-borc-servis-orani-tr.csv"
+  },
+  {
+   "id": "oecd-oncu-gosterge-tr",
+   "baslik": "Bileşik öncü gösterge (CLI), genlik ayarlı",
+   "tema": "buyume",
+   "siklik": "aylik",
+   "birim": "endeks",
+   "kaynak": "oecd",
+   "son": {
+    "donem": "2026-10",
+    "deger": "100.8727",
+    "durum": "A"
+   },
+   "kaynak_guncelleme": null,
+   "cekildi": "2026-11-17T13:41:25.524471Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/oecd-oncu-gosterge-tr.json",
+   "csv": "/api/v1/seri/oecd-oncu-gosterge-tr.csv"
   }
  ]
 }
