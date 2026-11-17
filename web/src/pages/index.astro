@@ -3,9 +3,9 @@ import Taban from "../layouts/Taban.astro";
 import Kivilcim from "../components/Kivilcim.astro";
 import SeriGrafik from "../components/SeriGrafik.astro";
 import Serit from "../components/Serit.astro";
-import { seriler, kaynaklar, uretildi, TEMA, TEMA_SIRA, deger, degisim, son, tarih, siklikAdi, emsal, emsalNoktalari, noktalar, ulkeAdi, degisiklikler } from "../lib/veri";
-import { sirala, donemAdi, zaman, ek, type Sira } from "../lib/okuma.ts";
-import { reelPaket, isaretSuresi } from "../lib/turetilmis";
+import { seriler, kaynaklar, uretildi, TEMA, TEMA_SIRA, deger, degisim, son, tarih, siklikAdi, ulkeAdi, degisiklikler } from "../lib/veri";
+import { donemAdi, zaman, ek } from "../lib/okuma.ts";
+import { reelPaket, isaretSuresi, emsalSatirlari } from "../lib/turetilmis";
 import { KISI } from "../lib/kimlik";
 
 const ss = seriler();
@@ -21,20 +21,7 @@ const reelIsaret = reel ? isaretSuresi(reel.r) : null;
 const reelYaz = (v: number) => (reel ? deger(reel.seri, v) : "");
 
 // Türkiye nerede: emsali olan her gösterge bir şerit
-const SIRA = ["bis-politika-faizi-tr", "bis-tufe-yillik-tr", "eurostat-hicp-yillik-tr", "wb-fp-cpi-totl-zg-tur", "wb-ny-gdp-mktp-kd-zg-tur", "wb-ny-gdp-pcap-cd-tur",
-  "wb-bn-cab-xoka-gd-zs-tur", "bis-ozel-kredi-gsyh-tr", "bis-borc-servis-orani-tr", "eurostat-issizlik-aylik-tr", "wb-sl-uem-totl-zs-tur"];
-type Satir = { baslik: string; href: string; sira: Sira; yaz: (v: number) => string; kaynak: string };
-const satirlar: Satir[] = [];
-if (reel?.emsal) {
-  const s = sirala(reel.r, reel.emsal);
-  if (s) satirlar.push({ baslik: "Reel politika faizi (hesap)", href: "/hesap/reel-politika-faizi", sira: s, yaz: reelYaz, kaynak: "BIS verisiyle" });
-}
-for (const s of [...ss].sort((a, b) => (SIRA.indexOf(a.id) + 1 || 99) - (SIRA.indexOf(b.id) + 1 || 99))) {
-  const e = emsal(s.id);
-  if (!e) continue;
-  const sr = sirala(noktalar(s), emsalNoktalari(e));
-  if (sr) satirlar.push({ baslik: s.baslik, href: `/gosterge/${s.id}`, sira: sr, yaz: (v) => deger(s, v, true), kaynak: s.kaynak.kurum });
-}
+const satirlar = emsalSatirlari();
 
 // Son açıklanan veriler: her serinin son dönemi, en yeniden
 const sonVeriler = ss.map((s) => ({ s, sn: son(s)!, dg: degisim(s) })).filter((x) => x.sn)

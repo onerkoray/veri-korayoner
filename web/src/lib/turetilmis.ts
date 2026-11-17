@@ -1,7 +1,7 @@
 // Bu sitenin hesapladığı seriler. Kaynak serileri değiştirmez; formül sayfasında yazılı,
 // API'de yayımlanmaz (kurumların serisi değildir), hesap her derlemede yeniden yapılır.
-import { seriler, emsal, emsalNoktalari, noktalar, type Seri } from "./veri";
-import { reelFaiz, type Nokta } from "./okuma.ts";
+import { seriler, emsal, emsalNoktalari, noktalar, deger, type Seri } from "./veri";
+import { reelFaiz, sirala, type Nokta, type Sira } from "./okuma.ts";
 
 export const REEL_ID = "reel-politika-faizi";
 
@@ -35,4 +35,25 @@ export function isaretSuresi(d: Nokta[]): { isaret: number; ay: number; bas: str
   let i = d.length - 1;
   while (i > 0 && Math.sign(d[i - 1].v) === s) i--;
   return { isaret: s, ay: d.length - i, bas: d[i].donem };
+}
+
+// "Türkiye nerede": emsali olan her gösterge (ve reel faiz hesabı) için sıralama satırı.
+const SIRA = ["bis-politika-faizi-tr", "bis-tufe-yillik-tr", "eurostat-hicp-yillik-tr", "wb-fp-cpi-totl-zg-tur", "wb-ny-gdp-mktp-kd-zg-tur",
+  "wb-ny-gdp-pcap-cd-tur", "wb-bn-cab-xoka-gd-zs-tur", "bis-ozel-kredi-gsyh-tr", "bis-borc-servis-orani-tr", "eurostat-issizlik-aylik-tr",
+  "wb-sl-uem-totl-zs-tur"];
+export interface Satir { baslik: string; href: string; sira: Sira; yaz: (v: number) => string; kaynak: string }
+export function emsalSatirlari(): Satir[] {
+  const satirlar: Satir[] = [];
+  const reel = reelPaket();
+  if (reel?.emsal) {
+    const s = sirala(reel.r, reel.emsal);
+    if (s) satirlar.push({ baslik: "Reel politika faizi (hesap)", href: "/hesap/reel-politika-faizi", sira: s, yaz: (v) => deger(reel.seri, v), kaynak: "BIS verisiyle" });
+  }
+  for (const s of [...seriler()].sort((a, b) => (SIRA.indexOf(a.id) + 1 || 99) - (SIRA.indexOf(b.id) + 1 || 99))) {
+    const e = emsal(s.id);
+    if (!e) continue;
+    const sr = sirala(noktalar(s), emsalNoktalari(e));
+    if (sr) satirlar.push({ baslik: s.baslik, href: `/gosterge/${s.id}`, sira: sr, yaz: (v) => deger(s, v, true), kaynak: s.kaynak.kurum });
+  }
+  return satirlar;
 }

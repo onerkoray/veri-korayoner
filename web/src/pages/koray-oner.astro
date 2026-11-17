@@ -1,0 +1,153 @@
+---
+// Koray Öner'in veri çalışmaları. korayoner.dev/hakkimda (ProfilePage) ve
+// korayoner.dev/koray-oner/ (çalışma dizini) ile aynı kişiye bağlanır, onları kopyalamaz:
+// bu sayfanın kendine ait içeriği, bu sitedeki hesapların canlı sonucudur.
+import Taban from "../layouts/Taban.astro";
+import { KISI } from "../lib/kimlik";
+import { seriler, kaynaklar, uretildi, tarih, deger } from "../lib/veri";
+import { reelPaket, isaretSuresi, emsalSatirlari } from "../lib/turetilmis";
+import { donemAdi, oku } from "../lib/okuma.ts";
+import { noktalar } from "../lib/veri";
+
+const ss = seriler();
+const ks = kaynaklar();
+const acik = ks.filter((k) => k.yayin.gosterim).length;
+const reel = reelPaket();
+const reelSon = reel?.r.at(-1);
+const isr = reel ? isaretSuresi(reel.r) : null;
+const satirlar = emsalSatirlari();
+const enYuksek = satirlar.filter((r) => r.sira.sira === 1);
+const cumle = ss.reduce((a, s) => a + oku(noktalar(s), s.siklik, s.birim, (v) => deger(s, v)).length, 0);
+const gozlem = ss.reduce((a, s) => a + s.gozlemler.filter((g) => g.deger != null).length, 0);
+
+const K = "https://korayoner.dev";
+const YAZILAR: [string, [string, string][]][] = [
+  ["Enflasyon ve fiyatlar", [
+    [`${K}/makaleler/fiyatlar-kac-ayda-ikiye-katlaniyor/`, "Fiyatlar Kaç Ayda İkiye Katlanıyor? 2005–2026"],
+    [`${K}/makaleler/enflasyon-duserken-fiyatlar-neden-dusmuyor/`, "Enflasyon düşerken fiyatlar neden düşmüyor?"],
+    [`${K}/makaleler/asgari-ucret-enflasyona-yenildi-mi/`, "Asgari Ücret Enflasyona Yenildi mi? 2020–2026"],
+    [`${K}/grafikler/`, "Ekonomi Grafikleri: Enflasyon, Faiz, Kur"],
+  ]],
+  ["Faiz, kur ve tasarruf", [
+    [`${K}/makaleler/mevduat-faizi-enflasyon-reel-getiri/`, "Mevduat Faizi ve Enflasyon: Reel Getiri"],
+    [`${K}/makaleler/dolar-mi-tl-mevduat-mi/`, "Dolar mı TL Mevduat mı? Başabaş Kur Hesabı"],
+    [`${K}/makaleler/tasarruf-kimde-finansman-kimde/`, "Tasarruf Kimde, Finansman İhtiyacı Kimde?"],
+    [`${K}/makaleler/katilim-bankaciligi-yuzde-15-hedefi/`, "Katılım Bankacılığı %15 Hedefi Tuttu mu?"],
+  ]],
+  ["Kamu maliyesi ve sosyal güvenlik", [
+    [`${K}/makaleler/kesin-hesap-2025-sayistay/`, "2025 Kesin Hesabı: Bütçe ve Borç Sınırı"],
+    [`${K}/makaleler/butce-2027-faiz-vergi/`, "2027 Bütçesinde Faiz ve Vergi"],
+    [`${K}/makaleler/yillik-program-2027/`, "2027 Yıllık Programı: Emekli, Maaş ve SGK"],
+    [`${K}/makaleler/turkiyede-sosyal-guvenligin-donusumu/`, "Türkiye'de Sosyal Güvenliğin Dönüşümü"],
+  ]],
+];
+const ARACLAR: [string, string][] = [
+  [`${K}/enflasyon-hesaplama/`, "Enflasyon Hesaplama"],
+  [`${K}/reel-maas-hesaplama/`, "Reel Maaş Hesaplama"],
+  [`${K}/altin-mi-dolar-mi-mevduat-mi/`, "Altın mı, Dolar mı, Mevduat mı?"],
+  [`${K}/faiz-donusturucu/`, "Faiz Dönüştürücü"],
+];
+
+const baslik = "Koray Öner — Türkiye Verisi Üzerine Hesaplar";
+const aciklama = `Koray Öner'in Türkiye ekonomisi veri çalışmaları: ${acik} uluslararası kurumdan ${ss.length} seri, emsal ülke sıralamaları, reel faiz hesabı ve korayoner.dev'deki veriye dayalı yazılar.`;
+const jsonld = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage", "@id": "https://veri.korayoner.dev/koray-oner#sayfa", url: "https://veri.korayoner.dev/koray-oner",
+      name: baslik, description: aciklama, inLanguage: "tr",
+      about: { "@id": KISI["@id"] }, author: { "@id": KISI["@id"] }, isPartOf: { "@id": "https://veri.korayoner.dev/#site" },
+      ...(reel ? { hasPart: [{ "@type": "Dataset", name: "Türkiye'nin reel politika faizi (hesaplanmış)", url: "https://veri.korayoner.dev/hesap/reel-politika-faizi", creator: { "@id": KISI["@id"] } }] } : {}),
+    },
+    KISI,
+  ],
+};
+---
+<Taban baslik={baslik} aciklama={aciklama} yol="/koray-oner" jsonld={jsonld}>
+  <article class="sar">
+    <header class="bas">
+      <p class="etiket">Hazırlayan</p>
+      <h1>Koray Öner</h1>
+      <p class="giris">Serbest çalışan yazılım geliştirici. <a href="https://korayoner.dev/">korayoner.dev</a>'de Türkiye'de bordro, vergi, SGK ve emeklilik hesaplarını mevzuattan türeten araçlar yayımlıyor; bu sitede uluslararası kurumların Türkiye verisini topluyor ve hesaplıyor. Bu sayfa o veri çalışmalarının dizini; rakamları her iş günü veriyle birlikte yenilenir.</p>
+    </header>
+
+    <section aria-labelledby="bu">
+      <h2 id="bu">Bu sitedeki çalışmaları</h2>
+      <ul class="isler">
+        {reel && reelSon && isr && (
+          <li>
+            <a href="/hesap/reel-politika-faizi" class="is-bas">Reel politika faizi hesabı</a>
+            <p class="is-sayi sayi">{deger(reel.seri, reelSon.v)} <span>{donemAdi(reelSon.donem)}</span></p>
+            <p>BIS'in politika faizi ve enflasyon serilerinden Fisher formülüyle; Türkiye ve 9 emsal ülke için. Reel faiz {isr.ay} aydır {isr.isaret > 0 ? "pozitif" : "negatif"}.</p>
+          </li>
+        )}
+        <li>
+          <a href="/#n-baslik" class="is-bas">Türkiye nerede? Emsal sıralaması</a>
+          <p class="is-sayi sayi">{satirlar.length} gösterge</p>
+          <p>Her göstergede Türkiye, sık karşılaştırıldığı ekonomilerle aynı seri üzerinden sıralanıyor. Şu an {enYuksek.length} göstergede emsallerin en yükseği{enYuksek.length ? `: ${enYuksek.map((r) => r.baslik.split(",")[0].replace(/ \(hesap\)$/, "")).join("; ")}` : ""}.</p>
+        </li>
+        <li>
+          <a href="/yontem#okuma" class="is-bas">Veri okuması</a>
+          <p class="is-sayi sayi">{cumle} cümle</p>
+          <p>{ss.length} gösterge sayfasındaki "Veri ne söylüyor" cümleleri seriden hesaplanıyor: tarihsel konum, bir yıl önce, uzun dönem ortalaması, gidişat. Elle yazılmıyor, testli.</p>
+        </li>
+        <li>
+          <a href="/kaynaklar" class="is-bas">Lisans kapısı ve açık veri hattı</a>
+          <p class="is-sayi sayi">{acik} / {ks.length} kurum</p>
+          <p>Her kurumun kullanım şartı okunup kayda geçmeden veri yayımlanmıyor. {gozlem.toLocaleString("tr-TR")} gözlem JSON, CSV ve Parquet olarak <a href="/api">anahtarsız API</a>'de; kod <a href="https://github.com/onerkoray/veri-korayoner">GitHub'da</a>.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="ana">
+      <h2 id="ana">korayoner.dev'de veriyle yazdıkları</h2>
+      <div class="gruplar">
+        {YAZILAR.map(([g, l]) => (
+          <div>
+            <h3>{g}</h3>
+            <ul>{l.map(([u, b]) => <li><a href={u}>{b}</a></li>)}</ul>
+          </div>
+        ))}
+        <div>
+          <h3>Araçlar</h3>
+          <ul>{ARACLAR.map(([u, b]) => <li><a href={u}>{b}</a></li>)}</ul>
+        </div>
+      </div>
+      <p class="kucuk">Bütün araçlar, yazılar ve yayınlar: <a href="https://korayoner.dev/koray-oner/">korayoner.dev çalışma dizini</a>.</p>
+    </section>
+
+    <section aria-labelledby="kim">
+      <h2 id="kim">Kayıt ve iletişim</h2>
+      <dl class="kunye">
+        <div><dt>Araştırmacı kimliği</dt><dd><a href="https://orcid.org/0009-0005-8730-3577">ORCID 0009-0005-8730-3577</a></dd></div>
+        <div><dt>Yayınlar</dt><dd><a href="https://korayoner.dev/yayinlar/">DOI'li çalışmalar (Zenodo)</a></dd></div>
+        <div><dt>Açık kaynak</dt><dd><a href="https://github.com/onerkoray/veri-korayoner">veri-korayoner</a> · <a href="https://www.npmjs.com/package/hesap-cekirdegi">hesap-cekirdegi</a> · <a href="https://github.com/onerkoray">GitHub</a></dd></div>
+        <div><dt>Profil</dt><dd><a href="https://korayoner.dev/hakkimda/">korayoner.dev/hakkimda</a></dd></div>
+        <div><dt>İletişim</dt><dd><a href="mailto:iletisim@korayoner.dev">iletisim@korayoner.dev</a></dd></div>
+      </dl>
+      <p class="kucuk">Son veri kontrolü: {tarih(uretildi())}. Site hiçbir kurumla bağlantılı değildir; veriler bilgi amaçlıdır, yatırım tavsiyesi değildir.</p>
+    </section>
+  </article>
+</Taban>
+<style>
+  article { display: grid; gap: 2.5rem; padding-block: clamp(2.5rem, 6vw, 4rem); }
+  .bas { display: grid; gap: .8rem; }
+  .giris { font-size: 1.12rem; margin: 0; max-width: 66ch; }
+  h2 { margin-bottom: 1rem; }
+  h3 { font-size: .95rem; margin-bottom: .5rem; }
+  .isler { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
+  .isler li { background: var(--yuzey); border: 1px solid var(--cizgi); padding: 1rem 1.1rem; display: grid; gap: .4rem; align-content: start; }
+  .isler p { margin: 0; font-size: .9rem; color: var(--soluk); }
+  .is-bas { font-weight: 700; text-decoration: none; }
+  .is-bas:hover { text-decoration: underline; }
+  .isler .is-sayi { font-size: 1.6rem; font-weight: 750; color: var(--metin); letter-spacing: -.01em; }
+  .is-sayi span { font-size: .85rem; font-weight: 500; color: var(--soluk); }
+  .gruplar { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); }
+  .gruplar ul { margin: 0; padding-left: 1.1rem; display: grid; gap: .35rem; font-size: .92rem; }
+  .kucuk { font-size: .82rem; color: var(--soluk); margin: 1rem 0 0; }
+  .kunye { margin: 0; border-top: 1px solid var(--metin); max-width: 820px; }
+  .kunye div { display: grid; grid-template-columns: 11rem 1fr; gap: 1rem; padding: .6rem 0; border-bottom: 1px solid var(--cizgi); font-size: .95rem; }
+  .kunye dt { color: var(--soluk); }
+  .kunye dd { margin: 0; }
+  @media (max-width: 34rem) { .kunye div { grid-template-columns: 1fr; gap: .15rem; } }
+</style>

@@ -13,7 +13,7 @@ export const GET: APIRoute = ({ site }) => {
     ["/", gun(enSon)],
     ...(reel ? [["/hesap/reel-politika-faizi", gun(reel.seri.cekildi)] as [string, string]] : []),
     ...ss.map((s) => [`/gosterge/${s.id}`, gun(s.cekildi)] as [string, string]),
-    ["/kaynaklar", null], ["/api", null], ["/yontem", null], ["/hakkinda", null],
+    ["/kaynaklar", null], ["/api", null], ["/yontem", null], ["/koray-oner", gun(enSon)],
   ];
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
     satir.map(([y, t]) => `  <url><loc>${new URL(y, site).href}</loc>${t ? `<lastmod>${t}</lastmod>` : ""}</url>`).join("\n") +

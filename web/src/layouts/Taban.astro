@@ -3,7 +3,7 @@ import "../styles/taban.css";
 interface Props { baslik: string; aciklama: string; yol: string; jsonld?: object }
 const { baslik, aciklama, yol, jsonld } = Astro.props;
 const kanonik = new URL(yol, Astro.site).href;
-const menu = [["/", "Panorama"], ["/kaynaklar", "Kaynaklar"], ["/api", "API"], ["/yontem", "Yöntem"], ["/hakkinda", "Hakkında"]];
+const menu = [["/", "Panorama"], ["/kaynaklar", "Kaynaklar"], ["/api", "API"], ["/yontem", "Yöntem"], ["/koray-oner", "Koray Öner"]];
 const etkin = (h: string) => (h === "/" ? yol === "/" : yol.startsWith(h));
 ---
 <!doctype html>
@@ -38,7 +38,7 @@ const etkin = (h: string) => (h === "/" ? yol === "/" : yol.startsWith(h));
   <main id="ana"><slot /></main>
   <footer class="alt">
     <div class="sar alt-ic">
-      <p>Hazırlayan <a href="/hakkinda">Koray Öner</a> · <a href="https://korayoner.dev/">korayoner.dev</a> · <a href="https://github.com/onerkoray/veri-korayoner">Kaynak kod</a></p>
+      <p>Hazırlayan <a href="/koray-oner">Koray Öner</a> · <a href="https://korayoner.dev/">korayoner.dev</a> · <a href="https://github.com/onerkoray/veri-korayoner">Kaynak kod</a></p>
       <p>Kurumlardan bağımsızdır; resmî kurum sitesi değildir. Her seri kendi kaynağının lisansıyla yayımlanır; kullanırken asıl kaynağa atıf yapın. Yatırım tavsiyesi değildir.</p>
     </div>
   </footer>
