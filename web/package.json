@@ -6,7 +6,7 @@
   "scripts": {
     "veri": "node betikler/veri-kopyala.mjs",
     "build": "npm run veri && astro build && node betikler/denetle.mjs",
-    "test": "node --test test/",
+    "test": "node --test test/okuma.test.ts",
     "dev": "npm run veri && astro dev"
   },
   "dependencies": {
