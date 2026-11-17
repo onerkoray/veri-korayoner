@@ -1,0 +1,94 @@
+{
+ "surum": 1,
+ "uretildi": "2026-11-17T09:09:15.854122Z",
+ "seriler": [
+  {
+   "id": "wb-ny-gdp-mktp-cd-tur",
+   "baslik": "Gayrisafi yurt içi hasıla, cari ABD doları",
+   "tema": "buyume",
+   "siklik": "yillik",
+   "birim": "USD",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "1597293229287",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-17T09:09:15.854122Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/wb-ny-gdp-mktp-cd-tur.json",
+   "csv": "/api/v1/seri/wb-ny-gdp-mktp-cd-tur.csv"
+  },
+  {
+   "id": "wb-ny-gdp-mktp-kd-zg-tur",
+   "baslik": "GSYH büyümesi, yıllık, sabit fiyatlarla",
+   "tema": "buyume",
+   "siklik": "yillik",
+   "birim": "yuzde",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "3.60462514082589",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-17T09:09:15.854122Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/wb-ny-gdp-mktp-kd-zg-tur.json",
+   "csv": "/api/v1/seri/wb-ny-gdp-mktp-kd-zg-tur.csv"
+  },
+  {
+   "id": "wb-fp-cpi-totl-zg-tur",
+   "baslik": "Enflasyon, tüketici fiyatları, yıllık",
+   "tema": "enflasyon",
+   "siklik": "yillik",
+   "birim": "yuzde",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "34.8811700293777",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-17T09:09:15.854122Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/wb-fp-cpi-totl-zg-tur.json",
+   "csv": "/api/v1/seri/wb-fp-cpi-totl-zg-tur.csv"
+  },
+  {
+   "id": "wb-bn-cab-xoka-gd-zs-tur",
+   "baslik": "Cari işlemler dengesi, GSYH'ye oran",
+   "tema": "dis-sektor",
+   "siklik": "yillik",
+   "birim": "yuzde-gsyh",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "-1.89933817058389",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-17T09:09:15.854122Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/wb-bn-cab-xoka-gd-zs-tur.json",
+   "csv": "/api/v1/seri/wb-bn-cab-xoka-gd-zs-tur.csv"
+  }
+ ]
+}

@@ -1,0 +1,186 @@
+{
+ "surum": 1,
+ "uretildi": "2026-11-17T09:09:15.854122Z",
+ "kaynaklar": [
+  {
+   "id": "world_bank",
+   "ad": "Dünya Bankası — Dünya Kalkınma Göstergeleri (WDI)",
+   "kurum": "Dünya Bankası",
+   "adres": "https://data.worldbank.org/",
+   "belge": "https://datahelpdesk.worldbank.org/knowledgebase/articles/889392",
+   "lisans": "CC BY 4.0 (Dünya Bankası'nın kendi ürettiği veri setleri için varsayılan)",
+   "lisans_kanit": "https://datacatalog.worldbank.org/public-licenses",
+   "lisans_inceleme": "2026-11-17",
+   "atif_zorunlu": true,
+   "durum": "gelistiriliyor",
+   "erisim": "REST JSON",
+   "yayin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   }
+  },
+  {
+   "id": "bis",
+   "ad": "BIS Veri Portalı",
+   "kurum": "Uluslararası Ödemeler Bankası (BIS)",
+   "adres": "https://data.bis.org/",
+   "belge": "https://stats.bis.org/api-doc/v2/",
+   "lisans": null,
+   "lisans_kanit": null,
+   "lisans_inceleme": null,
+   "atif_zorunlu": true,
+   "durum": "planlandi",
+   "erisim": "SDMX REST",
+   "yayin": {
+    "gosterim": false,
+    "indirme": false,
+    "api": false
+   }
+  },
+  {
+   "id": "imf",
+   "ad": "IMF Veri",
+   "kurum": "Uluslararası Para Fonu (IMF)",
+   "adres": "https://data.imf.org/",
+   "belge": "https://data.imf.org/en/Resource-Pages/IMF-API",
+   "lisans": null,
+   "lisans_kanit": null,
+   "lisans_inceleme": null,
+   "atif_zorunlu": true,
+   "durum": "planlandi",
+   "erisim": "SDMX",
+   "yayin": {
+    "gosterim": false,
+    "indirme": false,
+    "api": false
+   }
+  },
+  {
+   "id": "oecd",
+   "ad": "OECD Data Explorer",
+   "kurum": "OECD",
+   "adres": "https://data-explorer.oecd.org/",
+   "belge": null,
+   "lisans": null,
+   "lisans_kanit": null,
+   "lisans_inceleme": null,
+   "atif_zorunlu": true,
+   "durum": "planlandi",
+   "erisim": "SDMX REST",
+   "yayin": {
+    "gosterim": false,
+    "indirme": false,
+    "api": false
+   }
+  },
+  {
+   "id": "eurostat",
+   "ad": "Eurostat",
+   "kurum": "Avrupa Birliği İstatistik Ofisi",
+   "adres": "https://ec.europa.eu/eurostat",
+   "belge": "https://ec.europa.eu/eurostat/en/web/user-guides/data-browser/api-data-access/api-introduction",
+   "lisans": null,
+   "lisans_kanit": null,
+   "lisans_inceleme": null,
+   "atif_zorunlu": true,
+   "durum": "planlandi",
+   "erisim": "REST / SDMX",
+   "yayin": {
+    "gosterim": false,
+    "indirme": false,
+    "api": false
+   }
+  },
+  {
+   "id": "ecb",
+   "ad": "ECB Veri Portalı",
+   "kurum": "Avrupa Merkez Bankası",
+   "adres": "https://data.ecb.europa.eu/",
+   "belge": null,
+   "lisans": null,
+   "lisans_kanit": null,
+   "lisans_inceleme": null,
+   "atif_zorunlu": true,
+   "durum": "planlandi",
+   "erisim": "SDMX REST",
+   "yayin": {
+    "gosterim": false,
+    "indirme": false,
+    "api": false
+   }
+  },
+  {
+   "id": "tcmb_evds",
+   "ad": "TCMB EVDS 3",
+   "kurum": "Türkiye Cumhuriyet Merkez Bankası",
+   "adres": "https://evds3.tcmb.gov.tr/",
+   "belge": "https://evds3.tcmb.gov.tr/hakkinda",
+   "lisans": "EVDS kullanım şartları",
+   "lisans_kanit": null,
+   "lisans_inceleme": null,
+   "atif_zorunlu": true,
+   "durum": "planlandi",
+   "erisim": "REST JSON/CSV/XML",
+   "yayin": {
+    "gosterim": false,
+    "indirme": false,
+    "api": false
+   }
+  },
+  {
+   "id": "un_comtrade",
+   "ad": "UN Comtrade",
+   "kurum": "Birleşmiş Milletler",
+   "adres": "https://comtradeplus.un.org/",
+   "belge": "https://comtradeplus.un.org/en/api-docs",
+   "lisans": null,
+   "lisans_kanit": null,
+   "lisans_inceleme": null,
+   "atif_zorunlu": true,
+   "durum": "anahtar-gerekli",
+   "erisim": "REST",
+   "yayin": {
+    "gosterim": false,
+    "indirme": false,
+    "api": false
+   }
+  },
+  {
+   "id": "fred",
+   "ad": "FRED",
+   "kurum": "St. Louis Fed",
+   "adres": "https://fred.stlouisfed.org/",
+   "belge": "https://fred.stlouisfed.org/docs/api/fred/",
+   "lisans": null,
+   "lisans_kanit": null,
+   "lisans_inceleme": null,
+   "atif_zorunlu": true,
+   "durum": "anahtar-gerekli",
+   "erisim": "REST",
+   "yayin": {
+    "gosterim": false,
+    "indirme": false,
+    "api": false
+   }
+  },
+  {
+   "id": "bist",
+   "ad": "Borsa İstanbul",
+   "kurum": "Borsa İstanbul",
+   "adres": "https://www.borsaistanbul.com/",
+   "belge": "https://www.borsaistanbul.com/sss/veri-dagitim-ve-endeks-lisanslama",
+   "lisans": null,
+   "lisans_kanit": null,
+   "lisans_inceleme": null,
+   "atif_zorunlu": true,
+   "durum": "lisans-gerekli",
+   "erisim": "Lisanslı dağıtım",
+   "yayin": {
+    "gosterim": false,
+    "indirme": false,
+    "api": false
+   }
+  }
+ ]
+}

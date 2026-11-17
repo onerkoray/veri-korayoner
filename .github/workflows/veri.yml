@@ -1,0 +1,74 @@
+name: Veri hattı
+
+# Hafta içi her gün 05:20 UTC (08:20 İstanbul). Dünya Bankası WDI çoğunlukla
+# ayda bir güncellenir; günlük yoklama ucuzdur ve değişmeyen seri dosyaya
+# dokunmaz (sahte vintage yok). Dakika 20: saat başı kuyruğu kalabalık.
+on:
+  schedule:
+    - cron: "20 5 * * 1-5"
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+  pull_request: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: veri-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: pipeline } }
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with: { persist-credentials: false }
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2  # v10.3.3
+      - name: Bağımlılıklar (kilit dosyasından)
+        run: uv sync --locked
+      - name: Biçim ve güvenlik kuralları
+        run: uv run ruff check .
+      - name: Testler (ağsız)
+        run: uv run pytest -q
+      - name: Kayıt ve yayımlanmış dosyalar lisans kapısından geçiyor mu
+        run: uv run veri denetle
+
+  guncelle:
+    needs: test
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write     # yalnız bu iş yazar; yalnız veri commit'i
+      issues: write
+    defaults: { run: { working-directory: pipeline } }
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2  # v10.3.3
+      - run: uv sync --locked
+      - name: Kaynaklardan çek, doğrula, yayımla
+        id: cek
+        run: uv run veri guncelle
+        continue-on-error: true
+      - name: Denetle
+        run: uv run veri denetle
+      - name: Değişiklik varsa commit et
+        working-directory: .
+        run: |
+          if [ -z "$(git status --porcelain yayin)" ]; then echo "Değişiklik yok."; exit 0; fi
+          git config user.name "veri-bot"
+          git config user.email "onerkoray@users.noreply.github.com"
+          git add yayin
+          git commit -m "Veri güncellemesi ($(date -u +%Y-%m-%d))"
+          git push
+      - name: Bir seri düştüyse takip issue'su
+        if: steps.cek.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          KOSU: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        working-directory: .
+        run: |
+          baslik="Veri hattında düşen seri"
+          no=$(gh issue list --state open --search "$baslik in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$no" ]; then gh issue comment "$no" --body "Yine: $KOSU"; else gh issue create --title "$baslik" --body "Düşen seri yazılmadı; eski dosya yerinde. Koşu: $KOSU"; fi

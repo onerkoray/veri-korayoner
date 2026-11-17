@@ -1,0 +1,90 @@
+# Seri kaydı — her satır bir kaynağın bir Türkiye serisi.
+#
+# Seri kodu ancak kaynağın kendi metaverisinden doğrulandıktan sonra yazılır
+# (pipeline `--dogrula` metaveriyi çeker ve ad/birim uyuşmazlığında durur).
+# `yayin` alanı kaynağın iznini yalnız DARALTABİLİR, genişletemez.
+
+seriler:
+  - id: wb-ny-gdp-mktp-cd-tur
+    kaynak: world_bank
+    kod: NY.GDP.MKTP.CD
+    ulke: TUR
+    baslik: Gayrisafi yurt içi hasıla, cari ABD doları
+    tema: buyume
+    siklik: yillik
+    birim: USD
+    carpan: 1
+
+  - id: wb-ny-gdp-pcap-cd-tur
+    kaynak: world_bank
+    kod: NY.GDP.PCAP.CD
+    ulke: TUR
+    baslik: Kişi başına GSYH, cari ABD doları
+    tema: buyume
+    siklik: yillik
+    birim: USD
+    carpan: 1
+
+  - id: wb-ny-gdp-mktp-kd-zg-tur
+    kaynak: world_bank
+    kod: NY.GDP.MKTP.KD.ZG
+    ulke: TUR
+    baslik: GSYH büyümesi, yıllık, sabit fiyatlarla
+    tema: buyume
+    siklik: yillik
+    birim: yuzde
+    carpan: 1
+
+  - id: wb-fp-cpi-totl-zg-tur
+    kaynak: world_bank
+    kod: FP.CPI.TOTL.ZG
+    ulke: TUR
+    baslik: Enflasyon, tüketici fiyatları, yıllık
+    tema: enflasyon
+    siklik: yillik
+    birim: yuzde
+    carpan: 1
+
+  - id: wb-bn-cab-xoka-gd-zs-tur
+    kaynak: world_bank
+    kod: BN.CAB.XOKA.GD.ZS
+    ulke: TUR
+    baslik: Cari işlemler dengesi, GSYH'ye oran
+    tema: dis-sektor
+    siklik: yillik
+    birim: yuzde-gsyh
+    carpan: 1
+
+  - id: wb-dt-dod-dect-cd-tur
+    kaynak: world_bank
+    kod: DT.DOD.DECT.CD
+    ulke: TUR
+    baslik: Toplam dış borç stoku, cari ABD doları
+    tema: dis-sektor
+    siklik: yillik
+    birim: USD
+    carpan: 1
+    not: Uluslararası Borç İstatistikleri (IDS) kaynaklı; metaveri kaynak notu okunur.
+
+  - id: wb-sl-uem-totl-zs-tur
+    kaynak: world_bank
+    kod: SL.UEM.TOTL.ZS
+    ulke: TUR
+    baslik: İşsizlik oranı, işgücüne oran (ILO modeli)
+    tema: isgucu
+    siklik: yillik
+    birim: yuzde
+    carpan: 1
+    yayin: { gosterim: true, indirme: false, api: false }
+    not: ILO model tahmini; kaynak ILO. Yeniden yayın şartı ILO tarafında doğrulanana kadar yalnız gösterim.
+
+  - id: wb-fi-res-totl-cd-tur
+    kaynak: world_bank
+    kod: FI.RES.TOTL.CD
+    ulke: TUR
+    baslik: Toplam rezervler (altın dahil), cari ABD doları
+    tema: doviz-rezerv
+    siklik: yillik
+    birim: USD
+    carpan: 1
+    not: IMF IFS kaynaklı; kaynak notu okunur.

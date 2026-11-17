@@ -1,0 +1,162 @@
+# Kaynak kaydı — veri.korayoner.dev
+#
+# Lisans kapısı burada: yayin.gosterim / yayin.indirme / yayin.api üçü de
+# ayrı. Bir kaynağın izni ancak resmî kullanım şartı okunup `kanit` adresi ve
+# `inceleme_tarihi` yazıldıktan sonra true olur. Boş ya da false olan seri
+# sayfaya, CSV'ye ve API'ye girmez (pipeline/veri/yayin.py + CI).
+#
+# durum:
+#   aktif            bağlayıcı yazıldı, örnek çekme doğrulandı, lisans onaylı
+#   gelistiriliyor   bağlayıcı yazılıyor
+#   planlandi        sırada; ne bağlayıcı ne lisans incelemesi var
+#   anahtar-gerekli  API anahtarı ister (gizli değişken yok)
+#   lisans-gerekli   ticari sözleşme olmadan yayımlanamaz
+#   yalniz-katalog   resmî ve kararlı erişim yok (scraping yapılmaz)
+#
+# Başlangıç listesi kullanıcının SOURCE_REGISTRY.csv'sinden süzüldü
+# (17 Kasım 2026). Ticari terminal ve aracı fiyat servisleri (Bloomberg,
+# LSEG, FactSet, MSCI, Trading Economics, Yahoo vb.) bu sürümde kayda
+# alınmadı: hiçbiri sözleşmesiz kamuya yeniden yayına izin vermiyor ve
+# kayıtta durmaları okura veri değil boş satır gösterir. Liste
+# docs/kaynak-evreni.md'de.
+
+kaynaklar:
+  - id: world_bank
+    ad: Dünya Bankası — Dünya Kalkınma Göstergeleri (WDI)
+    kurum: Dünya Bankası
+    adres: https://data.worldbank.org/
+    api: https://api.worldbank.org/v2/
+    belge: https://datahelpdesk.worldbank.org/knowledgebase/articles/889392
+    erisim: REST JSON
+    anahtar: false
+    durum: gelistiriliyor
+    lisans:
+      ad: CC BY 4.0 (Dünya Bankası'nın kendi ürettiği veri setleri için varsayılan)
+      kanit: https://datacatalog.worldbank.org/public-licenses
+      inceleme_tarihi: 2026-11-17
+      atif_zorunlu: true
+      not: >-
+        Varsayılan lisans Dünya Bankası'nın kendi ürettiği veri setleri
+        içindir. Üçüncü taraf kaynaklı göstergelerde (ör. IMF, ILO, UN
+        kaynaklı WDI serileri) seri metaverisindeki kaynak notu ayrıca
+        okunur; seri bazında `yayin` geçersiz kılınabilir.
+    yayin: { gosterim: true, indirme: true, api: true }
+
+  - id: bis
+    ad: BIS Veri Portalı
+    kurum: Uluslararası Ödemeler Bankası (BIS)
+    adres: https://data.bis.org/
+    api: https://stats.bis.org/api/v2/
+    belge: https://stats.bis.org/api-doc/v2/
+    erisim: SDMX REST
+    anahtar: false
+    durum: planlandi
+    lisans: { ad: null, kanit: null, inceleme_tarihi: null, atif_zorunlu: true }
+    yayin: { gosterim: false, indirme: false, api: false }
+
+  - id: imf
+    ad: IMF Veri
+    kurum: Uluslararası Para Fonu (IMF)
+    adres: https://data.imf.org/
+    api: null
+    belge: https://data.imf.org/en/Resource-Pages/IMF-API
+    erisim: SDMX
+    anahtar: null
+    durum: planlandi
+    lisans: { ad: null, kanit: null, inceleme_tarihi: null, atif_zorunlu: true }
+    yayin: { gosterim: false, indirme: false, api: false }
+
+  - id: oecd
+    ad: OECD Data Explorer
+    kurum: OECD
+    adres: https://data-explorer.oecd.org/
+    api: null
+    belge: null
+    erisim: SDMX REST
+    anahtar: false
+    durum: planlandi
+    lisans: { ad: null, kanit: null, inceleme_tarihi: null, atif_zorunlu: true }
+    yayin: { gosterim: false, indirme: false, api: false }
+
+  - id: eurostat
+    ad: Eurostat
+    kurum: Avrupa Birliği İstatistik Ofisi
+    adres: https://ec.europa.eu/eurostat
+    api: null
+    belge: https://ec.europa.eu/eurostat/en/web/user-guides/data-browser/api-data-access/api-introduction
+    erisim: REST / SDMX
+    anahtar: false
+    durum: planlandi
+    lisans: { ad: null, kanit: null, inceleme_tarihi: null, atif_zorunlu: true }
+    yayin: { gosterim: false, indirme: false, api: false }
+
+  - id: ecb
+    ad: ECB Veri Portalı
+    kurum: Avrupa Merkez Bankası
+    adres: https://data.ecb.europa.eu/
+    api: https://data-api.ecb.europa.eu/service/
+    belge: null
+    erisim: SDMX REST
+    anahtar: false
+    durum: planlandi
+    lisans: { ad: null, kanit: null, inceleme_tarihi: null, atif_zorunlu: true }
+    yayin: { gosterim: false, indirme: false, api: false }
+
+  - id: tcmb_evds
+    ad: TCMB EVDS 3
+    kurum: Türkiye Cumhuriyet Merkez Bankası
+    adres: https://evds3.tcmb.gov.tr/
+    api: null
+    belge: https://evds3.tcmb.gov.tr/hakkinda
+    erisim: REST JSON/CSV/XML
+    anahtar: null
+    durum: planlandi
+    lisans:
+      ad: EVDS kullanım şartları
+      kanit: null
+      inceleme_tarihi: null
+      atif_zorunlu: true
+      not: >-
+        Kullanıcı notu: şartlar kaynak gösterilerek yayına ve ücret
+        alınmamasına bağlı. Şart metni okunup kanıt adresi yazılmadan
+        yayın izni açılmaz.
+    yayin: { gosterim: false, indirme: false, api: false }
+
+  - id: un_comtrade
+    ad: UN Comtrade
+    kurum: Birleşmiş Milletler
+    adres: https://comtradeplus.un.org/
+    api: null
+    belge: https://comtradeplus.un.org/en/api-docs
+    erisim: REST
+    anahtar: true
+    durum: anahtar-gerekli
+    lisans: { ad: null, kanit: null, inceleme_tarihi: null, atif_zorunlu: true,
+              not: "Anahtarsız önizleme 500 satırla sınırlı; tam veri kayıt ve plan ister." }
+    yayin: { gosterim: false, indirme: false, api: false }
+
+  - id: fred
+    ad: FRED
+    kurum: St. Louis Fed
+    adres: https://fred.stlouisfed.org/
+    api: null
+    belge: https://fred.stlouisfed.org/docs/api/fred/
+    erisim: REST
+    anahtar: true
+    durum: anahtar-gerekli
+    lisans: { ad: null, kanit: null, inceleme_tarihi: null, atif_zorunlu: true,
+              not: "Üçüncü taraf kaynaklı serilerde yeniden yayın kısıtı olabilir; seri bazında incelenir." }
+    yayin: { gosterim: false, indirme: false, api: false }
+
+  - id: bist
+    ad: Borsa İstanbul
+    kurum: Borsa İstanbul
+    adres: https://www.borsaistanbul.com/
+    api: null
+    belge: https://www.borsaistanbul.com/sss/veri-dagitim-ve-endeks-lisanslama
+    erisim: Lisanslı dağıtım
+    anahtar: true
+    durum: lisans-gerekli
+    lisans: { ad: null, kanit: null, inceleme_tarihi: null, atif_zorunlu: true,
+              not: "Lisanslı dağıtıcı modeli; dağıtım izni olmadan aynalanmaz." }
+    yayin: { gosterim: false, indirme: false, api: false }
