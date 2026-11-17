@@ -88,3 +88,77 @@ seriler:
     birim: USD
     carpan: 1
     not: IMF IFS kaynaklı; kaynak notu okunur.
+
+  # ---- BIS (SDMX v2; kod = akış/sürüm/anahtar) -------------------------------
+  - id: bis-politika-faizi-tr
+    kaynak: bis
+    kod: WS_CBPOL/1.0/M.TR
+    ulke: TUR
+    baslik: Merkez bankası politika faizi, ay sonu
+    tema: para-politikasi
+    siklik: aylik
+    birim: yuzde
+    carpan: 1
+
+  - id: bis-tufe-yillik-tr
+    kaynak: bis
+    kod: WS_LONG_CPI/1.0/M.TR.771
+    ulke: TUR
+    baslik: Tüketici fiyatları, yıllık değişim
+    tema: enflasyon
+    siklik: aylik
+    birim: yuzde
+    carpan: 1
+
+  - id: bis-usd-try-ortalama
+    kaynak: bis
+    kod: WS_XRU/1.0/M.TR.TRY.A
+    ulke: TUR
+    baslik: ABD doları kuru, aylık ortalama
+    tema: doviz-rezerv
+    siklik: aylik
+    birim: TRY/USD
+    carpan: 1
+
+  - id: bis-reel-efektif-kur-tr
+    kaynak: bis
+    kod: WS_EER/1.0/M.R.B.TR
+    ulke: TUR
+    baslik: Reel efektif döviz kuru, geniş sepet (64 ekonomi)
+    tema: doviz-rezerv
+    siklik: aylik
+    birim: endeks
+    carpan: 1
+    not: Endeks 2020 = 100. Değerin artması liranın reel değer kazanması demektir.
+
+  - id: bis-reel-konut-fiyat-tr
+    kaynak: bis
+    kod: WS_SPP/1.0/Q.TR.R.628
+    ulke: TUR
+    baslik: Reel konut fiyatları
+    tema: konut
+    siklik: ceyreklik
+    birim: endeks
+    carpan: 1
+    not: Endeks 2010 = 100, tüketici fiyatlarıyla reelleştirilmiş.
+
+  - id: bis-ozel-kredi-gsyh-tr
+    kaynak: bis
+    kod: WS_TC/2.0/Q.TR.P.A.M.770.A
+    ulke: TUR
+    baslik: Özel finansal olmayan kesime kredi, GSYH'ye oran
+    tema: bankacilik
+    siklik: ceyreklik
+    birim: yuzde-gsyh
+    carpan: 1
+
+  - id: bis-borc-servis-orani-tr
+    kaynak: bis
+    kod: WS_DSR/1.0/Q.TR.P
+    ulke: TUR
+    baslik: Özel kesim borç servis oranı
+    tema: bankacilik
+    siklik: ceyreklik
+    birim: yuzde
+    carpan: 1
+    not: Faiz ve anapara ödemelerinin gelire oranı.

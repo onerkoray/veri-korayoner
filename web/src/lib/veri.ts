@@ -9,6 +9,7 @@ export interface Gozlem { donem: string; deger: string | null; durum?: string | 
 export interface KaynakOzet {
   id: string; ad: string; kurum: string; adres: string; belge: string | null;
   lisans: string | null; lisans_kanit: string | null; lisans_inceleme: string | null; atif_zorunlu: boolean;
+  kosullar?: string[];
 }
 export interface Seri {
   id: string; baslik: string; ulke: string; siklik: string; birim: string; carpan: number; tema: string;
@@ -29,7 +30,7 @@ export function uretildi(): string { return oku("api/v1/kaynaklar.json").uretild
 export const TEMA: Record<string, string> = {
   buyume: "Büyüme ve gelir", enflasyon: "Enflasyon", "dis-sektor": "Dış sektör", isgucu: "İşgücü",
   "doviz-rezerv": "Döviz ve rezervler", "para-politikasi": "Para politikası", "kamu-maliyesi": "Kamu maliyesi",
-  bankacilik: "Bankacılık", "dis-ticaret": "Dış ticaret",
+  bankacilik: "Bankacılık ve kredi", konut: "Konut", "dis-ticaret": "Dış ticaret",
 };
 export const TEMA_SIRA = Object.keys(TEMA);
 
@@ -59,11 +60,13 @@ export function deger(s: Pick<Seri, "birim" | "carpan">, ham: string | number | 
       if (a >= 1e6) return isaret + sayi(a / 1e6, 1) + " milyon $";
       return isaret + sayi(a, 0) + " $";
     }
+    case "TRY/USD": return sayi(v, 2) + " TL";
+    case "endeks": return sayi(v, 1);
     default: return sayi(v, 2) + " " + s.birim;
   }
 }
 export function birimAdi(b: string): string {
-  return ({ yuzde: "yüzde", "yuzde-gsyh": "GSYH'ye oran, yüzde", USD: "ABD doları, cari" } as Record<string, string>)[b] ?? b;
+  return ({ yuzde: "yüzde", "yuzde-gsyh": "GSYH'ye oran, yüzde", USD: "ABD doları, cari", "TRY/USD": "1 ABD doları kaç TL", endeks: "endeks" } as Record<string, string>)[b] ?? b;
 }
 export function siklikAdi(s: string): string {
   return ({ yillik: "Yıllık", ceyreklik: "Çeyreklik", aylik: "Aylık", haftalik: "Haftalık", gunluk: "Günlük" } as Record<string, string>)[s] ?? s;
@@ -72,6 +75,14 @@ export function tarih(iso: string | null): string {
   if (!iso) return "bilinmiyor";
   const [y, m, g] = iso.slice(0, 10).split("-").map(Number);
   return `${g} ${AYLAR[m - 1]} ${y}`;
+}
+/** Dönem anahtarını tarihe çevirir: 2025, 2025-03, 2025-Q2, 2025-03-14. */
+export function donemTarihi(d: string): Date {
+  const y = Number(d.slice(0, 4));
+  const q = /-Q([1-4])$/.exec(d);
+  if (q) return new Date(Date.UTC(y, (Number(q[1]) - 1) * 3, 1));
+  const p = d.split("-");
+  return new Date(Date.UTC(y, p[1] ? Number(p[1]) - 1 : 0, p[2] ? Number(p[2]) : 1));
 }
 export function dolu(s: Seri): Gozlem[] { return s.gozlemler.filter((g) => g.deger != null); }
 export function son(s: Seri): Gozlem | null { const d = dolu(s); return d.length ? d[d.length - 1] : null; }

@@ -2,26 +2,32 @@
 // Seri grafiği: sunucuda çizilen SVG (JS'siz tam), üstüne Observable Plot adası
 // (imleç, ipucu, dönem seçimi). Ada yalnız seçim düğmeleri ve imleç ekler;
 // veri aynı sayfadaki <table>'dan değil, data- özniteliğindeki JSON'dan okunur.
-import { dolu, deger, sayi, type Seri } from "../lib/veri";
+import { dolu, deger, sayi, donemTarihi, type Seri } from "../lib/veri";
 interface Props { seri: Seri }
 const { seri } = Astro.props;
 const d = dolu(seri).map((g) => ({ donem: g.donem, v: Number(g.deger) }));
 const W = 960, H = 340, sol = 64, sag = 18, ust = 16, alt = 30;
 const oran = seri.birim.startsWith("yuzde");
 const lo0 = Math.min(...d.map((p) => p.v)), hi0 = Math.max(...d.map((p) => p.v));
-const lo = oran ? Math.min(0, lo0) : 0, hi = hi0 * 1.06 || 1;
+const sifirdan = oran || seri.birim === "USD";
+const lo = sifirdan ? Math.min(0, lo0) : lo0 - (hi0 - lo0) * 0.06, hi = hi0 + (hi0 - lo0) * 0.06 || 1;
 const adim = (() => { const r = (hi - lo) / 5, us = 10 ** Math.floor(Math.log10(r)), k = r / us; return (k <= 1 ? 1 : k <= 2 ? 2 : k <= 5 ? 5 : 10) * us; })();
 const izgara: number[] = []; for (let v = Math.ceil(lo / adim) * adim; v <= hi; v += adim) izgara.push(v);
-const x = (i: number) => sol + (W - sol - sag) * (d.length > 1 ? i / (d.length - 1) : 0.5);
+const t0 = donemTarihi(d[0]?.donem ?? "2000").getTime(), t1 = donemTarihi(d.at(-1)?.donem ?? "2000").getTime();
+const xt = (dn: string) => sol + (W - sol - sag) * (t1 > t0 ? (donemTarihi(dn).getTime() - t0) / (t1 - t0) : 0.5);
+const x = (i: number) => xt(d[i].donem);
 const y = (v: number) => H - alt - ((v - lo) / (hi - lo)) * (H - ust - alt);
 const yol = d.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(p.v).toFixed(1)}`).join(" ");
-const yillar = d.map((p, i) => [p.donem, i] as const).filter(([dn]) => Number(dn.slice(0, 4)) % 10 === 0);
+const y0 = Number(d[0]?.donem.slice(0, 4)), y1 = Number(d.at(-1)?.donem.slice(0, 4));
+const aralik = y1 - y0 > 30 ? 10 : y1 - y0 > 12 ? 5 : y1 - y0 > 5 ? 2 : 1;
+const yillar = [] as (readonly [string, number])[];
+for (let yy = Math.ceil(y0 / aralik) * aralik; yy <= y1; yy += aralik) yillar.push([String(yy), xt(String(yy))] as const);
 const etiket = `${seri.baslik}, ${d[0]?.donem}–${d.at(-1)?.donem}. Son değer ${deger(seri, d.at(-1)?.v ?? null)}.`;
 const veri = JSON.stringify({ birim: seri.birim, carpan: seri.carpan, d });
 ---
 <figure class="grafik" data-seri-grafik={veri}>
   <div class="grafik-ust">
-    <p class="etiket">{seri.baslik} · {seri.birim === "USD" ? "ABD doları" : "yüzde"}</p>
+    <p class="etiket">{seri.baslik} · {({ USD: "ABD doları", "TRY/USD": "TL / ABD doları", endeks: "endeks" } as Record<string, string>)[seri.birim] ?? "yüzde"}</p>
     <div class="donem" role="group" aria-label="Dönem" hidden>
       <button type="button" data-yil="0" aria-pressed="true">Tümü</button>
       <button type="button" data-yil="20" aria-pressed="false">20 yıl</button>
@@ -31,8 +37,8 @@ const veri = JSON.stringify({ birim: seri.birim, carpan: seri.carpan, d });
   <div class="tuval">
     <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={etiket} class="statik">
       {izgara.map((v) => <g><line x1={sol} x2={W - sag} y1={y(v)} y2={y(v)} class={v === 0 ? "sifir" : "izgara"} />
-        <text x={sol - 8} y={y(v) + 4} text-anchor="end">{oran ? (v < 0 ? "−%" : "%") + sayi(Math.abs(v)) : deger(seri, v, true).replace(" $", "")}</text></g>)}
-      {yillar.map(([dn, i]) => <text x={x(i)} y={H - 8} text-anchor="middle">{dn}</text>)}
+        <text x={sol - 8} y={y(v) + 4} text-anchor="end">{oran ? (v < 0 ? "−%" : "%") + sayi(Math.abs(v)) : seri.birim === "USD" ? deger(seri, v, true).replace(" $", "") : sayi(v, v % 1 ? 1 : 0)}</text></g>)}
+      {yillar.map(([dn, px]) => <text x={px} y={H - 8} text-anchor="middle">{dn}</text>)}
       <path d={yol} class="cizgi" />
       {d.length > 0 && <circle cx={x(d.length - 1)} cy={y(d[d.length - 1].v)} r="4" class="son" />}
     </svg>
@@ -45,22 +51,29 @@ const veri = JSON.stringify({ birim: seri.birim, carpan: seri.carpan, d });
   for (const fig of document.querySelectorAll<HTMLElement>("[data-seri-grafik]")) {
     const { birim, carpan, d } = JSON.parse(fig.dataset.seriGrafik!) as { birim: string; carpan: number; d: { donem: string; v: number }[] };
     const oran = birim.startsWith("yuzde");
+    const iki = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const yaz = (v: number) => {
       v *= carpan || 1;
       if (oran) return (v < 0 ? "−%" : "%") + bicim.format(Math.abs(v));
+      if (birim === "TRY/USD") return iki.format(v) + " TL";
+      if (birim !== "USD") return bicim.format(v);
       const a = Math.abs(v);
       return a >= 1e12 ? bicim.format(a / 1e12) + " trilyon $" : a >= 1e9 ? bicim.format(a / 1e9) + " milyar $" : bicim.format(a) + " $";
+    };
+    const tarihOf = (dn: string) => {
+      const yy = Number(dn.slice(0, 4)), q = /-Q([1-4])$/.exec(dn), p = dn.split("-");
+      return q ? new Date(Date.UTC(yy, (Number(q[1]) - 1) * 3, 1)) : new Date(Date.UTC(yy, p[1] ? Number(p[1]) - 1 : 0, 1));
     };
     const tuval = fig.querySelector<HTMLElement>(".tuval")!;
     const ciz = (yil: number) => {
       const son = Number(d.at(-1)!.donem.slice(0, 4));
       const g = yil ? d.filter((p) => Number(p.donem.slice(0, 4)) > son - yil) : d;
-      const veri = g.map((p) => ({ yil: new Date(Date.UTC(Number(p.donem.slice(0, 4)), 0, 1)), donem: p.donem, v: p.v }));
+      const veri = g.map((p) => ({ yil: tarihOf(p.donem), donem: p.donem, v: p.v }));
       const plot = Plot.plot({
         width: tuval.clientWidth || 960, height: 340, marginLeft: 64,
         style: { background: "transparent", color: "var(--soluk)", fontSize: "12px" },
         x: { type: "utc", label: null, ticks: 8 },
-        y: { grid: true, label: null, nice: true, zero: !oran || g.some((p) => p.v < 0) ? true : true, tickFormat: (v: number) => yaz(v).replace(" trilyon $", "T").replace(" milyar $", "B") },
+        y: { grid: true, label: null, nice: true, zero: oran || birim === "USD", tickFormat: (v: number) => yaz(v).replace(" trilyon $", "T").replace(" milyar $", "B").replace(" TL", "") },
         marks: [
           Plot.ruleY([0], { stroke: "var(--soluk)", strokeOpacity: oran ? 0.8 : 0 }),
           Plot.lineY(veri, { x: "yil", y: "v", stroke: "var(--dv-1)", strokeWidth: 2 }),

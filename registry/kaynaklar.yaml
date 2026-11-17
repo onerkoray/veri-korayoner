@@ -29,7 +29,7 @@ kaynaklar:
     belge: https://datahelpdesk.worldbank.org/knowledgebase/articles/889392
     erisim: REST JSON
     anahtar: false
-    durum: gelistiriliyor
+    durum: aktif
     lisans:
       ad: CC BY 4.0 (WDI veri seti)
       kanit: https://datacatalog.worldbank.org/search/dataset/0037712/World-Development-Indicators
@@ -52,9 +52,25 @@ kaynaklar:
     belge: https://stats.bis.org/api-doc/v2/
     erisim: SDMX REST
     anahtar: false
-    durum: planlandi
-    lisans: { ad: null, kanit: null, inceleme_tarihi: null, atif_zorunlu: true }
-    yayin: { gosterim: false, indirme: false, api: false }
+    durum: aktif
+    lisans:
+      ad: BIS istatistik kullanım şartları
+      kanit: https://data.bis.org/help/legal
+      inceleme_tarihi: 2026-11-17
+      atif_zorunlu: true
+      kosullar:
+        - "Kaynak: BIS (Uluslararası Ödemeler Bankası)."
+        - "Seri adları Türkçeye çevrilmiştir; çeviri resmî BIS çevirisi değildir."
+        - "Bu site BIS ile bağlantılı değildir; BIS'in onayını taşımaz."
+        - "BIS verinin doğruluğunu garanti etmez; veri yatırım tavsiyesi değildir."
+      not: >-
+        Şart: istatistiğin kullanımı serbest; kaynak BIS gösterilir, çeviri
+        resmî değildir notu, onay ima edilmez, ticari üründe ek ücret
+        alınmaz. API şartı en güncel API sürümünü (v2) ister. Politika
+        faizi ve konut fiyatlarında ulusal kaynak da gösterilir (seri
+        dosyasındaki asıl kaynak). Gözlem düzeyinde OBS_CONF=F (free)
+        olmayan değer yayımlanmaz.
+    yayin: { gosterim: true, indirme: true, api: true }
 
   - id: imf
     ad: IMF Veri

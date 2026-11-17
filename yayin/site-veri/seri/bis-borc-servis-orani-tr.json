@@ -1,0 +1,524 @@
+{
+ "surum": 1,
+ "id": "bis-borc-servis-orani-tr",
+ "baslik": "Özel kesim borç servis oranı",
+ "ulke": "TUR",
+ "siklik": "ceyreklik",
+ "birim": "yuzde",
+ "carpan": 1,
+ "tema": "bankacilik",
+ "kaynak": {
+  "id": "bis",
+  "ad": "BIS Veri Portalı",
+  "kurum": "Uluslararası Ödemeler Bankası (BIS)",
+  "adres": "https://data.bis.org/",
+  "belge": "https://stats.bis.org/api-doc/v2/",
+  "lisans": "BIS istatistik kullanım şartları",
+  "lisans_kanit": "https://data.bis.org/help/legal",
+  "lisans_inceleme": "2026-11-17",
+  "atif_zorunlu": true,
+  "kosullar": [
+   "Kaynak: BIS (Uluslararası Ödemeler Bankası).",
+   "Seri adları Türkçeye çevrilmiştir; çeviri resmî BIS çevirisi değildir.",
+   "Bu site BIS ile bağlantılı değildir; BIS'in onayını taşımaz.",
+   "BIS verinin doğruluğunu garanti etmez; veri yatırım tavsiyesi değildir."
+  ]
+ },
+ "kaynak_kod": "WS_DSR/1.0/Q.TR.P",
+ "kaynak_adi": "Türkiye - Private non-financial sector",
+ "kaynak_not": null,
+ "kaynak_guncelleme": null,
+ "cekildi": "2026-11-17T10:55:40.719594Z",
+ "izin": {
+  "gosterim": true,
+  "indirme": true,
+  "api": true
+ },
+ "gozlemler": [
+  {
+   "donem": "2002-Q1",
+   "deger": "14.5",
+   "durum": "A"
+  },
+  {
+   "donem": "2002-Q2",
+   "deger": "11.5",
+   "durum": "A"
+  },
+  {
+   "donem": "2002-Q3",
+   "deger": "10.6",
+   "durum": "A"
+  },
+  {
+   "donem": "2002-Q4",
+   "deger": "9.8",
+   "durum": "A"
+  },
+  {
+   "donem": "2003-Q1",
+   "deger": "10",
+   "durum": "A"
+  },
+  {
+   "donem": "2003-Q2",
+   "deger": "8.9",
+   "durum": "A"
+  },
+  {
+   "donem": "2003-Q3",
+   "deger": "7.7",
+   "durum": "A"
+  },
+  {
+   "donem": "2003-Q4",
+   "deger": "6.7",
+   "durum": "A"
+  },
+  {
+   "donem": "2004-Q1",
+   "deger": "6.2",
+   "durum": "A"
+  },
+  {
+   "donem": "2004-Q2",
+   "deger": "6.5",
+   "durum": "A"
+  },
+  {
+   "donem": "2004-Q3",
+   "deger": "6.6",
+   "durum": "A"
+  },
+  {
+   "donem": "2004-Q4",
+   "deger": "6",
+   "durum": "A"
+  },
+  {
+   "donem": "2005-Q1",
+   "deger": "5.6",
+   "durum": "A"
+  },
+  {
+   "donem": "2005-Q2",
+   "deger": "5.2",
+   "durum": "A"
+  },
+  {
+   "donem": "2005-Q3",
+   "deger": "5",
+   "durum": "A"
+  },
+  {
+   "donem": "2005-Q4",
+   "deger": "5.8",
+   "durum": "A"
+  },
+  {
+   "donem": "2006-Q1",
+   "deger": "6.1",
+   "durum": "A"
+  },
+  {
+   "donem": "2006-Q2",
+   "deger": "6.6",
+   "durum": "A"
+  },
+  {
+   "donem": "2006-Q3",
+   "deger": "8.2",
+   "durum": "A"
+  },
+  {
+   "donem": "2006-Q4",
+   "deger": "8.2",
+   "durum": "A"
+  },
+  {
+   "donem": "2007-Q1",
+   "deger": "7.8",
+   "durum": "A"
+  },
+  {
+   "donem": "2007-Q2",
+   "deger": "7.9",
+   "durum": "A"
+  },
+  {
+   "donem": "2007-Q3",
+   "deger": "8",
+   "durum": "A"
+  },
+  {
+   "donem": "2007-Q4",
+   "deger": "8",
+   "durum": "A"
+  },
+  {
+   "donem": "2008-Q1",
+   "deger": "8.6",
+   "durum": "A"
+  },
+  {
+   "donem": "2008-Q2",
+   "deger": "9.1",
+   "durum": "A"
+  },
+  {
+   "donem": "2008-Q3",
+   "deger": "9.7",
+   "durum": "A"
+  },
+  {
+   "donem": "2008-Q4",
+   "deger": "11",
+   "durum": "A"
+  },
+  {
+   "donem": "2009-Q1",
+   "deger": "10.3",
+   "durum": "A"
+  },
+  {
+   "donem": "2009-Q2",
+   "deger": "8.5",
+   "durum": "A"
+  },
+  {
+   "donem": "2009-Q3",
+   "deger": "8",
+   "durum": "A"
+  },
+  {
+   "donem": "2009-Q4",
+   "deger": "7.1",
+   "durum": "A"
+  },
+  {
+   "donem": "2010-Q1",
+   "deger": "7",
+   "durum": "A"
+  },
+  {
+   "donem": "2010-Q2",
+   "deger": "7.3",
+   "durum": "A"
+  },
+  {
+   "donem": "2010-Q3",
+   "deger": "7.1",
+   "durum": "A"
+  },
+  {
+   "donem": "2010-Q4",
+   "deger": "7.2",
+   "durum": "A"
+  },
+  {
+   "donem": "2011-Q1",
+   "deger": "7.4",
+   "durum": "A"
+  },
+  {
+   "donem": "2011-Q2",
+   "deger": "8.3",
+   "durum": "A"
+  },
+  {
+   "donem": "2011-Q3",
+   "deger": "9.6",
+   "durum": "A"
+  },
+  {
+   "donem": "2011-Q4",
+   "deger": "10.2",
+   "durum": "A"
+  },
+  {
+   "donem": "2012-Q1",
+   "deger": "10.7",
+   "durum": "A"
+  },
+  {
+   "donem": "2012-Q2",
+   "deger": "10.4",
+   "durum": "A"
+  },
+  {
+   "donem": "2012-Q3",
+   "deger": "10.4",
+   "durum": "A"
+  },
+  {
+   "donem": "2012-Q4",
+   "deger": "9.5",
+   "durum": "A"
+  },
+  {
+   "donem": "2013-Q1",
+   "deger": "9.1",
+   "durum": "A"
+  },
+  {
+   "donem": "2013-Q2",
+   "deger": "9",
+   "durum": "A"
+  },
+  {
+   "donem": "2013-Q3",
+   "deger": "9.9",
+   "durum": "A"
+  },
+  {
+   "donem": "2013-Q4",
+   "deger": "10.2",
+   "durum": "A"
+  },
+  {
+   "donem": "2014-Q1",
+   "deger": "11.9",
+   "durum": "A"
+  },
+  {
+   "donem": "2014-Q2",
+   "deger": "12",
+   "durum": "A"
+  },
+  {
+   "donem": "2014-Q3",
+   "deger": "11.2",
+   "durum": "A"
+  },
+  {
+   "donem": "2014-Q4",
+   "deger": "11.4",
+   "durum": "A"
+  },
+  {
+   "donem": "2015-Q1",
+   "deger": "12",
+   "durum": "A"
+  },
+  {
+   "donem": "2015-Q2",
+   "deger": "12.7",
+   "durum": "A"
+  },
+  {
+   "donem": "2015-Q3",
+   "deger": "13.9",
+   "durum": "A"
+  },
+  {
+   "donem": "2015-Q4",
+   "deger": "14.2",
+   "durum": "A"
+  },
+  {
+   "donem": "2016-Q1",
+   "deger": "14.2",
+   "durum": "A"
+  },
+  {
+   "donem": "2016-Q2",
+   "deger": "14.2",
+   "durum": "A"
+  },
+  {
+   "donem": "2016-Q3",
+   "deger": "13.9",
+   "durum": "A"
+  },
+  {
+   "donem": "2016-Q4",
+   "deger": "14.2",
+   "durum": "A"
+  },
+  {
+   "donem": "2017-Q1",
+   "deger": "14.4",
+   "durum": "A"
+  },
+  {
+   "donem": "2017-Q2",
+   "deger": "14.9",
+   "durum": "A"
+  },
+  {
+   "donem": "2017-Q3",
+   "deger": "15.2",
+   "durum": "A"
+  },
+  {
+   "donem": "2017-Q4",
+   "deger": "15.5",
+   "durum": "A"
+  },
+  {
+   "donem": "2018-Q1",
+   "deger": "16.3",
+   "durum": "A"
+  },
+  {
+   "donem": "2018-Q2",
+   "deger": "17.7",
+   "durum": "A"
+  },
+  {
+   "donem": "2018-Q3",
+   "deger": "26.8",
+   "durum": "A"
+  },
+  {
+   "donem": "2018-Q4",
+   "deger": "26.4",
+   "durum": "A"
+  },
+  {
+   "donem": "2019-Q1",
+   "deger": "21.1",
+   "durum": "A"
+  },
+  {
+   "donem": "2019-Q2",
+   "deger": "21.9",
+   "durum": "A"
+  },
+  {
+   "donem": "2019-Q3",
+   "deger": "17.4",
+   "durum": "A"
+  },
+  {
+   "donem": "2019-Q4",
+   "deger": "13.4",
+   "durum": "A"
+  },
+  {
+   "donem": "2020-Q1",
+   "deger": "12.2",
+   "durum": "A"
+  },
+  {
+   "donem": "2020-Q2",
+   "deger": "12.2",
+   "durum": "A"
+  },
+  {
+   "donem": "2020-Q3",
+   "deger": "14.1",
+   "durum": "A"
+  },
+  {
+   "donem": "2020-Q4",
+   "deger": "16.8",
+   "durum": "A"
+  },
+  {
+   "donem": "2021-Q1",
+   "deger": "18.9",
+   "durum": "A"
+  },
+  {
+   "donem": "2021-Q2",
+   "deger": "18.7",
+   "durum": "A"
+  },
+  {
+   "donem": "2021-Q3",
+   "deger": "17.5",
+   "durum": "A"
+  },
+  {
+   "donem": "2021-Q4",
+   "deger": "18.8",
+   "durum": "A"
+  },
+  {
+   "donem": "2022-Q1",
+   "deger": "20.2",
+   "durum": "A"
+  },
+  {
+   "donem": "2022-Q2",
+   "deger": "19.1",
+   "durum": "A"
+  },
+  {
+   "donem": "2022-Q3",
+   "deger": "18.7",
+   "durum": "A"
+  },
+  {
+   "donem": "2022-Q4",
+   "deger": "13.6",
+   "durum": "A"
+  },
+  {
+   "donem": "2023-Q1",
+   "deger": "12.1",
+   "durum": "A"
+  },
+  {
+   "donem": "2023-Q2",
+   "deger": "13.9",
+   "durum": "A"
+  },
+  {
+   "donem": "2023-Q3",
+   "deger": "21.9",
+   "durum": "A"
+  },
+  {
+   "donem": "2023-Q4",
+   "deger": "29.8",
+   "durum": "A"
+  },
+  {
+   "donem": "2024-Q1",
+   "deger": "31",
+   "durum": "A"
+  },
+  {
+   "donem": "2024-Q2",
+   "deger": "34",
+   "durum": "A"
+  },
+  {
+   "donem": "2024-Q3",
+   "deger": "31",
+   "durum": "A"
+  },
+  {
+   "donem": "2024-Q4",
+   "deger": "28.7",
+   "durum": "A"
+  },
+  {
+   "donem": "2025-Q1",
+   "deger": "28.7",
+   "durum": "A"
+  },
+  {
+   "donem": "2025-Q2",
+   "deger": "31.5",
+   "durum": "A"
+  },
+  {
+   "donem": "2025-Q3",
+   "deger": "28.8",
+   "durum": "A"
+  },
+  {
+   "donem": "2025-Q4",
+   "deger": "27",
+   "durum": "A"
+  },
+  {
+   "donem": "2026-Q1",
+   "deger": "25.8",
+   "durum": "A"
+  }
+ ]
+}

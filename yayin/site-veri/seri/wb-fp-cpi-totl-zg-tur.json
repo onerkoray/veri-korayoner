@@ -16,13 +16,14 @@
   "lisans": "CC BY 4.0 (WDI veri seti)",
   "lisans_kanit": "https://datacatalog.worldbank.org/search/dataset/0037712/World-Development-Indicators",
   "lisans_inceleme": "2026-11-17",
-  "atif_zorunlu": true
+  "atif_zorunlu": true,
+  "kosullar": []
  },
  "kaynak_kod": "FP.CPI.TOTL.ZG",
  "kaynak_adi": "Inflation, consumer prices (annual %)",
  "kaynak_not": "International Financial Statistics database, International Monetary Fund (IMF)",
  "kaynak_guncelleme": "2026-11-11",
- "cekildi": "2026-11-17T10:39:57.293134Z",
+ "cekildi": "2026-11-17T10:55:40.719594Z",
  "izin": {
   "gosterim": true,
   "indirme": true,

@@ -50,6 +50,7 @@ class Lisans(Kati):
     kanit: str | None = None
     inceleme_tarihi: date | None = None
     atif_zorunlu: bool = True
+    kosullar: list[str] = Field(default_factory=list)   # şartın okura gösterilecek maddeleri
     not_: str | None = Field(default=None, alias="not")
 
 

@@ -12,7 +12,8 @@ const yol = `/gosterge/${s.id}`;
 const api = s.izin.api ? `/api/v1/seri/${s.id}.json` : null;
 const csv = s.izin.indirme ? `/api/v1/seri/${s.id}.csv` : null;
 const asil = (s.kaynak_not ?? "").split(/[;\n]/)[0].replace(/,?\s*uri:.*$/, "").trim() || null;
-const kaynakAdresi = s.kaynak.id === "world_bank" ? `https://data.worldbank.org/indicator/${s.kaynak_kod}?locations=TR` : s.kaynak.adres;
+const kaynakAdresi = s.kaynak.id === "world_bank" ? `https://data.worldbank.org/indicator/${s.kaynak_kod}?locations=TR`
+  : s.kaynak.id === "bis" ? `https://data.bis.org/topics/${s.kaynak_kod.split("/")[0].replace(/^WS_/, "")}` : s.kaynak.adres;
 const jsonld = {
   "@context": "https://schema.org", "@type": "Dataset",
   name: `${s.baslik} — Türkiye`, description: `${s.baslik}, ${d[0]?.donem}–${sn?.donem}. Kaynak: ${s.kaynak.kurum} (${s.kaynak_kod}).`,
@@ -57,6 +58,7 @@ const jsonld = {
           <div><dt>İnceleme</dt><dd>{tarih(s.kaynak.lisans_inceleme)}</dd></div>
           <div><dt>Atıf</dt><dd>{s.kaynak.atif_zorunlu ? `Zorunlu: "${s.kaynak.kurum}, ${s.kaynak_kod}${asil ? "; asıl kaynak: " + asil : ""}"` : "İsteğe bağlı"}</dd></div>
         </dl>
+        {(s.kaynak.kosullar ?? []).length > 0 && <ul class="kosul">{s.kaynak.kosullar!.map((k) => <li>{k}</li>)}</ul>}
         {api ? (
           <ul class="indir">
             <li><a href={api}>JSON</a></li>
@@ -100,6 +102,7 @@ const jsonld = {
   .indir { display: flex; gap: .5rem; flex-wrap: wrap; list-style: none; padding: 0; margin: 1rem 0 0; }
   .indir a { display: inline-block; border: 1px solid var(--metin); padding: .45rem .8rem; text-decoration: none; font: 600 .78rem/1 var(--mono); }
   .indir a:hover { background: var(--metin); color: var(--bg); }
+  .kosul { margin: 1rem 0 0; padding-left: 1.1rem; font-size: .82rem; color: var(--soluk); }
   .ham { color: var(--soluk); font-family: var(--mono); font-size: .8rem; }
   @media (max-width: 34rem) { .bilgi div { grid-template-columns: 1fr; gap: .15rem; } }
 </style>

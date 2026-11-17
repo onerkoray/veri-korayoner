@@ -16,13 +16,14 @@
   "lisans": "CC BY 4.0 (WDI veri seti)",
   "lisans_kanit": "https://datacatalog.worldbank.org/search/dataset/0037712/World-Development-Indicators",
   "lisans_inceleme": "2026-11-17",
-  "atif_zorunlu": true
+  "atif_zorunlu": true,
+  "kosullar": []
  },
  "kaynak_kod": "BN.CAB.XOKA.GD.ZS",
  "kaynak_adi": "Current account balance (% of GDP)",
  "kaynak_not": "Balance of Payments Statistics Yearbook and data files, International Monetary Fund (IMF);\nWorld Development Indicators Database, World Bank (WB);\nNational Accounts data files, Organisation for Economic Co-operation and Development (OECD)",
  "kaynak_guncelleme": "2026-11-11",
- "cekildi": "2026-11-17T10:39:57.293134Z",
+ "cekildi": "2026-11-17T10:55:40.719594Z",
  "izin": {
   "gosterim": true,
   "indirme": true,

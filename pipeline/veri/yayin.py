@@ -109,7 +109,7 @@ def kaynak_ozeti(k: Kaynak) -> dict:
     return {"id": k.id, "ad": k.ad, "kurum": k.kurum, "adres": k.adres, "belge": k.belge,
             "lisans": k.lisans.ad, "lisans_kanit": k.lisans.kanit,
             "lisans_inceleme": k.lisans.inceleme_tarihi.isoformat() if k.lisans.inceleme_tarihi else None,
-            "atif_zorunlu": k.lisans.atif_zorunlu}
+            "atif_zorunlu": k.lisans.atif_zorunlu, "kosullar": list(k.lisans.kosullar)}
 
 
 def katalog(kaynaklar: dict[str, Kaynak], seriler: list[SeriTanimi], cikti: Path, simdi: datetime) -> None:

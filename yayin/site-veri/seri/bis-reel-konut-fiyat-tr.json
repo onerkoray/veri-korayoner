@@ -1,0 +1,369 @@
+{
+ "surum": 1,
+ "id": "bis-reel-konut-fiyat-tr",
+ "baslik": "Reel konut fiyatları",
+ "ulke": "TUR",
+ "siklik": "ceyreklik",
+ "birim": "endeks",
+ "carpan": 1,
+ "tema": "konut",
+ "kaynak": {
+  "id": "bis",
+  "ad": "BIS Veri Portalı",
+  "kurum": "Uluslararası Ödemeler Bankası (BIS)",
+  "adres": "https://data.bis.org/",
+  "belge": "https://stats.bis.org/api-doc/v2/",
+  "lisans": "BIS istatistik kullanım şartları",
+  "lisans_kanit": "https://data.bis.org/help/legal",
+  "lisans_inceleme": "2026-11-17",
+  "atif_zorunlu": true,
+  "kosullar": [
+   "Kaynak: BIS (Uluslararası Ödemeler Bankası).",
+   "Seri adları Türkçeye çevrilmiştir; çeviri resmî BIS çevirisi değildir.",
+   "Bu site BIS ile bağlantılı değildir; BIS'in onayını taşımaz.",
+   "BIS verinin doğruluğunu garanti etmez; veri yatırım tavsiyesi değildir."
+  ]
+ },
+ "kaynak_kod": "WS_SPP/1.0/Q.TR.R.628",
+ "kaynak_adi": null,
+ "kaynak_not": null,
+ "kaynak_guncelleme": null,
+ "cekildi": "2026-11-17T10:55:40.719594Z",
+ "izin": {
+  "gosterim": true,
+  "indirme": true,
+  "api": true
+ },
+ "gozlemler": [
+  {
+   "donem": "2010-Q1",
+   "deger": "98.667",
+   "durum": "A"
+  },
+  {
+   "donem": "2010-Q2",
+   "deger": "99.5758",
+   "durum": "A"
+  },
+  {
+   "donem": "2010-Q3",
+   "deger": "101.303",
+   "durum": "A"
+  },
+  {
+   "donem": "2010-Q4",
+   "deger": "100.4339",
+   "durum": "A"
+  },
+  {
+   "donem": "2011-Q1",
+   "deger": "102.3472",
+   "durum": "A"
+  },
+  {
+   "donem": "2011-Q2",
+   "deger": "102.6424",
+   "durum": "A"
+  },
+  {
+   "donem": "2011-Q3",
+   "deger": "103.4895",
+   "durum": "A"
+  },
+  {
+   "donem": "2011-Q4",
+   "deger": "100.3786",
+   "durum": "A"
+  },
+  {
+   "donem": "2012-Q1",
+   "deger": "101.8611",
+   "durum": "A"
+  },
+  {
+   "donem": "2012-Q2",
+   "deger": "103.5139",
+   "durum": "A"
+  },
+  {
+   "donem": "2012-Q3",
+   "deger": "106.4763",
+   "durum": "A"
+  },
+  {
+   "donem": "2012-Q4",
+   "deger": "104.4463",
+   "durum": "A"
+  },
+  {
+   "donem": "2013-Q1",
+   "deger": "105.3111",
+   "durum": "A"
+  },
+  {
+   "donem": "2013-Q2",
+   "deger": "107.501",
+   "durum": "A"
+  },
+  {
+   "donem": "2013-Q3",
+   "deger": "109.4455",
+   "durum": "A"
+  },
+  {
+   "donem": "2013-Q4",
+   "deger": "109.218",
+   "durum": "A"
+  },
+  {
+   "donem": "2014-Q1",
+   "deger": "109.0294",
+   "durum": "A"
+  },
+  {
+   "donem": "2014-Q2",
+   "deger": "109.8643",
+   "durum": "A"
+  },
+  {
+   "donem": "2014-Q3",
+   "deger": "112.9886",
+   "durum": "A"
+  },
+  {
+   "donem": "2014-Q4",
+   "deger": "113.9361",
+   "durum": "A"
+  },
+  {
+   "donem": "2015-Q1",
+   "deger": "116.9929",
+   "durum": "A"
+  },
+  {
+   "donem": "2015-Q2",
+   "deger": "118.8821",
+   "durum": "A"
+  },
+  {
+   "donem": "2015-Q3",
+   "deger": "121.5902",
+   "durum": "A"
+  },
+  {
+   "donem": "2015-Q4",
+   "deger": "121.8402",
+   "durum": "A"
+  },
+  {
+   "donem": "2016-Q1",
+   "deger": "123.1461",
+   "durum": "A"
+  },
+  {
+   "donem": "2016-Q2",
+   "deger": "125.3962",
+   "durum": "A"
+  },
+  {
+   "donem": "2016-Q3",
+   "deger": "126.6356",
+   "durum": "A"
+  },
+  {
+   "donem": "2016-Q4",
+   "deger": "126.4647",
+   "durum": "A"
+  },
+  {
+   "donem": "2017-Q1",
+   "deger": "125.0527",
+   "durum": "A"
+  },
+  {
+   "donem": "2017-Q2",
+   "deger": "125.6672",
+   "durum": "A"
+  },
+  {
+   "donem": "2017-Q3",
+   "deger": "126.0323",
+   "durum": "A"
+  },
+  {
+   "donem": "2017-Q4",
+   "deger": "123.5408",
+   "durum": "A"
+  },
+  {
+   "donem": "2018-Q1",
+   "deger": "122.6243",
+   "durum": "A"
+  },
+  {
+   "donem": "2018-Q2",
+   "deger": "120.7603",
+   "durum": "A"
+  },
+  {
+   "donem": "2018-Q3",
+   "deger": "113.9486",
+   "durum": "A"
+  },
+  {
+   "donem": "2018-Q4",
+   "deger": "107.8824",
+   "durum": "A"
+  },
+  {
+   "donem": "2019-Q1",
+   "deger": "106.4432",
+   "durum": "A"
+  },
+  {
+   "donem": "2019-Q2",
+   "deger": "104.9626",
+   "durum": "A"
+  },
+  {
+   "donem": "2019-Q3",
+   "deger": "105.1617",
+   "durum": "A"
+  },
+  {
+   "donem": "2019-Q4",
+   "deger": "105.4104",
+   "durum": "A"
+  },
+  {
+   "donem": "2020-Q1",
+   "deger": "109.122",
+   "durum": "A"
+  },
+  {
+   "donem": "2020-Q2",
+   "deger": "112.4422",
+   "durum": "A"
+  },
+  {
+   "donem": "2020-Q3",
+   "deger": "120.9012",
+   "durum": "A"
+  },
+  {
+   "donem": "2020-Q4",
+   "deger": "121.9727",
+   "durum": "A"
+  },
+  {
+   "donem": "2021-Q1",
+   "deger": "124.0875",
+   "durum": "A"
+  },
+  {
+   "donem": "2021-Q2",
+   "deger": "128.9821",
+   "durum": "A"
+  },
+  {
+   "donem": "2021-Q3",
+   "deger": "135.1111",
+   "durum": "A"
+  },
+  {
+   "donem": "2021-Q4",
+   "deger": "144.5983",
+   "durum": "A"
+  },
+  {
+   "donem": "2022-Q1",
+   "deger": "154.1213",
+   "durum": "A"
+  },
+  {
+   "donem": "2022-Q2",
+   "deger": "180.2568",
+   "durum": "A"
+  },
+  {
+   "donem": "2022-Q3",
+   "deger": "209.2833",
+   "durum": "A"
+  },
+  {
+   "donem": "2022-Q4",
+   "deger": "220.4977",
+   "durum": "A"
+  },
+  {
+   "donem": "2023-Q1",
+   "deger": "242.3363",
+   "durum": "A"
+  },
+  {
+   "donem": "2023-Q2",
+   "deger": "263.6974",
+   "durum": "A"
+  },
+  {
+   "donem": "2023-Q3",
+   "deger": "259.6401",
+   "durum": "A"
+  },
+  {
+   "donem": "2023-Q4",
+   "deger": "253.7517",
+   "durum": "A"
+  },
+  {
+   "donem": "2024-Q1",
+   "deger": "237.2795",
+   "durum": "A"
+  },
+  {
+   "donem": "2024-Q2",
+   "deger": "229.126",
+   "durum": "A"
+  },
+  {
+   "donem": "2024-Q3",
+   "deger": "224.5576",
+   "durum": "A"
+  },
+  {
+   "donem": "2024-Q4",
+   "deger": "222.438",
+   "durum": "A"
+  },
+  {
+   "donem": "2025-Q1",
+   "deger": "223.9213",
+   "durum": "A"
+  },
+  {
+   "donem": "2025-Q2",
+   "deger": "223.3516",
+   "durum": "A"
+  },
+  {
+   "donem": "2025-Q3",
+   "deger": "222.6649",
+   "durum": "A"
+  },
+  {
+   "donem": "2025-Q4",
+   "deger": "220.7692",
+   "durum": "A"
+  },
+  {
+   "donem": "2026-Q1",
+   "deger": "216.5682",
+   "durum": "A"
+  },
+  {
+   "donem": "2026-Q2",
+   "deger": "211.1649",
+   "durum": "A"
+  }
+ ]
+}

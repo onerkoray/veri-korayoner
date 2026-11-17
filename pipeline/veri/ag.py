@@ -15,7 +15,7 @@ from urllib.parse import urlsplit
 import httpx
 
 KULLANICI = "veri.korayoner.dev/0.1 (+https://veri.korayoner.dev/hakkinda)"
-IZINLI_HOSTLAR = frozenset({"api.worldbank.org"})
+IZINLI_HOSTLAR = frozenset({"api.worldbank.org", "stats.bis.org"})
 AZAMI_BOYUT = 20 * 1024 * 1024
 DENEME = 5
 
@@ -30,7 +30,7 @@ def getir(url: str, *, istemci: httpx.Client | None = None, uyu=time.sleep) -> b
         raise AgHatasi(f"izinsiz adres: {url}")
     kendi = istemci is None
     ist = istemci or httpx.Client(timeout=httpx.Timeout(30.0, connect=10.0), follow_redirects=False,
-                                   headers={"User-Agent": KULLANICI, "Accept": "application/json"})
+                                   headers={"User-Agent": KULLANICI, "Accept": "application/json, text/csv;q=0.9"})
     try:
         son_hata: str = ""
         for deneme in range(DENEME):

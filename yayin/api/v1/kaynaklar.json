@@ -1,6 +1,6 @@
 {
  "surum": 1,
- "uretildi": "2026-11-17T10:39:57.293134Z",
+ "uretildi": "2026-11-17T10:55:40.719594Z",
  "kaynaklar": [
   {
    "id": "world_bank",
@@ -12,7 +12,8 @@
    "lisans_kanit": "https://datacatalog.worldbank.org/search/dataset/0037712/World-Development-Indicators",
    "lisans_inceleme": "2026-11-17",
    "atif_zorunlu": true,
-   "durum": "gelistiriliyor",
+   "kosullar": [],
+   "durum": "aktif",
    "erisim": "REST JSON",
    "yayin": {
     "gosterim": true,
@@ -26,16 +27,22 @@
    "kurum": "Uluslararası Ödemeler Bankası (BIS)",
    "adres": "https://data.bis.org/",
    "belge": "https://stats.bis.org/api-doc/v2/",
-   "lisans": null,
-   "lisans_kanit": null,
-   "lisans_inceleme": null,
+   "lisans": "BIS istatistik kullanım şartları",
+   "lisans_kanit": "https://data.bis.org/help/legal",
+   "lisans_inceleme": "2026-11-17",
    "atif_zorunlu": true,
-   "durum": "planlandi",
+   "kosullar": [
+    "Kaynak: BIS (Uluslararası Ödemeler Bankası).",
+    "Seri adları Türkçeye çevrilmiştir; çeviri resmî BIS çevirisi değildir.",
+    "Bu site BIS ile bağlantılı değildir; BIS'in onayını taşımaz.",
+    "BIS verinin doğruluğunu garanti etmez; veri yatırım tavsiyesi değildir."
+   ],
+   "durum": "aktif",
    "erisim": "SDMX REST",
    "yayin": {
-    "gosterim": false,
-    "indirme": false,
-    "api": false
+    "gosterim": true,
+    "indirme": true,
+    "api": true
    }
   },
   {
@@ -48,6 +55,7 @@
    "lisans_kanit": null,
    "lisans_inceleme": null,
    "atif_zorunlu": true,
+   "kosullar": [],
    "durum": "planlandi",
    "erisim": "SDMX",
    "yayin": {
@@ -66,6 +74,7 @@
    "lisans_kanit": null,
    "lisans_inceleme": null,
    "atif_zorunlu": true,
+   "kosullar": [],
    "durum": "planlandi",
    "erisim": "SDMX REST",
    "yayin": {
@@ -84,6 +93,7 @@
    "lisans_kanit": null,
    "lisans_inceleme": null,
    "atif_zorunlu": true,
+   "kosullar": [],
    "durum": "planlandi",
    "erisim": "REST / SDMX",
    "yayin": {
@@ -102,6 +112,7 @@
    "lisans_kanit": null,
    "lisans_inceleme": null,
    "atif_zorunlu": true,
+   "kosullar": [],
    "durum": "planlandi",
    "erisim": "SDMX REST",
    "yayin": {
@@ -120,6 +131,7 @@
    "lisans_kanit": null,
    "lisans_inceleme": null,
    "atif_zorunlu": true,
+   "kosullar": [],
    "durum": "planlandi",
    "erisim": "REST JSON/CSV/XML",
    "yayin": {
@@ -138,6 +150,7 @@
    "lisans_kanit": null,
    "lisans_inceleme": null,
    "atif_zorunlu": true,
+   "kosullar": [],
    "durum": "anahtar-gerekli",
    "erisim": "REST",
    "yayin": {
@@ -156,6 +169,7 @@
    "lisans_kanit": null,
    "lisans_inceleme": null,
    "atif_zorunlu": true,
+   "kosullar": [],
    "durum": "anahtar-gerekli",
    "erisim": "REST",
    "yayin": {
@@ -174,6 +188,7 @@
    "lisans_kanit": null,
    "lisans_inceleme": null,
    "atif_zorunlu": true,
+   "kosullar": [],
    "durum": "lisans-gerekli",
    "erisim": "Lisanslı dağıtım",
    "yayin": {

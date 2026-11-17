@@ -1,6 +1,6 @@
 {
  "surum": 1,
- "uretildi": "2026-11-17T10:39:57.293134Z",
+ "uretildi": "2026-11-17T10:55:40.719594Z",
  "seriler": [
   {
    "id": "wb-ny-gdp-mktp-cd-tur",
@@ -15,7 +15,7 @@
     "durum": null
    },
    "kaynak_guncelleme": "2026-11-11",
-   "cekildi": "2026-11-17T10:39:57.293134Z",
+   "cekildi": "2026-11-17T10:55:40.719594Z",
    "izin": {
     "gosterim": true,
     "indirme": true,
@@ -37,7 +37,7 @@
     "durum": null
    },
    "kaynak_guncelleme": "2026-11-11",
-   "cekildi": "2026-11-17T10:39:57.293134Z",
+   "cekildi": "2026-11-17T10:55:40.719594Z",
    "izin": {
     "gosterim": true,
     "indirme": true,
@@ -59,7 +59,7 @@
     "durum": null
    },
    "kaynak_guncelleme": "2026-11-11",
-   "cekildi": "2026-11-17T09:09:15.854122Z",
+   "cekildi": "2026-11-17T10:55:40.719594Z",
    "izin": {
     "gosterim": true,
     "indirme": true,
@@ -81,7 +81,7 @@
     "durum": null
    },
    "kaynak_guncelleme": "2026-11-11",
-   "cekildi": "2026-11-17T10:39:57.293134Z",
+   "cekildi": "2026-11-17T10:55:40.719594Z",
    "izin": {
     "gosterim": true,
     "indirme": true,
@@ -103,7 +103,7 @@
     "durum": null
    },
    "kaynak_guncelleme": "2026-11-11",
-   "cekildi": "2026-11-17T10:39:57.293134Z",
+   "cekildi": "2026-11-17T10:55:40.719594Z",
    "izin": {
     "gosterim": true,
     "indirme": true,
@@ -125,7 +125,7 @@
     "durum": null
    },
    "kaynak_guncelleme": "2026-11-11",
-   "cekildi": "2026-11-17T10:39:57.293134Z",
+   "cekildi": "2026-11-17T10:55:40.719594Z",
    "izin": {
     "gosterim": true,
     "indirme": false,
@@ -133,6 +133,182 @@
    },
    "api": null,
    "csv": null
+  },
+  {
+   "id": "wb-fi-res-totl-cd-tur",
+   "baslik": "Toplam rezervler (altın dahil), cari ABD doları",
+   "tema": "doviz-rezerv",
+   "siklik": "yillik",
+   "birim": "USD",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "185567690700.458",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-17T10:55:40.719594Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/wb-fi-res-totl-cd-tur.json",
+   "csv": "/api/v1/seri/wb-fi-res-totl-cd-tur.csv"
+  },
+  {
+   "id": "bis-politika-faizi-tr",
+   "baslik": "Merkez bankası politika faizi, ay sonu",
+   "tema": "para-politikasi",
+   "siklik": "aylik",
+   "birim": "yuzde",
+   "kaynak": "bis",
+   "son": {
+    "donem": "2026-10",
+    "deger": "36",
+    "durum": "A"
+   },
+   "kaynak_guncelleme": null,
+   "cekildi": "2026-11-17T10:55:40.719594Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/bis-politika-faizi-tr.json",
+   "csv": "/api/v1/seri/bis-politika-faizi-tr.csv"
+  },
+  {
+   "id": "bis-tufe-yillik-tr",
+   "baslik": "Tüketici fiyatları, yıllık değişim",
+   "tema": "enflasyon",
+   "siklik": "aylik",
+   "birim": "yuzde",
+   "kaynak": "bis",
+   "son": {
+    "donem": "2026-09",
+    "deger": "29.7315182454",
+    "durum": "A"
+   },
+   "kaynak_guncelleme": null,
+   "cekildi": "2026-11-17T10:55:40.719594Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/bis-tufe-yillik-tr.json",
+   "csv": "/api/v1/seri/bis-tufe-yillik-tr.csv"
+  },
+  {
+   "id": "bis-usd-try-ortalama",
+   "baslik": "ABD doları kuru, aylık ortalama",
+   "tema": "doviz-rezerv",
+   "siklik": "aylik",
+   "birim": "TRY/USD",
+   "kaynak": "bis",
+   "son": {
+    "donem": "2026-10",
+    "deger": "49.47299840464",
+    "durum": "A"
+   },
+   "kaynak_guncelleme": null,
+   "cekildi": "2026-11-17T10:55:40.719594Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/bis-usd-try-ortalama.json",
+   "csv": "/api/v1/seri/bis-usd-try-ortalama.csv"
+  },
+  {
+   "id": "bis-reel-efektif-kur-tr",
+   "baslik": "Reel efektif döviz kuru, geniş sepet (64 ekonomi)",
+   "tema": "doviz-rezerv",
+   "siklik": "aylik",
+   "birim": "endeks",
+   "kaynak": "bis",
+   "son": {
+    "donem": "2026-09",
+    "deger": "108.26",
+    "durum": "A"
+   },
+   "kaynak_guncelleme": null,
+   "cekildi": "2026-11-17T10:55:40.719594Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/bis-reel-efektif-kur-tr.json",
+   "csv": "/api/v1/seri/bis-reel-efektif-kur-tr.csv"
+  },
+  {
+   "id": "bis-reel-konut-fiyat-tr",
+   "baslik": "Reel konut fiyatları",
+   "tema": "konut",
+   "siklik": "ceyreklik",
+   "birim": "endeks",
+   "kaynak": "bis",
+   "son": {
+    "donem": "2026-Q2",
+    "deger": "211.1649",
+    "durum": "A"
+   },
+   "kaynak_guncelleme": null,
+   "cekildi": "2026-11-17T10:55:40.719594Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/bis-reel-konut-fiyat-tr.json",
+   "csv": "/api/v1/seri/bis-reel-konut-fiyat-tr.csv"
+  },
+  {
+   "id": "bis-ozel-kredi-gsyh-tr",
+   "baslik": "Özel finansal olmayan kesime kredi, GSYH'ye oran",
+   "tema": "bankacilik",
+   "siklik": "ceyreklik",
+   "birim": "yuzde-gsyh",
+   "kaynak": "bis",
+   "son": {
+    "donem": "2026-Q1",
+    "deger": "49.1",
+    "durum": "A"
+   },
+   "kaynak_guncelleme": null,
+   "cekildi": "2026-11-17T10:55:40.719594Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/bis-ozel-kredi-gsyh-tr.json",
+   "csv": "/api/v1/seri/bis-ozel-kredi-gsyh-tr.csv"
+  },
+  {
+   "id": "bis-borc-servis-orani-tr",
+   "baslik": "Özel kesim borç servis oranı",
+   "tema": "bankacilik",
+   "siklik": "ceyreklik",
+   "birim": "yuzde",
+   "kaynak": "bis",
+   "son": {
+    "donem": "2026-Q1",
+    "deger": "25.8",
+    "durum": "A"
+   },
+   "kaynak_guncelleme": null,
+   "cekildi": "2026-11-17T10:55:40.719594Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/bis-borc-servis-orani-tr.json",
+   "csv": "/api/v1/seri/bis-borc-servis-orani-tr.csv"
   }
  ]
 }
