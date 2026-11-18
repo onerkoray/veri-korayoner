@@ -12,6 +12,7 @@ import { noktalar } from "../lib/veri";
 const ss = seriler();
 const ks = kaynaklar();
 const acik = ks.filter((k) => k.yayin.gosterim).length;
+const veren = ks.filter((k) => ss.some((s) => s.kaynak.id === k.id)).length;
 const reel = reelPaket();
 const reelSon = reel?.r.at(-1);
 const isr = reel ? isaretSuresi(reel.r) : null;
@@ -49,7 +50,7 @@ const ARACLAR: [string, string][] = [
 ];
 
 const baslik = "Koray Öner — Türkiye Verisi Üzerine Hesaplar";
-const aciklama = `Koray Öner'in Türkiye ekonomisi veri çalışmaları: ${acik} uluslararası kurumdan ${ss.length} seri, emsal ülke sıralamaları, reel faiz hesabı ve korayoner.dev'deki veriye dayalı yazılar.`;
+const aciklama = `Koray Öner'in Türkiye ekonomisi veri çalışmaları: ${veren} uluslararası kurumdan ${ss.length} seri, emsal ülke sıralamaları, reel faiz hesabı ve korayoner.dev'deki veriye dayalı yazılar.`;
 const jsonld = {
   "@context": "https://schema.org",
   "@graph": [

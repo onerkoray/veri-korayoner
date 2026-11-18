@@ -10,7 +10,7 @@ import { KISI } from "../lib/kimlik";
 
 const ss = seriler();
 const ks = kaynaklar();
-const aktif = ks.filter((k) => k.yayin.gosterim);
+const aktif = ks.filter((k) => ss.some((s) => s.kaynak.id === k.id));   // en az bir serisi yayında olan kurumlar
 const gruplar = TEMA_SIRA.map((t) => ({ t, ad: TEMA[t], liste: ss.filter((s) => s.tema === t) })).filter((g) => g.liste.length);
 const gozlemSayisi = ss.reduce((a, s) => a + s.gozlemler.filter((g) => g.deger != null).length, 0);
 
@@ -38,11 +38,11 @@ const jsonld = {
   ],
 };
 ---
-<Taban baslik="Türkiye Verisi — uluslararası kurumların Türkiye serileri ve emsal karşılaştırması" aciklama="BIS, Dünya Bankası, OECD, ECB ve Eurostat'ın Türkiye verileri: emsal ülkelerle sıralama, reel faiz hesabı, revizyon kaydı, lisansıyla açık API." yol="/" jsonld={jsonld}>
+<Taban baslik="Türkiye Verisi — uluslararası kurumların Türkiye serileri ve emsal karşılaştırması" aciklama="BIS, Dünya Bankası, OECD ve Eurostat'ın Türkiye verileri: emsal ülkelerle sıralama, reel faiz hesabı, revizyon kaydı, lisansıyla açık API." yol="/" jsonld={jsonld}>
   <section class="sar giris">
     <p class="etiket">Türkiye · uluslararası kaynaklar</p>
     <h1>Türkiye, kurumların verisiyle ve emsalleriyle.</h1>
-    <p class="ozet">BIS, Dünya Bankası, OECD, ECB ve Eurostat'ın Türkiye serileri her iş günü sabah asıl kaynağından çekilir. Her gösterge Türkiye'yle sık karşılaştırılan ekonomilerin aynı serisiyle yan yana durur; sıralama, medyan ve tarihsel konum veriden hesaplanır.</p>
+    <p class="ozet">BIS, Dünya Bankası, OECD ve Eurostat'ın Türkiye serileri her iş günü sabah asıl kaynağından çekilir. Her gösterge Türkiye'yle sık karşılaştırılan ekonomilerin aynı serisiyle yan yana durur; sıralama, medyan ve tarihsel konum veriden hesaplanır.</p>
     <p class="gezgin-cta"><a href="/gezgin">Veri gezginini açın →</a> <span>Göstergeleri seçin; aylık, çeyreklik ya da yıllık karşılaştırın, yıl×ay tablosunda görün, CSV indirin.</span></p>
     <dl class="durum">
       <div><dt>Gösterge</dt><dd class="sayi">{ss.length}</dd></div>

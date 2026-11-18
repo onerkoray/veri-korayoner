@@ -18,11 +18,11 @@ const site = "https://veri.korayoner.dev";
 const jsonld = {
   "@context": "https://schema.org", "@type": "Dataset",
   name: "Türkiye makroekonomik panel veri seti (aylık, çeyreklik, yıllık)",
-  description: `BIS, Dünya Bankası, OECD, ECB ve Eurostat'ın ${panelSayisi} Türkiye serisi tek panelde: her seri kendi sıklığında ve daha seyrek sıklıklarda dönem ortalaması ile dönem sonu değeri, eksik dönem işaretiyle. ${ilkYil}–${sonYil}.`,
+  description: `BIS, Dünya Bankası, OECD ve Eurostat'ın ${panelSayisi} Türkiye serisi tek panelde: her seri kendi sıklığında ve daha seyrek sıklıklarda dönem ortalaması ile dönem sonu değeri, eksik dönem işaretiyle. ${ilkYil}–${sonYil}.`,
   url: `${site}/gezgin`, inLanguage: "tr", isAccessibleForFree: true,
   temporalCoverage: `${ilkYil}/${sonYil}`, spatialCoverage: { "@type": "Country", name: "Türkiye" },
   creator: KISI_REF, maintainer: KISI_REF,
-  isBasedOn: ["https://data.bis.org/", "https://data.worldbank.org/", "https://data-explorer.oecd.org/", "https://data.ecb.europa.eu/", "https://ec.europa.eu/eurostat"],
+  isBasedOn: ["https://data.bis.org/", "https://data.worldbank.org/", "https://data-explorer.oecd.org/", "https://ec.europa.eu/eurostat"],
   variableMeasured: ss.filter((s) => s.izin.indirme).map((s) => s.baslik),
   distribution: ["aylik", "ceyreklik", "yillik"].flatMap((h) => [
     { "@type": "DataDownload", name: `${siklikAdi(h)} panel (CSV, geniş)`, encodingFormat: "text/csv", contentUrl: `${site}/api/v1/panel/${h}.csv` },
@@ -31,7 +31,7 @@ const jsonld = {
   dateModified: uretildi().slice(0, 10),
 };
 ---
-<Taban baslik="Veri gezgini — Türkiye makroekonomik panel veri seti | Türkiye Verisi" aciklama={`Türkiye'nin ${panelSayisi} makroekonomik serisi yıl, çeyrek ve ay düzeyinde: göstergeleri seçin, karşılaştırın, yıl×ay tablosunda görün, CSV indirin. Kaynak BIS, Dünya Bankası, OECD, ECB, Eurostat.`} yol="/gezgin" jsonld={jsonld}>
+<Taban baslik="Veri gezgini — Türkiye makroekonomik panel veri seti | Türkiye Verisi" aciklama={`Türkiye'nin ${panelSayisi} makroekonomik serisi yıl, çeyrek ve ay düzeyinde: göstergeleri seçin, karşılaştırın, yıl×ay tablosunda görün, CSV indirin. Kaynak BIS, Dünya Bankası, OECD, Eurostat.`} yol="/gezgin" jsonld={jsonld}>
   <div class="sar gezgin">
     <header class="g-bas">
       <p class="etiket">Veri seti · {panelSayisi} seri · {ilkYil}–{sonYil}</p>

@@ -52,7 +52,17 @@
   "redirects": [
     {
       "source": "/gosterge/ecb-eur-try-gunluk",
-      "destination": "/gosterge/ecb-eur-try-aylik",
+      "destination": "/gezgin",
+      "permanent": true
+    },
+    {
+      "source": "/gosterge/ecb-eur-try-aylik",
+      "destination": "/gezgin",
+      "permanent": true
+    },
+    {
+      "source": "/gosterge/bis-usd-try-ortalama",
+      "destination": "/gezgin",
       "permanent": true
     }
   ]

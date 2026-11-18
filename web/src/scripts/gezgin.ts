@@ -12,7 +12,7 @@ const SIKLIK: Record<string, string> = { aylik: "aylık", ceyreklik: "çeyreklik
 const AY = ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"];
 const AY_UZUN = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
 const AZAMI = 6;
-const VARSAYILAN = ["bis-tufe-yillik-tr", "bis-politika-faizi-tr", "ecb-eur-try-aylik"];
+const VARSAYILAN = ["bis-tufe-yillik-tr", "bis-politika-faizi-tr", "eurostat-issizlik-aylik-tr"];
 
 const n1 = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 const n2 = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
