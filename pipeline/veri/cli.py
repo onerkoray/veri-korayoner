@@ -15,11 +15,11 @@ import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
-from . import gol
+from . import gol, panel
 from .baglayicilar import baglayici
 from .kayit import KOK, kaynaklar, seriler
 from .modeller import SeriDosyasi
-from .yayin import emsal_yaz, farklar, gunluge_ekle, izin, katalog, kaynak_ozeti, onceki, yayinla
+from .yayin import _yaz_atomik, emsal_yaz, farklar, gunluge_ekle, izin, katalog, kaynak_ozeti, onceki, yayinla
 
 CIKTI = KOK / "yayin"
 
@@ -75,6 +75,7 @@ def guncelle(secili: list[str] | None, cikti: Path = CIKTI) -> int:
     gunluge_ekle(olaylar, cikti)
     katalog(ks, ss, cikti, simdi)
     print('göl  ' + ('yazıldı' if gol.yaz(cikti) else 'aynı'))
+    print(f"panel  {len(panel.yaz(cikti, _yaz_atomik))} dosya yazıldı")
     return 1 if hata else 0
 
 
@@ -104,6 +105,11 @@ def denetle(cikti: Path = CIKTI) -> int:
     for yol in [*(cikti / "api" / "v1" / "seri").glob("*"), *(cikti / "api" / "v1" / "emsal").glob("*")]:
         if yol.stem not in bilinen:
             sorun.append(f"{yol.relative_to(cikti)}: kayıtta olmayan seri")
+    indirilebilir = {s.id for s in ss if izin(ks[s.kaynak], s).indirme}
+    for yol in (cikti / "api" / "v1" / "panel").glob("*.json"):
+        for t in json.loads(yol.read_text(encoding="utf-8"))["seriler"]:
+            if t["id"] not in indirilebilir:
+                sorun.append(f"{yol.relative_to(cikti)}: indirme izni olmayan seri panelde: {t['id']}")
     for x in sorun:
         print("  SORUN  " + x)
     print(f"{len(ks)} kaynak, {len(ss)} seri; {len(sorun)} sorun.")
@@ -116,12 +122,16 @@ def main(argv: list[str] | None = None) -> int:
     g = alt.add_parser("guncelle")
     g.add_argument("--seri", action="append")
     alt.add_parser("katalog")
+    alt.add_parser("panel")
     alt.add_parser("denetle")
     a = p.parse_args(argv)
     if a.komut == "guncelle":
         return guncelle(a.seri)
     if a.komut == "katalog":
         katalog(kaynaklar(), seriler(), CIKTI, datetime.now(UTC))
+        return 0
+    if a.komut == "panel":
+        print(f"panel  {len(panel.yaz(CIKTI, _yaz_atomik))} dosya yazıldı")
         return 0
     return denetle()
 

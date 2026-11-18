@@ -185,17 +185,17 @@ seriler:
     not: Uzun dönem ortalaması = 100. 100'ün üstü ekonomik faaliyetin eğilimin üzerinde seyredeceğine işaret eder; tahmin değil öncü sinyaldir.
 
   # ---- ECB (SDMX; kod = akış/anahtar; kurda ülke yerine para birimi) ----------------
-  - id: ecb-eur-try-gunluk
+  - id: ecb-eur-try-aylik
     kaynak: ecb
-    kod: EXR/D.TRY.EUR.SP00.A
+    kod: EXR/M.TRY.EUR.SP00.A
     ulke: TUR
-    baslik: Euro referans kuru, 1 euro kaç TL
+    baslik: Euro kuru, aylık ortalama, 1 euro kaç TL
     tema: doviz-rezerv
-    siklik: gunluk
+    siklik: aylik
     birim: TRY/EUR
     carpan: 1
-    baslangic: "2005-01-01"
-    not: ECB'nin her iş günü 14.15 CET tespitiyle yayımladığı referans kuru; işlem kuru değildir. 2005 öncesi eski TL milyonda bire bölünmüş olduğundan seri 2005'ten başlatılır.
+    baslangic: "2005-01"
+    not: ECB'nin günlük referans kurlarının (14.15 CET tespiti) ECB tarafından hesaplanan aylık ortalaması; işlem kuru değildir. 2005 öncesi eski TL milyonda bire bölünmüş olduğundan seri 2005'ten başlatılır. Bu site günlük kur yayımlamaz.
 
   # ---- Eurostat (SDMX 2.1; kod = veri seti/anahtar; emsal yalnız AB) -----------------
   - id: eurostat-hicp-yillik-tr

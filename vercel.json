@@ -48,5 +48,12 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/gosterge/ecb-eur-try-gunluk",
+      "destination": "/gosterge/ecb-eur-try-aylik",
+      "permanent": true
+    }
   ]
 }

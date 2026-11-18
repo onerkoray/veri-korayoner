@@ -11,6 +11,7 @@ export const GET: APIRoute = ({ site }) => {
   const reel = reelPaket();
   const satir: [string, string | null][] = [
     ["/", gun(enSon)],
+    ["/gezgin", gun(enSon)],
     ...(reel ? [["/hesap/reel-politika-faizi", gun(reel.seri.cekildi)] as [string, string]] : []),
     ...ss.map((s) => [`/gosterge/${s.id}`, gun(s.cekildi)] as [string, string]),
     ["/kaynaklar", null], ["/api", null], ["/yontem", null], ["/koray-oner", gun(enSon)],

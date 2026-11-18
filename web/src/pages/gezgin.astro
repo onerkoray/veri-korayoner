@@ -1,0 +1,172 @@
+---
+// Veri gezgini: panel veri seti (yıl / çeyrek / ay) üzerinde etkileşimli pano.
+// Sunucuda: veri seti kataloğu (JS'siz okunur, dizinlenir). Tarayıcıda: gezgin.ts
+// /api/v1/panel/{sıklık}.json dosyasını okur; durum adresin # kısmında tutulur.
+import Taban from "../layouts/Taban.astro";
+import { seriler, TEMA, TEMA_SIRA, siklikAdi, tarih, uretildi, dolu } from "../lib/veri";
+import { donemAdi } from "../lib/okuma.ts";
+import { KISI_REF } from "../lib/kimlik";
+
+const ss = seriler();
+const SIRA = ["gunluk", "haftalik", "aylik", "ceyreklik", "yillik"];
+const var_ = (s: (typeof ss)[number], h: string) => s.izin.indirme && SIRA.indexOf(h) >= SIRA.indexOf(s.siklik);
+const gruplar = TEMA_SIRA.map((t) => ({ t, ad: TEMA[t], liste: ss.filter((s) => s.tema === t) })).filter((g) => g.liste.length);
+const yillar = ss.flatMap((s) => { const d = dolu(s); return d.length ? [Number(d[0].donem.slice(0, 4)), Number(d.at(-1)!.donem.slice(0, 4))] : []; });
+const ilkYil = Math.min(...yillar), sonYil = Math.max(...yillar);
+const panelSayisi = ss.filter((s) => s.izin.indirme).length;
+const site = "https://veri.korayoner.dev";
+const jsonld = {
+  "@context": "https://schema.org", "@type": "Dataset",
+  name: "Türkiye makroekonomik panel veri seti (aylık, çeyreklik, yıllık)",
+  description: `BIS, Dünya Bankası, OECD, ECB ve Eurostat'ın ${panelSayisi} Türkiye serisi tek panelde: her seri kendi sıklığında ve daha seyrek sıklıklarda dönem ortalaması ile dönem sonu değeri, eksik dönem işaretiyle. ${ilkYil}–${sonYil}.`,
+  url: `${site}/gezgin`, inLanguage: "tr", isAccessibleForFree: true,
+  temporalCoverage: `${ilkYil}/${sonYil}`, spatialCoverage: { "@type": "Country", name: "Türkiye" },
+  creator: KISI_REF, maintainer: KISI_REF,
+  isBasedOn: ["https://data.bis.org/", "https://data.worldbank.org/", "https://data-explorer.oecd.org/", "https://data.ecb.europa.eu/", "https://ec.europa.eu/eurostat"],
+  variableMeasured: ss.filter((s) => s.izin.indirme).map((s) => s.baslik),
+  distribution: ["aylik", "ceyreklik", "yillik"].flatMap((h) => [
+    { "@type": "DataDownload", name: `${siklikAdi(h)} panel (CSV, geniş)`, encodingFormat: "text/csv", contentUrl: `${site}/api/v1/panel/${h}.csv` },
+    { "@type": "DataDownload", name: `${siklikAdi(h)} panel (JSON, ortalama + dönem sonu + eksik işareti)`, encodingFormat: "application/json", contentUrl: `${site}/api/v1/panel/${h}.json` },
+  ]),
+  dateModified: uretildi().slice(0, 10),
+};
+---
+<Taban baslik="Veri gezgini — Türkiye makroekonomik panel veri seti | Türkiye Verisi" aciklama={`Türkiye'nin ${panelSayisi} makroekonomik serisi yıl, çeyrek ve ay düzeyinde: göstergeleri seçin, karşılaştırın, yıl×ay tablosunda görün, CSV indirin. Kaynak BIS, Dünya Bankası, OECD, ECB, Eurostat.`} yol="/gezgin" jsonld={jsonld}>
+  <div class="sar gezgin">
+    <header class="g-bas">
+      <p class="etiket">Veri seti · {panelSayisi} seri · {ilkYil}–{sonYil}</p>
+      <h1>Veri gezgini</h1>
+      <p class="ozet">Türkiye'nin makroekonomik serileri tek panelde: yıllara, çeyreklere ve aylara göre. Göstergeleri seçin, aynı zaman ekseninde karşılaştırın, yıl×ay tablosunda mevsimselliği görün, seçtiğiniz görünümü CSV olarak indirin.</p>
+    </header>
+
+    <form class="g-kontrol" id="g-form" aria-label="Gezgin ayarları" hidden>
+      <fieldset class="g-gostergeler">
+        <legend>Göstergeler <span class="g-sayac" id="g-sayac"></span></legend>
+        <details class="g-acilir" id="g-liste" open>
+        <summary>Gösterge listesi</summary>
+        <div class="g-temalar">
+          {gruplar.map((g) => (
+            <div class="g-tema">
+              <p>{g.ad}</p>
+              {g.liste.map((s) => (
+                <label class:list={["g-sec", !s.izin.indirme && "kapali"]} data-siklik={s.siklik}>
+                  <input type="checkbox" name="g" value={s.id} disabled={!s.izin.indirme} />
+                  <span>{s.baslik}</span>
+                  <small>{s.kaynak.kurum.replace(/\s*\(.*\)$/, "").replace("Uluslararası Ödemeler Bankası", "BIS").replace("Avrupa Birliği İstatistik Ofisi", "Eurostat").replace("Avrupa Merkez Bankası", "ECB")} · {siklikAdi(s.siklik).toLowerCase()}{!s.izin.indirme && " · yalnız gösterim"}</small>
+                </label>
+              ))}
+            </div>
+          ))}
+        </div>
+        </details>
+      </fieldset>
+      <div class="g-satir">
+        <fieldset class="g-dugme"><legend>Sıklık</legend>
+          {["aylik", "ceyreklik", "yillik"].map((h, i) => <label><input type="radio" name="s" value={h} checked={i === 0} /><span>{siklikAdi(h)}</span></label>)}
+        </fieldset>
+        <fieldset class="g-dugme"><legend>Değer</legend>
+          <label><input type="radio" name="d" value="ort" checked /><span>Dönem ortalaması</span></label>
+          <label><input type="radio" name="d" value="son" /><span>Dönem sonu</span></label>
+        </fieldset>
+        <fieldset class="g-aralik"><legend>Aralık</legend>
+          <label><span class="gizli">Başlangıç yılı</span><select name="b" id="g-b">{Array.from({ length: sonYil - ilkYil + 1 }, (_, i) => ilkYil + i).map((y) => <option value={y} selected={y === 2010}>{y}</option>)}</select></label>
+          <span aria-hidden="true">–</span>
+          <label><span class="gizli">Bitiş yılı</span><select name="e" id="g-e">{Array.from({ length: sonYil - ilkYil + 1 }, (_, i) => ilkYil + i).map((y) => <option value={y} selected={y === sonYil}>{y}</option>)}</select></label>
+        </fieldset>
+        <fieldset class="g-dugme"><legend>Görünüm</legend>
+          <label><input type="radio" name="v" value="grafik" checked /><span>Grafik</span></label>
+          <label><input type="radio" name="v" value="isi" /><span>Yıl × dönem</span></label>
+          <label><input type="radio" name="v" value="tablo" /><span>Tablo</span></label>
+        </fieldset>
+        <button type="button" class="g-indir" id="g-indir">CSV indir</button>
+      </div>
+    </form>
+    <p class="g-durum" id="g-durum" role="status" aria-live="polite"></p>
+    <div id="g-cikti" class="g-cikti"></div>
+    <noscript><p class="ozet">Etkileşimli gezgin JavaScript gerektirir. Veri setinin tamamı aşağıdaki bağlantılardan CSV ve JSON olarak indirilebilir.</p></noscript>
+
+    <section class="g-katalog" aria-labelledby="kat">
+      <h2 id="kat">Veri seti kataloğu</h2>
+      <p class="ozet">Her seri kendi sıklığında kaynaktaki değeriyle durur; daha seyrek sıklıklarda dönem ortalaması ve dönem sonu değeri bu sitenin hesabıdır. Yıllık seriden aylık değer üretilmez. Eksik dönem (ör. henüz 9 ayı açıklanmış yıl) JSON'da işaretlidir; geniş CSV'ye yalnız tam dönemler girer. Son kontrol: {tarih(uretildi())}.</p>
+      <ul class="indir">
+        {["aylik", "ceyreklik", "yillik"].map((h) => <li><a href={`/api/v1/panel/${h}.csv`} download>{siklikAdi(h)} CSV</a></li>)}
+        {["aylik", "ceyreklik", "yillik"].map((h) => <li><a href={`/api/v1/panel/${h}.json`}>{siklikAdi(h)} JSON</a></li>)}
+      </ul>
+      <div class="kaydir">
+        <table>
+          <thead><tr><th scope="col">Gösterge</th><th scope="col">Kaynak</th><th scope="col">Kapsam</th><th scope="col" class="n">Gözlem</th><th scope="col">Aylık</th><th scope="col">Çeyreklik</th><th scope="col">Yıllık</th></tr></thead>
+          <tbody>
+            {ss.map((s) => { const d = dolu(s); return (
+              <tr>
+                <th scope="row"><a href={`/gosterge/${s.id}`}>{s.baslik}</a></th>
+                <td>{s.kaynak.kurum.replace(/\s*\(.*\)$/, "")}</td>
+                <td class="kucuk-h">{d[0] && donemAdi(d[0].donem)} – {d.at(-1) && donemAdi(d.at(-1)!.donem)}</td>
+                <td class="n">{d.length.toLocaleString("tr-TR")}</td>
+                {["aylik", "ceyreklik", "yillik"].map((h) => <td class="kucuk-h">{!s.izin.indirme ? "yalnız gösterim" : !var_(s, h) ? "—" : s.siklik === h ? "kaynak" : "türetilmiş"}</td>)}
+              </tr>
+            ); })}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</Taban>
+<script>
+  import "../scripts/gezgin.ts";
+</script>
+<style is:global>
+  .gezgin { display: grid; gap: 1.25rem; padding-block: clamp(2rem, 5vw, 3.5rem) 0; }
+  .g-bas { display: grid; gap: .7rem; }
+  .g-kontrol { display: grid; gap: 1rem; background: var(--yuzey); border: 1px solid var(--cizgi); padding: 1rem 1.1rem; }
+  .g-kontrol fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .g-kontrol legend { font: 600 .68rem/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--soluk); margin-bottom: .45rem; padding: 0; }
+  .g-sayac { text-transform: none; letter-spacing: 0; font-weight: 500; }
+  .g-temalar { display: grid; gap: .9rem 1.5rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr)); }
+  .g-tema > p { margin: 0 0 .3rem; font-weight: 650; font-size: .85rem; }
+  .g-sec { display: grid; grid-template-columns: auto 1fr; gap: 0 .45rem; align-items: start; padding: .2rem 0; cursor: pointer; font-size: .86rem; line-height: 1.35; }
+  .g-sec input { margin: .15rem 0 0; accent-color: var(--dv-1); }
+  .g-sec small { grid-column: 2; color: var(--soluk); font-size: .72rem; }
+  .g-sec.kapali, .g-sec.yok { opacity: .45; cursor: not-allowed; }
+  .g-satir { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; align-items: end; border-top: 1px solid var(--cizgi); padding-top: .9rem; }
+  .g-dugme { display: inline-flex; flex-wrap: wrap; }
+  .g-dugme legend { width: 100%; }
+  .g-dugme label { position: relative; }
+  .g-dugme input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .g-dugme span { display: inline-block; font: 600 .74rem/1 var(--mono); padding: .55rem .7rem; border: 1px solid var(--cizgi); margin-right: -1px; color: var(--soluk); }
+  .g-dugme input:checked + span { background: var(--metin); color: var(--bg); border-color: var(--metin); }
+  .g-dugme input:focus-visible + span { outline: 2px solid var(--vurgu); outline-offset: 2px; }
+  .g-dugme input:disabled + span { opacity: .4; }
+  .g-aralik { display: inline-flex; gap: .4rem; align-items: center; flex-wrap: wrap; }
+  .g-aralik legend { width: 100%; }
+  .g-aralik select { font: .9rem var(--font); padding: .4rem .5rem; background: var(--bg); color: var(--metin); border: 1px solid var(--cizgi); }
+  .g-indir { margin-left: auto; font: 600 .78rem/1 var(--mono); padding: .6rem .9rem; background: none; color: var(--metin); border: 1px solid var(--metin); cursor: pointer; }
+  .g-indir:hover { background: var(--metin); color: var(--bg); }
+  .g-durum { margin: 0; font-size: .82rem; color: var(--soluk); min-height: 1.2em; }
+  .g-cikti { display: grid; gap: 1rem; }
+  .g-panel { background: var(--yuzey); border: 1px solid var(--cizgi); padding: .9rem 1rem .6rem; min-width: 0; }
+  .g-panel-bas { display: flex; justify-content: space-between; gap: .3rem 1rem; flex-wrap: wrap; align-items: baseline; }
+  .g-panel-bas a { font-weight: 650; text-decoration: none; }
+  .g-panel-bas a:hover { text-decoration: underline; }
+  .g-panel-bas span { font-size: .8rem; color: var(--soluk); }
+  .g-panel-bas strong { font-variant-numeric: tabular-nums; color: var(--metin); }
+  .g-tuval svg { display: block; max-width: 100%; height: auto; overflow: visible; }
+  .g-not { font-size: .75rem; color: var(--soluk); margin: .3rem 0 0; }
+  .g-isi { border-collapse: separate; border-spacing: 2px; font-size: .78rem; width: 100%; }
+  .g-isi th, .g-isi td { padding: .35rem .3rem; border: 0; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .g-isi thead th { font: 600 .66rem/1.25 var(--mono); color: var(--soluk); text-align: center; white-space: normal; vertical-align: bottom; min-width: 3.2rem; }
+  .g-acilir > summary { cursor: pointer; font-size: .85rem; color: var(--soluk); margin-bottom: .6rem; }
+  .g-acilir[open] > summary { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  @media (max-width: 40rem) { .g-acilir[open] > summary { position: static; width: auto; height: auto; clip: auto; } }
+  .g-isi tbody th { text-align: left; color: var(--soluk); font-weight: 600; }
+  .g-isi td.koyu { color: var(--bg); }
+  .g-isi td.kismi { outline: 1px dashed var(--soluk); outline-offset: -2px; }
+  .g-isi td.ort { font-weight: 700; background: none; color: var(--metin); border-left: 1px solid var(--cizgi); }
+  .g-tablo td.kismi::after { content: "*"; color: var(--soluk); }
+  .g-katalog { display: grid; gap: .8rem; padding-top: 2rem; }
+  .g-katalog .indir { display: flex; gap: .5rem; flex-wrap: wrap; list-style: none; padding: 0; margin: 0; }
+  .g-katalog .indir a { display: inline-block; border: 1px solid var(--metin); padding: .45rem .8rem; text-decoration: none; font: 600 .76rem/1 var(--mono); }
+  .g-katalog .indir a:hover { background: var(--metin); color: var(--bg); }
+  .g-katalog th a { text-decoration: none; font-weight: 600; }
+  .kucuk-h { font-size: .82rem; color: var(--soluk); white-space: nowrap; }
+  @media (max-width: 40rem) { .g-indir { margin-left: 0; } }
+</style>

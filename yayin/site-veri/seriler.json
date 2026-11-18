@@ -1,6 +1,6 @@
 {
  "surum": 1,
- "uretildi": "2026-11-17T14:28:19.569872Z",
+ "uretildi": "2026-11-18T05:29:26.177509Z",
  "seriler": [
   {
    "id": "wb-ny-gdp-mktp-cd-tur",
@@ -355,26 +355,26 @@
    "csv": "/api/v1/seri/oecd-oncu-gosterge-tr.csv"
   },
   {
-   "id": "ecb-eur-try-gunluk",
-   "baslik": "Euro referans kuru, 1 euro kaç TL",
+   "id": "ecb-eur-try-aylik",
+   "baslik": "Euro kuru, aylık ortalama, 1 euro kaç TL",
    "tema": "doviz-rezerv",
-   "siklik": "gunluk",
+   "siklik": "aylik",
    "birim": "TRY/EUR",
    "kaynak": "ecb",
    "son": {
-    "donem": "2026-11-16",
-    "deger": "55.502",
+    "donem": "2026-10",
+    "deger": "55.41702272727273",
     "durum": "A"
    },
    "kaynak_guncelleme": null,
-   "cekildi": "2026-11-17T14:10:36.813524Z",
+   "cekildi": "2026-11-18T05:29:26.177509Z",
    "izin": {
     "gosterim": true,
     "indirme": true,
     "api": true
    },
-   "api": "/api/v1/seri/ecb-eur-try-gunluk.json",
-   "csv": "/api/v1/seri/ecb-eur-try-gunluk.csv"
+   "api": "/api/v1/seri/ecb-eur-try-aylik.json",
+   "csv": "/api/v1/seri/ecb-eur-try-aylik.csv"
   },
   {
    "id": "eurostat-hicp-yillik-tr",
