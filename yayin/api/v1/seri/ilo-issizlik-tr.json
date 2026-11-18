@@ -1,0 +1,247 @@
+{
+ "surum": 1,
+ "id": "ilo-issizlik-tr",
+ "baslik": "İşsizlik oranı, 15 yaş ve üstü (işgücü anketi)",
+ "ulke": "TUR",
+ "siklik": "yillik",
+ "birim": "yuzde",
+ "carpan": 1,
+ "tema": "isgucu",
+ "kaynak": {
+  "id": "ilo",
+  "ad": "ILOSTAT",
+  "kurum": "Uluslararası Çalışma Örgütü (ILO)",
+  "adres": "https://ilostat.ilo.org/",
+  "belge": "https://ilostat.ilo.org/resources/sdmx-tools/",
+  "lisans": "CC BY 4.0 (ILO veri tabanları ve veri setleri, 3 Mayıs 2023'ten beri)",
+  "lisans_kanit": "https://www.ilo.org/node/9321",
+  "lisans_inceleme": "2026-11-18",
+  "atif_zorunlu": true,
+  "kosullar": [
+   "Kaynak: ILO, ILOSTAT veri tabanı.",
+   "Seri adları Türkçeye çevrilmiştir; değerler değiştirilmemiştir."
+  ]
+ },
+ "kaynak_kod": "DF_UNE_DEAP_SEX_AGE_RT/TUR.A..SEX_T.AGE_YTHADULT_YGE15",
+ "kaynak_adi": "DF_UNE_DEAP_SEX_AGE_RT",
+ "kaynak_not": null,
+ "kaynak_guncelleme": null,
+ "cekildi": "2026-11-18T05:51:59.207759Z",
+ "izin": {
+  "gosterim": true,
+  "indirme": true,
+  "api": true
+ },
+ "gozlemler": [
+  {
+   "donem": "1982",
+   "deger": "10.932",
+   "durum": null
+  },
+  {
+   "donem": "1983",
+   "deger": "12.058",
+   "durum": null
+  },
+  {
+   "donem": "1984",
+   "deger": "11.921",
+   "durum": null
+  },
+  {
+   "donem": "1985",
+   "deger": "11.208",
+   "durum": null
+  },
+  {
+   "donem": "1988",
+   "deger": "8.038",
+   "durum": null
+  },
+  {
+   "donem": "1989",
+   "deger": "8.256",
+   "durum": null
+  },
+  {
+   "donem": "1990",
+   "deger": "8.015",
+   "durum": null
+  },
+  {
+   "donem": "1991",
+   "deger": "8.113",
+   "durum": null
+  },
+  {
+   "donem": "1992",
+   "deger": "8.184",
+   "durum": null
+  },
+  {
+   "donem": "1993",
+   "deger": "8.255",
+   "durum": null
+  },
+  {
+   "donem": "1994",
+   "deger": "8.149",
+   "durum": null
+  },
+  {
+   "donem": "1995",
+   "deger": "7.241",
+   "durum": null
+  },
+  {
+   "donem": "1996",
+   "deger": "6.265",
+   "durum": null
+  },
+  {
+   "donem": "1997",
+   "deger": "6.452",
+   "durum": null
+  },
+  {
+   "donem": "1998",
+   "deger": "6.552",
+   "durum": null
+  },
+  {
+   "donem": "1999",
+   "deger": "7.445",
+   "durum": null
+  },
+  {
+   "donem": "2000",
+   "deger": "6.488",
+   "durum": null
+  },
+  {
+   "donem": "2001",
+   "deger": "8.373",
+   "durum": null
+  },
+  {
+   "donem": "2002",
+   "deger": "10.345",
+   "durum": null
+  },
+  {
+   "donem": "2003",
+   "deger": "10.546",
+   "durum": null
+  },
+  {
+   "donem": "2004",
+   "deger": "10.831",
+   "durum": null
+  },
+  {
+   "donem": "2005",
+   "deger": "10.634",
+   "durum": null
+  },
+  {
+   "donem": "2006",
+   "deger": "10.233",
+   "durum": null
+  },
+  {
+   "donem": "2007",
+   "deger": "10.281",
+   "durum": null
+  },
+  {
+   "donem": "2008",
+   "deger": "10.97",
+   "durum": null
+  },
+  {
+   "donem": "2009",
+   "deger": "14.024",
+   "durum": null
+  },
+  {
+   "donem": "2010",
+   "deger": "11.881",
+   "durum": null
+  },
+  {
+   "donem": "2011",
+   "deger": "9.784",
+   "durum": null
+  },
+  {
+   "donem": "2012",
+   "deger": "9.21",
+   "durum": null
+  },
+  {
+   "donem": "2013",
+   "deger": "9.717",
+   "durum": null
+  },
+  {
+   "donem": "2014",
+   "deger": "9.912",
+   "durum": null
+  },
+  {
+   "donem": "2015",
+   "deger": "10.302",
+   "durum": null
+  },
+  {
+   "donem": "2016",
+   "deger": "10.905",
+   "durum": null
+  },
+  {
+   "donem": "2017",
+   "deger": "10.916",
+   "durum": null
+  },
+  {
+   "donem": "2018",
+   "deger": "10.958",
+   "durum": null
+  },
+  {
+   "donem": "2019",
+   "deger": "13.731",
+   "durum": null
+  },
+  {
+   "donem": "2020",
+   "deger": "13.155",
+   "durum": null
+  },
+  {
+   "donem": "2021",
+   "deger": "11.979",
+   "durum": null
+  },
+  {
+   "donem": "2022",
+   "deger": "10.432",
+   "durum": null
+  },
+  {
+   "donem": "2023",
+   "deger": "9.354",
+   "durum": null
+  },
+  {
+   "donem": "2024",
+   "deger": "8.711",
+   "durum": null
+  },
+  {
+   "donem": "2025",
+   "deger": "8.349",
+   "durum": null
+  }
+ ]
+}

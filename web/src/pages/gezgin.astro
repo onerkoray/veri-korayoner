@@ -8,7 +8,7 @@ import { donemAdi } from "../lib/okuma.ts";
 import { KISI_REF } from "../lib/kimlik";
 
 const ss = seriler();
-const SIRA = ["gunluk", "haftalik", "aylik", "ceyreklik", "yillik"];
+const SIRA = ["gunluk", "haftalik", "aylik", "ceyreklik", "yariyillik", "yillik"];
 const var_ = (s: (typeof ss)[number], h: string) => s.izin.indirme && SIRA.indexOf(h) >= SIRA.indexOf(s.siklik);
 const gruplar = TEMA_SIRA.map((t) => ({ t, ad: TEMA[t], liste: ss.filter((s) => s.tema === t) })).filter((g) => g.liste.length);
 const yillar = ss.flatMap((s) => { const d = dolu(s); return d.length ? [Number(d[0].donem.slice(0, 4)), Number(d.at(-1)!.donem.slice(0, 4))] : []; });

@@ -1,0 +1,2329 @@
+{
+ "surum": 1,
+ "id": "wb-si-pov-gini-tur",
+ "baslik": "Gini katsayısı (gelir eşitsizliği)",
+ "birim": "endeks",
+ "siklik": "yillik",
+ "kaynak": "world_bank",
+ "kaynak_kod": "SI.POV.GINI",
+ "ulkeler": {
+  "BRA": [
+   {
+    "donem": "1960",
+    "deger": null
+   },
+   {
+    "donem": "1961",
+    "deger": null
+   },
+   {
+    "donem": "1962",
+    "deger": null
+   },
+   {
+    "donem": "1963",
+    "deger": null
+   },
+   {
+    "donem": "1964",
+    "deger": null
+   },
+   {
+    "donem": "1965",
+    "deger": null
+   },
+   {
+    "donem": "1966",
+    "deger": null
+   },
+   {
+    "donem": "1967",
+    "deger": null
+   },
+   {
+    "donem": "1968",
+    "deger": null
+   },
+   {
+    "donem": "1969",
+    "deger": null
+   },
+   {
+    "donem": "1970",
+    "deger": null
+   },
+   {
+    "donem": "1971",
+    "deger": null
+   },
+   {
+    "donem": "1972",
+    "deger": null
+   },
+   {
+    "donem": "1973",
+    "deger": null
+   },
+   {
+    "donem": "1974",
+    "deger": null
+   },
+   {
+    "donem": "1975",
+    "deger": null
+   },
+   {
+    "donem": "1976",
+    "deger": null
+   },
+   {
+    "donem": "1977",
+    "deger": null
+   },
+   {
+    "donem": "1978",
+    "deger": null
+   },
+   {
+    "donem": "1979",
+    "deger": null
+   },
+   {
+    "donem": "1980",
+    "deger": null
+   },
+   {
+    "donem": "1981",
+    "deger": "57.9"
+   },
+   {
+    "donem": "1982",
+    "deger": "58.4"
+   },
+   {
+    "donem": "1983",
+    "deger": "58.9"
+   },
+   {
+    "donem": "1984",
+    "deger": "58.3"
+   },
+   {
+    "donem": "1985",
+    "deger": "55.5"
+   },
+   {
+    "donem": "1986",
+    "deger": "58.4"
+   },
+   {
+    "donem": "1987",
+    "deger": "59.6"
+   },
+   {
+    "donem": "1988",
+    "deger": "61.4"
+   },
+   {
+    "donem": "1989",
+    "deger": "63.2"
+   },
+   {
+    "donem": "1990",
+    "deger": "60.5"
+   },
+   {
+    "donem": "1991",
+    "deger": null
+   },
+   {
+    "donem": "1992",
+    "deger": "53.1"
+   },
+   {
+    "donem": "1993",
+    "deger": "60.1"
+   },
+   {
+    "donem": "1994",
+    "deger": null
+   },
+   {
+    "donem": "1995",
+    "deger": "59.5"
+   },
+   {
+    "donem": "1996",
+    "deger": "59.8"
+   },
+   {
+    "donem": "1997",
+    "deger": "59.8"
+   },
+   {
+    "donem": "1998",
+    "deger": "59.6"
+   },
+   {
+    "donem": "1999",
+    "deger": "59"
+   },
+   {
+    "donem": "2000",
+    "deger": null
+   },
+   {
+    "donem": "2001",
+    "deger": "58.4"
+   },
+   {
+    "donem": "2002",
+    "deger": "58.1"
+   },
+   {
+    "donem": "2003",
+    "deger": "57.6"
+   },
+   {
+    "donem": "2004",
+    "deger": "56.5"
+   },
+   {
+    "donem": "2005",
+    "deger": "56.3"
+   },
+   {
+    "donem": "2006",
+    "deger": "55.6"
+   },
+   {
+    "donem": "2007",
+    "deger": "54.9"
+   },
+   {
+    "donem": "2008",
+    "deger": "54"
+   },
+   {
+    "donem": "2009",
+    "deger": "53.7"
+   },
+   {
+    "donem": "2010",
+    "deger": null
+   },
+   {
+    "donem": "2011",
+    "deger": "52.9"
+   },
+   {
+    "donem": "2012",
+    "deger": "53.4"
+   },
+   {
+    "donem": "2013",
+    "deger": "52.7"
+   },
+   {
+    "donem": "2014",
+    "deger": "52.1"
+   },
+   {
+    "donem": "2015",
+    "deger": "51.9"
+   },
+   {
+    "donem": "2016",
+    "deger": "53.4"
+   },
+   {
+    "donem": "2017",
+    "deger": "53.3"
+   },
+   {
+    "donem": "2018",
+    "deger": "53.9"
+   },
+   {
+    "donem": "2019",
+    "deger": "53.5"
+   },
+   {
+    "donem": "2020",
+    "deger": "48.8"
+   },
+   {
+    "donem": "2021",
+    "deger": "52.9"
+   },
+   {
+    "donem": "2022",
+    "deger": "51.9"
+   },
+   {
+    "donem": "2023",
+    "deger": "51.5"
+   },
+   {
+    "donem": "2024",
+    "deger": "50.3"
+   }
+  ],
+  "MEX": [
+   {
+    "donem": "1960",
+    "deger": null
+   },
+   {
+    "donem": "1961",
+    "deger": null
+   },
+   {
+    "donem": "1962",
+    "deger": null
+   },
+   {
+    "donem": "1963",
+    "deger": null
+   },
+   {
+    "donem": "1964",
+    "deger": null
+   },
+   {
+    "donem": "1965",
+    "deger": null
+   },
+   {
+    "donem": "1966",
+    "deger": null
+   },
+   {
+    "donem": "1967",
+    "deger": null
+   },
+   {
+    "donem": "1968",
+    "deger": null
+   },
+   {
+    "donem": "1969",
+    "deger": null
+   },
+   {
+    "donem": "1970",
+    "deger": null
+   },
+   {
+    "donem": "1971",
+    "deger": null
+   },
+   {
+    "donem": "1972",
+    "deger": null
+   },
+   {
+    "donem": "1973",
+    "deger": null
+   },
+   {
+    "donem": "1974",
+    "deger": null
+   },
+   {
+    "donem": "1975",
+    "deger": null
+   },
+   {
+    "donem": "1976",
+    "deger": null
+   },
+   {
+    "donem": "1977",
+    "deger": null
+   },
+   {
+    "donem": "1978",
+    "deger": null
+   },
+   {
+    "donem": "1979",
+    "deger": null
+   },
+   {
+    "donem": "1980",
+    "deger": null
+   },
+   {
+    "donem": "1981",
+    "deger": null
+   },
+   {
+    "donem": "1982",
+    "deger": null
+   },
+   {
+    "donem": "1983",
+    "deger": null
+   },
+   {
+    "donem": "1984",
+    "deger": "48.5"
+   },
+   {
+    "donem": "1985",
+    "deger": null
+   },
+   {
+    "donem": "1986",
+    "deger": null
+   },
+   {
+    "donem": "1987",
+    "deger": null
+   },
+   {
+    "donem": "1988",
+    "deger": null
+   },
+   {
+    "donem": "1989",
+    "deger": "50.1"
+   },
+   {
+    "donem": "1990",
+    "deger": null
+   },
+   {
+    "donem": "1991",
+    "deger": null
+   },
+   {
+    "donem": "1992",
+    "deger": "52.3"
+   },
+   {
+    "donem": "1993",
+    "deger": null
+   },
+   {
+    "donem": "1994",
+    "deger": "53.4"
+   },
+   {
+    "donem": "1995",
+    "deger": null
+   },
+   {
+    "donem": "1996",
+    "deger": "52"
+   },
+   {
+    "donem": "1997",
+    "deger": null
+   },
+   {
+    "donem": "1998",
+    "deger": "53.3"
+   },
+   {
+    "donem": "1999",
+    "deger": null
+   },
+   {
+    "donem": "2000",
+    "deger": "53.4"
+   },
+   {
+    "donem": "2001",
+    "deger": null
+   },
+   {
+    "donem": "2002",
+    "deger": "50.6"
+   },
+   {
+    "donem": "2003",
+    "deger": null
+   },
+   {
+    "donem": "2004",
+    "deger": "50.3"
+   },
+   {
+    "donem": "2005",
+    "deger": "50.9"
+   },
+   {
+    "donem": "2006",
+    "deger": "49.7"
+   },
+   {
+    "donem": "2007",
+    "deger": null
+   },
+   {
+    "donem": "2008",
+    "deger": "50.8"
+   },
+   {
+    "donem": "2009",
+    "deger": null
+   },
+   {
+    "donem": "2010",
+    "deger": "47.7"
+   },
+   {
+    "donem": "2011",
+    "deger": null
+   },
+   {
+    "donem": "2012",
+    "deger": "49.6"
+   },
+   {
+    "donem": "2013",
+    "deger": null
+   },
+   {
+    "donem": "2014",
+    "deger": "48.9"
+   },
+   {
+    "donem": "2015",
+    "deger": null
+   },
+   {
+    "donem": "2016",
+    "deger": "46.9"
+   },
+   {
+    "donem": "2017",
+    "deger": null
+   },
+   {
+    "donem": "2018",
+    "deger": "46"
+   },
+   {
+    "donem": "2019",
+    "deger": null
+   },
+   {
+    "donem": "2020",
+    "deger": "44.6"
+   },
+   {
+    "donem": "2021",
+    "deger": null
+   },
+   {
+    "donem": "2022",
+    "deger": "43.5"
+   },
+   {
+    "donem": "2023",
+    "deger": null
+   },
+   {
+    "donem": "2024",
+    "deger": "42.6"
+   }
+  ],
+  "ZAF": [
+   {
+    "donem": "1960",
+    "deger": null
+   },
+   {
+    "donem": "1961",
+    "deger": null
+   },
+   {
+    "donem": "1962",
+    "deger": null
+   },
+   {
+    "donem": "1963",
+    "deger": null
+   },
+   {
+    "donem": "1964",
+    "deger": null
+   },
+   {
+    "donem": "1965",
+    "deger": null
+   },
+   {
+    "donem": "1966",
+    "deger": null
+   },
+   {
+    "donem": "1967",
+    "deger": null
+   },
+   {
+    "donem": "1968",
+    "deger": null
+   },
+   {
+    "donem": "1969",
+    "deger": null
+   },
+   {
+    "donem": "1970",
+    "deger": null
+   },
+   {
+    "donem": "1971",
+    "deger": null
+   },
+   {
+    "donem": "1972",
+    "deger": null
+   },
+   {
+    "donem": "1973",
+    "deger": null
+   },
+   {
+    "donem": "1974",
+    "deger": null
+   },
+   {
+    "donem": "1975",
+    "deger": null
+   },
+   {
+    "donem": "1976",
+    "deger": null
+   },
+   {
+    "donem": "1977",
+    "deger": null
+   },
+   {
+    "donem": "1978",
+    "deger": null
+   },
+   {
+    "donem": "1979",
+    "deger": null
+   },
+   {
+    "donem": "1980",
+    "deger": null
+   },
+   {
+    "donem": "1981",
+    "deger": null
+   },
+   {
+    "donem": "1982",
+    "deger": null
+   },
+   {
+    "donem": "1983",
+    "deger": null
+   },
+   {
+    "donem": "1984",
+    "deger": null
+   },
+   {
+    "donem": "1985",
+    "deger": null
+   },
+   {
+    "donem": "1986",
+    "deger": null
+   },
+   {
+    "donem": "1987",
+    "deger": null
+   },
+   {
+    "donem": "1988",
+    "deger": null
+   },
+   {
+    "donem": "1989",
+    "deger": null
+   },
+   {
+    "donem": "1990",
+    "deger": null
+   },
+   {
+    "donem": "1991",
+    "deger": null
+   },
+   {
+    "donem": "1992",
+    "deger": null
+   },
+   {
+    "donem": "1993",
+    "deger": "59.3"
+   },
+   {
+    "donem": "1994",
+    "deger": null
+   },
+   {
+    "donem": "1995",
+    "deger": null
+   },
+   {
+    "donem": "1996",
+    "deger": null
+   },
+   {
+    "donem": "1997",
+    "deger": null
+   },
+   {
+    "donem": "1998",
+    "deger": null
+   },
+   {
+    "donem": "1999",
+    "deger": null
+   },
+   {
+    "donem": "2000",
+    "deger": "57.8"
+   },
+   {
+    "donem": "2001",
+    "deger": null
+   },
+   {
+    "donem": "2002",
+    "deger": null
+   },
+   {
+    "donem": "2003",
+    "deger": null
+   },
+   {
+    "donem": "2004",
+    "deger": null
+   },
+   {
+    "donem": "2005",
+    "deger": "65"
+   },
+   {
+    "donem": "2006",
+    "deger": null
+   },
+   {
+    "donem": "2007",
+    "deger": null
+   },
+   {
+    "donem": "2008",
+    "deger": "62.5"
+   },
+   {
+    "donem": "2009",
+    "deger": null
+   },
+   {
+    "donem": "2010",
+    "deger": "60.9"
+   },
+   {
+    "donem": "2011",
+    "deger": null
+   },
+   {
+    "donem": "2012",
+    "deger": null
+   },
+   {
+    "donem": "2013",
+    "deger": null
+   },
+   {
+    "donem": "2014",
+    "deger": "59.6"
+   },
+   {
+    "donem": "2015",
+    "deger": null
+   },
+   {
+    "donem": "2016",
+    "deger": null
+   },
+   {
+    "donem": "2017",
+    "deger": null
+   },
+   {
+    "donem": "2018",
+    "deger": null
+   },
+   {
+    "donem": "2019",
+    "deger": null
+   },
+   {
+    "donem": "2020",
+    "deger": null
+   },
+   {
+    "donem": "2021",
+    "deger": null
+   },
+   {
+    "donem": "2022",
+    "deger": "54.1"
+   }
+  ],
+  "POL": [
+   {
+    "donem": "1960",
+    "deger": null
+   },
+   {
+    "donem": "1961",
+    "deger": null
+   },
+   {
+    "donem": "1962",
+    "deger": null
+   },
+   {
+    "donem": "1963",
+    "deger": null
+   },
+   {
+    "donem": "1964",
+    "deger": null
+   },
+   {
+    "donem": "1965",
+    "deger": null
+   },
+   {
+    "donem": "1966",
+    "deger": null
+   },
+   {
+    "donem": "1967",
+    "deger": null
+   },
+   {
+    "donem": "1968",
+    "deger": null
+   },
+   {
+    "donem": "1969",
+    "deger": null
+   },
+   {
+    "donem": "1970",
+    "deger": null
+   },
+   {
+    "donem": "1971",
+    "deger": null
+   },
+   {
+    "donem": "1972",
+    "deger": null
+   },
+   {
+    "donem": "1973",
+    "deger": null
+   },
+   {
+    "donem": "1974",
+    "deger": null
+   },
+   {
+    "donem": "1975",
+    "deger": null
+   },
+   {
+    "donem": "1976",
+    "deger": null
+   },
+   {
+    "donem": "1977",
+    "deger": null
+   },
+   {
+    "donem": "1978",
+    "deger": null
+   },
+   {
+    "donem": "1979",
+    "deger": null
+   },
+   {
+    "donem": "1980",
+    "deger": null
+   },
+   {
+    "donem": "1981",
+    "deger": null
+   },
+   {
+    "donem": "1982",
+    "deger": null
+   },
+   {
+    "donem": "1983",
+    "deger": null
+   },
+   {
+    "donem": "1984",
+    "deger": null
+   },
+   {
+    "donem": "1985",
+    "deger": "25.1"
+   },
+   {
+    "donem": "1986",
+    "deger": "28"
+   },
+   {
+    "donem": "1987",
+    "deger": "25.5"
+   },
+   {
+    "donem": "1988",
+    "deger": null
+   },
+   {
+    "donem": "1989",
+    "deger": "26.8"
+   },
+   {
+    "donem": "1990",
+    "deger": null
+   },
+   {
+    "donem": "1991",
+    "deger": null
+   },
+   {
+    "donem": "1992",
+    "deger": "29.3"
+   },
+   {
+    "donem": "1993",
+    "deger": "26.7"
+   },
+   {
+    "donem": "1994",
+    "deger": null
+   },
+   {
+    "donem": "1995",
+    "deger": "34.6"
+   },
+   {
+    "donem": "1996",
+    "deger": "32.6"
+   },
+   {
+    "donem": "1997",
+    "deger": null
+   },
+   {
+    "donem": "1998",
+    "deger": "32.3"
+   },
+   {
+    "donem": "1999",
+    "deger": "32.3"
+   },
+   {
+    "donem": "2000",
+    "deger": "33"
+   },
+   {
+    "donem": "2001",
+    "deger": "32.8"
+   },
+   {
+    "donem": "2002",
+    "deger": "34.1"
+   },
+   {
+    "donem": "2003",
+    "deger": "34.9"
+   },
+   {
+    "donem": "2004",
+    "deger": "38"
+   },
+   {
+    "donem": "2005",
+    "deger": "35.8"
+   },
+   {
+    "donem": "2006",
+    "deger": "34.7"
+   },
+   {
+    "donem": "2007",
+    "deger": "34"
+   },
+   {
+    "donem": "2008",
+    "deger": "33.5"
+   },
+   {
+    "donem": "2009",
+    "deger": "33.4"
+   },
+   {
+    "donem": "2010",
+    "deger": "33.2"
+   },
+   {
+    "donem": "2011",
+    "deger": "33.2"
+   },
+   {
+    "donem": "2012",
+    "deger": "33"
+   },
+   {
+    "donem": "2013",
+    "deger": "33.1"
+   },
+   {
+    "donem": "2014",
+    "deger": "32.8"
+   },
+   {
+    "donem": "2015",
+    "deger": "31.8"
+   },
+   {
+    "donem": "2016",
+    "deger": "31.2"
+   },
+   {
+    "donem": "2017",
+    "deger": "29.7"
+   },
+   {
+    "donem": "2018",
+    "deger": "30.2"
+   },
+   {
+    "donem": "2019",
+    "deger": "28.8"
+   },
+   {
+    "donem": "2020",
+    "deger": "28.5"
+   },
+   {
+    "donem": "2021",
+    "deger": "28.5"
+   },
+   {
+    "donem": "2022",
+    "deger": "28.9"
+   },
+   {
+    "donem": "2023",
+    "deger": "28.5"
+   }
+  ],
+  "HUN": [
+   {
+    "donem": "1960",
+    "deger": null
+   },
+   {
+    "donem": "1961",
+    "deger": null
+   },
+   {
+    "donem": "1962",
+    "deger": null
+   },
+   {
+    "donem": "1963",
+    "deger": null
+   },
+   {
+    "donem": "1964",
+    "deger": null
+   },
+   {
+    "donem": "1965",
+    "deger": null
+   },
+   {
+    "donem": "1966",
+    "deger": null
+   },
+   {
+    "donem": "1967",
+    "deger": null
+   },
+   {
+    "donem": "1968",
+    "deger": null
+   },
+   {
+    "donem": "1969",
+    "deger": null
+   },
+   {
+    "donem": "1970",
+    "deger": null
+   },
+   {
+    "donem": "1971",
+    "deger": null
+   },
+   {
+    "donem": "1972",
+    "deger": null
+   },
+   {
+    "donem": "1973",
+    "deger": null
+   },
+   {
+    "donem": "1974",
+    "deger": null
+   },
+   {
+    "donem": "1975",
+    "deger": null
+   },
+   {
+    "donem": "1976",
+    "deger": null
+   },
+   {
+    "donem": "1977",
+    "deger": null
+   },
+   {
+    "donem": "1978",
+    "deger": null
+   },
+   {
+    "donem": "1979",
+    "deger": null
+   },
+   {
+    "donem": "1980",
+    "deger": null
+   },
+   {
+    "donem": "1981",
+    "deger": null
+   },
+   {
+    "donem": "1982",
+    "deger": null
+   },
+   {
+    "donem": "1983",
+    "deger": null
+   },
+   {
+    "donem": "1984",
+    "deger": null
+   },
+   {
+    "donem": "1985",
+    "deger": null
+   },
+   {
+    "donem": "1986",
+    "deger": null
+   },
+   {
+    "donem": "1987",
+    "deger": "20.9"
+   },
+   {
+    "donem": "1988",
+    "deger": null
+   },
+   {
+    "donem": "1989",
+    "deger": "25"
+   },
+   {
+    "donem": "1990",
+    "deger": null
+   },
+   {
+    "donem": "1991",
+    "deger": "29.6"
+   },
+   {
+    "donem": "1992",
+    "deger": null
+   },
+   {
+    "donem": "1993",
+    "deger": "27.9"
+   },
+   {
+    "donem": "1994",
+    "deger": "33.3"
+   },
+   {
+    "donem": "1995",
+    "deger": null
+   },
+   {
+    "donem": "1996",
+    "deger": null
+   },
+   {
+    "donem": "1997",
+    "deger": null
+   },
+   {
+    "donem": "1998",
+    "deger": "26.4"
+   },
+   {
+    "donem": "1999",
+    "deger": "30.2"
+   },
+   {
+    "donem": "2000",
+    "deger": "27.2"
+   },
+   {
+    "donem": "2001",
+    "deger": "26.9"
+   },
+   {
+    "donem": "2002",
+    "deger": "26.8"
+   },
+   {
+    "donem": "2003",
+    "deger": "30.9"
+   },
+   {
+    "donem": "2004",
+    "deger": "29.9"
+   },
+   {
+    "donem": "2005",
+    "deger": "34.7"
+   },
+   {
+    "donem": "2006",
+    "deger": "28.3"
+   },
+   {
+    "donem": "2007",
+    "deger": "27.9"
+   },
+   {
+    "donem": "2008",
+    "deger": "27.5"
+   },
+   {
+    "donem": "2009",
+    "deger": "27"
+   },
+   {
+    "donem": "2010",
+    "deger": "29.4"
+   },
+   {
+    "donem": "2011",
+    "deger": "29.2"
+   },
+   {
+    "donem": "2012",
+    "deger": "30.8"
+   },
+   {
+    "donem": "2013",
+    "deger": "31.5"
+   },
+   {
+    "donem": "2014",
+    "deger": "30.9"
+   },
+   {
+    "donem": "2015",
+    "deger": "30.4"
+   },
+   {
+    "donem": "2016",
+    "deger": "30.3"
+   },
+   {
+    "donem": "2017",
+    "deger": "30.6"
+   }
+  ],
+  "IND": [
+   {
+    "donem": "1960",
+    "deger": null
+   },
+   {
+    "donem": "1961",
+    "deger": null
+   },
+   {
+    "donem": "1962",
+    "deger": null
+   },
+   {
+    "donem": "1963",
+    "deger": null
+   },
+   {
+    "donem": "1964",
+    "deger": null
+   },
+   {
+    "donem": "1965",
+    "deger": null
+   },
+   {
+    "donem": "1966",
+    "deger": null
+   },
+   {
+    "donem": "1967",
+    "deger": null
+   },
+   {
+    "donem": "1968",
+    "deger": null
+   },
+   {
+    "donem": "1969",
+    "deger": null
+   },
+   {
+    "donem": "1970",
+    "deger": null
+   },
+   {
+    "donem": "1971",
+    "deger": null
+   },
+   {
+    "donem": "1972",
+    "deger": null
+   },
+   {
+    "donem": "1973",
+    "deger": null
+   },
+   {
+    "donem": "1974",
+    "deger": null
+   },
+   {
+    "donem": "1975",
+    "deger": null
+   },
+   {
+    "donem": "1976",
+    "deger": null
+   },
+   {
+    "donem": "1977",
+    "deger": "29.7"
+   },
+   {
+    "donem": "1978",
+    "deger": null
+   },
+   {
+    "donem": "1979",
+    "deger": null
+   },
+   {
+    "donem": "1980",
+    "deger": null
+   },
+   {
+    "donem": "1981",
+    "deger": null
+   },
+   {
+    "donem": "1982",
+    "deger": null
+   },
+   {
+    "donem": "1983",
+    "deger": "27.2"
+   },
+   {
+    "donem": "1984",
+    "deger": null
+   },
+   {
+    "donem": "1985",
+    "deger": null
+   },
+   {
+    "donem": "1986",
+    "deger": null
+   },
+   {
+    "donem": "1987",
+    "deger": "27.5"
+   },
+   {
+    "donem": "1988",
+    "deger": null
+   },
+   {
+    "donem": "1989",
+    "deger": null
+   },
+   {
+    "donem": "1990",
+    "deger": null
+   },
+   {
+    "donem": "1991",
+    "deger": null
+   },
+   {
+    "donem": "1992",
+    "deger": null
+   },
+   {
+    "donem": "1993",
+    "deger": "26.1"
+   },
+   {
+    "donem": "1994",
+    "deger": null
+   },
+   {
+    "donem": "1995",
+    "deger": null
+   },
+   {
+    "donem": "1996",
+    "deger": null
+   },
+   {
+    "donem": "1997",
+    "deger": null
+   },
+   {
+    "donem": "1998",
+    "deger": null
+   },
+   {
+    "donem": "1999",
+    "deger": null
+   },
+   {
+    "donem": "2000",
+    "deger": null
+   },
+   {
+    "donem": "2001",
+    "deger": null
+   },
+   {
+    "donem": "2002",
+    "deger": null
+   },
+   {
+    "donem": "2003",
+    "deger": null
+   },
+   {
+    "donem": "2004",
+    "deger": "27.7"
+   },
+   {
+    "donem": "2005",
+    "deger": null
+   },
+   {
+    "donem": "2006",
+    "deger": null
+   },
+   {
+    "donem": "2007",
+    "deger": null
+   },
+   {
+    "donem": "2008",
+    "deger": null
+   },
+   {
+    "donem": "2009",
+    "deger": "27.8"
+   },
+   {
+    "donem": "2010",
+    "deger": null
+   },
+   {
+    "donem": "2011",
+    "deger": "28.8"
+   },
+   {
+    "donem": "2012",
+    "deger": null
+   },
+   {
+    "donem": "2013",
+    "deger": null
+   },
+   {
+    "donem": "2014",
+    "deger": null
+   },
+   {
+    "donem": "2015",
+    "deger": null
+   },
+   {
+    "donem": "2016",
+    "deger": null
+   },
+   {
+    "donem": "2017",
+    "deger": null
+   },
+   {
+    "donem": "2018",
+    "deger": null
+   },
+   {
+    "donem": "2019",
+    "deger": null
+   },
+   {
+    "donem": "2020",
+    "deger": null
+   },
+   {
+    "donem": "2021",
+    "deger": null
+   },
+   {
+    "donem": "2022",
+    "deger": "25.5"
+   },
+   {
+    "donem": "2023",
+    "deger": "23"
+   }
+  ],
+  "IDN": [
+   {
+    "donem": "1960",
+    "deger": null
+   },
+   {
+    "donem": "1961",
+    "deger": null
+   },
+   {
+    "donem": "1962",
+    "deger": null
+   },
+   {
+    "donem": "1963",
+    "deger": null
+   },
+   {
+    "donem": "1964",
+    "deger": null
+   },
+   {
+    "donem": "1965",
+    "deger": null
+   },
+   {
+    "donem": "1966",
+    "deger": null
+   },
+   {
+    "donem": "1967",
+    "deger": null
+   },
+   {
+    "donem": "1968",
+    "deger": null
+   },
+   {
+    "donem": "1969",
+    "deger": null
+   },
+   {
+    "donem": "1970",
+    "deger": null
+   },
+   {
+    "donem": "1971",
+    "deger": null
+   },
+   {
+    "donem": "1972",
+    "deger": null
+   },
+   {
+    "donem": "1973",
+    "deger": null
+   },
+   {
+    "donem": "1974",
+    "deger": null
+   },
+   {
+    "donem": "1975",
+    "deger": null
+   },
+   {
+    "donem": "1976",
+    "deger": null
+   },
+   {
+    "donem": "1977",
+    "deger": null
+   },
+   {
+    "donem": "1978",
+    "deger": null
+   },
+   {
+    "donem": "1979",
+    "deger": null
+   },
+   {
+    "donem": "1980",
+    "deger": null
+   },
+   {
+    "donem": "1981",
+    "deger": null
+   },
+   {
+    "donem": "1982",
+    "deger": null
+   },
+   {
+    "donem": "1983",
+    "deger": null
+   },
+   {
+    "donem": "1984",
+    "deger": "32.3"
+   },
+   {
+    "donem": "1985",
+    "deger": null
+   },
+   {
+    "donem": "1986",
+    "deger": null
+   },
+   {
+    "donem": "1987",
+    "deger": "30.4"
+   },
+   {
+    "donem": "1988",
+    "deger": null
+   },
+   {
+    "donem": "1989",
+    "deger": null
+   },
+   {
+    "donem": "1990",
+    "deger": "31.1"
+   },
+   {
+    "donem": "1991",
+    "deger": null
+   },
+   {
+    "donem": "1992",
+    "deger": null
+   },
+   {
+    "donem": "1993",
+    "deger": "31.8"
+   },
+   {
+    "donem": "1994",
+    "deger": null
+   },
+   {
+    "donem": "1995",
+    "deger": null
+   },
+   {
+    "donem": "1996",
+    "deger": "34.2"
+   },
+   {
+    "donem": "1997",
+    "deger": null
+   },
+   {
+    "donem": "1998",
+    "deger": "30.9"
+   },
+   {
+    "donem": "1999",
+    "deger": "30.8"
+   },
+   {
+    "donem": "2000",
+    "deger": "30.3"
+   },
+   {
+    "donem": "2001",
+    "deger": "31.2"
+   },
+   {
+    "donem": "2002",
+    "deger": "30.2"
+   },
+   {
+    "donem": "2003",
+    "deger": "29.3"
+   },
+   {
+    "donem": "2004",
+    "deger": "30.4"
+   },
+   {
+    "donem": "2005",
+    "deger": "29.9"
+   },
+   {
+    "donem": "2006",
+    "deger": "31.5"
+   },
+   {
+    "donem": "2007",
+    "deger": "33.2"
+   },
+   {
+    "donem": "2008",
+    "deger": "32.6"
+   },
+   {
+    "donem": "2009",
+    "deger": "33.4"
+   },
+   {
+    "donem": "2010",
+    "deger": "34.6"
+   },
+   {
+    "donem": "2011",
+    "deger": "37.9"
+   },
+   {
+    "donem": "2012",
+    "deger": "37.1"
+   },
+   {
+    "donem": "2013",
+    "deger": "38.9"
+   },
+   {
+    "donem": "2014",
+    "deger": "38.8"
+   },
+   {
+    "donem": "2015",
+    "deger": "38.2"
+   },
+   {
+    "donem": "2016",
+    "deger": "36.9"
+   },
+   {
+    "donem": "2017",
+    "deger": "36.4"
+   },
+   {
+    "donem": "2018",
+    "deger": "36.3"
+   },
+   {
+    "donem": "2019",
+    "deger": "35.4"
+   },
+   {
+    "donem": "2020",
+    "deger": "35.3"
+   },
+   {
+    "donem": "2021",
+    "deger": "35.5"
+   },
+   {
+    "donem": "2022",
+    "deger": "35.5"
+   },
+   {
+    "donem": "2023",
+    "deger": "36.1"
+   },
+   {
+    "donem": "2024",
+    "deger": "34.9"
+   },
+   {
+    "donem": "2025",
+    "deger": "34.4"
+   }
+  ],
+  "CHL": [
+   {
+    "donem": "1960",
+    "deger": null
+   },
+   {
+    "donem": "1961",
+    "deger": null
+   },
+   {
+    "donem": "1962",
+    "deger": null
+   },
+   {
+    "donem": "1963",
+    "deger": null
+   },
+   {
+    "donem": "1964",
+    "deger": null
+   },
+   {
+    "donem": "1965",
+    "deger": null
+   },
+   {
+    "donem": "1966",
+    "deger": null
+   },
+   {
+    "donem": "1967",
+    "deger": null
+   },
+   {
+    "donem": "1968",
+    "deger": null
+   },
+   {
+    "donem": "1969",
+    "deger": null
+   },
+   {
+    "donem": "1970",
+    "deger": null
+   },
+   {
+    "donem": "1971",
+    "deger": null
+   },
+   {
+    "donem": "1972",
+    "deger": null
+   },
+   {
+    "donem": "1973",
+    "deger": null
+   },
+   {
+    "donem": "1974",
+    "deger": null
+   },
+   {
+    "donem": "1975",
+    "deger": null
+   },
+   {
+    "donem": "1976",
+    "deger": null
+   },
+   {
+    "donem": "1977",
+    "deger": null
+   },
+   {
+    "donem": "1978",
+    "deger": null
+   },
+   {
+    "donem": "1979",
+    "deger": null
+   },
+   {
+    "donem": "1980",
+    "deger": null
+   },
+   {
+    "donem": "1981",
+    "deger": null
+   },
+   {
+    "donem": "1982",
+    "deger": null
+   },
+   {
+    "donem": "1983",
+    "deger": null
+   },
+   {
+    "donem": "1984",
+    "deger": null
+   },
+   {
+    "donem": "1985",
+    "deger": null
+   },
+   {
+    "donem": "1986",
+    "deger": null
+   },
+   {
+    "donem": "1987",
+    "deger": "56.2"
+   },
+   {
+    "donem": "1988",
+    "deger": null
+   },
+   {
+    "donem": "1989",
+    "deger": null
+   },
+   {
+    "donem": "1990",
+    "deger": "57.2"
+   },
+   {
+    "donem": "1991",
+    "deger": null
+   },
+   {
+    "donem": "1992",
+    "deger": "54.8"
+   },
+   {
+    "donem": "1993",
+    "deger": null
+   },
+   {
+    "donem": "1994",
+    "deger": "56.4"
+   },
+   {
+    "donem": "1995",
+    "deger": null
+   },
+   {
+    "donem": "1996",
+    "deger": "54.9"
+   },
+   {
+    "donem": "1997",
+    "deger": null
+   },
+   {
+    "donem": "1998",
+    "deger": "55.5"
+   },
+   {
+    "donem": "1999",
+    "deger": null
+   },
+   {
+    "donem": "2000",
+    "deger": "52.8"
+   },
+   {
+    "donem": "2001",
+    "deger": null
+   },
+   {
+    "donem": "2002",
+    "deger": null
+   },
+   {
+    "donem": "2003",
+    "deger": "51.5"
+   },
+   {
+    "donem": "2004",
+    "deger": null
+   },
+   {
+    "donem": "2005",
+    "deger": null
+   },
+   {
+    "donem": "2006",
+    "deger": "47.7"
+   },
+   {
+    "donem": "2007",
+    "deger": null
+   },
+   {
+    "donem": "2008",
+    "deger": null
+   },
+   {
+    "donem": "2009",
+    "deger": "47.4"
+   },
+   {
+    "donem": "2010",
+    "deger": null
+   },
+   {
+    "donem": "2011",
+    "deger": "46.9"
+   },
+   {
+    "donem": "2012",
+    "deger": null
+   },
+   {
+    "donem": "2013",
+    "deger": "46.8"
+   },
+   {
+    "donem": "2014",
+    "deger": null
+   },
+   {
+    "donem": "2015",
+    "deger": "45.3"
+   },
+   {
+    "donem": "2016",
+    "deger": null
+   },
+   {
+    "donem": "2017",
+    "deger": "45.3"
+   },
+   {
+    "donem": "2018",
+    "deger": null
+   },
+   {
+    "donem": "2019",
+    "deger": null
+   },
+   {
+    "donem": "2020",
+    "deger": "47"
+   },
+   {
+    "donem": "2021",
+    "deger": null
+   },
+   {
+    "donem": "2022",
+    "deger": "43.2"
+   },
+   {
+    "donem": "2023",
+    "deger": null
+   },
+   {
+    "donem": "2024",
+    "deger": "43"
+   }
+  ],
+  "COL": [
+   {
+    "donem": "1960",
+    "deger": null
+   },
+   {
+    "donem": "1961",
+    "deger": null
+   },
+   {
+    "donem": "1962",
+    "deger": null
+   },
+   {
+    "donem": "1963",
+    "deger": null
+   },
+   {
+    "donem": "1964",
+    "deger": null
+   },
+   {
+    "donem": "1965",
+    "deger": null
+   },
+   {
+    "donem": "1966",
+    "deger": null
+   },
+   {
+    "donem": "1967",
+    "deger": null
+   },
+   {
+    "donem": "1968",
+    "deger": null
+   },
+   {
+    "donem": "1969",
+    "deger": null
+   },
+   {
+    "donem": "1970",
+    "deger": null
+   },
+   {
+    "donem": "1971",
+    "deger": null
+   },
+   {
+    "donem": "1972",
+    "deger": null
+   },
+   {
+    "donem": "1973",
+    "deger": null
+   },
+   {
+    "donem": "1974",
+    "deger": null
+   },
+   {
+    "donem": "1975",
+    "deger": null
+   },
+   {
+    "donem": "1976",
+    "deger": null
+   },
+   {
+    "donem": "1977",
+    "deger": null
+   },
+   {
+    "donem": "1978",
+    "deger": null
+   },
+   {
+    "donem": "1979",
+    "deger": null
+   },
+   {
+    "donem": "1980",
+    "deger": "55.1"
+   },
+   {
+    "donem": "1981",
+    "deger": null
+   },
+   {
+    "donem": "1982",
+    "deger": null
+   },
+   {
+    "donem": "1983",
+    "deger": null
+   },
+   {
+    "donem": "1984",
+    "deger": null
+   },
+   {
+    "donem": "1985",
+    "deger": null
+   },
+   {
+    "donem": "1986",
+    "deger": null
+   },
+   {
+    "donem": "1987",
+    "deger": null
+   },
+   {
+    "donem": "1988",
+    "deger": "53.1"
+   },
+   {
+    "donem": "1989",
+    "deger": "52.8"
+   },
+   {
+    "donem": "1990",
+    "deger": null
+   },
+   {
+    "donem": "1991",
+    "deger": "51.3"
+   },
+   {
+    "donem": "1992",
+    "deger": "51.3"
+   },
+   {
+    "donem": "1993",
+    "deger": null
+   },
+   {
+    "donem": "1994",
+    "deger": null
+   },
+   {
+    "donem": "1995",
+    "deger": null
+   },
+   {
+    "donem": "1996",
+    "deger": "56.8"
+   },
+   {
+    "donem": "1997",
+    "deger": null
+   },
+   {
+    "donem": "1998",
+    "deger": null
+   },
+   {
+    "donem": "1999",
+    "deger": "58.5"
+   },
+   {
+    "donem": "2000",
+    "deger": "58.4"
+   },
+   {
+    "donem": "2001",
+    "deger": "57.3"
+   },
+   {
+    "donem": "2002",
+    "deger": "56"
+   },
+   {
+    "donem": "2003",
+    "deger": "53.6"
+   },
+   {
+    "donem": "2004",
+    "deger": "55"
+   },
+   {
+    "donem": "2005",
+    "deger": "53.9"
+   },
+   {
+    "donem": "2006",
+    "deger": null
+   },
+   {
+    "donem": "2007",
+    "deger": null
+   },
+   {
+    "donem": "2008",
+    "deger": "55"
+   },
+   {
+    "donem": "2009",
+    "deger": "54.1"
+   },
+   {
+    "donem": "2010",
+    "deger": "54.4"
+   },
+   {
+    "donem": "2011",
+    "deger": "53.3"
+   },
+   {
+    "donem": "2012",
+    "deger": "53.6"
+   },
+   {
+    "donem": "2013",
+    "deger": "53.5"
+   },
+   {
+    "donem": "2014",
+    "deger": "53.6"
+   },
+   {
+    "donem": "2015",
+    "deger": "52"
+   },
+   {
+    "donem": "2016",
+    "deger": "51.7"
+   },
+   {
+    "donem": "2017",
+    "deger": "50.9"
+   },
+   {
+    "donem": "2018",
+    "deger": "51.6"
+   },
+   {
+    "donem": "2019",
+    "deger": "52.5"
+   },
+   {
+    "donem": "2020",
+    "deger": "54.4"
+   },
+   {
+    "donem": "2021",
+    "deger": "55.1"
+   },
+   {
+    "donem": "2022",
+    "deger": "54.8"
+   },
+   {
+    "donem": "2023",
+    "deger": "54.6"
+   },
+   {
+    "donem": "2024",
+    "deger": "54.4"
+   }
+  ]
+ }
+}

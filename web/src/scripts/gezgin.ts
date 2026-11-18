@@ -7,8 +7,8 @@ interface Tanim { id: string; baslik: string; birim: string; tema: string; kayna
 interface Panel { siklik: string; seriler: Tanim[]; veri: Record<string, Satir[]> }
 interface Durum { g: string[]; s: string; d: "ort" | "son"; b: number; e: number; v: "grafik" | "isi" | "tablo" }
 
-const SIRA = ["gunluk", "haftalik", "aylik", "ceyreklik", "yillik"];
-const SIKLIK: Record<string, string> = { aylik: "aylık", ceyreklik: "çeyreklik", yillik: "yıllık", gunluk: "günlük" };
+const SIRA = ["gunluk", "haftalik", "aylik", "ceyreklik", "yariyillik", "yillik"];
+const SIKLIK: Record<string, string> = { aylik: "aylık", ceyreklik: "çeyreklik", yariyillik: "yarıyıllık", yillik: "yıllık", gunluk: "günlük" };
 const AY = ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"];
 const AY_UZUN = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
 const AZAMI = 6;
@@ -23,6 +23,9 @@ function yaz(birim: string, v: number, kip: "tam" | "eksen" | "hucre" = "tam"): 
   if (!Number.isFinite(v)) return "—";
   const a = Math.abs(v), e = v < 0 ? "−" : "", kisa = kip !== "tam";
   if (birim.startsWith("yuzde")) return `${e}%${(kip === "eksen" ? n0 : n1).format(a)}`;
+  if (birim === "PPS") return `${n0.format(a)}${kisa ? "" : " PPS"}`;
+  if (birim === "yil") return `${n1.format(a)}${kisa ? "" : " yıl"}`;
+  if (birim === "kisi") return a >= 1e6 ? `${n1.format(a / 1e6)}${kip === "eksen" ? " mn" : " milyon"}` : n0.format(a);
   if (birim === "USD") {
     if (a >= 1e12) return `${e}${n2.format(a / 1e12)} tr $`;
     if (a >= 1e9) return `${e}${n1.format(a / 1e9)} mr $`;

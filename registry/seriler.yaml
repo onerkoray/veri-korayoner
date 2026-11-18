@@ -80,8 +80,7 @@ seriler:
     birim: yuzde
     carpan: 1
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
-    yayin: { gosterim: true, indirme: false, api: false }
-    not: ILO model tahmini; kaynak ILO. Yeniden yayın şartı ILO tarafında doğrulanana kadar yalnız gösterim.
+    not: ILO model tahmini (ILO modelled estimates); kaynak ILO, CC BY 4.0. Ulusal işgücü anketine dayalı oran için ILO serisine bakın.
 
   - id: wb-fi-res-totl-cd-tur
     kaynak: world_bank
@@ -198,3 +197,196 @@ seriler:
     carpan: 1
     emsal: [EUU, POL, HUN, ROU]
     not: 15-74 yaş, işgücüne oran. AB ülkeleriyle karşılaştırılabilir tanım.
+
+  # ---- Dünya Bankası: ek göstergeler ------------------------------------------------
+  - id: wb-ny-gdp-pcap-pp-kd-tur
+    kaynak: world_bank
+    kod: NY.GDP.PCAP.PP.KD
+    ulke: TUR
+    baslik: Kişi başına GSYH, satın alma gücü paritesiyle (sabit uluslararası $)
+    tema: buyume
+    siklik: yillik
+    birim: USD
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    not: Ülkeler arası fiyat farkı ayıklanmış gelir karşılaştırması; uluslararası dolar, sabit fiyatlar.
+
+  - id: wb-ne-gdi-ftot-zs-tur
+    kaynak: world_bank
+    kod: NE.GDI.FTOT.ZS
+    ulke: TUR
+    baslik: Sabit sermaye yatırımı, GSYH'ye oran
+    tema: buyume
+    siklik: yillik
+    birim: yuzde-gsyh
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+
+  - id: wb-ny-gds-totl-zs-tur
+    kaynak: world_bank
+    kod: NY.GDS.TOTL.ZS
+    ulke: TUR
+    baslik: Yurt içi tasarruf, GSYH'ye oran
+    tema: buyume
+    siklik: yillik
+    birim: yuzde-gsyh
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+
+  - id: wb-ne-exp-gnfs-zs-tur
+    kaynak: world_bank
+    kod: NE.EXP.GNFS.ZS
+    ulke: TUR
+    baslik: Mal ve hizmet ihracatı, GSYH'ye oran
+    tema: dis-ticaret
+    siklik: yillik
+    birim: yuzde-gsyh
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+
+  - id: wb-ne-imp-gnfs-zs-tur
+    kaynak: world_bank
+    kod: NE.IMP.GNFS.ZS
+    ulke: TUR
+    baslik: Mal ve hizmet ithalatı, GSYH'ye oran
+    tema: dis-ticaret
+    siklik: yillik
+    birim: yuzde-gsyh
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+
+  - id: wb-bx-klt-dinv-wd-gd-zs-tur
+    kaynak: world_bank
+    kod: BX.KLT.DINV.WD.GD.ZS
+    ulke: TUR
+    baslik: Doğrudan yabancı yatırım, net giriş, GSYH'ye oran
+    tema: dis-sektor
+    siklik: yillik
+    birim: yuzde-gsyh
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+
+  - id: wb-si-pov-gini-tur
+    kaynak: world_bank
+    kod: SI.POV.GINI
+    ulke: TUR
+    baslik: Gini katsayısı (gelir eşitsizliği)
+    tema: toplum
+    siklik: yillik
+    birim: endeks
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    not: 0 tam eşitlik, 100 tam eşitsizlik. Dünya Bankası Yoksulluk ve Eşitsizlik Platformu tahmini; her yıl yayımlanmaz.
+
+  - id: wb-sp-dyn-le00-in-tur
+    kaynak: world_bank
+    kod: SP.DYN.LE00.IN
+    ulke: TUR
+    baslik: Doğumda beklenen yaşam süresi
+    tema: toplum
+    siklik: yillik
+    birim: yil
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+
+  - id: wb-sp-pop-totl-tur
+    kaynak: world_bank
+    kod: SP.POP.TOTL
+    ulke: TUR
+    baslik: Nüfus
+    tema: toplum
+    siklik: yillik
+    birim: kisi
+    carpan: 1
+
+  # ---- ILO (ILOSTAT SDMX; kod = akış/anahtar; ülke alfa-3) --------------------------
+  - id: ilo-issizlik-tr
+    kaynak: ilo
+    kod: DF_UNE_DEAP_SEX_AGE_RT/TUR.A..SEX_T.AGE_YTHADULT_YGE15
+    ulke: TUR
+    baslik: İşsizlik oranı, 15 yaş ve üstü (işgücü anketi)
+    tema: isgucu
+    siklik: yillik
+    birim: yuzde
+    carpan: 1
+    baslangic: "1980"
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    not: Ulusal hane halkı işgücü anketinden ILO'nun derlediği oran; model tahmini değildir.
+
+  - id: ilo-isgucune-katilim-tr
+    kaynak: ilo
+    kod: DF_EAP_DWAP_SEX_AGE_RT/TUR.A..SEX_T.AGE_YTHADULT_YGE15
+    ulke: TUR
+    baslik: İşgücüne katılım oranı, 15 yaş ve üstü
+    tema: isgucu
+    siklik: yillik
+    birim: yuzde
+    carpan: 1
+    baslangic: "1980"
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    not: Çalışma çağındaki nüfusun işgücündeki (çalışan ya da iş arayan) payı.
+
+  - id: ilo-kadin-isgucune-katilim-tr
+    kaynak: ilo
+    kod: DF_EAP_DWAP_SEX_AGE_RT/TUR.A..SEX_F.AGE_YTHADULT_YGE15
+    ulke: TUR
+    baslik: Kadınların işgücüne katılım oranı, 15 yaş ve üstü
+    tema: isgucu
+    siklik: yillik
+    birim: yuzde
+    carpan: 1
+    baslangic: "1980"
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    not: 15 yaş ve üstü kadınların işgücündeki payı.
+
+  - id: ilo-neet-tr
+    kaynak: ilo
+    kod: DF_EIP_NEET_SEX_RT/TUR.A..SEX_T
+    ulke: TUR
+    baslik: Ne eğitimde ne istihdamda olan gençler (NEET), 15-24 yaş
+    tema: isgucu
+    siklik: yillik
+    birim: yuzde
+    carpan: 1
+    baslangic: "1980"
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    not: 15-24 yaş gençlerin ne çalışan ne okuyan ne de eğitim alan kısmının payı.
+
+  - id: ilo-kayitdisi-istihdam-tr
+    kaynak: ilo
+    kod: DF_EMP_NIFL_SEX_RT/TUR.A..SEX_T
+    ulke: TUR
+    baslik: Kayıt dışı istihdam oranı
+    tema: isgucu
+    siklik: yillik
+    birim: yuzde
+    carpan: 1
+    baslangic: "1980"
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    not: ILO tanımıyla kayıt dışı istihdamın toplam istihdama oranı; ulusal tanımdan farklı olabilir.
+
+  - id: ilo-emek-payi-tr
+    kaynak: ilo
+    kod: DF_LAP_2GDP_NOC_RT/TUR.A.
+    ulke: TUR
+    baslik: Emeğin GSYH'deki payı
+    tema: isgucu
+    siklik: yillik
+    birim: yuzde
+    carpan: 1
+    baslangic: "1980"
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    not: Çalışanların ücret ve kendi hesabına çalışanların emek gelirinin GSYH'ye oranı; ILO model tahmini, son yıllar projeksiyondur (gözlem bayrağı).
+
+  # ---- Eurostat: asgari ücret (yarıyıllık) ------------------------------------------
+  - id: eurostat-asgari-ucret-pps-tr
+    kaynak: eurostat
+    kod: earn_mw_cur/S.PPS.TR
+    ulke: TUR
+    baslik: Aylık brüt asgari ücret, satın alma gücü standardı (PPS)
+    tema: isgucu
+    siklik: yariyillik
+    birim: PPS
+    carpan: 1
+    emsal: [POL, HUN, ROU]
+    not: PPS, ülkeler arası fiyat düzeyi farkını ayıklayan yapay ortak birimdir; kur değildir. Eurostat yarıyılda bir (Ocak ve Temmuz) yayımlar.

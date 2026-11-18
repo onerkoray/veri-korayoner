@@ -16,11 +16,12 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
-Siklik = Literal["yillik", "ceyreklik", "aylik", "haftalik", "gunluk"]
+Siklik = Literal["yillik", "yariyillik", "ceyreklik", "aylik", "haftalik", "gunluk"]
 Durum = Literal["aktif", "gelistiriliyor", "planlandi", "anahtar-gerekli", "lisans-gerekli", "yalniz-katalog"]
 
 DONEM_KALIBI: dict[str, re.Pattern[str]] = {
     "yillik": re.compile(r"^\d{4}$"),
+    "yariyillik": re.compile(r"^\d{4}-S[12]$"),
     "ceyreklik": re.compile(r"^\d{4}-Q[1-4]$"),
     "aylik": re.compile(r"^\d{4}-(0[1-9]|1[0-2])$"),
     "haftalik": re.compile(r"^\d{4}-W(0[1-9]|[1-4]\d|5[0-3])$"),

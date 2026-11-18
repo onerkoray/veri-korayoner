@@ -1,0 +1,192 @@
+{
+ "surum": 1,
+ "id": "ilo-isgucune-katilim-tr",
+ "baslik": "İşgücüne katılım oranı, 15 yaş ve üstü",
+ "ulke": "TUR",
+ "siklik": "yillik",
+ "birim": "yuzde",
+ "carpan": 1,
+ "tema": "isgucu",
+ "kaynak": {
+  "id": "ilo",
+  "ad": "ILOSTAT",
+  "kurum": "Uluslararası Çalışma Örgütü (ILO)",
+  "adres": "https://ilostat.ilo.org/",
+  "belge": "https://ilostat.ilo.org/resources/sdmx-tools/",
+  "lisans": "CC BY 4.0 (ILO veri tabanları ve veri setleri, 3 Mayıs 2023'ten beri)",
+  "lisans_kanit": "https://www.ilo.org/node/9321",
+  "lisans_inceleme": "2026-11-18",
+  "atif_zorunlu": true,
+  "kosullar": [
+   "Kaynak: ILO, ILOSTAT veri tabanı.",
+   "Seri adları Türkçeye çevrilmiştir; değerler değiştirilmemiştir."
+  ]
+ },
+ "kaynak_kod": "DF_EAP_DWAP_SEX_AGE_RT/TUR.A..SEX_T.AGE_YTHADULT_YGE15",
+ "kaynak_adi": "DF_EAP_DWAP_SEX_AGE_RT",
+ "kaynak_not": null,
+ "kaynak_guncelleme": null,
+ "cekildi": "2026-11-18T05:51:59.207759Z",
+ "izin": {
+  "gosterim": true,
+  "indirme": true,
+  "api": true
+ },
+ "gozlemler": [
+  {
+   "donem": "1980",
+   "deger": "65.471",
+   "durum": null
+  },
+  {
+   "donem": "1985",
+   "deger": "63.785",
+   "durum": null
+  },
+  {
+   "donem": "1988",
+   "deger": "58.472",
+   "durum": null
+  },
+  {
+   "donem": "1989",
+   "deger": "58.699",
+   "durum": null
+  },
+  {
+   "donem": "1990",
+   "deger": "56.614",
+   "durum": null
+  },
+  {
+   "donem": "2000",
+   "deger": "49.941",
+   "durum": null
+  },
+  {
+   "donem": "2001",
+   "deger": "49.814",
+   "durum": null
+  },
+  {
+   "donem": "2002",
+   "deger": "49.578",
+   "durum": null
+  },
+  {
+   "donem": "2003",
+   "deger": "48.332",
+   "durum": null
+  },
+  {
+   "donem": "2004",
+   "deger": "46.308",
+   "durum": null
+  },
+  {
+   "donem": "2005",
+   "deger": "46.433",
+   "durum": null
+  },
+  {
+   "donem": "2006",
+   "deger": "46.266",
+   "durum": null
+  },
+  {
+   "donem": "2007",
+   "deger": "46.234",
+   "durum": null
+  },
+  {
+   "donem": "2008",
+   "deger": "46.886",
+   "durum": null
+  },
+  {
+   "donem": "2009",
+   "deger": "47.882",
+   "durum": null
+  },
+  {
+   "donem": "2010",
+   "deger": "48.801",
+   "durum": null
+  },
+  {
+   "donem": "2011",
+   "deger": "49.868",
+   "durum": null
+  },
+  {
+   "donem": "2012",
+   "deger": "49.957",
+   "durum": null
+  },
+  {
+   "donem": "2013",
+   "deger": "50.839",
+   "durum": null
+  },
+  {
+   "donem": "2014",
+   "deger": "50.514",
+   "durum": null
+  },
+  {
+   "donem": "2015",
+   "deger": "51.298",
+   "durum": null
+  },
+  {
+   "donem": "2016",
+   "deger": "52.001",
+   "durum": null
+  },
+  {
+   "donem": "2017",
+   "deger": "52.832",
+   "durum": null
+  },
+  {
+   "donem": "2018",
+   "deger": "53.21",
+   "durum": null
+  },
+  {
+   "donem": "2019",
+   "deger": "52.952",
+   "durum": null
+  },
+  {
+   "donem": "2020",
+   "deger": "49.335",
+   "durum": null
+  },
+  {
+   "donem": "2021",
+   "deger": "51.356",
+   "durum": null
+  },
+  {
+   "donem": "2022",
+   "deger": "53.084",
+   "durum": null
+  },
+  {
+   "donem": "2023",
+   "deger": "53.338",
+   "durum": null
+  },
+  {
+   "donem": "2024",
+   "deger": "54.202",
+   "durum": null
+  },
+  {
+   "donem": "2025",
+   "deger": "53.517",
+   "durum": null
+  }
+ ]
+}

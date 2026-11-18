@@ -35,6 +35,9 @@ def baglayici(kaynak_id: str) -> Baglayici:
     if kaynak_id == "ecb":
         from .ecb import ECB
         return ECB()
+    if kaynak_id == "ilo":
+        from .ilo import ILO
+        return ILO()
     if kaynak_id == "eurostat":
         from .eurostat import Eurostat
         return Eurostat()

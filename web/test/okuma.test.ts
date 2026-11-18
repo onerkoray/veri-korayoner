@@ -19,6 +19,9 @@ test("Türkçe ek uyumu: yıl ve çeyrek", () => {
   assert.equal(ek("2024 2. çeyrek", "de"), "2024 2. çeyrekte");
   assert.equal(donemAdi("2026-03-04"), "4 Mart 2026");
   assert.equal(donemAdi("2025-Q3"), "2025 3. çeyrek");
+  assert.equal(donemAdi("2025-S2"), "2025 2. yarıyıl");
+  assert.equal(ek("2025 2. yarıyıl", "de"), "2025 2. yarıyılda");
+  assert.equal(ek("2025 1. yarıyıl", "den"), "2025 1. yarıyıldan");
 });
 
 test("konum: zirve, dip ve en son ne zaman", () => {
@@ -52,6 +55,7 @@ test("oku: kurda TL değer kaybı ile kur artışı ayrı hesaplanır", () => {
 test("birYilOnce ve seri_yon", () => {
   assert.equal(birYilOnce(ay([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]), "aylik")?.donem, "2024-01");
   assert.equal(birYilOnce(yil([1, 2]), "yillik"), null);
+  assert.equal(birYilOnce([{ donem: "2024-S2", v: 1 }, { donem: "2025-S1", v: 2 }, { donem: "2025-S2", v: 3 }], "yariyillik")?.donem, "2024-S2");
   assert.equal(seri_yon(yil([5, 4, 3, 2])), -3);
   assert.equal(seri_yon(yil([1, 2, 2])), 0);
 });

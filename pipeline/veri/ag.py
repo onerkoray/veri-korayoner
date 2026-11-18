@@ -16,7 +16,7 @@ import httpx
 
 KULLANICI = "veri.korayoner.dev/0.1 (+https://veri.korayoner.dev/koray-oner)"
 IZINLI_HOSTLAR = frozenset({"api.worldbank.org", "stats.bis.org", "sdmx.oecd.org", "data-api.ecb.europa.eu",
-                            "ec.europa.eu"})
+                            "ec.europa.eu", "sdmx.ilo.org"})
 AZAMI_BOYUT = 20 * 1024 * 1024
 DENEME = 5
 

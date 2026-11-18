@@ -1,0 +1,308 @@
+{
+ "surum": 1,
+ "id": "eurostat-asgari-ucret-pps-tr",
+ "baslik": "Aylık brüt asgari ücret, satın alma gücü standardı (PPS)",
+ "ulke": "TUR",
+ "siklik": "yariyillik",
+ "birim": "PPS",
+ "carpan": 1,
+ "tema": "isgucu",
+ "kaynak": {
+  "id": "eurostat",
+  "ad": "Eurostat",
+  "kurum": "Avrupa Birliği İstatistik Ofisi (Eurostat)",
+  "adres": "https://ec.europa.eu/eurostat",
+  "belge": "https://ec.europa.eu/eurostat/en/web/user-guides/data-browser/api-data-access/api-introduction",
+  "lisans": "CC BY 4.0 (Komisyon Kararı 2011/833/AB)",
+  "lisans_kanit": "https://ec.europa.eu/eurostat/help/copyright-notice",
+  "lisans_inceleme": "2026-11-17",
+  "atif_zorunlu": true,
+  "kosullar": [
+   "Kaynak: Eurostat.",
+   "Seri adları Türkçeye çevrilmiştir; değerler değiştirilmemiştir.",
+   "Eurostat bu sitenin kullanımından sorumlu değildir."
+  ]
+ },
+ "kaynak_kod": "earn_mw_cur/S.PPS.TR",
+ "kaynak_adi": "earn_mw_cur",
+ "kaynak_not": null,
+ "kaynak_guncelleme": "2026-07-31",
+ "cekildi": "2026-11-18T05:51:59.207759Z",
+ "izin": {
+  "gosterim": true,
+  "indirme": true,
+  "api": true
+ },
+ "gozlemler": [
+  {
+   "donem": "1999-S1",
+   "deger": "301",
+   "durum": null
+  },
+  {
+   "donem": "1999-S2",
+   "deger": "361",
+   "durum": null
+  },
+  {
+   "donem": "2000-S1",
+   "deger": "283",
+   "durum": null
+  },
+  {
+   "donem": "2000-S2",
+   "deger": "307",
+   "durum": null
+  },
+  {
+   "donem": "2001-S1",
+   "deger": "253",
+   "durum": null
+  },
+  {
+   "donem": "2001-S2",
+   "deger": "304",
+   "durum": null
+  },
+  {
+   "donem": "2002-S1",
+   "deger": "284",
+   "durum": null
+  },
+  {
+   "donem": "2002-S2",
+   "deger": "321",
+   "durum": null
+  },
+  {
+   "donem": "2003-S1",
+   "deger": "308",
+   "durum": null
+  },
+  {
+   "donem": "2003-S2",
+   "deger": "308",
+   "durum": null
+  },
+  {
+   "donem": "2004-S1",
+   "deger": "393",
+   "durum": null
+  },
+  {
+   "donem": "2004-S2",
+   "deger": "412",
+   "durum": null
+  },
+  {
+   "donem": "2005-S1",
+   "deger": "428",
+   "durum": null
+  },
+  {
+   "donem": "2005-S2",
+   "deger": "428",
+   "durum": null
+  },
+  {
+   "donem": "2006-S1",
+   "deger": "438",
+   "durum": null
+  },
+  {
+   "donem": "2006-S2",
+   "deger": "438",
+   "durum": null
+  },
+  {
+   "donem": "2007-S1",
+   "deger": "447",
+   "durum": null
+  },
+  {
+   "donem": "2007-S2",
+   "deger": "465",
+   "durum": null
+  },
+  {
+   "donem": "2008-S1",
+   "deger": "476",
+   "durum": null
+  },
+  {
+   "donem": "2008-S2",
+   "deger": "500",
+   "durum": null
+  },
+  {
+   "donem": "2009-S1",
+   "deger": "496",
+   "durum": null
+  },
+  {
+   "donem": "2009-S2",
+   "deger": "517",
+   "durum": null
+  },
+  {
+   "donem": "2010-S1",
+   "deger": "525",
+   "durum": null
+  },
+  {
+   "donem": "2010-S2",
+   "deger": "548",
+   "durum": null
+  },
+  {
+   "donem": "2011-S1",
+   "deger": "549",
+   "durum": null
+  },
+  {
+   "donem": "2011-S2",
+   "deger": "577",
+   "durum": null
+  },
+  {
+   "donem": "2012-S1",
+   "deger": "571",
+   "durum": null
+  },
+  {
+   "donem": "2012-S2",
+   "deger": "605",
+   "durum": null
+  },
+  {
+   "donem": "2013-S1",
+   "deger": "588",
+   "durum": null
+  },
+  {
+   "donem": "2013-S2",
+   "deger": "614",
+   "durum": null
+  },
+  {
+   "donem": "2014-S1",
+   "deger": "605",
+   "durum": null
+  },
+  {
+   "donem": "2014-S2",
+   "deger": "640",
+   "durum": null
+  },
+  {
+   "donem": "2015-S1",
+   "deger": "647",
+   "durum": null
+  },
+  {
+   "donem": "2015-S2",
+   "deger": "686",
+   "durum": null
+  },
+  {
+   "donem": "2016-S1",
+   "deger": "798",
+   "durum": null
+  },
+  {
+   "donem": "2016-S2",
+   "deger": "798",
+   "durum": null
+  },
+  {
+   "donem": "2017-S1",
+   "deger": "781",
+   "durum": null
+  },
+  {
+   "donem": "2017-S2",
+   "deger": "781",
+   "durum": null
+  },
+  {
+   "donem": "2018-S1",
+   "deger": "776",
+   "durum": null
+  },
+  {
+   "donem": "2018-S2",
+   "deger": "776",
+   "durum": null
+  },
+  {
+   "donem": "2019-S1",
+   "deger": "851",
+   "durum": null
+  },
+  {
+   "donem": "2019-S2",
+   "deger": "851",
+   "durum": null
+  },
+  {
+   "donem": "2020-S1",
+   "deger": "815",
+   "durum": null
+  },
+  {
+   "donem": "2020-S2",
+   "deger": "815",
+   "durum": null
+  },
+  {
+   "donem": "2021-S1",
+   "deger": "806",
+   "durum": null
+  },
+  {
+   "donem": "2021-S2",
+   "deger": "806",
+   "durum": null
+  },
+  {
+   "donem": "2022-S1",
+   "deger": "700",
+   "durum": null
+  },
+  {
+   "donem": "2022-S2",
+   "deger": "905",
+   "durum": null
+  },
+  {
+   "donem": "2023-S1",
+   "deger": "860",
+   "durum": null
+  },
+  {
+   "donem": "2023-S2",
+   "deger": "1153",
+   "durum": null
+  },
+  {
+   "donem": "2024-S1",
+   "deger": "1014",
+   "durum": null
+  },
+  {
+   "donem": "2024-S2",
+   "deger": "1014",
+   "durum": null
+  },
+  {
+   "donem": "2025-S1",
+   "deger": "973",
+   "durum": null
+  },
+  {
+   "donem": "2025-S2",
+   "deger": "973",
+   "durum": null
+  }
+ ]
+}

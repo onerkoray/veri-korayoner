@@ -125,6 +125,32 @@ kaynaklar:
         https://www.oecd.org/en/about/news/press-releases/2024/07/oecd-data-publications-and-analysis-become-freely-accessible.html
     yayin: { gosterim: true, indirme: true, api: true }
 
+  - id: ilo
+    ad: ILOSTAT
+    kurum: Uluslararası Çalışma Örgütü (ILO)
+    adres: https://ilostat.ilo.org/
+    api: https://sdmx.ilo.org/rest/
+    belge: https://ilostat.ilo.org/resources/sdmx-tools/
+    erisim: SDMX REST
+    anahtar: false
+    durum: aktif
+    lisans:
+      ad: CC BY 4.0 (ILO veri tabanları ve veri setleri, 3 Mayıs 2023'ten beri)
+      kanit: https://www.ilo.org/node/9321
+      inceleme_tarihi: 2026-11-18
+      atif_zorunlu: true
+      kosullar:
+        - "Kaynak: ILO, ILOSTAT veri tabanı."
+        - "Seri adları Türkçeye çevrilmiştir; değerler değiştirilmemiştir."
+      not: >-
+        Şart: 3 Mayıs 2023'ten beri ILO veri tabanları ve veri setleri,
+        referans metaverisiyle birlikte CC BY 4.0 lisanslıdır. Kapsam dışı:
+        ILO'ya yalnız kendi kullanımı için verilmiş mikro veri; bu sitede
+        yalnız ILOSTAT'ın yayımladığı toplulaştırılmış göstergeler var.
+        ILOSTAT verinin ücretsiz kullanılabileceğini ve atıf yapılmasını
+        ister. Model tahminleri (ILO modelled estimates) gözlem bayrağıyla işaretlidir.
+    yayin: { gosterim: true, indirme: true, api: true }
+
   - id: eurostat
     ad: Eurostat
     kurum: Avrupa Birliği İstatistik Ofisi (Eurostat)

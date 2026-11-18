@@ -24,10 +24,10 @@ from collections import defaultdict
 from decimal import ROUND_HALF_EVEN, Decimal, localcontext
 from pathlib import Path
 
-SIRA = ["gunluk", "haftalik", "aylik", "ceyreklik", "yillik"]
+SIRA = ["gunluk", "haftalik", "aylik", "ceyreklik", "yariyillik", "yillik"]
 HEDEF = ["aylik", "ceyreklik", "yillik"]
 BEKLENEN = {("aylik", "aylik"): 1, ("aylik", "ceyreklik"): 3, ("aylik", "yillik"): 12,
-            ("ceyreklik", "ceyreklik"): 1, ("ceyreklik", "yillik"): 4, ("yillik", "yillik"): 1}
+            ("ceyreklik", "ceyreklik"): 1, ("ceyreklik", "yillik"): 4, ("yariyillik", "yillik"): 2, ("yillik", "yillik"): 1}
 BASAMAK = 12
 YONTEM = ("Kaynağın kendi sıklığında değerler kaynaktaki gibidir. Daha seyrek sıklıkta 'ort' dönem "
           "ortalaması (12 anlamlı basamak, bu sitenin hesabı), 'son' dönemin son gözlemidir. 'tam': dönemin "

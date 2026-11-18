@@ -1,0 +1,167 @@
+{
+ "surum": 1,
+ "id": "ilo-kayitdisi-istihdam-tr",
+ "baslik": "Kayıt dışı istihdam oranı",
+ "ulke": "TUR",
+ "siklik": "yillik",
+ "birim": "yuzde",
+ "carpan": 1,
+ "tema": "isgucu",
+ "kaynak": {
+  "id": "ilo",
+  "ad": "ILOSTAT",
+  "kurum": "Uluslararası Çalışma Örgütü (ILO)",
+  "adres": "https://ilostat.ilo.org/",
+  "belge": "https://ilostat.ilo.org/resources/sdmx-tools/",
+  "lisans": "CC BY 4.0 (ILO veri tabanları ve veri setleri, 3 Mayıs 2023'ten beri)",
+  "lisans_kanit": "https://www.ilo.org/node/9321",
+  "lisans_inceleme": "2026-11-18",
+  "atif_zorunlu": true,
+  "kosullar": [
+   "Kaynak: ILO, ILOSTAT veri tabanı.",
+   "Seri adları Türkçeye çevrilmiştir; değerler değiştirilmemiştir."
+  ]
+ },
+ "kaynak_kod": "DF_EMP_NIFL_SEX_RT/TUR.A..SEX_T",
+ "kaynak_adi": "DF_EMP_NIFL_SEX_RT",
+ "kaynak_not": null,
+ "kaynak_guncelleme": null,
+ "cekildi": "2026-11-18T05:51:59.207759Z",
+ "izin": {
+  "gosterim": true,
+  "indirme": true,
+  "api": true
+ },
+ "gozlemler": [
+  {
+   "donem": "2000",
+   "deger": "51.984",
+   "durum": null
+  },
+  {
+   "donem": "2001",
+   "deger": "53.398",
+   "durum": null
+  },
+  {
+   "donem": "2002",
+   "deger": "52.51",
+   "durum": null
+  },
+  {
+   "donem": "2003",
+   "deger": "52.128",
+   "durum": null
+  },
+  {
+   "donem": "2004",
+   "deger": "51.018",
+   "durum": null
+  },
+  {
+   "donem": "2005",
+   "deger": "49.046",
+   "durum": null
+  },
+  {
+   "donem": "2006",
+   "deger": "47.746",
+   "durum": null
+  },
+  {
+   "donem": "2007",
+   "deger": "46.032",
+   "durum": null
+  },
+  {
+   "donem": "2008",
+   "deger": "44.133",
+   "durum": null
+  },
+  {
+   "donem": "2009",
+   "deger": "45.061",
+   "durum": null
+  },
+  {
+   "donem": "2010",
+   "deger": "44.398",
+   "durum": null
+  },
+  {
+   "donem": "2011",
+   "deger": "43.201",
+   "durum": null
+  },
+  {
+   "donem": "2012",
+   "deger": "40.158",
+   "durum": null
+  },
+  {
+   "donem": "2013",
+   "deger": "37.808",
+   "durum": null
+  },
+  {
+   "donem": "2014",
+   "deger": "36.299",
+   "durum": null
+  },
+  {
+   "donem": "2015",
+   "deger": "34.783",
+   "durum": null
+  },
+  {
+   "donem": "2016",
+   "deger": "34.541",
+   "durum": null
+  },
+  {
+   "donem": "2017",
+   "deger": "35.002",
+   "durum": null
+  },
+  {
+   "donem": "2018",
+   "deger": "34.751",
+   "durum": null
+  },
+  {
+   "donem": "2019",
+   "deger": "35.242",
+   "durum": null
+  },
+  {
+   "donem": "2020",
+   "deger": "31.42",
+   "durum": null
+  },
+  {
+   "donem": "2021",
+   "deger": "29.887",
+   "durum": null
+  },
+  {
+   "donem": "2022",
+   "deger": "28.099",
+   "durum": null
+  },
+  {
+   "donem": "2023",
+   "deger": "27.307",
+   "durum": null
+  },
+  {
+   "donem": "2024",
+   "deger": "27.711",
+   "durum": null
+  },
+  {
+   "donem": "2025",
+   "deger": "26.591",
+   "durum": null
+  }
+ ]
+}

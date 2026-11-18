@@ -1,6 +1,6 @@
 {
  "surum": 1,
- "uretildi": "2026-11-18T05:39:04.806566Z",
+ "uretildi": "2026-11-18T06:18:19.332415Z",
  "kaynaklar": [
   {
    "id": "world_bank",
@@ -77,6 +77,28 @@
    "kosullar": [
     "Kaynak: OECD; veri setinin önerdiği atıf biçimiyle.",
     "Seri adları Türkçeye çevrilmiştir."
+   ],
+   "durum": "aktif",
+   "erisim": "SDMX REST",
+   "yayin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   }
+  },
+  {
+   "id": "ilo",
+   "ad": "ILOSTAT",
+   "kurum": "Uluslararası Çalışma Örgütü (ILO)",
+   "adres": "https://ilostat.ilo.org/",
+   "belge": "https://ilostat.ilo.org/resources/sdmx-tools/",
+   "lisans": "CC BY 4.0 (ILO veri tabanları ve veri setleri, 3 Mayıs 2023'ten beri)",
+   "lisans_kanit": "https://www.ilo.org/node/9321",
+   "lisans_inceleme": "2026-11-18",
+   "atif_zorunlu": true,
+   "kosullar": [
+    "Kaynak: ILO, ILOSTAT veri tabanı.",
+    "Seri adları Türkçeye çevrilmiştir; değerler değiştirilmemiştir."
    ],
    "durum": "aktif",
    "erisim": "SDMX REST",

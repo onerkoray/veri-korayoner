@@ -22,7 +22,7 @@ from decimal import Decimal, InvalidOperation
 
 from ..modeller import Gozlem, SeriTanimi
 
-SIKLIK = {"A": "yillik", "Q": "ceyreklik", "M": "aylik", "D": "gunluk", "W": "haftalik"}
+SIKLIK = {"A": "yillik", "S": "yariyillik", "Q": "ceyreklik", "M": "aylik", "D": "gunluk", "W": "haftalik"}
 ULKE_SUTUNU = ("REF_AREA", "BORROWERS_CTY", "geo")
 
 

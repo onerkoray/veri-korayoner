@@ -53,7 +53,7 @@ export function uretildi(): string { return oku("api/v1/kaynaklar.json").uretild
 export const TEMA: Record<string, string> = {
   buyume: "Büyüme ve gelir", enflasyon: "Enflasyon", "dis-sektor": "Dış sektör", isgucu: "İşgücü",
   "doviz-rezerv": "Döviz ve rezervler", "para-politikasi": "Para politikası", "kamu-maliyesi": "Kamu maliyesi",
-  bankacilik: "Bankacılık ve kredi", konut: "Konut", "dis-ticaret": "Dış ticaret",
+  bankacilik: "Bankacılık ve kredi", konut: "Konut", "dis-ticaret": "Dış ticaret", toplum: "Nüfus ve toplum",
 };
 export const TEMA_SIRA = Object.keys(TEMA);
 
@@ -85,14 +85,17 @@ export function deger(s: Pick<Seri, "birim" | "carpan">, ham: string | number | 
     }
     case "TRY/USD": case "TRY/EUR": return sayi(v, 2) + " TL";
     case "endeks": return sayi(v, 1);
+    case "PPS": return sayi(v, 0) + " PPS";
+    case "yil": return sayi(v, 1) + " yıl";
+    case "kisi": return Math.abs(v) >= 1e6 ? sayi(v / 1e6, 1) + " milyon" : sayi(v, 0);
     default: return sayi(v, 2) + " " + s.birim;
   }
 }
 export function birimAdi(b: string): string {
-  return ({ yuzde: "yüzde", "yuzde-gsyh": "GSYH'ye oran, yüzde", USD: "ABD doları, cari", "TRY/USD": "1 ABD doları kaç TL", "TRY/EUR": "1 euro kaç TL", endeks: "endeks" } as Record<string, string>)[b] ?? b;
+  return ({ yuzde: "yüzde", "yuzde-gsyh": "GSYH'ye oran, yüzde", USD: "ABD doları, cari", "TRY/USD": "1 ABD doları kaç TL", "TRY/EUR": "1 euro kaç TL", PPS: "satın alma gücü standardı (PPS)", yil: "yıl", kisi: "kişi", endeks: "endeks" } as Record<string, string>)[b] ?? b;
 }
 export function siklikAdi(s: string): string {
-  return ({ yillik: "Yıllık", ceyreklik: "Çeyreklik", aylik: "Aylık", haftalik: "Haftalık", gunluk: "Günlük" } as Record<string, string>)[s] ?? s;
+  return ({ yillik: "Yıllık", yariyillik: "Yarıyıllık", ceyreklik: "Çeyreklik", aylik: "Aylık", haftalik: "Haftalık", gunluk: "Günlük" } as Record<string, string>)[s] ?? s;
 }
 export function tarih(iso: string | null): string {
   if (!iso) return "bilinmiyor";
@@ -102,7 +105,7 @@ export function tarih(iso: string | null): string {
 /** Dönem anahtarını tarihe çevirir: 2025, 2025-03, 2025-Q2, 2025-03-14. */
 export function donemTarihi(d: string): Date {
   const y = Number(d.slice(0, 4));
-  const q = /-Q([1-4])$/.exec(d);
+  const q = /-Q([1-4])$/.exec(d.replace(/-S([12])$/, (_: string, s: string) => (s === "1" ? "-Q1" : "-Q3")));
   if (q) return new Date(Date.UTC(y, (Number(q[1]) - 1) * 3, 1));
   const p = d.split("-");
   return new Date(Date.UTC(y, p[1] ? Number(p[1]) - 1 : 0, p[2] ? Number(p[2]) : 1));

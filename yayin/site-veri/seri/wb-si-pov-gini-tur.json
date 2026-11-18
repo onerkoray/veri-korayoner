@@ -1,0 +1,354 @@
+{
+ "surum": 1,
+ "id": "wb-si-pov-gini-tur",
+ "baslik": "Gini katsayısı (gelir eşitsizliği)",
+ "ulke": "TUR",
+ "siklik": "yillik",
+ "birim": "endeks",
+ "carpan": 1,
+ "tema": "toplum",
+ "kaynak": {
+  "id": "world_bank",
+  "ad": "Dünya Bankası — Dünya Kalkınma Göstergeleri (WDI)",
+  "kurum": "Dünya Bankası",
+  "adres": "https://data.worldbank.org/",
+  "belge": "https://datahelpdesk.worldbank.org/knowledgebase/articles/889392",
+  "lisans": "CC BY 4.0 (WDI veri seti)",
+  "lisans_kanit": "https://datacatalog.worldbank.org/search/dataset/0037712/World-Development-Indicators",
+  "lisans_inceleme": "2026-11-17",
+  "atif_zorunlu": true,
+  "kosullar": []
+ },
+ "kaynak_kod": "SI.POV.GINI",
+ "kaynak_adi": "Gini index",
+ "kaynak_not": "World Bank, Poverty and Inequality Platform. Data are based on primary household survey data obtained from government statistical agencies and World Bank country departments. Data for high-income economies are mostly from the Luxembourg Income Study database. For more information and methodology, please see http://pip.worldbank.org., World Bank (WB), uri: http://pip.worldbank.org, note: Data are based on primary household survey data obtained from government statistical agencies and World Bank country departments. Data for high-income economies are mostly from the Luxembourg Income Study database.",
+ "kaynak_guncelleme": "2026-11-11",
+ "cekildi": "2026-11-18T05:51:59.207759Z",
+ "izin": {
+  "gosterim": true,
+  "indirme": true,
+  "api": true
+ },
+ "gozlemler": [
+  {
+   "donem": "1960",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1961",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1962",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1963",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1964",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1965",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1966",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1967",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1968",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1969",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1970",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1971",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1972",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1973",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1974",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1975",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1976",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1977",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1978",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1979",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1980",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1981",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1982",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1983",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1984",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1985",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1986",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1987",
+   "deger": "41",
+   "durum": null
+  },
+  {
+   "donem": "1988",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1989",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1990",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1991",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1992",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1993",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1994",
+   "deger": "41.3",
+   "durum": null
+  },
+  {
+   "donem": "1995",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1996",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1997",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1998",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1999",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "2000",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "2001",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "2002",
+   "deger": "41.4",
+   "durum": null
+  },
+  {
+   "donem": "2003",
+   "deger": "42.2",
+   "durum": null
+  },
+  {
+   "donem": "2004",
+   "deger": "41.3",
+   "durum": null
+  },
+  {
+   "donem": "2005",
+   "deger": "42.6",
+   "durum": null
+  },
+  {
+   "donem": "2006",
+   "deger": "39.6",
+   "durum": null
+  },
+  {
+   "donem": "2007",
+   "deger": "38.4",
+   "durum": null
+  },
+  {
+   "donem": "2008",
+   "deger": "39",
+   "durum": null
+  },
+  {
+   "donem": "2009",
+   "deger": "39",
+   "durum": null
+  },
+  {
+   "donem": "2010",
+   "deger": "38.8",
+   "durum": null
+  },
+  {
+   "donem": "2011",
+   "deger": "40",
+   "durum": null
+  },
+  {
+   "donem": "2012",
+   "deger": "40.2",
+   "durum": null
+  },
+  {
+   "donem": "2013",
+   "deger": "40.2",
+   "durum": null
+  },
+  {
+   "donem": "2014",
+   "deger": "41.2",
+   "durum": null
+  },
+  {
+   "donem": "2015",
+   "deger": "42.9",
+   "durum": null
+  },
+  {
+   "donem": "2016",
+   "deger": "41.9",
+   "durum": null
+  },
+  {
+   "donem": "2017",
+   "deger": "43.5",
+   "durum": null
+  },
+  {
+   "donem": "2018",
+   "deger": "42.4",
+   "durum": null
+  },
+  {
+   "donem": "2019",
+   "deger": "43.8",
+   "durum": null
+  },
+  {
+   "donem": "2020",
+   "deger": "43",
+   "durum": null
+  },
+  {
+   "donem": "2021",
+   "deger": "44.4",
+   "durum": null
+  },
+  {
+   "donem": "2022",
+   "deger": "44.5",
+   "durum": null
+  },
+  {
+   "donem": "2023",
+   "deger": "43.7",
+   "durum": null
+  }
+ ]
+}

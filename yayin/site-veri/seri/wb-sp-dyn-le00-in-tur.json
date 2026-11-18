@@ -1,0 +1,359 @@
+{
+ "surum": 1,
+ "id": "wb-sp-dyn-le00-in-tur",
+ "baslik": "Doğumda beklenen yaşam süresi",
+ "ulke": "TUR",
+ "siklik": "yillik",
+ "birim": "yil",
+ "carpan": 1,
+ "tema": "toplum",
+ "kaynak": {
+  "id": "world_bank",
+  "ad": "Dünya Bankası — Dünya Kalkınma Göstergeleri (WDI)",
+  "kurum": "Dünya Bankası",
+  "adres": "https://data.worldbank.org/",
+  "belge": "https://datahelpdesk.worldbank.org/knowledgebase/articles/889392",
+  "lisans": "CC BY 4.0 (WDI veri seti)",
+  "lisans_kanit": "https://datacatalog.worldbank.org/search/dataset/0037712/World-Development-Indicators",
+  "lisans_inceleme": "2026-11-17",
+  "atif_zorunlu": true,
+  "kosullar": []
+ },
+ "kaynak_kod": "SP.DYN.LE00.IN",
+ "kaynak_adi": "Life expectancy at birth, total (years)",
+ "kaynak_not": "World Population Prospects, United Nations (UN), uri: UN Population Division;\nStatistical databases and publications from national statistical offices, National Statistical Offices (NSOs), note: Derived from male and female life expectancy at birth from sources such as statistical databases and publications from national statistical offices.;\nDemographic Statistics, Eurostat (ESTAT), note: Derived from male and female life expectancy at birth from sources such as Eurostat: Demographic Statistics.",
+ "kaynak_guncelleme": "2026-11-11",
+ "cekildi": "2026-11-18T05:51:59.207759Z",
+ "izin": {
+  "gosterim": true,
+  "indirme": true,
+  "api": true
+ },
+ "gozlemler": [
+  {
+   "donem": "1960",
+   "deger": "50.799",
+   "durum": null
+  },
+  {
+   "donem": "1961",
+   "deger": "51.558",
+   "durum": null
+  },
+  {
+   "donem": "1962",
+   "deger": "52.347",
+   "durum": null
+  },
+  {
+   "donem": "1963",
+   "deger": "53.12",
+   "durum": null
+  },
+  {
+   "donem": "1964",
+   "deger": "53.6",
+   "durum": null
+  },
+  {
+   "donem": "1965",
+   "deger": "54.105",
+   "durum": null
+  },
+  {
+   "donem": "1966",
+   "deger": "54.57",
+   "durum": null
+  },
+  {
+   "donem": "1967",
+   "deger": "55.183",
+   "durum": null
+  },
+  {
+   "donem": "1968",
+   "deger": "55.639",
+   "durum": null
+  },
+  {
+   "donem": "1969",
+   "deger": "56.179",
+   "durum": null
+  },
+  {
+   "donem": "1970",
+   "deger": "56.702",
+   "durum": null
+  },
+  {
+   "donem": "1971",
+   "deger": "57.223",
+   "durum": null
+  },
+  {
+   "donem": "1972",
+   "deger": "57.971",
+   "durum": null
+  },
+  {
+   "donem": "1973",
+   "deger": "58.455",
+   "durum": null
+  },
+  {
+   "donem": "1974",
+   "deger": "59.019",
+   "durum": null
+  },
+  {
+   "donem": "1975",
+   "deger": "59.513",
+   "durum": null
+  },
+  {
+   "donem": "1976",
+   "deger": "60.014",
+   "durum": null
+  },
+  {
+   "donem": "1977",
+   "deger": "60.846",
+   "durum": null
+  },
+  {
+   "donem": "1978",
+   "deger": "61.614",
+   "durum": null
+  },
+  {
+   "donem": "1979",
+   "deger": "62.161",
+   "durum": null
+  },
+  {
+   "donem": "1980",
+   "deger": "62.739",
+   "durum": null
+  },
+  {
+   "donem": "1981",
+   "deger": "63.194",
+   "durum": null
+  },
+  {
+   "donem": "1982",
+   "deger": "63.74",
+   "durum": null
+  },
+  {
+   "donem": "1983",
+   "deger": "64.269",
+   "durum": null
+  },
+  {
+   "donem": "1984",
+   "deger": "64.81",
+   "durum": null
+  },
+  {
+   "donem": "1985",
+   "deger": "65.344",
+   "durum": null
+  },
+  {
+   "donem": "1986",
+   "deger": "65.87",
+   "durum": null
+  },
+  {
+   "donem": "1987",
+   "deger": "66.379",
+   "durum": null
+  },
+  {
+   "donem": "1988",
+   "deger": "66.902",
+   "durum": null
+  },
+  {
+   "donem": "1989",
+   "deger": "67.365",
+   "durum": null
+  },
+  {
+   "donem": "1990",
+   "deger": "67.835",
+   "durum": null
+  },
+  {
+   "donem": "1991",
+   "deger": "68.287",
+   "durum": null
+  },
+  {
+   "donem": "1992",
+   "deger": "68.603",
+   "durum": null
+  },
+  {
+   "donem": "1993",
+   "deger": "69.018",
+   "durum": null
+  },
+  {
+   "donem": "1994",
+   "deger": "69.402",
+   "durum": null
+  },
+  {
+   "donem": "1995",
+   "deger": "69.734",
+   "durum": null
+  },
+  {
+   "donem": "1996",
+   "deger": "70.245",
+   "durum": null
+  },
+  {
+   "donem": "1997",
+   "deger": "70.668",
+   "durum": null
+  },
+  {
+   "donem": "1998",
+   "deger": "71.144",
+   "durum": null
+  },
+  {
+   "donem": "1999",
+   "deger": "70.752",
+   "durum": null
+  },
+  {
+   "donem": "2000",
+   "deger": "71.931",
+   "durum": null
+  },
+  {
+   "donem": "2001",
+   "deger": "72.271",
+   "durum": null
+  },
+  {
+   "donem": "2002",
+   "deger": "72.605",
+   "durum": null
+  },
+  {
+   "donem": "2003",
+   "deger": "72.906",
+   "durum": null
+  },
+  {
+   "donem": "2004",
+   "deger": "73.223",
+   "durum": null
+  },
+  {
+   "donem": "2005",
+   "deger": "73.51",
+   "durum": null
+  },
+  {
+   "donem": "2006",
+   "deger": "73.804",
+   "durum": null
+  },
+  {
+   "donem": "2007",
+   "deger": "74.129",
+   "durum": null
+  },
+  {
+   "donem": "2008",
+   "deger": "74.38",
+   "durum": null
+  },
+  {
+   "donem": "2009",
+   "deger": "74.679",
+   "durum": null
+  },
+  {
+   "donem": "2010",
+   "deger": "74.964",
+   "durum": null
+  },
+  {
+   "donem": "2011",
+   "deger": "74.823",
+   "durum": null
+  },
+  {
+   "donem": "2012",
+   "deger": "75.552",
+   "durum": null
+  },
+  {
+   "donem": "2013",
+   "deger": "76.171",
+   "durum": null
+  },
+  {
+   "donem": "2014",
+   "deger": "76.452",
+   "durum": null
+  },
+  {
+   "donem": "2015",
+   "deger": "76.539",
+   "durum": null
+  },
+  {
+   "donem": "2016",
+   "deger": "76.595",
+   "durum": null
+  },
+  {
+   "donem": "2017",
+   "deger": "77.037",
+   "durum": null
+  },
+  {
+   "donem": "2018",
+   "deger": "77.454",
+   "durum": null
+  },
+  {
+   "donem": "2019",
+   "deger": "77.737",
+   "durum": null
+  },
+  {
+   "donem": "2020",
+   "deger": "76.525",
+   "durum": null
+  },
+  {
+   "donem": "2021",
+   "deger": "75.722",
+   "durum": null
+  },
+  {
+   "donem": "2022",
+   "deger": "77.591",
+   "durum": null
+  },
+  {
+   "donem": "2023",
+   "deger": "77.156",
+   "durum": null
+  },
+  {
+   "donem": "2024",
+   "deger": "77.421",
+   "durum": null
+  }
+ ]
+}

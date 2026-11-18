@@ -1,0 +1,167 @@
+{
+ "surum": 1,
+ "id": "ilo-neet-tr",
+ "baslik": "Ne eğitimde ne istihdamda olan gençler (NEET), 15-24 yaş",
+ "ulke": "TUR",
+ "siklik": "yillik",
+ "birim": "yuzde",
+ "carpan": 1,
+ "tema": "isgucu",
+ "kaynak": {
+  "id": "ilo",
+  "ad": "ILOSTAT",
+  "kurum": "Uluslararası Çalışma Örgütü (ILO)",
+  "adres": "https://ilostat.ilo.org/",
+  "belge": "https://ilostat.ilo.org/resources/sdmx-tools/",
+  "lisans": "CC BY 4.0 (ILO veri tabanları ve veri setleri, 3 Mayıs 2023'ten beri)",
+  "lisans_kanit": "https://www.ilo.org/node/9321",
+  "lisans_inceleme": "2026-11-18",
+  "atif_zorunlu": true,
+  "kosullar": [
+   "Kaynak: ILO, ILOSTAT veri tabanı.",
+   "Seri adları Türkçeye çevrilmiştir; değerler değiştirilmemiştir."
+  ]
+ },
+ "kaynak_kod": "DF_EIP_NEET_SEX_RT/TUR.A..SEX_T",
+ "kaynak_adi": "DF_EIP_NEET_SEX_RT",
+ "kaynak_not": null,
+ "kaynak_guncelleme": null,
+ "cekildi": "2026-11-18T05:51:59.207759Z",
+ "izin": {
+  "gosterim": true,
+  "indirme": true,
+  "api": true
+ },
+ "gozlemler": [
+  {
+   "donem": "2000",
+   "deger": "39.647",
+   "durum": null
+  },
+  {
+   "donem": "2001",
+   "deger": "40.431",
+   "durum": null
+  },
+  {
+   "donem": "2002",
+   "deger": "41.137",
+   "durum": null
+  },
+  {
+   "donem": "2003",
+   "deger": "41.403",
+   "durum": null
+  },
+  {
+   "donem": "2004",
+   "deger": "42.555",
+   "durum": null
+  },
+  {
+   "donem": "2005",
+   "deger": "42.557",
+   "durum": null
+  },
+  {
+   "donem": "2006",
+   "deger": "41.224",
+   "durum": null
+  },
+  {
+   "donem": "2007",
+   "deger": "41.84",
+   "durum": null
+  },
+  {
+   "donem": "2008",
+   "deger": "39.771",
+   "durum": null
+  },
+  {
+   "donem": "2009",
+   "deger": "36.963",
+   "durum": null
+  },
+  {
+   "donem": "2010",
+   "deger": "34.698",
+   "durum": null
+  },
+  {
+   "donem": "2011",
+   "deger": "31.929",
+   "durum": null
+  },
+  {
+   "donem": "2012",
+   "deger": "31.168",
+   "durum": null
+  },
+  {
+   "donem": "2013",
+   "deger": "28.123",
+   "durum": null
+  },
+  {
+   "donem": "2014",
+   "deger": "24.855",
+   "durum": null
+  },
+  {
+   "donem": "2015",
+   "deger": "24.032",
+   "durum": null
+  },
+  {
+   "donem": "2016",
+   "deger": "23.964",
+   "durum": null
+  },
+  {
+   "donem": "2017",
+   "deger": "24.188",
+   "durum": null
+  },
+  {
+   "donem": "2018",
+   "deger": "24.461",
+   "durum": null
+  },
+  {
+   "donem": "2019",
+   "deger": "26.052",
+   "durum": null
+  },
+  {
+   "donem": "2020",
+   "deger": "28.335",
+   "durum": null
+  },
+  {
+   "donem": "2021",
+   "deger": "24.753",
+   "durum": null
+  },
+  {
+   "donem": "2022",
+   "deger": "24.158",
+   "durum": null
+  },
+  {
+   "donem": "2023",
+   "deger": "22.494",
+   "durum": null
+  },
+  {
+   "donem": "2024",
+   "deger": "22.946",
+   "durum": null
+  },
+  {
+   "donem": "2025",
+   "deger": "23.331",
+   "durum": null
+  }
+ ]
+}

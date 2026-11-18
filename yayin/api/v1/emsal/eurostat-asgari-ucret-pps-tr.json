@@ -1,0 +1,689 @@
+{
+ "surum": 1,
+ "id": "eurostat-asgari-ucret-pps-tr",
+ "baslik": "Aylık brüt asgari ücret, satın alma gücü standardı (PPS)",
+ "birim": "PPS",
+ "siklik": "yariyillik",
+ "kaynak": "eurostat",
+ "kaynak_kod": "earn_mw_cur/S.PPS.TR",
+ "ulkeler": {
+  "POL": [
+   {
+    "donem": "1999-S1",
+    "deger": "290"
+   },
+   {
+    "donem": "1999-S2",
+    "deger": "290"
+   },
+   {
+    "donem": "2000-S1",
+    "deger": "281"
+   },
+   {
+    "donem": "2000-S2",
+    "deger": "293"
+   },
+   {
+    "donem": "2001-S1",
+    "deger": "314"
+   },
+   {
+    "donem": "2001-S2",
+    "deger": "314"
+   },
+   {
+    "donem": "2002-S1",
+    "deger": "316"
+   },
+   {
+    "donem": "2002-S2",
+    "deger": "316"
+   },
+   {
+    "donem": "2003-S1",
+    "deger": "336"
+   },
+   {
+    "donem": "2003-S2",
+    "deger": "336"
+   },
+   {
+    "donem": "2004-S1",
+    "deger": "339"
+   },
+   {
+    "donem": "2004-S2",
+    "deger": "339"
+   },
+   {
+    "donem": "2005-S1",
+    "deger": "339"
+   },
+   {
+    "donem": "2005-S2",
+    "deger": "339"
+   },
+   {
+    "donem": "2006-S1",
+    "deger": "361"
+   },
+   {
+    "donem": "2006-S2",
+    "deger": "361"
+   },
+   {
+    "donem": "2007-S1",
+    "deger": "388"
+   },
+   {
+    "donem": "2007-S2",
+    "deger": "388"
+   },
+   {
+    "donem": "2008-S1",
+    "deger": "465"
+   },
+   {
+    "donem": "2008-S2",
+    "deger": "465"
+   },
+   {
+    "donem": "2009-S1",
+    "deger": "509"
+   },
+   {
+    "donem": "2009-S2",
+    "deger": "509"
+   },
+   {
+    "donem": "2010-S1",
+    "deger": "543"
+   },
+   {
+    "donem": "2010-S2",
+    "deger": "543"
+   },
+   {
+    "donem": "2011-S1",
+    "deger": "572"
+   },
+   {
+    "donem": "2011-S2",
+    "deger": "572"
+   },
+   {
+    "donem": "2012-S1",
+    "deger": "623"
+   },
+   {
+    "donem": "2012-S2",
+    "deger": "623"
+   },
+   {
+    "donem": "2013-S1",
+    "deger": "666"
+   },
+   {
+    "donem": "2013-S2",
+    "deger": "666"
+   },
+   {
+    "donem": "2014-S1",
+    "deger": "691"
+   },
+   {
+    "donem": "2014-S2",
+    "deger": "691"
+   },
+   {
+    "donem": "2015-S1",
+    "deger": "726"
+   },
+   {
+    "donem": "2015-S2",
+    "deger": "726"
+   },
+   {
+    "donem": "2016-S1",
+    "deger": "758"
+   },
+   {
+    "donem": "2016-S2",
+    "deger": "758"
+   },
+   {
+    "donem": "2017-S1",
+    "deger": "799"
+   },
+   {
+    "donem": "2017-S2",
+    "deger": "799"
+   },
+   {
+    "donem": "2018-S1",
+    "deger": "826"
+   },
+   {
+    "donem": "2018-S2",
+    "deger": "826"
+   },
+   {
+    "donem": "2019-S1",
+    "deger": "875"
+   },
+   {
+    "donem": "2019-S2",
+    "deger": "875"
+   },
+   {
+    "donem": "2020-S1",
+    "deger": "991"
+   },
+   {
+    "donem": "2020-S2",
+    "deger": "991"
+   },
+   {
+    "donem": "2021-S1",
+    "deger": "1014"
+   },
+   {
+    "donem": "2021-S2",
+    "deger": "1014"
+   },
+   {
+    "donem": "2022-S1",
+    "deger": "1036"
+   },
+   {
+    "donem": "2022-S2",
+    "deger": "1036"
+   },
+   {
+    "donem": "2023-S1",
+    "deger": "1127"
+   },
+   {
+    "donem": "2023-S2",
+    "deger": "1163"
+   },
+   {
+    "donem": "2024-S1",
+    "deger": "1362"
+   },
+   {
+    "donem": "2024-S2",
+    "deger": "1381"
+   },
+   {
+    "donem": "2025-S1",
+    "deger": "1502"
+   },
+   {
+    "donem": "2025-S2",
+    "deger": "1502"
+   },
+   {
+    "donem": "2026-S1",
+    "deger": "1547"
+   },
+   {
+    "donem": "2026-S2",
+    "deger": "1547"
+   }
+  ],
+  "HUN": [
+   {
+    "donem": "1999-S1",
+    "deger": "177"
+   },
+   {
+    "donem": "1999-S2",
+    "deger": "177"
+   },
+   {
+    "donem": "2000-S1",
+    "deger": "189"
+   },
+   {
+    "donem": "2000-S2",
+    "deger": "189"
+   },
+   {
+    "donem": "2001-S1",
+    "deger": "280"
+   },
+   {
+    "donem": "2001-S2",
+    "deger": "280"
+   },
+   {
+    "donem": "2002-S1",
+    "deger": "337"
+   },
+   {
+    "donem": "2002-S2",
+    "deger": "337"
+   },
+   {
+    "donem": "2003-S1",
+    "deger": "328"
+   },
+   {
+    "donem": "2003-S2",
+    "deger": "328"
+   },
+   {
+    "donem": "2004-S1",
+    "deger": "331"
+   },
+   {
+    "donem": "2004-S2",
+    "deger": "331"
+   },
+   {
+    "donem": "2005-S1",
+    "deger": "351"
+   },
+   {
+    "donem": "2005-S2",
+    "deger": "351"
+   },
+   {
+    "donem": "2006-S1",
+    "deger": "376"
+   },
+   {
+    "donem": "2006-S2",
+    "deger": "376"
+   },
+   {
+    "donem": "2007-S1",
+    "deger": "374"
+   },
+   {
+    "donem": "2007-S2",
+    "deger": "374"
+   },
+   {
+    "donem": "2008-S1",
+    "deger": "391"
+   },
+   {
+    "donem": "2008-S2",
+    "deger": "391"
+   },
+   {
+    "donem": "2009-S1",
+    "deger": "401"
+   },
+   {
+    "donem": "2009-S2",
+    "deger": "401"
+   },
+   {
+    "donem": "2010-S1",
+    "deger": "413"
+   },
+   {
+    "donem": "2010-S2",
+    "deger": "413"
+   },
+   {
+    "donem": "2011-S1",
+    "deger": "443"
+   },
+   {
+    "donem": "2011-S2",
+    "deger": "443"
+   },
+   {
+    "donem": "2012-S1",
+    "deger": "514"
+   },
+   {
+    "donem": "2012-S2",
+    "deger": "514"
+   },
+   {
+    "donem": "2013-S1",
+    "deger": "541"
+   },
+   {
+    "donem": "2013-S2",
+    "deger": "541"
+   },
+   {
+    "donem": "2014-S1",
+    "deger": "546"
+   },
+   {
+    "donem": "2014-S2",
+    "deger": "546"
+   },
+   {
+    "donem": "2015-S1",
+    "deger": "552"
+   },
+   {
+    "donem": "2015-S2",
+    "deger": "552"
+   },
+   {
+    "donem": "2016-S1",
+    "deger": "571"
+   },
+   {
+    "donem": "2016-S2",
+    "deger": "571"
+   },
+   {
+    "donem": "2017-S1",
+    "deger": "626"
+   },
+   {
+    "donem": "2017-S2",
+    "deger": "626"
+   },
+   {
+    "donem": "2018-S1",
+    "deger": "656"
+   },
+   {
+    "donem": "2018-S2",
+    "deger": "656"
+   },
+   {
+    "donem": "2019-S1",
+    "deger": "680"
+   },
+   {
+    "donem": "2019-S2",
+    "deger": "680"
+   },
+   {
+    "donem": "2020-S1",
+    "deger": "692"
+   },
+   {
+    "donem": "2020-S2",
+    "deger": "692"
+   },
+   {
+    "donem": "2021-S1",
+    "deger": "659"
+   },
+   {
+    "donem": "2021-S2",
+    "deger": "685"
+   },
+   {
+    "donem": "2022-S1",
+    "deger": "754"
+   },
+   {
+    "donem": "2022-S2",
+    "deger": "754"
+   },
+   {
+    "donem": "2023-S1",
+    "deger": "819"
+   },
+   {
+    "donem": "2023-S2",
+    "deger": "819"
+   },
+   {
+    "donem": "2024-S1",
+    "deger": "909"
+   },
+   {
+    "donem": "2024-S2",
+    "deger": "909"
+   },
+   {
+    "donem": "2025-S1",
+    "deger": "944"
+   },
+   {
+    "donem": "2025-S2",
+    "deger": "944"
+   },
+   {
+    "donem": "2026-S1",
+    "deger": "1048"
+   },
+   {
+    "donem": "2026-S2",
+    "deger": "1048"
+   }
+  ],
+  "ROU": [
+   {
+    "donem": "1999-S1",
+    "deger": "56"
+   },
+   {
+    "donem": "1999-S2",
+    "deger": "72"
+   },
+   {
+    "donem": "2000-S1",
+    "deger": "52"
+   },
+   {
+    "donem": "2000-S2",
+    "deger": "81"
+   },
+   {
+    "donem": "2001-S1",
+    "deger": "90"
+   },
+   {
+    "donem": "2001-S2",
+    "deger": "126"
+   },
+   {
+    "donem": "2002-S1",
+    "deger": "104"
+   },
+   {
+    "donem": "2002-S2",
+    "deger": "130"
+   },
+   {
+    "donem": "2003-S1",
+    "deger": "155"
+   },
+   {
+    "donem": "2003-S2",
+    "deger": "155"
+   },
+   {
+    "donem": "2004-S1",
+    "deger": "163"
+   },
+   {
+    "donem": "2004-S2",
+    "deger": "163"
+   },
+   {
+    "donem": "2005-S1",
+    "deger": "160"
+   },
+   {
+    "donem": "2005-S2",
+    "deger": "160"
+   },
+   {
+    "donem": "2006-S1",
+    "deger": "163"
+   },
+   {
+    "donem": "2006-S2",
+    "deger": "163"
+   },
+   {
+    "donem": "2007-S1",
+    "deger": "184"
+   },
+   {
+    "donem": "2007-S2",
+    "deger": "184"
+   },
+   {
+    "donem": "2008-S1",
+    "deger": "224"
+   },
+   {
+    "donem": "2008-S2",
+    "deger": "224"
+   },
+   {
+    "donem": "2009-S1",
+    "deger": "258"
+   },
+   {
+    "donem": "2009-S2",
+    "deger": "258"
+   },
+   {
+    "donem": "2010-S1",
+    "deger": "260"
+   },
+   {
+    "donem": "2010-S2",
+    "deger": "260"
+   },
+   {
+    "donem": "2011-S1",
+    "deger": "287"
+   },
+   {
+    "donem": "2011-S2",
+    "deger": "287"
+   },
+   {
+    "donem": "2012-S1",
+    "deger": "296"
+   },
+   {
+    "donem": "2012-S2",
+    "deger": "296"
+   },
+   {
+    "donem": "2013-S1",
+    "deger": "290"
+   },
+   {
+    "donem": "2013-S2",
+    "deger": "331"
+   },
+   {
+    "donem": "2014-S1",
+    "deger": "348"
+   },
+   {
+    "donem": "2014-S2",
+    "deger": "368"
+   },
+   {
+    "donem": "2015-S1",
+    "deger": "398"
+   },
+   {
+    "donem": "2015-S2",
+    "deger": "428"
+   },
+   {
+    "donem": "2016-S1",
+    "deger": "435"
+   },
+   {
+    "donem": "2016-S2",
+    "deger": "518"
+   },
+   {
+    "donem": "2017-S1",
+    "deger": "500"
+   },
+   {
+    "donem": "2017-S2",
+    "deger": "580"
+   },
+   {
+    "donem": "2018-S1",
+    "deger": "733"
+   },
+   {
+    "donem": "2018-S2",
+    "deger": "733"
+   },
+   {
+    "donem": "2019-S1",
+    "deger": "790"
+   },
+   {
+    "donem": "2019-S2",
+    "deger": "790"
+   },
+   {
+    "donem": "2020-S1",
+    "deger": "832"
+   },
+   {
+    "donem": "2020-S2",
+    "deger": "832"
+   },
+   {
+    "donem": "2021-S1",
+    "deger": "809"
+   },
+   {
+    "donem": "2021-S2",
+    "deger": "835"
+   },
+   {
+    "donem": "2022-S1",
+    "deger": "850"
+   },
+   {
+    "donem": "2022-S2",
+    "deger": "850"
+   },
+   {
+    "donem": "2023-S1",
+    "deger": "982"
+   },
+   {
+    "donem": "2023-S2",
+    "deger": "982"
+   },
+   {
+    "donem": "2024-S1",
+    "deger": "1035"
+   },
+   {
+    "donem": "2024-S2",
+    "deger": "1160"
+   },
+   {
+    "donem": "2025-S1",
+    "deger": "1233"
+   },
+   {
+    "donem": "2025-S2",
+    "deger": "1233"
+   },
+   {
+    "donem": "2026-S1",
+    "deger": "1233"
+   },
+   {
+    "donem": "2026-S2",
+    "deger": "1317"
+   }
+  ]
+ }
+}

@@ -9,7 +9,7 @@ const AYLAR = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz",
 
 export function zaman(d: string): number {
   const y = Number(d.slice(0, 4));
-  const q = /-Q([1-4])$/.exec(d);
+  const q = /-Q([1-4])$/.exec(d.replace(/-S([12])$/, (_: string, s: string) => (s === "1" ? "-Q1" : "-Q3")));
   if (q) return Date.UTC(y, (Number(q[1]) - 1) * 3, 1);
   const p = d.split("-");
   return Date.UTC(y, p[1] ? Number(p[1]) - 1 : 0, p[2] ? Number(p[2]) : 1);
@@ -19,6 +19,8 @@ export function zaman(d: string): number {
 export function donemAdi(d: string): string {
   const q = /^(\d{4})-Q([1-4])$/.exec(d);
   if (q) return `${q[1]} ${q[2]}. çeyrek`;
+  const h = /^(\d{4})-S([12])$/.exec(d);
+  if (h) return `${h[1]} ${h[2]}. yarıyıl`;
   const p = d.split("-");
   if (p.length === 1) return d;
   if (p.length === 2) return `${AYLAR[Number(p[1]) - 1]} ${p[0]}`;
@@ -31,6 +33,7 @@ const BIRLER: Record<number, [string, boolean]> = { 1: ["e", false], 2: ["e", fa
 const ONLAR: Record<number, [string, boolean]> = { 1: ["a", false], 2: ["e", false], 3: ["a", false], 4: ["a", true], 5: ["e", false], 6: ["a", true], 7: ["e", true], 8: ["e", false], 9: ["a", false] };
 function sesUyumu(etiket: string): [string, boolean] {
   if (etiket.endsWith("çeyrek")) return ["e", true];
+  if (etiket.endsWith("yarıyıl")) return ["a", false];
   const n = Number(/(\d+)$/.exec(etiket)?.[1] ?? NaN);
   if (!Number.isFinite(n)) return ["e", false];
   if (n % 10) return BIRLER[n % 10];
@@ -41,11 +44,11 @@ function sesUyumu(etiket: string): [string, boolean] {
 export function ek(etiket: string, tur: "de" | "den"): string {
   const [u, sert] = sesUyumu(etiket);
   const kok = (sert ? "t" : "d") + u + (tur === "den" ? "n" : "");
-  return etiket.endsWith("çeyrek") ? etiket + kok : `${etiket}'${kok}`;
+  return /(çeyrek|yarıyıl)$/.test(etiket) ? etiket + kok : `${etiket}'${kok}`;
 }
 
-const BIRIM_ADI: Record<string, string> = { yillik: "yıl", ceyreklik: "çeyrek", aylik: "ay", haftalik: "hafta", gunluk: "iş günü" };
-const ESIK: Record<string, number> = { yillik: 3, ceyreklik: 4, aylik: 6, haftalik: 8, gunluk: 20 };
+const BIRIM_ADI: Record<string, string> = { yillik: "yıl", yariyillik: "yarıyıl", ceyreklik: "çeyrek", aylik: "ay", haftalik: "hafta", gunluk: "iş günü" };
+const ESIK: Record<string, number> = { yillik: 3, yariyillik: 4, ceyreklik: 4, aylik: 6, haftalik: 8, gunluk: 20 };
 
 export function ortalama(v: number[]): number { return v.reduce((a, b) => a + b, 0) / v.length; }
 export function medyan(v: number[]): number {
@@ -128,7 +131,7 @@ export function oku(d: Nokta[], siklik: string, birim: string, yaz: Yaz): string
   }
 
   if ((oran || birim === "endeks") && d.length >= 10 && siklik !== "gunluk") {
-    const adet = ({ yillik: 10, ceyreklik: 40, aylik: 120 } as Record<string, number>)[siklik] ?? 10;
+    const adet = ({ yillik: 10, yariyillik: 20, ceyreklik: 40, aylik: 120 } as Record<string, number>)[siklik] ?? 10;
     const tum = ortalama(d.map((p) => p.v)), on = ortalama(d.slice(-adet).map((p) => p.v));
     // Seri on yıldan belirgin uzun değilse "son on yıl" ayrı bilgi taşımaz.
     c.push(`${ek(donemAdi(ilk.donem), "den")} bu yana ortalama ${yaz(tum)}` +

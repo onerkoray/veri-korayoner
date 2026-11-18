@@ -38,9 +38,12 @@ export function isaretSuresi(d: Nokta[]): { isaret: number; ay: number; bas: str
 }
 
 // "Türkiye nerede": emsali olan her gösterge (ve reel faiz hesabı) için sıralama satırı.
-const SIRA = ["bis-politika-faizi-tr", "bis-tufe-yillik-tr", "eurostat-hicp-yillik-tr", "wb-fp-cpi-totl-zg-tur", "wb-ny-gdp-mktp-kd-zg-tur",
-  "wb-ny-gdp-pcap-cd-tur", "wb-bn-cab-xoka-gd-zs-tur", "bis-ozel-kredi-gsyh-tr", "bis-borc-servis-orani-tr", "eurostat-issizlik-aylik-tr",
-  "wb-sl-uem-totl-zs-tur"];
+const SIRA = ["bis-politika-faizi-tr", "bis-tufe-yillik-tr", "eurostat-hicp-yillik-tr", "wb-fp-cpi-totl-zg-tur",
+  "wb-ny-gdp-mktp-kd-zg-tur", "wb-ny-gdp-pcap-cd-tur", "wb-ny-gdp-pcap-pp-kd-tur", "wb-ne-gdi-ftot-zs-tur", "wb-ny-gds-totl-zs-tur",
+  "eurostat-asgari-ucret-pps-tr", "ilo-emek-payi-tr", "eurostat-issizlik-aylik-tr", "ilo-issizlik-tr", "wb-sl-uem-totl-zs-tur",
+  "ilo-isgucune-katilim-tr", "ilo-kadin-isgucune-katilim-tr", "ilo-neet-tr", "ilo-kayitdisi-istihdam-tr",
+  "wb-bn-cab-xoka-gd-zs-tur", "wb-ne-exp-gnfs-zs-tur", "wb-ne-imp-gnfs-zs-tur", "wb-bx-klt-dinv-wd-gd-zs-tur",
+  "bis-ozel-kredi-gsyh-tr", "bis-borc-servis-orani-tr", "wb-si-pov-gini-tur", "wb-sp-dyn-le00-in-tur"];
 export interface Satir { baslik: string; href: string; sira: Sira; yaz: (v: number) => string; kaynak: string }
 export function emsalSatirlari(): Satir[] {
   const satirlar: Satir[] = [];

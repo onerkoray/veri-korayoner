@@ -1,6 +1,6 @@
 {
  "surum": 1,
- "uretildi": "2026-11-18T05:39:04.806566Z",
+ "uretildi": "2026-11-18T06:18:19.332415Z",
  "seriler": [
   {
    "id": "wb-ny-gdp-mktp-cd-tur",
@@ -147,14 +147,14 @@
     "durum": null
    },
    "kaynak_guncelleme": "2026-11-11",
-   "cekildi": "2026-11-17T10:55:40.719594Z",
+   "cekildi": "2026-11-18T05:51:59.207759Z",
    "izin": {
     "gosterim": true,
-    "indirme": false,
-    "api": false
+    "indirme": true,
+    "api": true
    },
-   "api": null,
-   "csv": null
+   "api": "/api/v1/seri/wb-sl-uem-totl-zs-tur.json",
+   "csv": "/api/v1/seri/wb-sl-uem-totl-zs-tur.csv"
   },
   {
    "id": "wb-fi-res-totl-cd-tur",
@@ -375,6 +375,314 @@
    },
    "api": "/api/v1/seri/eurostat-issizlik-aylik-tr.json",
    "csv": "/api/v1/seri/eurostat-issizlik-aylik-tr.csv"
+  },
+  {
+   "id": "wb-ny-gdp-pcap-pp-kd-tur",
+   "baslik": "Kişi başına GSYH, satın alma gücü paritesiyle (sabit uluslararası $)",
+   "tema": "buyume",
+   "siklik": "yillik",
+   "birim": "USD",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "37300.7485739354",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-18T06:09:52.759038Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/wb-ny-gdp-pcap-pp-kd-tur.json",
+   "csv": "/api/v1/seri/wb-ny-gdp-pcap-pp-kd-tur.csv"
+  },
+  {
+   "id": "wb-ne-gdi-ftot-zs-tur",
+   "baslik": "Sabit sermaye yatırımı, GSYH'ye oran",
+   "tema": "buyume",
+   "siklik": "yillik",
+   "birim": "yuzde-gsyh",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "30.5913560700498",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-18T05:51:59.207759Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/wb-ne-gdi-ftot-zs-tur.json",
+   "csv": "/api/v1/seri/wb-ne-gdi-ftot-zs-tur.csv"
+  },
+  {
+   "id": "wb-ne-exp-gnfs-zs-tur",
+   "baslik": "Mal ve hizmet ihracatı, GSYH'ye oran",
+   "tema": "dis-ticaret",
+   "siklik": "yillik",
+   "birim": "yuzde-gsyh",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "24.8497719904256",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-18T05:51:59.207759Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/wb-ne-exp-gnfs-zs-tur.json",
+   "csv": "/api/v1/seri/wb-ne-exp-gnfs-zs-tur.csv"
+  },
+  {
+   "id": "wb-ne-imp-gnfs-zs-tur",
+   "baslik": "Mal ve hizmet ithalatı, GSYH'ye oran",
+   "tema": "dis-ticaret",
+   "siklik": "yillik",
+   "birim": "yuzde-gsyh",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "25.0849063722672",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-18T05:51:59.207759Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/wb-ne-imp-gnfs-zs-tur.json",
+   "csv": "/api/v1/seri/wb-ne-imp-gnfs-zs-tur.csv"
+  },
+  {
+   "id": "wb-bx-klt-dinv-wd-gd-zs-tur",
+   "baslik": "Doğrudan yabancı yatırım, net giriş, GSYH'ye oran",
+   "tema": "dis-sektor",
+   "siklik": "yillik",
+   "birim": "yuzde-gsyh",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "0.812061289822783",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-18T05:51:59.207759Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/wb-bx-klt-dinv-wd-gd-zs-tur.json",
+   "csv": "/api/v1/seri/wb-bx-klt-dinv-wd-gd-zs-tur.csv"
+  },
+  {
+   "id": "wb-si-pov-gini-tur",
+   "baslik": "Gini katsayısı (gelir eşitsizliği)",
+   "tema": "toplum",
+   "siklik": "yillik",
+   "birim": "endeks",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2023",
+    "deger": "43.7",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-18T05:51:59.207759Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/wb-si-pov-gini-tur.json",
+   "csv": "/api/v1/seri/wb-si-pov-gini-tur.csv"
+  },
+  {
+   "id": "wb-sp-dyn-le00-in-tur",
+   "baslik": "Doğumda beklenen yaşam süresi",
+   "tema": "toplum",
+   "siklik": "yillik",
+   "birim": "yil",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2024",
+    "deger": "77.421",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-18T05:51:59.207759Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/wb-sp-dyn-le00-in-tur.json",
+   "csv": "/api/v1/seri/wb-sp-dyn-le00-in-tur.csv"
+  },
+  {
+   "id": "wb-sp-pop-totl-tur",
+   "baslik": "Nüfus",
+   "tema": "toplum",
+   "siklik": "yillik",
+   "birim": "kisi",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "85878556",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-18T05:51:59.207759Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/wb-sp-pop-totl-tur.json",
+   "csv": "/api/v1/seri/wb-sp-pop-totl-tur.csv"
+  },
+  {
+   "id": "ilo-issizlik-tr",
+   "baslik": "İşsizlik oranı, 15 yaş ve üstü (işgücü anketi)",
+   "tema": "isgucu",
+   "siklik": "yillik",
+   "birim": "yuzde",
+   "kaynak": "ilo",
+   "son": {
+    "donem": "2025",
+    "deger": "8.349",
+    "durum": null
+   },
+   "kaynak_guncelleme": null,
+   "cekildi": "2026-11-18T05:51:59.207759Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/ilo-issizlik-tr.json",
+   "csv": "/api/v1/seri/ilo-issizlik-tr.csv"
+  },
+  {
+   "id": "ilo-isgucune-katilim-tr",
+   "baslik": "İşgücüne katılım oranı, 15 yaş ve üstü",
+   "tema": "isgucu",
+   "siklik": "yillik",
+   "birim": "yuzde",
+   "kaynak": "ilo",
+   "son": {
+    "donem": "2025",
+    "deger": "53.517",
+    "durum": null
+   },
+   "kaynak_guncelleme": null,
+   "cekildi": "2026-11-18T05:51:59.207759Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/ilo-isgucune-katilim-tr.json",
+   "csv": "/api/v1/seri/ilo-isgucune-katilim-tr.csv"
+  },
+  {
+   "id": "ilo-kadin-isgucune-katilim-tr",
+   "baslik": "Kadınların işgücüne katılım oranı, 15 yaş ve üstü",
+   "tema": "isgucu",
+   "siklik": "yillik",
+   "birim": "yuzde",
+   "kaynak": "ilo",
+   "son": {
+    "donem": "2025",
+    "deger": "36.157",
+    "durum": null
+   },
+   "kaynak_guncelleme": null,
+   "cekildi": "2026-11-18T05:51:59.207759Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/ilo-kadin-isgucune-katilim-tr.json",
+   "csv": "/api/v1/seri/ilo-kadin-isgucune-katilim-tr.csv"
+  },
+  {
+   "id": "ilo-neet-tr",
+   "baslik": "Ne eğitimde ne istihdamda olan gençler (NEET), 15-24 yaş",
+   "tema": "isgucu",
+   "siklik": "yillik",
+   "birim": "yuzde",
+   "kaynak": "ilo",
+   "son": {
+    "donem": "2025",
+    "deger": "23.331",
+    "durum": null
+   },
+   "kaynak_guncelleme": null,
+   "cekildi": "2026-11-18T05:51:59.207759Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/ilo-neet-tr.json",
+   "csv": "/api/v1/seri/ilo-neet-tr.csv"
+  },
+  {
+   "id": "ilo-kayitdisi-istihdam-tr",
+   "baslik": "Kayıt dışı istihdam oranı",
+   "tema": "isgucu",
+   "siklik": "yillik",
+   "birim": "yuzde",
+   "kaynak": "ilo",
+   "son": {
+    "donem": "2025",
+    "deger": "26.591",
+    "durum": null
+   },
+   "kaynak_guncelleme": null,
+   "cekildi": "2026-11-18T05:51:59.207759Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/ilo-kayitdisi-istihdam-tr.json",
+   "csv": "/api/v1/seri/ilo-kayitdisi-istihdam-tr.csv"
+  },
+  {
+   "id": "eurostat-asgari-ucret-pps-tr",
+   "baslik": "Aylık brüt asgari ücret, satın alma gücü standardı (PPS)",
+   "tema": "isgucu",
+   "siklik": "yariyillik",
+   "birim": "PPS",
+   "kaynak": "eurostat",
+   "son": {
+    "donem": "2025-S2",
+    "deger": "973",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-07-31",
+   "cekildi": "2026-11-18T05:51:59.207759Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/eurostat-asgari-ucret-pps-tr.json",
+   "csv": "/api/v1/seri/eurostat-asgari-ucret-pps-tr.csv"
   }
  ]
 }
