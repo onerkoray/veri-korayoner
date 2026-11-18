@@ -1,4 +1,12 @@
 {
  "surum": 1,
- "kayitlar": []
+ "kayitlar": [
+  {
+   "gun": "2026-11-18",
+   "seri": "eurostat-hicp-yillik-tr",
+   "tur": "yeni-donem",
+   "donem": "2026-10",
+   "yeni": "29.7"
+  }
+ ]
 }

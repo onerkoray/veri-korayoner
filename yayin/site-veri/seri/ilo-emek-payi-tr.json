@@ -1,0 +1,152 @@
+{
+ "surum": 1,
+ "id": "ilo-emek-payi-tr",
+ "baslik": "Emeğin GSYH'deki payı",
+ "ulke": "TUR",
+ "siklik": "yillik",
+ "birim": "yuzde",
+ "carpan": 1,
+ "tema": "isgucu",
+ "kaynak": {
+  "id": "ilo",
+  "ad": "ILOSTAT",
+  "kurum": "Uluslararası Çalışma Örgütü (ILO)",
+  "adres": "https://ilostat.ilo.org/",
+  "belge": "https://ilostat.ilo.org/resources/sdmx-tools/",
+  "lisans": "CC BY 4.0 (ILO veri tabanları ve veri setleri, 3 Mayıs 2023'ten beri)",
+  "lisans_kanit": "https://www.ilo.org/node/9321",
+  "lisans_inceleme": "2026-11-18",
+  "atif_zorunlu": true,
+  "kosullar": [
+   "Kaynak: ILO, ILOSTAT veri tabanı.",
+   "Seri adları Türkçeye çevrilmiştir; değerler değiştirilmemiştir."
+  ]
+ },
+ "kaynak_kod": "DF_LAP_2GDP_NOC_RT/TUR.A.",
+ "kaynak_adi": "DF_LAP_2GDP_NOC_RT",
+ "kaynak_not": null,
+ "kaynak_guncelleme": null,
+ "cekildi": "2026-11-18T14:07:31.364505Z",
+ "izin": {
+  "gosterim": true,
+  "indirme": true,
+  "api": true
+ },
+ "gozlemler": [
+  {
+   "donem": "2004",
+   "deger": "33",
+   "durum": null
+  },
+  {
+   "donem": "2005",
+   "deger": "32.694",
+   "durum": null
+  },
+  {
+   "donem": "2006",
+   "deger": "32.279",
+   "durum": null
+  },
+  {
+   "donem": "2007",
+   "deger": "32.979",
+   "durum": null
+  },
+  {
+   "donem": "2008",
+   "deger": "32.996",
+   "durum": null
+  },
+  {
+   "donem": "2009",
+   "deger": "34.457",
+   "durum": null
+  },
+  {
+   "donem": "2010",
+   "deger": "34.557",
+   "durum": null
+  },
+  {
+   "donem": "2011",
+   "deger": "33.962",
+   "durum": null
+  },
+  {
+   "donem": "2012",
+   "deger": "34.862",
+   "durum": null
+  },
+  {
+   "donem": "2013",
+   "deger": "34.387",
+   "durum": null
+  },
+  {
+   "donem": "2014",
+   "deger": "36.242",
+   "durum": null
+  },
+  {
+   "donem": "2015",
+   "deger": "36.547",
+   "durum": null
+  },
+  {
+   "donem": "2016",
+   "deger": "40.214",
+   "durum": null
+  },
+  {
+   "donem": "2017",
+   "deger": "38.108",
+   "durum": null
+  },
+  {
+   "donem": "2018",
+   "deger": "37.942",
+   "durum": null
+  },
+  {
+   "donem": "2019",
+   "deger": "39.237",
+   "durum": null
+  },
+  {
+   "donem": "2020",
+   "deger": "35.582",
+   "durum": null
+  },
+  {
+   "donem": "2021",
+   "deger": "32.147",
+   "durum": null
+  },
+  {
+   "donem": "2022",
+   "deger": "28.615",
+   "durum": null
+  },
+  {
+   "donem": "2023",
+   "deger": "35.106",
+   "durum": null
+  },
+  {
+   "donem": "2024",
+   "deger": "41.188",
+   "durum": "M"
+  },
+  {
+   "donem": "2025",
+   "deger": "41.126",
+   "durum": "M"
+  },
+  {
+   "donem": "2026",
+   "deger": "41.096",
+   "durum": "M"
+  }
+ ]
+}

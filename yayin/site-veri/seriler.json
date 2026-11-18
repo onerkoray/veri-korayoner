@@ -1,6 +1,6 @@
 {
  "surum": 1,
- "uretildi": "2026-11-18T06:18:19.332415Z",
+ "uretildi": "2026-11-18T14:07:31.364505Z",
  "seriler": [
   {
    "id": "wb-ny-gdp-mktp-cd-tur",
@@ -340,12 +340,12 @@
    "birim": "yuzde",
    "kaynak": "eurostat",
    "son": {
-    "donem": "2026-09",
+    "donem": "2026-10",
     "deger": "29.7",
     "durum": null
    },
-   "kaynak_guncelleme": "2026-11-04",
-   "cekildi": "2026-11-17T14:10:36.813524Z",
+   "kaynak_guncelleme": "2026-11-18",
+   "cekildi": "2026-11-18T14:07:31.364505Z",
    "izin": {
     "gosterim": true,
     "indirme": true,
@@ -419,6 +419,28 @@
    },
    "api": "/api/v1/seri/wb-ne-gdi-ftot-zs-tur.json",
    "csv": "/api/v1/seri/wb-ne-gdi-ftot-zs-tur.csv"
+  },
+  {
+   "id": "wb-ny-gds-totl-zs-tur",
+   "baslik": "Yurt içi tasarruf, GSYH'ye oran",
+   "tema": "buyume",
+   "siklik": "yillik",
+   "birim": "yuzde-gsyh",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "31.4314825422833",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-18T14:07:31.364505Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/wb-ny-gds-totl-zs-tur.json",
+   "csv": "/api/v1/seri/wb-ny-gds-totl-zs-tur.csv"
   },
   {
    "id": "wb-ne-exp-gnfs-zs-tur",
@@ -661,6 +683,28 @@
    },
    "api": "/api/v1/seri/ilo-kayitdisi-istihdam-tr.json",
    "csv": "/api/v1/seri/ilo-kayitdisi-istihdam-tr.csv"
+  },
+  {
+   "id": "ilo-emek-payi-tr",
+   "baslik": "Emeğin GSYH'deki payı",
+   "tema": "isgucu",
+   "siklik": "yillik",
+   "birim": "yuzde",
+   "kaynak": "ilo",
+   "son": {
+    "donem": "2026",
+    "deger": "41.096",
+    "durum": "M"
+   },
+   "kaynak_guncelleme": null,
+   "cekildi": "2026-11-18T14:07:31.364505Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "api": "/api/v1/seri/ilo-emek-payi-tr.json",
+   "csv": "/api/v1/seri/ilo-emek-payi-tr.csv"
   },
   {
    "id": "eurostat-asgari-ucret-pps-tr",
