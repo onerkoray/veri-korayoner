@@ -2,6 +2,21 @@
  "surum": 1,
  "kayitlar": [
   {
+   "gun": "2026-11-19",
+   "seri": "bis-reel-efektif-kur-tr",
+   "tur": "revizyon",
+   "adet": 141,
+   "ilk": "1994-01",
+   "son": "2026-09"
+  },
+  {
+   "gun": "2026-11-19",
+   "seri": "bis-reel-efektif-kur-tr",
+   "tur": "yeni-donem",
+   "donem": "2026-10",
+   "yeni": "110.33"
+  },
+  {
    "gun": "2026-11-18",
    "seri": "eurostat-hicp-yillik-tr",
    "tur": "yeni-donem",

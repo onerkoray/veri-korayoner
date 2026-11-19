@@ -1,6 +1,6 @@
 {
  "surum": 1,
- "uretildi": "2026-11-18T14:07:31.364505Z",
+ "uretildi": "2026-11-19T14:29:01.162804Z",
  "seriler": [
   {
    "id": "wb-ny-gdp-mktp-cd-tur",
@@ -230,12 +230,12 @@
    "birim": "endeks",
    "kaynak": "bis",
    "son": {
-    "donem": "2026-09",
-    "deger": "108.26",
+    "donem": "2026-10",
+    "deger": "110.33",
     "durum": "A"
    },
    "kaynak_guncelleme": null,
-   "cekildi": "2026-11-17T10:55:40.719594Z",
+   "cekildi": "2026-11-19T14:29:01.162804Z",
    "izin": {
     "gosterim": true,
     "indirme": true,
