@@ -277,3 +277,14 @@ Kullanıcı bildirimi: gezgin adresi gereksiz uzun ve standart dışıydı. Vars
 - `web/betikler/kare.mjs`: tam sayfa AVIF 16.000 px'te kesiliyor (AVIF sınırı 16.384).
 - e2e: tema döngüsü ve sayfalar arası kalıcılık, favicon, telefonda tek satır menü.
   Toplam 51 test.
+
+## Gösterge sayfaları (altıncı tur)
+
+- `web/src/pages/gosterge/[id].astro`:
+  - Başlığın altında güncellik satırı: kaynağın son güncellemesi, son başarılı kontrol, "gecikmiş" ve "son çekim başarısız" işaretleri (`durum.json`).
+  - "Veri gezgininde aç" (yıllık serilerde bütün dönem) ve "Emsallerle karşılaştır" bağlantıları.
+  - Revizyon geçmişi: değişiklik günlüğündeki yeni dönem ve düzeltme kayıtları ile dosyanın GitHub sürüm geçmişine bağlantı (ilk açıklanan değer ve her düzeltme).
+  - Gözlem tablosunda "Bir yıl önceye göre" sütunu. Oran ve puanda fark (puan), yaşam süresinde yıl, düzeyde yüzde; önceki değer pozitif değilse yazılmıyor.
+- `web/src/lib/okuma.ts`: `yillikDegisimler` + test.
+- e2e: gösterge sayfası (güncellik, revizyon, yıllık değişim, gezgin bağlantısı). Toplam 53 test.
+- Lighthouse `/gosterge/bis-tufe-yillik-tr`: 97/100/100/100, CLS 0.

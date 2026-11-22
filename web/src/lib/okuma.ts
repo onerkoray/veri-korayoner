@@ -205,3 +205,22 @@ export function reelFaiz(faiz: Nokta[], enf: Nokta[]): Nokta[] {
   const e = new Map(enf.map((p) => [p.donem, p.v]));
   return faiz.filter((p) => e.has(p.donem)).map((p) => ({ donem: p.donem, v: ((1 + p.v / 100) / (1 + e.get(p.donem)! / 100) - 1) * 100 }));
 }
+
+// ---- gözlem tablosu: bir yıl önceye göre ------------------------------------------
+export interface YillikFark { fark: number; tur: "puan" | "yil" | "yuzde" }
+/** Her gözlem için bir yıl önceki aynı döneme göre değişim (aylıkta aynı ay, çeyreklikte aynı çeyrek,
+ *  yarıyıllıkta aynı yarıyıl, yıllıkta önceki yıl). Oran ve puanda fark (puan), yılda fark (yıl),
+ *  düzeyde yüzde değişim (önceki değer pozitifse). Günlük ve haftalıkta hesaplanmaz. Eşi yoksa yok. */
+export function yillikDegisimler(d: Nokta[], siklik: string, birim: string): Map<string, YillikFark> {
+  const sonuc = new Map<string, YillikFark>();
+  if (siklik === "gunluk" || siklik === "haftalik") return sonuc;
+  const harita = new Map(d.map((p) => [p.donem, p.v]));
+  const tur: YillikFark["tur"] = birim.startsWith("yuzde") || birim === "puan" ? "puan" : birim === "yil" ? "yil" : "yuzde";
+  for (const p of d) {
+    const once = harita.get(String(Number(p.donem.slice(0, 4)) - 1) + p.donem.slice(4));
+    if (once === undefined) continue;
+    if (tur === "yuzde") { if (once > 0) sonuc.set(p.donem, { fark: (p.v / once - 1) * 100, tur }); }
+    else sonuc.set(p.donem, { fark: p.v - once, tur });
+  }
+  return sonuc;
+}

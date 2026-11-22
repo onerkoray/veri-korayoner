@@ -272,3 +272,17 @@ test.describe("Tema ve başlık", () => {
     await expect(page.locator('.ust nav a[aria-current="page"]')).toBeInViewport();
   });
 });
+
+test.describe("Gösterge sayfası", () => {
+  test("güncellik, revizyon geçmişi, yıllık değişim ve gezgin bağlantısı", async ({ page }) => {
+    await page.goto(`/gosterge/${GINI}`);
+    await expect(page.locator(".guncellik")).toContainText("Kaynağın son güncellemesi");
+    await expect(page.locator("#rv")).toHaveText("Revizyon geçmişi");
+    await expect(page.locator(".revizyon a[href*='github.com/onerkoray/veri-korayoner/commits']")).toBeVisible();
+    await expect(page.locator("table thead").last()).toContainText("Bir yıl önceye göre");
+    await expect(page.locator("table tbody tr").filter({ hasText: /^2023/ }).first()).toContainText("puan");   // Gini: puan farkı
+    await page.getByRole("link", { name: "Veri gezgininde aç →" }).click();
+    await expect(page).toHaveURL(/gezgin#g=wb-si-pov-gini-tur&s=yillik&b=19\d\d$/);
+    await expect(page.locator(".g-tuval svg")).toHaveCount(1);
+  });
+});

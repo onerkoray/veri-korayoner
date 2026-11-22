@@ -3,8 +3,8 @@ import Taban from "../../layouts/Taban.astro";
 import SeriGrafik from "../../components/SeriGrafik.astro";
 import EmsalGrafik from "../../components/EmsalGrafik.astro";
 import Serit from "../../components/Serit.astro";
-import { seriler, deger, degisim, son, dolu, tarih, birimAdi, siklikAdi, TEMA, emsal, emsalNoktalari, noktalar, ulkeAdi, type Seri } from "../../lib/veri";
-import { oku, sirala, siraCumlesi, donemAdi } from "../../lib/okuma.ts";
+import { seriler, deger, degisim, son, dolu, tarih, birimAdi, siklikAdi, TEMA, emsal, emsalNoktalari, noktalar, ulkeAdi, durum, degisiklikler, type Seri } from "../../lib/veri";
+import { oku, sirala, siraCumlesi, donemAdi, yillikDegisimler, type YillikFark } from "../../lib/okuma.ts";
 import { KISI_REF } from "../../lib/kimlik";
 
 export function getStaticPaths() {
@@ -30,6 +30,19 @@ const kaynakAdresi = ({
 } as Record<string, string>)[s.kaynak.id] ?? s.kaynak.adres;
 const gunluk = s.siklik === "gunluk";
 const tablo = s.gozlemler.slice().reverse().slice(0, gunluk ? 90 : undefined);
+// Güncellik (durum.json), revizyon kaydı (degisiklikler.json), bir yıl önceye göre değişim.
+const sd = durum()?.seriler.find((r) => r.id === s.id);
+const olaylar = degisiklikler().filter((o) => o.seri === s.id);
+const yillik = yillikDegisimler(noktalar(s), s.siklik, s.birim);
+const yfYaz = (f: YillikFark) => {
+  const isaret = f.fark > 0 ? "+" : f.fark < 0 ? "−" : "";
+  const sayi = Math.abs(f.fark).toLocaleString("tr-TR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  return f.tur === "yuzde" ? `${isaret}%${sayi}` : `${isaret}${sayi} ${f.tur === "yil" ? "yıl" : "puan"}`;
+};
+const gecmis = `https://github.com/onerkoray/veri-korayoner/commits/main/yayin/site-veri/seri/${s.id}.json`;
+const gezginS = ({ aylik: "aylik", ceyreklik: "ceyreklik" } as Record<string, string>)[s.siklik] ?? "yillik";
+const gezginAdres = s.izin.indirme ? `/gezgin#g=${s.id}${gezginS === "aylik" ? "" : `&s=${gezginS}`}${d[0] && (gezginS === "yillik" || Number(d[0].donem.slice(0, 4)) > 2010) && d[0].donem.slice(0, 4) !== "2010" ? `&b=${d[0].donem.slice(0, 4)}` : ""}` : null;   // yıllıkta bütün seri
+const karsiAdres = s.izin.api && emsal(s.id) ? `/karsilastir#g=${s.id}` : null;
 const jsonld = {
   "@context": "https://schema.org", "@type": "Dataset",
   name: `${s.baslik} — Türkiye`, description: `${s.baslik}, ${d[0]?.donem}–${sn?.donem}. Kaynak: ${s.kaynak.kurum} (${s.kaynak_kod}). ${okuma[0] ?? ""}`.trim(),
@@ -52,6 +65,18 @@ const aciklama = `${s.baslik}: ${sn ? donemAdi(sn.donem) : ""} ${deger(s, sn?.de
       <p class="etiket">{s.kaynak.kurum} · {s.kaynak_kod} · {siklikAdi(s.siklik)}</p>
       <h1>{s.baslik}</h1>
       <p class="buyuk sayi">{deger(s, sn?.deger ?? null)} <span>{sn && donemAdi(sn.donem)}</span></p>
+      <p class="guncellik">
+        <span>Kaynağın son güncellemesi: {tarih(s.kaynak_guncelleme)}</span>
+        {sd && <span>Son başarılı kontrol: {tarih(sd.son_basarili_kontrol)}</span>}
+        {sd?.gecikti && <span class="hap hap--uyari" title="Beklenen yayın takviminin gerisinde">gecikmiş</span>}
+        {sd && sd.ardisik_hata > 0 && <span class="hap hap--uyari" title="Son çekim başarısız; önceki veri gösteriliyor">son çekim başarısız</span>}
+      </p>
+      {(gezginAdres || karsiAdres) && (
+        <p class="eylem">
+          {gezginAdres && <a href={gezginAdres}>Veri gezgininde aç →</a>}
+          {karsiAdres && <a href={karsiAdres}>Emsallerle karşılaştır →</a>}
+        </p>
+      )}
       {dg && <p class="ozet">Bir önceki döneme göre {dg.metin}. {s.birim.startsWith("yuzde") || s.birim === "puan" ? "Fark puan olarak: son değer eksi önceki" + (s.birim === "puan" ? "; parantezde göreli değişim (son ÷ önceki − 1)." : ".") : s.birim === "yil" ? "Fark yıl olarak: son değer eksi önceki." : "Değişim yüzde olarak: son ÷ önceki − 1."}</p>}
     </header>
 
@@ -118,16 +143,32 @@ const aciklama = `${s.baslik}: ${sn ? donemAdi(sn.donem) : ""} ${deger(s, sn?.de
       </section>
     </div>
 
+    <section class="revizyon" aria-labelledby="rv">
+      <h2 id="rv">Revizyon geçmişi</h2>
+      {olaylar.length ? (
+        <ul class="olaylar">
+          {olaylar.map((o) => (
+            <li>
+              <time datetime={o.gun}>{tarih(o.gun)}</time>
+              <span class:list={["hap", o.tur === "revizyon" ? "hap--uyari" : "hap--bilgi"]}>{o.tur === "revizyon" ? "revizyon" : "yeni dönem"}</span>
+              {o.adet ? ` ${o.adet} dönem (${o.ilk}–${o.son})` : o.tur === "revizyon" ? ` ${o.donem}: ${deger(s, o.onceki ?? null)} → ${deger(s, o.yeni ?? null)}` : ` ${o.donem}: ${deger(s, o.yeni ?? null)}`}
+            </li>
+          ))}
+        </ul>
+      ) : <p class="ozet">Değişiklik günlüğü başladığından (17 Kasım 2026) beri bu seride yeni dönem ya da düzeltme kaydı yok.</p>}
+      <p class="kucuk">Her güncelleme ayrı bir commit'tir; bir gözlemin ilk açıklanan değeri ve her düzeltmesi <a href={gecmis}>dosyanın sürüm geçmişinde</a>. Değer değişmeyen gün dosyaya dokunulmaz.</p>
+    </section>
+
     <section aria-labelledby="tb">
       <h2 id="tb">Gözlemler</h2>
       {gunluk && <p class="kucuk">Son 90 iş günü gösteriliyor; {d.length.toLocaleString("tr-TR")} gözlemin tamamı {csv ? <a href={csv}>CSV</a> : "kaynakta"}.</p>}
       <div class="kaydir">
         <table>
           <caption class="gizli">{s.baslik}, gözlemler, yeniden eskiye</caption>
-          <thead><tr><th scope="col">Dönem</th><th scope="col" class="n">Değer</th><th scope="col" class="n">Kaynaktaki ham değer</th></tr></thead>
+          <thead><tr><th scope="col">Dönem</th><th scope="col" class="n">Değer</th>{yillik.size > 0 && <th scope="col" class="n">Bir yıl önceye göre</th>}<th scope="col" class="n">Kaynaktaki ham değer</th></tr></thead>
           <tbody>
             {tablo.map((g) => (
-              <tr><th scope="row">{g.donem}</th><td class="n">{deger(s, g.deger)}</td><td class="n ham">{g.deger ?? "yayımlanmadı"}{g.durum && g.durum !== "A" && <span class="bayrak" title="Kaynağın gözlem bayrağı (A = normal değer gösterilmez)"> {g.durum}</span>}</td></tr>
+              <tr><th scope="row">{g.donem}</th><td class="n">{deger(s, g.deger)}</td>{yillik.size > 0 && <td class="n">{yillik.has(g.donem) ? yfYaz(yillik.get(g.donem)!) : "—"}</td>}<td class="n ham">{g.deger ?? "yayımlanmadı"}{g.durum && g.durum !== "A" && <span class="bayrak" title="Kaynağın gözlem bayrağı (A = normal değer gösterilmez)"> {g.durum}</span>}</td></tr>
             ))}
           </tbody>
         </table>
@@ -138,6 +179,12 @@ const aciklama = `${s.baslik}: ${sn ? donemAdi(sn.donem) : ""} ${deger(s, sn?.de
 <style>
   .iz { padding-top: 1.5rem; font-size: .85rem; color: var(--soluk); }
   .bas { display: grid; gap: .6rem; padding-block: 1rem 0; }
+  .guncellik { display: flex; flex-wrap: wrap; gap: .3rem 1rem; align-items: center; margin: 0; font-size: .82rem; color: var(--soluk); }
+  .eylem { display: flex; flex-wrap: wrap; gap: .5rem 1.2rem; margin: 0; font-weight: 600; font-size: .92rem; }
+  .revizyon { display: grid; gap: .6rem; padding-top: 2rem; }
+  .olaylar { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; font-size: .9rem; }
+  .olaylar time { color: var(--soluk); font-size: .82rem; margin-right: .5rem; }
+  .olaylar .hap { margin-right: .3rem; }
   .buyuk { margin: .4rem 0 0; font-size: clamp(2.2rem, 1.6rem + 3vw, 3.4rem); font-weight: 750; letter-spacing: -.02em; line-height: 1; }
   .buyuk span { font-size: 1rem; font-weight: 500; color: var(--soluk); letter-spacing: 0; }
   .okuma { margin-top: 1.5rem; padding: 1rem 1.2rem; border-left: 3px solid var(--dv-1); background: var(--yuzey); }
