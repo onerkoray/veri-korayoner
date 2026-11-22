@@ -1,7 +1,7 @@
 // Panorama ana grafiği: aralık (1/3/5/10 yıl, tümü), seri aç/kapa, imleçte üç değer,
 // CSV ve bağlantı. Durum yalnız adresin # kısmında (sorgu dizesi yok).
 import * as Plot from "@observablehq/plot";
-import { tarih } from "../lib/gezgin-cekirdek.ts";
+import { tarih, adresParcasi } from "../lib/gezgin-cekirdek.ts";
 import { aralikBaslangici, genisTablo, type AnaSeri } from "../lib/ana-grafik-cekirdek.ts";
 
 const RENK: Record<string, string> = { faiz: "var(--dv-1)", enf: "var(--dv-2)", reel: "var(--metin)" };
@@ -25,7 +25,10 @@ function kur(tuval: HTMLElement) {
   let yil = [0, 1, 3, 5, 10].includes(Number(h.get("aralik"))) && h.has("aralik") ? Number(h.get("aralik")) : 10;
   const istenen = (h.get("seri") ?? "").split(",").filter((k) => seriler.some((s) => s.k === k));
   const acik = new Set(istenen.length ? istenen : seriler.map((s) => s.k));
-  const hashYaz = () => history.replaceState(null, "", `#${new URLSearchParams({ aralik: String(yil), seri: [...acik].join(",") })}`);
+  // Yalnız varsayılandan farklıysa adrese yazılır (10 yıl, üç seri açık: düz adres).
+  const tumu = seriler.map((s) => s.k).join(",");
+  const parca = () => adresParcasi([["aralik", String(yil), "10"], ["seri", seriler.filter((s) => acik.has(s.k)).map((s) => s.k).join(","), tumu]]);
+  const hashYaz = () => history.replaceState(null, "", parca() || location.pathname);
 
   let tablo: ReturnType<typeof genisTablo> = [];
   function ciz() {
@@ -83,7 +86,7 @@ function kur(tuval: HTMLElement) {
     document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   });
   bolum.querySelector('[data-eylem="bagla"]')?.addEventListener("click", async () => {
-    const url = `${location.origin}${location.pathname}#${new URLSearchParams({ aralik: String(yil), seri: [...acik].join(",") })}`;
+    const url = `${location.origin}${location.pathname}${parca()}`;
     try { await navigator.clipboard.writeText(url); durumP.textContent = "Bağlantı kopyalandı."; }
     catch { durumP.textContent = `Kopyalanamadı; bağlantı: ${url}`; }
   });

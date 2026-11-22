@@ -239,3 +239,18 @@ yoklandı:
 |---|---|---|---|---|---|
 | `/kaynaklar` | 100 | 100 | 100 | 100 | 0 |
 | `/api` | 100 | 100 | 100 | 100 | 0 |
+
+## Kısa adresler
+
+Kullanıcı bildirimi: gezgin adresi gereksiz uzun ve standart dışıydı. Varsayılan görünüm bile
+`#g=…%2C…&s=aylik&d=ort&b=2010&e=2026&v=grafik&o=deger` biçiminde yazılıyordu.
+
+- `adresParcasi` (`web/src/lib/gezgin-cekirdek.ts`): adrese yalnız varsayılandan farklı ve boş
+  olmayan alanlar yazılıyor. Virgül kodlanmıyor; `#` sonrasında serbest bir karakter. Hepsi
+  varsayılansa adres `#`'siz kalıyor.
+- Gezgin, karşılaştırma ve Panorama grafiği bu yardımcıyı kullanıyor. Gezginde seçim sırası adresi
+  değiştirmiyor (küme karşılaştırması). Karşılaştırmada en yeni dönem adrese yazılmıyor.
+- Eski uzun bağlantılar çalışmaya devam ediyor ve açılınca sadeleşiyor. Örnekler:
+  - Kullanıcının gönderdiği adres: `/gezgin`.
+  - Sıklığı yıllık yapınca: `/gezgin#s=yillik`.
+  - Panorama'da 3 yıl seçince: `/#aralik=3`.

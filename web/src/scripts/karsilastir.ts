@@ -3,7 +3,7 @@
 // Durum adresin # kısmında; her değişiklik geçmişe yazılır (geri/ileri çalışır).
 import * as Plot from "@observablehq/plot";
 import { yaz, donemAdi } from "../lib/bicim.ts";
-import { tarih } from "../lib/gezgin-cekirdek.ts";
+import { tarih, adresParcasi } from "../lib/gezgin-cekirdek.ts";
 import { uygunDonemler, siralaDonem, medyanSerisi, esik } from "../lib/karsilastir-cekirdek.ts";
 import type { Nokta } from "../lib/okuma.ts";
 
@@ -39,7 +39,9 @@ function baslat(form: HTMLFormElement) {
     return p;
   };
 
-  const hashMetni = (d: Durum) => new URLSearchParams({ g: d.g, d: d.d, x: d.x.join(",") }).toString();
+  // Yalnız varsayılandan farklı alanlar: en yeni karşılaştırılabilir dönem (enYeni) adrese yazılmaz.
+  let enYeni = "";
+  const hashMetni = (d: Durum) => adresParcasi([["g", d.g, varsayilan], ["d", d.d, enYeni], ["x", d.x.join(","), ""]]);
   const oku = (): Durum => {
     const h = new URLSearchParams(location.hash.slice(1));
     const g = katalog.some((k) => k.id === h.get("g")) ? h.get("g")! : varsayilan;
@@ -48,8 +50,8 @@ function baslat(form: HTMLFormElement) {
   let durum = oku();
   const yerlestir = (yeni: Partial<Durum>, gecmis = true) => {
     durum = { ...durum, ...yeni };
-    const h = `#${hashMetni(durum)}`;
-    if (gecmis && h !== location.hash) history.pushState(null, "", h); else history.replaceState(null, "", h);
+    const h = hashMetni(durum);
+    if (gecmis && h !== location.hash) history.pushState(null, "", h || location.pathname); else history.replaceState(null, "", h || location.pathname);
     ciz();
   };
 
@@ -94,7 +96,9 @@ function baslat(form: HTMLFormElement) {
     }
     const donem = donemler.includes(d.d) ? d.d : donemler[0];
     dSec.value = donem;
-    if (donem !== d.d) { durum = { ...d, d: donem }; history.replaceState(null, "", `#${hashMetni(durum)}`); }
+    enYeni = donemler[0];
+    if (donem !== d.d) durum = { ...d, d: donem };
+    history.replaceState(null, "", hashMetni(durum) || location.pathname);
     const s = siralaDonem(v.tr, ulkeler, donem)!;
     son = { k, s };
     const trV = s.satirlar.find((r) => r.kod === "TUR")!.v, trSon = v.tr.at(-1)!;
@@ -181,11 +185,10 @@ function baslat(form: HTMLFormElement) {
     document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   });
   document.getElementById("k-bagla")!.addEventListener("click", async () => {
-    const url = `${location.origin}${location.pathname}#${hashMetni(durum)}`;
+    const url = `${location.origin}${location.pathname}${hashMetni(durum)}`;
     try { await navigator.clipboard.writeText(url); durumP.textContent = "Bağlantı kopyalandı."; } catch { durumP.textContent = `Kopyalanamadı; bağlantı: ${url}`; }
   });
   let zaman = 0;
   addEventListener("resize", () => { clearTimeout(zaman); zaman = window.setTimeout(ciz, 200); });
-  history.replaceState(null, "", `#${hashMetni(durum)}`);
   ciz();
 }

@@ -121,3 +121,10 @@ export function metaveri(secili: Tanim[], g: GorunumDurumu, yontem: string, bagl
       ])],
   };
 }
+
+/** Adres parçası (#…): yalnız varsayılandan farklı ve boş olmayan alanlar, sırası sabit, virgül kodlanmaz
+ *  (fragment'te serbest). Hepsi varsayılansa "" döner: çıplak adres, # yok. */
+export function adresParcasi(alanlar: [string, string, string][]): string {
+  const p = alanlar.filter(([, v, vars]) => v !== "" && v !== vars).map(([k, v]) => `${k}=${encodeURIComponent(v).replace(/%2C/gi, ",")}`);
+  return p.length ? `#${p.join("&")}` : "";
+}

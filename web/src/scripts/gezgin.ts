@@ -3,7 +3,7 @@
 // Saf hesaplar ../lib/gezgin-cekirdek.ts içinde ve test/gezgin.test.ts ile sınanır.
 import * as Plot from "@observablehq/plot";
 import { yaz, donemAdi, n0, n1 } from "../lib/bicim.ts";
-import { uygunMu, ortakSiklik, yilAraligi, kapsam, tarih, zamanAlani, olcek, eslesir, csvMetni, metaveri, olcekUygun, ortakBaz, donustur, sirala, ORTAK_AZAMI,
+import { uygunMu, ortakSiklik, yilAraligi, kapsam, tarih, zamanAlani, olcek, eslesir, csvMetni, metaveri, olcekUygun, ortakBaz, donustur, sirala, adresParcasi, ORTAK_AZAMI,
   type Satir, type Tanim, type Olcek, type Nokta } from "../lib/gezgin-cekirdek.ts";
 
 interface Panel { siklik: string; yontem: string; seriler: Tanim[]; veri: Record<string, Satir[]> }
@@ -46,7 +46,10 @@ function baslat(form: HTMLFormElement) {
     return p;
   };
 
-  const hashMetni = (d: Durum) => new URLSearchParams({ g: d.g.join(","), s: d.s, d: d.d, b: String(d.b), e: String(d.e), v: d.v, o: d.o }).toString();
+  // Adrese yalnız varsayılandan farklı ayar yazılır; varsayılan görünüm düz /gezgin.
+  const ayniKume = (a: string[], b: string[]) => a.length === b.length && a.every((x) => b.includes(x));   // seçim sırası adresi değiştirmesin
+  const hashMetni = (d: Durum) => adresParcasi([["g", ayniKume(d.g, VARSAYILAN) ? "" : d.g.join(","), ""], ["s", d.s, "aylik"], ["d", d.d, "ort"],
+    ["b", String(d.b), "2010"], ["e", String(d.e), String(yillar.at(-1))], ["v", d.v, "grafik"], ["o", d.o, "deger"]]);
   const oku = (): Durum => {
     const h = new URLSearchParams(location.hash.slice(1));
     const gecerli = new Set(kutular.filter((k) => !k.disabled).map((k) => k.value));
@@ -62,8 +65,8 @@ function baslat(form: HTMLFormElement) {
   // Her kullanıcı değişikliği tarayıcı geçmişine yeni kayıt: geri/ileri tuşları görünümler arasında gezer.
   const uygula = (yeni: Partial<Durum>) => {
     durum = { ...durum, ...yeni };
-    const h = `#${hashMetni(durum)}`;
-    if (h !== location.hash) history.pushState(null, "", h);
+    const h = hashMetni(durum);
+    if (h !== location.hash) history.pushState(null, "", h || location.pathname);
     formaYaz(); ciz();
   };
   const formaYaz = () => {
@@ -379,7 +382,7 @@ function baslat(form: HTMLFormElement) {
     document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   };
   const dosyaAdi = (uzanti: string) => `turkiye-panel-${durum.s}-${durum.d}-${durum.b}-${durum.e}-${new Date().toISOString().slice(0, 10)}.${uzanti}`;
-  const baglanti = () => `${location.origin}${location.pathname}#${hashMetni(durum)}`;
+  const baglanti = () => `${location.origin}${location.pathname}${hashMetni(durum)}`;
   document.getElementById("g-indir")!.addEventListener("click", () => {
     if (!son?.secili.length) { durumP.textContent = "İndirilecek veri yok: aralıkta gözlemi olan bir gösterge seçin."; return; }
     // Düz CSV (yorum satırı yok: pandas/Excel bozulmasın). Açıklama yanındaki metaveri dosyasında.
@@ -431,7 +434,7 @@ function baslat(form: HTMLFormElement) {
   // Telefonda gösterge listesi kapalı başlar; seçim sayısı özetle görünür.
   const liste = document.getElementById("g-liste") as HTMLDetailsElement | null;
   if (liste && matchMedia("(max-width: 40rem)").matches) liste.open = false;
-  history.replaceState(null, "", `#${hashMetni(durum)}`);           // ilk görünüm de adreste: geri tuşu buraya döner
+  history.replaceState(null, "", hashMetni(durum) || location.pathname);   // adresi sadeleştir; geri tuşu buraya döner
   formaYaz();
   ciz();
 }

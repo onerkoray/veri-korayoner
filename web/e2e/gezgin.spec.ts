@@ -128,7 +128,7 @@ test.describe("Gezgin 2", () => {
     await page.locator('input[name="s"][value="yillik"]').check({ force: true });
     await expect(page).toHaveURL(/s=yillik/);
     await page.goBack();
-    await expect(page).toHaveURL(/s=aylik&.*v=tablo/);
+    await expect(page).toHaveURL(/gezgin#g=bis-tufe-yillik-tr&v=tablo$/);   // varsayılanlar (aylık, ortalama…) adrese yazılmaz
     await expect(page.locator('input[name="s"][value="aylik"]')).toBeChecked();
     await page.goBack();
     await expect(page.locator(".g-tuval svg")).toHaveCount(1);
@@ -179,7 +179,7 @@ test.describe("Karşılaştırma", () => {
     await expect(page.locator(".k-tuval svg")).toHaveCount(2);
     await expect(page.locator(".k-cumle")).toContainText(/yüksekten düşüğe \d+ ülke içinde \d+\. sırada/);
     await expect(page.locator(".k-tuval g[aria-label]")).toHaveCount(0);
-    await expect(page).toHaveURL(/g=wb-ny-gdp-mktp-kd-zg-tur&d=\d{4}/);
+    await expect(page).toHaveURL(/\/karsilastir$/);                  // varsayılan görünüm: düz adres
     expect(hata).toEqual([]);
   });
 

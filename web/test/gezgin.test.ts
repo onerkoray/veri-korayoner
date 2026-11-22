@@ -80,3 +80,12 @@ test("tablo sıralaması: boş hücre sonda, eşitlikte yeni dönem önce", () =
   assert.deepEqual(sirala(r, (x) => x.v, "artan").map((x) => x.donem), ["2023", "2020", "2022", "2021"]);
   assert.deepEqual(sirala(r, (x) => x.v, "azalan").map((x) => x.donem), ["2022", "2023", "2020", "2021"]);
 });
+
+import { adresParcasi } from "../src/lib/gezgin-cekirdek.ts";
+
+test("adres parçası: yalnız varsayılandan farklı alan, virgül kodlanmaz, hepsi varsayılansa boş", () => {
+  assert.equal(adresParcasi([["g", "a,b", "a,b"], ["s", "aylik", "aylik"]]), "");
+  assert.equal(adresParcasi([["g", "a-1,b-2", "x"], ["s", "yillik", "aylik"], ["d", "ort", "ort"]]), "#g=a-1,b-2&s=yillik");
+  assert.equal(adresParcasi([["d", "", "2025"], ["x", "", ""]]), "");
+  assert.equal(adresParcasi([["q", "a b&c", ""]]), "#q=a%20b%26c");
+});
