@@ -120,8 +120,8 @@ Lisans kapısı gevşetilmedi.
   - `arayuz` işi derlemeden sonra Chromium kuruyor ve `npm run e2e` koşuyor.
   - `guncelle` işi commit'ten sonra `veri saglik` koşuyor; kırmızıda "Veri hattı
     sağlık kırmızısı" issue'su açıyor ya da var olana yorum yazıyor.
-- `.github/workflows/canli.yml` (yeni): Vercel üretim yayını başarıyla bitince
-  (`deployment_status`), o commit'te `veri canli` koşuyor; fark varsa "Canlı API
+- `.github/workflows/canli.yml` (yeni): Vercel main commit'ine "Vercel" statüsünü success
+  yazınca (`status` olayı; Vercel bu depoda GitHub deployment kaydı açmıyor), o commit'te `veri canli` koşuyor; fark varsa "Canlı API
   depodan farklı" issue'su açıyor. Eylem SHA'ları mevcut iş akışındakilerle aynı.
 - `README.md`: durum, komutlar, ADR bağlantıları, sağlık ve tazelik bölümü.
 

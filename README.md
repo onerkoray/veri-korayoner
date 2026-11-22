@@ -57,7 +57,7 @@ npm run build             # derle + denetle (satır içi betik, NaN, lisans dı�
 `ardisik_hata` ve `son_hata` düşen kaynağı, `gecikti` ise beklenen yayın
 takviminin gerisinde kalan seriyi gösterir. Kırmızı koşullar (`veri saglik`):
 üç ardışık hata ya da yedi günden eski başarılı kontrol. Zamanlanmış iş
-kırmızıda issue açar; Vercel üretim yayını bittiğinde `canli.yml` canlı
+kırmızıda issue açar; Vercel main commit'ine başarılı statü yazınca `canli.yml` canlı
 dosyaları depodakiyle karşılaştırır.
 
 ## Atıf

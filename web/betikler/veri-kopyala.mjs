@@ -9,5 +9,6 @@ const hedef = join(WEB, "public", "api");
 rmSync(hedef, { recursive: true, force: true });
 const kaynak = join(WEB, "..", "yayin", "api");
 if (!existsSync(kaynak)) throw new Error("yayin/api yok: önce `uv run veri guncelle`");
-cpSync(kaynak, hedef, { recursive: true, filter: (y) => !y.endsWith(".sha256") });
+// .sha256 de kopyalanır: gozlemler.parquet'in gerçek özeti (sha256sum -c ile doğrulanır).
+cpSync(kaynak, hedef, { recursive: true });
 console.log("api/ public klasörüne kopyalandı");
