@@ -1,0 +1,72 @@
+---
+// Panorama ana grafiği: politika faizi, yıllık TÜFE ve (bu sitenin hesabı) ex post reel faiz.
+// Üçü de aylık ve yüzde: aynı eksende göstermek yanıltmaz. Etkileşim ../scripts/ana-grafik.ts.
+// Veri data- özniteliğinde, kaynaktaki metin değeriyle (CSV'de kayıpsız yazılsın diye).
+import { dolu, sayi, type Seri } from "../lib/veri";
+import { donemAdi } from "../lib/okuma.ts";
+import type { Nokta } from "../lib/okuma.ts";
+
+interface Props { faiz: Seri; enf: Seri; reel: Nokta[] }
+const { faiz, enf, reel } = Astro.props;
+const seriler = [
+  { k: "faiz", ad: "Politika faizi", kaynak: "BIS", id: faiz.id, d: dolu(faiz).map((g) => [g.donem, g.deger]) },
+  { k: "enf", ad: "Yıllık TÜFE", kaynak: "BIS", id: enf.id, d: dolu(enf).map((g) => [g.donem, g.deger]) },
+  { k: "reel", ad: "Reel faiz (ex post)", kaynak: "bu sitenin hesabı", turetilmis: true, d: reel.map((p) => [p.donem, p.v.toFixed(6)]) },
+];
+const sonF = dolu(faiz).at(-1)!, sonE = dolu(enf).at(-1)!, sonR = reel.at(-1)!;
+const yuzde = (v: number) => (v < 0 ? "−%" : "%") + sayi(Math.abs(v), 1);
+const ozet = `Politika faizi ${yuzde(Number(sonF.deger))} (${donemAdi(sonF.donem)}), yıllık TÜFE ${yuzde(Number(sonE.deger))} (${donemAdi(sonE.donem)}), ex post reel faiz ${yuzde(sonR.v)} (${donemAdi(sonR.donem)}).`;
+const ARALIK: [number, string][] = [[1, "1 yıl"], [3, "3 yıl"], [5, "5 yıl"], [10, "10 yıl"], [0, "Tümü"]];
+---
+<section class="sar ana" aria-labelledby="a-baslik">
+  <div class="ana-ust">
+    <div class="ana-baslik">
+      <h2 id="a-baslik">Enflasyon ve politika faizi</h2>
+      <p class="ozet">{ozet} Üçü de yüzde ve aylık olduğu için aynı eksende. Reel faiz, gerçekleşen enflasyona göre Fisher hesabıdır (kesikli çizgi).</p>
+    </div>
+    <div class="ana-aralik" role="group" aria-label="Zaman aralığı" hidden>
+      {ARALIK.map(([y, a]) => <button type="button" data-yil={y} aria-pressed={String(y === 10)}>{a}</button>)}
+    </div>
+  </div>
+  <div class="ana-seri" role="group" aria-label="Gösterilen seriler" hidden>
+    {seriler.map((s) => (
+      <button type="button" data-seri={s.k} aria-pressed="true">
+        <svg viewBox="0 0 22 8" width="22" height="8" aria-hidden="true"><line x1="1" x2="21" y1="4" y2="4" class={`orn orn-${s.k}`} /></svg>
+        {s.ad}<small>{s.kaynak}</small>
+      </button>
+    ))}
+  </div>
+  <div class="ana-tuval" data-ana-grafik={JSON.stringify({ seriler })}>
+    <noscript><p class="ozet">Etkileşimli grafik JavaScript gerektirir. Seriler: <a href={`/gosterge/${faiz.id}`}>politika faizi</a>, <a href={`/gosterge/${enf.id}`}>yıllık TÜFE</a>, <a href="/hesap/reel-politika-faizi">reel politika faizi</a>.</p></noscript>
+  </div>
+  <p class="ana-durum" role="status" aria-live="polite"></p>
+  <div class="ana-eylem" hidden>
+    <button type="button" data-eylem="csv">CSV indir</button>
+    <button type="button" data-eylem="bagla">Bağlantıyı kopyala</button>
+    <a href={`/gezgin#g=${enf.id},${faiz.id}&s=aylik&d=ort&b=2016&e=${sonF.donem.slice(0, 4)}&v=grafik`}>Veri gezgininde aç →</a>
+  </div>
+</section>
+<script>
+  import "../scripts/ana-grafik.ts";
+</script>
+<style>
+  .ana { display: grid; gap: .8rem; padding-block: 2rem 0; }
+  .ana-ust { display: flex; flex-wrap: wrap; gap: .8rem 2rem; justify-content: space-between; align-items: end; }
+  .ana-baslik { display: grid; gap: .4rem; }
+  .ana-baslik .ozet { margin: 0; font-size: .92rem; }
+  .ana-aralik, .ana-seri, .ana-eylem { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .ana-aralik button, .ana-seri button, .ana-eylem button, .ana-eylem a {
+    font: 600 .74rem/1 var(--mono); padding: .55rem .7rem; min-height: 2.5rem; border: 1px solid var(--cizgi);
+    background: var(--yuzey); color: var(--soluk); cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: .45rem; box-sizing: border-box; }
+  .ana-aralik button[aria-pressed="true"] { background: var(--metin); color: var(--bg); border-color: var(--metin); }
+  .ana-seri button[aria-pressed="true"] { color: var(--metin); border-color: var(--metin); }
+  .ana-seri button[aria-pressed="false"] { text-decoration: line-through; opacity: .7; }
+  .ana-seri small { font-weight: 400; color: var(--soluk); text-transform: none; }
+  .ana-eylem button, .ana-eylem a { color: var(--metin); border-color: var(--metin); }
+  .ana-eylem button:hover, .ana-eylem a:hover { background: var(--metin); color: var(--bg); }
+  .orn { stroke-width: 2.4; }
+  .orn-faiz { stroke: var(--dv-1); } .orn-enf { stroke: var(--dv-2); } .orn-reel { stroke: var(--metin); stroke-dasharray: 4 3; }
+  .ana-tuval { background: var(--yuzey); border: 1px solid var(--cizgi); padding: .75rem .5rem .25rem; min-height: 340px; box-sizing: border-box; }
+  .ana-tuval :global(svg) { display: block; max-width: 100%; height: auto; overflow: visible; }
+  .ana-durum { margin: 0; font-size: .82rem; color: var(--soluk); min-height: 1.2em; }
+</style>

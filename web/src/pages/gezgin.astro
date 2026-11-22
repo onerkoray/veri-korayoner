@@ -50,7 +50,7 @@ const jsonld = {
           <input type="search" id="g-ara" placeholder="Gösterge ara: işsizlik, Gini, faiz…" autocomplete="off" enterkeyhint="search" />
           <span id="g-ara-sonuc" class="g-not" aria-live="polite"></span>
         </div>
-        <details class="g-acilir" id="g-liste" open>
+        <details class="g-acilir" id="g-liste" open data-ilk>
         <summary>Gösterge listesi · 3 seçili</summary>
         <div class="g-temalar">
           {gruplar.map((g) => (
@@ -186,6 +186,9 @@ const jsonld = {
   .g-acilir > summary { cursor: pointer; font-size: .85rem; color: var(--soluk); margin-bottom: .6rem; }
   .g-acilir[open] > summary { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   @media (max-width: 40rem) { .g-acilir[open] > summary { position: static; width: auto; height: auto; clip: auto; } }
+  /* Telefonda liste ilk boyamada da kapalı görünsün: erken betik indirilirken boyama olursa
+     sonradan kapanıp alttaki içeriği kaydırmasın (CLS). Betik data-ilk'i kaldırır. */
+  @media (max-width: 40rem) { .g-acilir[data-ilk] > .g-temalar { display: none; } }
   .g-isi tbody th { text-align: left; color: var(--soluk); font-weight: 600; }
   .g-isi td.koyu { color: var(--bg); }
   .g-isi td.kismi { outline: 1px dashed var(--soluk); outline-offset: -2px; }

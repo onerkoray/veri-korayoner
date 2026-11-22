@@ -80,7 +80,7 @@ test("grafik üzerinde gezinme ipucu gösterir", async ({ page, isMobile }) => {
   await page.mouse.move(k.x + k.width * 0.6, k.y + k.height / 2, { steps: 8 });
   await expect(page.locator(".g-tuval svg g.g-ipucu").first()).toContainText(/20\d\d/);
   // axe: role'süz <g>'de aria-label olmaz; imleçle yeniden çizilen ipucu katmanı da etiketsiz kalmalı.
-  await expect(page.locator(".g-tuval g.g-ipucu[aria-label], .g-tuval g.g-imlec[aria-label]")).toHaveCount(0);
+  await expect(page.locator(".g-tuval g[aria-label]")).toHaveCount(0);
 });
 
 for (const yol of ["/", "/gezgin", `/gosterge/${GINI}`, "/hesap/reel-politika-faizi", "/api"]) {
@@ -91,3 +91,29 @@ for (const yol of ["/", "/gezgin", `/gosterge/${GINI}`, "/hesap/reel-politika-fa
     expect(sw).toBeLessThanOrEqual(cw + 1);
   });
 }
+
+test.describe("Panorama", () => {
+  test("KPI kartları ve ana grafik: aralık, seri aç/kapa, boş seçim", async ({ page }) => {
+    const hata = hataTopla(page);
+    await page.goto("/");
+    await expect(page.locator(".kpi")).toHaveCount(6);
+    const tuval = page.locator(".ana-tuval svg");
+    await expect(tuval).toHaveCount(1);
+    await expect(page.locator(".ana-durum")).toContainText("120 ay");
+    await expect(page.locator(".ana-tuval g[aria-label]")).toHaveCount(0);   // axe: role'süz <g>'de aria-label olmaz
+    await page.getByRole("button", { name: "1 yıl" }).click();
+    await expect(page.locator(".ana-durum")).toContainText("12 ay");
+    await expect(page).toHaveURL(/aralik=1/);
+    for (const s of ["faiz", "enf", "reel"]) await page.locator(`.ana-seri button[data-seri="${s}"]`).click();
+    await expect(page.locator(".ana-durum")).toContainText("en az bir seri");
+    await expect(tuval).toHaveCount(0);
+    await page.locator('.ana-seri button[data-seri="enf"]').click();
+    await expect(page.locator(".ana-seri button[data-seri=\"enf\"]")).toHaveAttribute("aria-pressed", "true");
+    await expect(tuval).toHaveCount(1);
+    await page.reload();                                           // durum adresten geri kurulur
+    await expect(page.locator('.ana-seri button[data-seri="faiz"]')).toHaveAttribute("aria-pressed", "false");
+    // Aralık bütün serilerin en yeni dönemine göre kurulur (faiz Ekim): yalnız TÜFE açıkken Kasım 2025–Eylül 2026.
+    await expect(page.locator(".ana-durum")).toContainText("Kasım 2025 – Eylül 2026 · 11 ay");
+    expect(hata).toEqual([]);
+  });
+});

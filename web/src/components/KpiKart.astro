@@ -1,0 +1,47 @@
+---
+// Panorama KPI kartı: son gözlem, kaynağın dönemi, önceki karşılaştırılabilir döneme göre
+// değişim, küçük çizgi ve kaynak. Değer yalnız yayımlanmış seriden gelir; dönem kaynağın
+// dönemidir, çekim zamanı değil. Gecikme ve başarısız son çekim ayrı işaretlenir.
+import Kivilcim from "./Kivilcim.astro";
+import { deger, degisim, son, onceki, tarih, type Seri, type SeriDurumu } from "../lib/veri";
+import { donemAdi } from "../lib/okuma.ts";
+
+interface Props { seri: Seri; ad: string; href: string; kaynak: string; hesap?: boolean; durum?: SeriDurumu; not?: string }
+const { seri, ad, href, kaynak, hesap = false, durum, not } = Astro.props;
+const sn = son(seri), on = onceki(seri), dg = degisim(seri);
+const n = seri.siklik === "aylik" ? 36 : seri.siklik === "ceyreklik" ? 20 : 15;
+---
+{sn && (
+  <li class:list={["kpi", hesap && "kpi--hesap"]}>
+    <a href={href}>
+      <span class="kpi-ad">{ad}</span>
+      <span class="kpi-deger sayi">{deger(seri, sn.deger, true)}</span>
+      <span class="kpi-donem">{donemAdi(sn.donem)}{seri.birim === "yuzde-gsyh" && " · GSYH'ye oran"}</span>
+      {dg && on && (
+        <span class="kpi-deg sayi">{dg.metin}<span class="kpi-onceki"> · {donemAdi(on.donem)}: <span class="kpi-nw">{deger(seri, on.deger, true)}</span></span></span>
+      )}
+      <Kivilcim seri={seri} n={n} />
+      <span class="kpi-kaynak">{kaynak}{hesap && " · bu sitenin hesabı"}</span>
+      {not && <span class="kpi-not">{not}</span>}
+      {durum?.gecikti && <span class="hap hap--uyari">gecikmiş</span>}
+      {durum && durum.ardisik_hata > 0 && (
+        <span class="kpi-not">Son çekim başarısız; önceki veri gösteriliyor{durum.son_basarili_kontrol && ` (son başarılı kontrol ${tarih(durum.son_basarili_kontrol)})`}.</span>
+      )}
+    </a>
+  </li>
+)}
+<style>
+  .kpi { background: var(--yuzey); border: 1px solid var(--cizgi); min-width: 0; }
+  .kpi--hesap { border-style: dashed; }
+  .kpi a { display: grid; gap: .3rem; align-content: start; padding: .9rem 1rem 1rem; height: 100%; text-decoration: none; color: inherit; box-sizing: border-box; }
+  .kpi a:hover { background: var(--yuzey-2); color: inherit; }
+  .kpi-ad { font-size: .82rem; font-weight: 600; color: var(--soluk); line-height: 1.3; min-height: 2.6em; }
+  .kpi-deger { font-size: clamp(1.5rem, 1.2rem + 1vw, 1.9rem); font-weight: 720; letter-spacing: -.02em; line-height: 1.05; }
+  .kpi-donem { font-size: .8rem; color: var(--metin); }
+  .kpi-deg { font-size: .78rem; font-weight: 600; }
+  .kpi-onceki { font-weight: 400; color: var(--soluk); }
+  .kpi-nw { white-space: nowrap; }
+  .kpi-kaynak { font: .64rem/1.4 var(--mono); letter-spacing: .05em; text-transform: uppercase; color: var(--soluk); }
+  .kpi-not { font-size: .72rem; color: var(--soluk); line-height: 1.35; }
+  .kpi .hap { justify-self: start; }
+</style>

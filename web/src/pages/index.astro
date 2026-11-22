@@ -1,9 +1,10 @@
 ---
 import Taban from "../layouts/Taban.astro";
 import Kivilcim from "../components/Kivilcim.astro";
-import SeriGrafik from "../components/SeriGrafik.astro";
+import KpiKart from "../components/KpiKart.astro";
+import AnaGrafik from "../components/AnaGrafik.astro";
 import Serit from "../components/Serit.astro";
-import { seriler, kaynaklar, uretildi, TEMA, TEMA_SIRA, deger, degisim, son, tarih, siklikAdi, ulkeAdi, degisiklikler } from "../lib/veri";
+import { seriler, kaynaklar, uretildi, TEMA, TEMA_SIRA, deger, degisim, son, onceki, tarih, siklikAdi, ulkeAdi, degisiklikler, durum } from "../lib/veri";
 import { donemAdi, zaman, ek } from "../lib/okuma.ts";
 import { reelPaket, isaretSuresi, emsalSatirlari } from "../lib/turetilmis";
 import { KISI } from "../lib/kimlik";
@@ -13,18 +14,27 @@ const ks = kaynaklar();
 const aktif = ks.filter((k) => ss.some((s) => s.kaynak.id === k.id));   // en az bir serisi yayında olan kurumlar
 const gruplar = TEMA_SIRA.map((t) => ({ t, ad: TEMA[t], liste: ss.filter((s) => s.tema === t) })).filter((g) => g.liste.length);
 const gozlemSayisi = ss.reduce((a, s) => a + s.gozlemler.filter((g) => g.deger != null).length, 0);
+const kisaKurum = (k: string) => k.replace(/\s*\(.*\)$/, "").replace("Uluslararası Ödemeler Bankası", "BIS").replace("Avrupa Birliği İstatistik Ofisi", "Eurostat").replace("Uluslararası Çalışma Örgütü", "ILO");
+const kaynakListesi = new Intl.ListFormat("tr", { type: "conjunction" }).format(aktif.map((k) => kisaKurum(k.kurum)));
+const saglik = durum();
+const durumOf = (id: string) => saglik?.seriler.find((r) => r.id === id);
 
 // Manşet: bu sitenin hesabı
 const reel = reelPaket();
-const reelSon = reel?.r.at(-1);
 const reelIsaret = reel ? isaretSuresi(reel.r) : null;
-const reelYaz = (v: number) => (reel ? deger(reel.seri, v) : "");
 
 // Türkiye nerede: emsali olan her gösterge bir şerit
 const satirlar = emsalSatirlari();
 
-// Son açıklanan veriler: her serinin son dönemi, en yeniden
-const sonVeriler = ss.map((s) => ({ s, sn: son(s)!, dg: degisim(s) })).filter((x) => x.sn)
+// Panorama KPI'ları: her biri yayımlanmış bir seriden (reel faiz bu sitenin hesabı, işaretli).
+const KPI: [string, string][] = [["bis-tufe-yillik-tr", "Yıllık enflasyon (TÜFE)"], ["bis-politika-faizi-tr", "Politika faizi"],
+  ["wb-ny-gdp-mktp-kd-zg-tur", "Ekonomik büyüme (yıllık, reel)"], ["eurostat-issizlik-aylik-tr", "İşsizlik oranı (mevsimsellikten arındırılmış)"],
+  ["wb-bn-cab-xoka-gd-zs-tur", "Cari işlemler dengesi"]];
+const kpiler = KPI.map(([id, ad]) => ({ s: ss.find((x) => x.id === id), ad })).filter((x): x is { s: (typeof ss)[number]; ad: string } => !!x.s);
+
+// Son açıklanan veriler: her serinin son dönemi, en yeniden; değişiklik günlüğündeki son olayıyla.
+const sonOlay = (id: string) => degisiklikler().find((o) => o.seri === id);
+const sonVeriler = ss.map((s) => ({ s, sn: son(s)!, on: onceki(s), dg: degisim(s), olay: sonOlay(s.id) })).filter((x) => x.sn)
   .sort((a, b) => zaman(b.sn.donem) - zaman(a.sn.donem) || a.s.baslik.localeCompare(b.s.baslik, "tr")).slice(0, 10);
 const baslikOf = (id: string) => ss.find((s) => s.id === id);
 const olaylar = degisiklikler().slice(0, 12);
@@ -41,29 +51,33 @@ const jsonld = {
 <Taban baslik="Türkiye Verisi — uluslararası kurumların Türkiye serileri ve emsal karşılaştırması" aciklama="BIS, Dünya Bankası, OECD, Eurostat ve ILO'nun Türkiye verileri: emsal ülkelerle sıralama, reel faiz hesabı, revizyon kaydı, lisansıyla açık API." yol="/" jsonld={jsonld}>
   <section class="sar giris">
     <p class="etiket">Türkiye · uluslararası kaynaklar</p>
-    <h1>Türkiye, kurumların verisiyle ve emsalleriyle.</h1>
-    <p class="ozet">BIS, Dünya Bankası, OECD ve Eurostat'ın Türkiye serileri her iş günü sabah asıl kaynağından çekilir. Her gösterge Türkiye'yle sık karşılaştırılan ekonomilerin aynı serisiyle yan yana durur; sıralama, medyan ve tarihsel konum veriden hesaplanır.</p>
+    <h1>Türkiye ekonomisinin görünümü</h1>
+    <p class="ozet">Temel göstergeler, kaynağından: {kaynakListesi}. Seriler her iş günü sabah asıl kaynağından çekilir; her gösterge emsal ekonomilerin aynı serisiyle yan yana durur. Kartlardaki dönem kaynağın açıkladığı dönemdir, çekim günü değil.</p>
     <p class="gezgin-cta"><a href="/gezgin">Veri gezginini açın →</a> <span>Göstergeleri seçin; aylık, çeyreklik ya da yıllık karşılaştırın, yıl×ay tablosunda görün, CSV indirin.</span></p>
     <dl class="durum">
       <div><dt>Gösterge</dt><dd class="sayi">{ss.length}</dd></div>
       <div><dt>Gözlem</dt><dd class="sayi">{gozlemSayisi.toLocaleString("tr-TR")}</dd></div>
       <div><dt>Kaynak</dt><dd class="sayi">{aktif.length} kurum</dd></div>
-      <div><dt>Son kontrol</dt><dd>{tarih(uretildi())}</dd></div>
+      <div><dt>Son kontrol</dt><dd>{tarih(saglik?.son_kontrol ?? uretildi())}</dd></div>
+      {saglik && (
+        <div><dt>Veri sağlığı</dt><dd><a href="/kaynaklar" class="saglik">{saglik.ozet.yayinda}/{saglik.ozet.seri} yayında</a>
+          {(saglik.ozet.hatali > 0 || saglik.ozet.geciken > 0) && (
+            <span class="saglik-not">{[saglik.ozet.hatali && `${saglik.ozet.hatali} seride son çekim başarısız (önceki veri gösteriliyor)`, saglik.ozet.geciken && `${saglik.ozet.geciken} seri gecikmiş`].filter(Boolean).join(" · ")}</span>
+          )}</dd></div>
+      )}
     </dl>
   </section>
 
-  {reel && reelSon && reelIsaret && (
-    <section class="sar manset" aria-labelledby="m-baslik">
-      <div class="manset-metin">
-        <p class="etiket">Bu sitenin hesabı · {donemAdi(reelSon.donem)} · gerçekleşen enflasyona göre</p>
-        <h2 id="m-baslik"><a href="/hesap/reel-politika-faizi">Reel politika faizi</a></h2>
-        <p class="manset-sayi sayi">{reelYaz(reelSon.v)}</p>
-        <p>Politika faizinin, gerçekleşen yıllık enflasyona göre Fisher formülüyle arındırılmış hâli (ex post; beklenen enflasyonla hesaplanan ileriye dönük reel faiz değildir). Reel faiz <strong>{reelIsaret.ay} aydır {reelIsaret.isaret > 0 ? "pozitif" : "negatif"}</strong>; {ek(donemAdi(reelIsaret.bas), "den")} beri.</p>
-        <p><a class="ok" href="/hesap/reel-politika-faizi">Hesap, emsal ülkeler ve yöntem →</a></p>
-      </div>
-      <div class="manset-grafik"><SeriGrafik seri={reel.seri}>Kaynak: BIS politika faizi ve yıllık TÜFE; hesap bu siteye aittir.</SeriGrafik></div>
-    </section>
-  )}
+  <section class="sar kpiler" aria-labelledby="k-baslik">
+    <h2 id="k-baslik" class="gizli">Temel göstergeler</h2>
+    <ul class="kpi-izgara">
+      {kpiler.map(({ s, ad }) => <KpiKart seri={s} ad={ad} href={`/gosterge/${s.id}`} kaynak={kisaKurum(s.kaynak.kurum)} durum={durumOf(s.id)} />)}
+      {reel && reelIsaret && <KpiKart seri={reel.seri} ad="Reel politika faizi (ex post)" href="/hesap/reel-politika-faizi" kaynak="BIS verisiyle" hesap
+        not={`${reelIsaret.ay} aydır ${reelIsaret.isaret > 0 ? "pozitif" : "negatif"}; gerçekleşen enflasyona göre.`} />}
+    </ul>
+  </section>
+
+  {reel && <AnaGrafik faiz={reel.faiz} enf={reel.enf} reel={reel.r} />}
 
   {satirlar.length > 0 && (
     <section class="sar nerede" aria-labelledby="n-baslik">
@@ -87,15 +101,17 @@ const jsonld = {
     <h2 id="h-baslik">Son açıklanan veriler</h2>
     <div class="kaydir">
       <table>
-        <thead><tr><th scope="col">Dönem</th><th scope="col">Gösterge</th><th scope="col" class="n">Değer</th><th scope="col" class="n">Önceki döneme göre</th><th scope="col">Kaynak</th></tr></thead>
+        <thead><tr><th scope="col">Dönem</th><th scope="col">Gösterge</th><th scope="col" class="n">Değer</th><th scope="col" class="n">Önceki</th><th scope="col" class="n">Değişim</th><th scope="col">Güncelleme</th><th scope="col">Kaynak</th></tr></thead>
         <tbody>
-          {sonVeriler.map(({ s, sn, dg }) => (
+          {sonVeriler.map(({ s, sn, on, dg, olay }) => (
             <tr>
               <td class="donem-h">{donemAdi(sn.donem)}</td>
               <th scope="row"><a href={`/gosterge/${s.id}`}>{s.baslik}</a></th>
               <td class="n sayi">{deger(s, sn.deger)}</td>
+              <td class="n sayi soluk-h">{on ? <>{deger(s, on.deger)}<small> {donemAdi(on.donem)}</small></> : "—"}</td>
               <td class="n sayi">{dg?.metin ?? "—"}</td>
-              <td class="kaynak-h">{s.kaynak.kurum.replace(/\s*\(.*\)$/, "")}</td>
+              <td class="tur-h">{olay ? <span class:list={["hap", olay.tur === "revizyon" ? "hap--uyari" : "hap--bilgi"]} title={`Değişiklik günlüğü, ${tarih(olay.gun)}`}>{olay.tur === "revizyon" ? "revizyon" : "yeni dönem"}</span> : <span class="soluk-h" title="Değişiklik günlüğü 17 Kasım 2026'da başladı">—</span>}</td>
+              <td class="kaynak-h">{kisaKurum(s.kaynak.kurum)}</td>
             </tr>
           ))}
         </tbody>
@@ -166,13 +182,15 @@ const jsonld = {
   .durum div { padding: .8rem 0; border-bottom: 1px solid var(--cizgi); }
   .durum dt { font: 600 .68rem/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--soluk); }
   .durum dd { margin: .25rem 0 0; font-size: 1.3rem; font-weight: 650; }
-  .manset { display: grid; gap: 1.5rem; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); align-items: center; padding-block: 2rem 1rem; }
-  .manset-metin { display: grid; gap: .6rem; }
-  .manset-metin p { margin: 0; }
-  .manset h2 a { text-decoration: none; }
-  .manset-sayi { font-size: clamp(2.6rem, 2rem + 3vw, 4rem); font-weight: 750; letter-spacing: -.03em; line-height: 1; color: var(--dv-1); }
-  .ok { font-weight: 600; }
-  @media (max-width: 52rem) { .manset { grid-template-columns: minmax(0, 1fr); } }
+  .saglik { font-weight: 650; }
+  .saglik-not { display: block; font-size: .78rem; font-weight: 400; color: var(--soluk); line-height: 1.35; margin-top: .2rem; }
+  .kpiler { padding-block: 1.5rem 0; }
+  .kpi-izgara { list-style: none; margin: 0; padding: 0; display: grid; gap: .6rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @media (min-width: 36rem) { .kpi-izgara { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 64rem) { .kpi-izgara { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+  .soluk-h { color: var(--soluk); }
+  .soluk-h small { display: block; font-size: .72rem; }
+  .tur-h { white-space: nowrap; }
   .nerede { padding-block: 2rem 0; }
   .nerede .ozet { margin: .5rem 0 1rem; }
   .satirlar { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--metin); }

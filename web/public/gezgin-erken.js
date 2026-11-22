@@ -4,5 +4,6 @@
 (function () {
   var f = document.getElementById("g-form"), l = document.getElementById("g-liste");
   if (l && window.matchMedia("(max-width: 40rem)").matches) l.open = false;
+  if (l) l.removeAttribute("data-ilk");
   if (f) f.hidden = false;
 })();

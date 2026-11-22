@@ -154,3 +154,40 @@ yoklandı:
 - **TCMB EVDS:** şart sayfası (`evds3.tcmb.gov.tr/hakkinda`) yalnız JavaScript ile
   çiziliyor, metni otomatik okunamadı. Lisans kapısı kanıt adresi ve okunmuş şart
   ister; okunana kadar EVDS `planlandi` durumunda ve serisi yok.
+
+## Panorama (ikinci tur)
+
+- `web/src/components/KpiKart.astro` (yeni): son gözlem, kaynağın dönemi, önceki
+  karşılaştırılabilir döneme göre değişim (oranlarda puan), küçük çizgi, kaynak.
+  `durum.json`'a göre "gecikmiş" ve "son çekim başarısız; önceki veri gösteriliyor"
+  notu. Reel faiz kartı kesikli çerçeveyle "bu sitenin hesabı".
+- `web/src/components/AnaGrafik.astro` ve `web/src/scripts/ana-grafik.ts` (yeni):
+  politika faizi, yıllık TÜFE ve ex post reel faiz tek grafikte. Üçü de aylık ve
+  yüzde olduğu için aynı eksende; reel faiz türetilmiş olduğu için kesikli ve nötr
+  renkte. Aralık seçenekleri 1/3/5/10 yıl ve tümü; seriler açılıp kapanabiliyor;
+  imleçte üç değer görünüyor. CSV kaynak metniyle indiriliyor, bağlantı
+  kopyalanabiliyor. Durum adresin `#` kısmında. Aralık, bütün serilerin en yeni
+  dönemine göre kuruluyor.
+- `web/src/lib/ana-grafik-cekirdek.ts` + `web/test/ana-grafik.test.ts` (yeni):
+  aralık başlangıcı ve eksik ayların null kaldığı geniş tablo.
+- `web/src/pages/index.astro`:
+  - Başlık "Türkiye ekonomisinin görünümü"; kaynak listesi kayıttan türüyor.
+  - "Veri sağlığı" özeti `durum.json`'dan geliyor.
+  - Altı KPI kartı eski reel faiz manşetinin yerini aldı.
+  - "Son açıklanan veriler" tablosuna önceki değer ve güncelleme türü (yeni dönem /
+    revizyon, değişiklik günlüğünden) eklendi.
+- `web/src/lib/veri.ts`: `durum()` okuyucusu.
+- Plot erişilebilirliği: katman `aria-label`'ı işaret türünden gelir ve `ariaLabel`
+  seçeneği onu kapatmaz. İlk turdaki `ariaLabel: null` yaklaşımı bu yüzden
+  yetersizdi; gezginde erişilebilirlik 96'ya düşmüştü. Artık iki grafikte de svg
+  içindeki bütün `g[aria-label]` MutationObserver ile siliniyor; e2e testi bunu sınıyor.
+- Gezgin CLS: `.g-kontrol { display: grid }` `hidden`'ı eziyor. Telefonda liste
+  sonradan kapanınca aralıklı 0,12–0,28 kayma oluyordu. Liste artık ilk boyamada CSS
+  ile kapalı (`data-ilk`); dört ölçümde CLS 0.
+- `web/betikler/kare.mjs` (yeni): önce/sonra kareleri (masaüstü açık/koyu, telefon).
+
+| Sayfa (Lighthouse 12.8.2, telefon) | Performans | Erişilebilirlik | En iyi uygulama | SEO | CLS |
+|---|---|---|---|---|---|
+| `/` önce | 99 | 100 | 100 | 100 | 0 |
+| `/` sonra | 99 | 100 | 100 | 100 | 0 |
+| `/gezgin` sonra (4 ölçüm) | 99 | 100 | — | — | 0 |

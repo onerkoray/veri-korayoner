@@ -14,9 +14,6 @@ const AY_UZUN = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz
 const AZAMI = 6;
 const VARSAYILAN = ["bis-tufe-yillik-tr", "bis-politika-faizi-tr", "eurostat-issizlik-aylik-tr"];
 const YONTEM_SAYFASI = "https://veri.korayoner.dev/yontem";
-// Plot her işaret katmanına aria-label koyar; role'süz <g>'de bu geçersiz (axe). null: hiç yazma
-// (ipucu katmanı imleçle yeniden çizildiğinde de). Grafiğin adı svg'nin kendisinde.
-const A = { ariaLabel: null as unknown as string };
 
 const n1 = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 const n2 = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -201,19 +198,21 @@ function baslat(form: HTMLFormElement) {
         x: { type: "utc", domain: alan, label: null, ticks: Math.max(3, Math.floor(gen / 110)) },
         y: { grid: true, nice: true, label: null, zero: oran || t.birim === "USD", tickFormat: (v: number) => yaz(t.birim, v, "eksen") },
         marks: [
-          Plot.ruleY([0], { ...A, stroke: "var(--soluk)", strokeOpacity: oran ? 0.7 : 0 }),
-          Plot.lineY(veri, { ...A, x: "t", y: "v", stroke: "var(--dv-1)", strokeWidth: 1.8 }),
+          Plot.ruleY([0], { stroke: "var(--soluk)", strokeOpacity: oran ? 0.7 : 0 }),
+          Plot.lineY(veri, { x: "t", y: "v", stroke: "var(--dv-1)", strokeWidth: 1.8 }),
           // Tek gözlemde çizgi görünmez: her noktayı küçük işaretle göster.
-          ...(veri.length < 3 ? [Plot.dot(veri, { ...A, x: "t", y: "v", r: 3.5, fill: "var(--dv-1)" })] : []),
-          Plot.dot(veri.filter((x) => !x.tam), { ...A, x: "t", y: "v", r: 3.5, fill: "var(--yuzey)", stroke: "var(--dv-1)", strokeWidth: 1.5 }),
-          Plot.ruleX(veri, Plot.pointerX({ ...A, className: "g-imlec", x: "t", stroke: "var(--soluk)", strokeDasharray: "3 3" })),
-          Plot.dot(veri, Plot.pointerX({ ...A, className: "g-imlec", x: "t", y: "v", r: 4, fill: "var(--dv-2)" })),
-          Plot.tip(veri, Plot.pointerX({ ...A, className: "g-ipucu", x: "t", y: "v", title: (x: { donem: string; v: number; tam: boolean }) => `${donemAdi(x.donem)}\n${yaz(t.birim, x.v)}${x.tam ? "" : "\neksik dönem"}` })),
+          ...(veri.length < 3 ? [Plot.dot(veri, { x: "t", y: "v", r: 3.5, fill: "var(--dv-1)" })] : []),
+          Plot.dot(veri.filter((x) => !x.tam), { x: "t", y: "v", r: 3.5, fill: "var(--yuzey)", stroke: "var(--dv-1)", strokeWidth: 1.5 }),
+          Plot.ruleX(veri, Plot.pointerX({ className: "g-imlec", x: "t", stroke: "var(--soluk)", strokeDasharray: "3 3" })),
+          Plot.dot(veri, Plot.pointerX({ className: "g-imlec", x: "t", y: "v", r: 4, fill: "var(--dv-2)" })),
+          Plot.tip(veri, Plot.pointerX({ className: "g-ipucu", x: "t", y: "v", title: (x: { donem: string; v: number; tam: boolean }) => `${donemAdi(x.donem)}\n${yaz(t.birim, x.v)}${x.tam ? "" : "\neksik dönem"}` })),
         ],
       });
       const sn = satir[t.id].at(-1)!;
-      // İmleç katmanları her harekette Plot'un varsayılanıyla (aria-label="tip") yeniden çizilir.
-      const temizle = () => p.querySelectorAll("g.g-ipucu[aria-label], g.g-imlec[aria-label]").forEach((g) => g.removeAttribute("aria-label"));
+      // Plot her katmana işaret türünü aria-label olarak yazar (ariaLabel seçeneği bunu kapatmaz) ve
+      // imleç katmanlarını her harekette yeniden çizer; role'süz <g>'de aria-label geçersiz (axe).
+      // Grafiğin adı svg'nin kendisinde.
+      const temizle = () => p.querySelectorAll("g[aria-label]").forEach((g) => g.removeAttribute("aria-label"));
       new MutationObserver(temizle).observe(p, { childList: true, subtree: true });
       temizle();
       p.setAttribute("role", "img");
