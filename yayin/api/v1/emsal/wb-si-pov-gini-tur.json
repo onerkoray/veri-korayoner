@@ -2,7 +2,7 @@
  "surum": 1,
  "id": "wb-si-pov-gini-tur",
  "baslik": "Gini katsayısı (gelir eşitsizliği)",
- "birim": "endeks",
+ "birim": "puan",
  "siklik": "yillik",
  "kaynak": "world_bank",
  "kaynak_kod": "SI.POV.GINI",

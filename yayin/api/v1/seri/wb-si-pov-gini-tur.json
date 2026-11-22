@@ -4,7 +4,7 @@
  "baslik": "Gini katsayısı (gelir eşitsizliği)",
  "ulke": "TUR",
  "siklik": "yillik",
- "birim": "endeks",
+ "birim": "puan",
  "carpan": 1,
  "tema": "toplum",
  "kaynak": {
@@ -23,7 +23,7 @@
  "kaynak_adi": "Gini index",
  "kaynak_not": "World Bank, Poverty and Inequality Platform. Data are based on primary household survey data obtained from government statistical agencies and World Bank country departments. Data for high-income economies are mostly from the Luxembourg Income Study database. For more information and methodology, please see http://pip.worldbank.org., World Bank (WB), uri: http://pip.worldbank.org, note: Data are based on primary household survey data obtained from government statistical agencies and World Bank country departments. Data for high-income economies are mostly from the Luxembourg Income Study database.",
  "kaynak_guncelleme": "2026-11-11",
- "cekildi": "2026-11-18T05:51:59.207759Z",
+ "cekildi": "2026-11-22T18:06:01.761734Z",
  "izin": {
   "gosterim": true,
   "indirme": true,

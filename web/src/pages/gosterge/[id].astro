@@ -52,7 +52,7 @@ const aciklama = `${s.baslik}: ${sn ? donemAdi(sn.donem) : ""} ${deger(s, sn?.de
       <p class="etiket">{s.kaynak.kurum} · {s.kaynak_kod} · {siklikAdi(s.siklik)}</p>
       <h1>{s.baslik}</h1>
       <p class="buyuk sayi">{deger(s, sn?.deger ?? null)} <span>{sn && donemAdi(sn.donem)}</span></p>
-      {dg && <p class="ozet">Bir önceki döneme göre {dg.metin}. {s.birim.startsWith("yuzde") ? "Fark puan olarak: son değer eksi önceki." : "Değişim yüzde olarak: son ÷ önceki − 1."}</p>}
+      {dg && <p class="ozet">Bir önceki döneme göre {dg.metin}. {s.birim.startsWith("yuzde") || s.birim === "puan" ? "Fark puan olarak: son değer eksi önceki" + (s.birim === "puan" ? "; parantezde göreli değişim (son ÷ önceki − 1)." : ".") : s.birim === "yil" ? "Fark yıl olarak: son değer eksi önceki." : "Değişim yüzde olarak: son ÷ önceki − 1."}</p>}
     </header>
 
     {okuma.length > 0 && (
@@ -68,7 +68,7 @@ const aciklama = `${s.baslik}: ${sn ? donemAdi(sn.donem) : ""} ${deger(s, sn?.de
     {sira && emN && (
       <section class="emsal" aria-labelledby="em">
         <h2 id="em">Emsallerle</h2>
-        <p class="ozet">{siraCumlesi(sira, yaz, ulkeAdi)} Emsal kümesi, Türkiye'yle sık karşılaştırılan yükselen ekonomilerdir{Object.keys(emN).includes("EUU") ? "; Eurostat serilerinde AB üyeleri ve AB-27 toplamı" : ""}. <a href="/yontem#emsal">Neden bu ülkeler</a></p>
+        <p class="ozet">{siraCumlesi(sira, yaz, ulkeAdi, noktalar(s).at(-1))} Emsal kümesi, Türkiye'yle sık karşılaştırılan yükselen ekonomilerdir{Object.keys(emN).includes("EUU") ? "; Eurostat serilerinde AB üyeleri ve AB-27 toplamı" : ""}. <a href="/yontem#emsal">Neden bu ülkeler</a></p>
         <Serit sira={sira} yaz={yaz} />
         <EmsalGrafik tr={noktalar(s)} ulkeler={emN} birim={s.birim} baslik={s.baslik} />
         <div class="kaydir">

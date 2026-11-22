@@ -273,8 +273,9 @@ seriler:
     baslik: Gini katsayısı (gelir eşitsizliği)
     tema: toplum
     siklik: yillik
-    birim: endeks
+    birim: puan
     carpan: 1
+    gecikme_gun: 1460
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
     not: 0 tam eşitlik, 100 tam eşitsizlik. Dünya Bankası Yoksulluk ve Eşitsizlik Platformu tahmini; her yıl yayımlanmaz.
 

@@ -2,7 +2,7 @@
 // Seri grafiği: sunucuda çizilen SVG (JS'siz tam), üstüne Observable Plot adası
 // (imleç, ipucu, dönem seçimi). Ada yalnız seçim düğmeleri ve imleç ekler;
 // veri aynı sayfadaki <table>'dan değil, data- özniteliğindeki JSON'dan okunur.
-import { dolu, deger, sayi, donemTarihi, type Seri } from "../lib/veri";
+import { dolu, deger, sayi, donemTarihi, birimAdi, type Seri } from "../lib/veri";
 interface Props { seri: Seri }
 const { seri } = Astro.props;
 const d = dolu(seri).map((g) => ({ donem: g.donem, v: Number(g.deger) }));
@@ -29,7 +29,7 @@ const secenek: [number, string][] = seri.siklik === "yillik" ? [[0, "Tümü"], [
 ---
 <figure class="grafik" data-seri-grafik={veri}>
   <div class="grafik-ust">
-    <p class="etiket">{seri.baslik} · {({ USD: "ABD doları", "TRY/USD": "TL / ABD doları", "TRY/EUR": "TL / euro", endeks: "endeks" } as Record<string, string>)[seri.birim] ?? "yüzde"}</p>
+    <p class="etiket">{seri.baslik} · {({ USD: "ABD doları", "yuzde-gsyh": "GSYH'ye oran, yüzde" } as Record<string, string>)[seri.birim] ?? birimAdi(seri.birim)}</p>
     <div class="donem" role="group" aria-label="Dönem" hidden>
       {secenek.map(([y, a]) => <button type="button" data-yil={y} aria-pressed={String(y === 0)}>{a}</button>)}
     </div>

@@ -80,3 +80,27 @@ test("reelFaiz: Fisher formülü, yalnız ortak dönemler", () => {
   assert.equal(r[0].donem, "2024-02");
   assert.ok(Math.abs(r[0].v - ((1.45 / 1.75 - 1) * 100)) < 1e-9);
 });
+
+test("oku: Gini puan farkı ve göreli değişim; bileşik büyüme yok", () => {
+  // Seyrek yayın: 2013 ve 2023 var, arada boşluk.
+  const d: Nokta[] = [{ donem: "2003", v: 42 }, { donem: "2013", v: 40 }, { donem: "2019", v: 41.9 }, { donem: "2023", v: 43.7 }];
+  const c = oku(d, "yillik", "puan", (v) => v.toLocaleString("tr-TR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }));
+  const s = c.find((x) => x.includes("arasında"))!;
+  assert.match(s, /^2013–2023 arasında \+3,7 puan \(göreli değişim \+%9,3\)\.$/);
+  assert.ok(!c.some((x) => /yıllık ortalama/.test(x)));
+});
+
+test("oku: yaşam süresinde fark yıl olarak", () => {
+  const c = oku(yil([70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81]), "yillik", "yil", (v) => `${v} yıl`);
+  assert.ok(c.some((x) => x === "2001–2011 arasında +10,0 yıl."), c.join(" | "));
+});
+
+test("siraCumlesi: karşılaştırma dönemi Türkiye'nin son döneminden eskiyse söyler", () => {
+  const tr = yil([10, 20, 30], 2021);
+  const s = sirala(tr, { BRA: yil([5, 25], 2021), MEX: yil([15, 15], 2021) })!;
+  assert.equal(s.donem, "2022");
+  const c = siraCumlesi(s, (v) => String(v), (k) => k, tr.at(-1));
+  assert.match(c, /Karşılaştırma 2022'de yapılıyor/);
+  assert.match(c, /o dönemdeki değeri 20, en son değeri 30 \(2023\)/);
+  assert.ok(!/Karşılaştırma/.test(siraCumlesi(s, String, (k) => k, tr[1])));
+});

@@ -19,7 +19,7 @@ const okuma = oku(p.r, "aylik", "yuzde", yaz);
 const sira = p.emsal ? sirala(p.r, p.emsal) : null;
 const puan = (v: number) => (v >= 0 ? "+" : "−") + Math.abs(v).toLocaleString("tr-TR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 const baslik = "Türkiye'nin reel politika faizi";
-const aciklama = `${donemAdi(son.donem)}: politika faizi %${sayi(i, 1)}, yıllık TÜFE %${sayi(e, 1)}, reel faiz ${yaz(son.v)}. BIS verisiyle Fisher hesabı ve emsal ülkeler.`;
+const aciklama = `${donemAdi(son.donem)}: politika faizi %${sayi(i, 1)}, yıllık TÜFE %${sayi(e, 1)}, gerçekleşen enflasyona göre (ex post) reel faiz ${yaz(son.v)}. BIS verisiyle Fisher hesabı ve emsal ülkeler.`;
 const jsonld = {
   "@context": "https://schema.org", "@type": "Dataset", name: `${baslik} (hesaplanmış)`, description: aciklama,
   url: new URL("/hesap/reel-politika-faizi", Astro.site).href, inLanguage: "tr", isAccessibleForFree: true,
@@ -32,7 +32,7 @@ const jsonld = {
   <article class="sar">
     <nav class="iz" aria-label="Konum"><a href="/">Panorama</a> › Hesaplar</nav>
     <header class="bas">
-      <p class="etiket">Bu sitenin hesabı · kaynak BIS · aylık</p>
+      <p class="etiket">Bu sitenin hesabı · kaynak BIS · aylık · gerçekleşen enflasyona göre (ex post)</p>
       <h1>{baslik}</h1>
       <p class="buyuk sayi">{yaz(son.v)} <span>{donemAdi(son.donem)}</span></p>
       <p class="ozet">{ek(donemAdi(son.donem), "de")} politika faizi %{sayi(i, 1)}, yıllık tüketici enflasyonu %{sayi(e, 1)}. Faiz, enflasyonun {fark >= 0 ? "üzerinde" : "altında"}: basit farkla {puan(fark)} puan, enflasyonun etkisini tam ayıklayan Fisher formülüyle {yaz(son.v)}. Reel faiz {isr.ay} aydır {isr.isaret > 0 ? "pozitif" : isr.isaret < 0 ? "negatif" : "sıfır"} ({ek(donemAdi(isr.bas), "den")} beri).</p>
@@ -45,7 +45,7 @@ const jsonld = {
     {sira && p.emsal && (
       <section class="emsal" aria-labelledby="em">
         <h2 id="em">Emsallerle</h2>
-        <p class="ozet">{siraCumlesi(sira, yaz, ulkeAdi)} Her ülkenin reel faizi aynı formülle, BIS'in o ülke için yayımladığı politika faizi ve TÜFE serilerinden hesaplanır.</p>
+        <p class="ozet">{siraCumlesi(sira, yaz, ulkeAdi, p.r.at(-1))} Her ülkenin reel faizi aynı formülle, BIS'in o ülke için yayımladığı politika faizi ve TÜFE serilerinden hesaplanır.</p>
         <Serit sira={sira} yaz={yaz} />
         <EmsalGrafik tr={p.r} ulkeler={p.emsal} birim="yuzde" baslik="Reel politika faizi" />
       </section>
@@ -54,7 +54,7 @@ const jsonld = {
     <section class="metin" aria-labelledby="yt">
       <h2 id="yt">Nasıl hesaplanıyor</h2>
       <p>Reel faiz, nominal faizin enflasyondan arındırılmış hâlidir. Basit yaklaşım iki oranın farkını alır. Enflasyon yüksekken bu fark yanıltır: %50 faiz ve %75 enflasyonda fark −25 puandır, ama paranın satın alma gücündeki gerçek değişim 1,50 ÷ 1,75 − 1, yani −%14,3'tür. Bu sayfa Fisher formülünü kullanır; basit fark yalnız karşılaştırma için yazılır.</p>
-      <p>Kullanılan enflasyon geçmiş on iki ayın gerçekleşmesidir (ex post). Piyasanın beklediği enflasyonla hesaplanan ileriye dönük reel faiz bundan farklıdır ve beklenti verisi bu sitede yoktur.</p>
+      <p><strong>Bu bir ex post (gerçekleşen) reel faizdir.</strong> Formüldeki enflasyon, ayın yıllık TÜFE'si, yani geçmiş on iki ayın gerçekleşmesidir; faiz ise o ayın politika faizi. Sonuç, "bugünkü faiz geçen yılın enflasyonuna göre ne kadar yüksek ya da düşük" sorusunu cevaplar. Para politikasının duruşunu değerlendirmede kullanılan ileriye dönük (ex ante) reel faiz aynı Fisher formülüyle ama önümüzdeki on iki ay için <em>beklenen</em> enflasyonla hesaplanır. Beklenti anketi verisi bu sitede yayımlanmadığı için o hesap burada yapılmaz; enflasyon düşerken ex post reel faiz ileriye dönük olandan düşük, yükselirken yüksek görünür.</p>
       <p>Seri her derlemede iki BIS serisinden yeniden hesaplanır; iki serinin de değeri olan aylar kullanılır. Son veri çekimi: {tarih(p.seri.cekildi)}. Hesaplanmış seri olduğu için API'de yayımlanmaz; iki kaynak seri JSON ve CSV olarak indirilebilir.</p>
     </section>
   </article>

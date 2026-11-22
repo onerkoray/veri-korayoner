@@ -48,6 +48,10 @@ jobs:
         run: npm test
       - name: Derle ve denetle (satır içi betik, NaN, lisans dışı dosya, tek h1)
         run: npm run build
+      - name: Tarayıcı (Playwright sürümüne kilitli Chromium)
+        run: npx playwright install --with-deps chromium
+      - name: Gezgin uçtan uca (masaüstü, telefon, klavye, boş aralık, yeniden deneme)
+        run: npm run e2e
 
   guncelle:
     needs: test
@@ -76,6 +80,20 @@ jobs:
           git add yayin
           git commit -m "Veri güncellemesi ($(date -u +%Y-%m-%d))"
           git push
+      - name: Sağlık (ardışık hata, eski kontrol, gecikme)
+        id: saglik
+        run: uv run veri saglik
+        continue-on-error: true
+      - name: Sağlık kırmızıysa takip issue'su
+        if: steps.saglik.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          KOSU: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        working-directory: .
+        run: |
+          baslik="Veri hattı sağlık kırmızısı"
+          no=$(gh issue list --state open --search "$baslik in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$no" ]; then gh issue comment "$no" --body "Yine: $KOSU"; else gh issue create --title "$baslik" --body "veri saglik kırmızı döndü (ayrıntı koşu günlüğünde, /api/v1/durum.json). Koşu: $KOSU"; fi
       - name: Bir seri düştüyse takip issue'su
         if: steps.cek.outcome == 'failure'
         env:

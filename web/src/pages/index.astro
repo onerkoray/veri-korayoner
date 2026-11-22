@@ -38,7 +38,7 @@ const jsonld = {
   ],
 };
 ---
-<Taban baslik="Türkiye Verisi — uluslararası kurumların Türkiye serileri ve emsal karşılaştırması" aciklama="BIS, Dünya Bankası, OECD ve Eurostat'ın Türkiye verileri: emsal ülkelerle sıralama, reel faiz hesabı, revizyon kaydı, lisansıyla açık API." yol="/" jsonld={jsonld}>
+<Taban baslik="Türkiye Verisi — uluslararası kurumların Türkiye serileri ve emsal karşılaştırması" aciklama="BIS, Dünya Bankası, OECD, Eurostat ve ILO'nun Türkiye verileri: emsal ülkelerle sıralama, reel faiz hesabı, revizyon kaydı, lisansıyla açık API." yol="/" jsonld={jsonld}>
   <section class="sar giris">
     <p class="etiket">Türkiye · uluslararası kaynaklar</p>
     <h1>Türkiye, kurumların verisiyle ve emsalleriyle.</h1>
@@ -55,10 +55,10 @@ const jsonld = {
   {reel && reelSon && reelIsaret && (
     <section class="sar manset" aria-labelledby="m-baslik">
       <div class="manset-metin">
-        <p class="etiket">Bu sitenin hesabı · {donemAdi(reelSon.donem)}</p>
+        <p class="etiket">Bu sitenin hesabı · {donemAdi(reelSon.donem)} · gerçekleşen enflasyona göre</p>
         <h2 id="m-baslik"><a href="/hesap/reel-politika-faizi">Reel politika faizi</a></h2>
         <p class="manset-sayi sayi">{reelYaz(reelSon.v)}</p>
-        <p>Politika faizi ile yıllık enflasyon arasındaki Fisher farkı. Reel faiz <strong>{reelIsaret.ay} aydır {reelIsaret.isaret > 0 ? "pozitif" : "negatif"}</strong>; {ek(donemAdi(reelIsaret.bas), "den")} beri.</p>
+        <p>Politika faizinin, gerçekleşen yıllık enflasyona göre Fisher formülüyle arındırılmış hâli (ex post; beklenen enflasyonla hesaplanan ileriye dönük reel faiz değildir). Reel faiz <strong>{reelIsaret.ay} aydır {reelIsaret.isaret > 0 ? "pozitif" : "negatif"}</strong>; {ek(donemAdi(reelIsaret.bas), "den")} beri.</p>
         <p><a class="ok" href="/hesap/reel-politika-faizi">Hesap, emsal ülkeler ve yöntem →</a></p>
       </div>
       <div class="manset-grafik"><SeriGrafik seri={reel.seri}>Kaynak: BIS politika faizi ve yıllık TÜFE; hesap bu siteye aittir.</SeriGrafik></div>
@@ -74,7 +74,7 @@ const jsonld = {
           <li>
             <div class="satir-bas">
               <a href={r.href}>{r.baslik}</a>
-              <span class="satir-yer">{donemAdi(r.sira.donem)} · {r.sira.sira === 1 ? "en yüksek" : r.sira.sira === r.sira.toplam ? "en düşük" : `${r.sira.toplam} ülke içinde ${r.sira.sira}.`} · {r.kaynak}</span>
+              <span class="satir-yer">{donemAdi(r.sira.donem)} · {r.sira.sira === 1 ? "en yüksek" : r.sira.sira === r.sira.toplam ? "en düşük" : `${r.sira.toplam} ülke içinde ${r.sira.sira}.`}{r.trSon !== r.sira.donem && ` (Türkiye'nin son verisi ${donemAdi(r.trSon)})`} · {r.kaynak}</span>
             </div>
             <Serit sira={r.sira} yaz={r.yaz} />
           </li>

@@ -23,6 +23,8 @@ const kok = "https://veri.korayoner.dev";
         <tr><th scope="row"><code>/api/v1/emsal/&#123;id&#125;.json</code></th><td>Aynı serinin emsal ülkelerdeki değerleri (alfa-3 ülke kodu → gözlemler). Yalnız emsali tanımlı seriler.</td></tr>
         <tr><th scope="row"><code>/api/v1/degisiklikler.json</code></th><td>Değişiklik günlüğü: kaynakların açıkladığı yeni dönemler ve önceki değerleri düzelttiği revizyonlar, tarihiyle, yeniden eskiye.</td></tr>
         <tr><th scope="row"><code>/api/v1/gozlemler.parquet</code></th><td>API izinli bütün gözlemler, uzun biçim; değer DECIMAL(38,14).</td></tr>
+        <tr><th scope="row"><code>/api/v1/gozlemler.parquet.sha256</code></th><td>Parquet dosyasının SHA-256 özeti, <code>sha256sum</code> biçiminde: indirdiğiniz dosyayı <code>sha256sum -c gozlemler.parquet.sha256</code> ile doğrulayın.</td></tr>
+        <tr><th scope="row"><code>/api/v1/durum.json</code></th><td>Sağlık ve tazelik: her seri için son kontrol, son başarılı kontrol, son veri değişimi, en yeni dönem, ardışık hata sayısı, son hata ve beklenen takvimin gerisinde mi (<code>gecikti</code>). Kaynak bazında özet. Veri değişmese de her çalıştırmada yazılır.</td></tr>
       </tbody>
     </table></div>
 

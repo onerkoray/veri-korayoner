@@ -2,15 +2,21 @@
   "name": "veri-korayoner-web",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "veri": "node betikler/veri-kopyala.mjs",
     "build": "npm run veri && astro build && node betikler/denetle.mjs",
-    "test": "node --test test/okuma.test.ts",
+    "test": "node --test test/okuma.test.ts test/gezgin.test.ts",
+    "e2e": "playwright test",
     "dev": "npm run veri && astro dev"
   },
   "dependencies": {
-    "astro": "7.4.5",
-    "@observablehq/plot": "0.6.18"
+    "@observablehq/plot": "0.6.18",
+    "astro": "7.4.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.0"
   }
 }

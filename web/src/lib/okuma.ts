@@ -103,6 +103,11 @@ export function oku(d: Nokta[], siklik: string, birim: string, yaz: Yaz): string
   const son = d.at(-1)!, ilk = d[0];
   const oran = birim.startsWith("yuzde");
   const kur = birim === "TRY/USD" || birim === "TRY/EUR";
+  // Sınırlı ölçekli düzeyler (Gini 0-100, yaşam süresi yıl): değişim fark olarak okunur,
+  // bileşik büyüme hızı anlamsız. Gini'de göreli değişim ayrıca verilir.
+  const fark = birim === "puan" || birim === "yil";
+  const farkAdi = birim === "yil" ? "yıl" : "puan";
+  const isaretli = (v: number) => `${v >= 0 ? "+" : "−"}${Math.abs(v).toLocaleString("tr-TR", { maximumFractionDigits: 1, minimumFractionDigits: 1 })}`;
 
   const k = konum(d, siklik);
   if (k.tur === "zirve") c.push(`${yaz(son.v)}, serinin ${ek(donemAdi(ilk.donem), "den")} bu yana kayıttaki en yüksek değeri.`);
@@ -111,9 +116,8 @@ export function oku(d: Nokta[], siklik: string, birim: string, yaz: Yaz): string
 
   const once = birYilOnce(d, siklik);
   if (once) {
-    if (oran) {
-      const f = son.v - once.v;
-      c.push(`Bir yıl önce ${yaz(once.v)} idi; fark ${f >= 0 ? "+" : "−"}${Math.abs(f).toLocaleString("tr-TR", { maximumFractionDigits: 1, minimumFractionDigits: 1 })} puan.`);
+    if (oran || fark) {
+      c.push(`Bir yıl önce ${yaz(once.v)} idi; fark ${isaretli(son.v - once.v)} ${oran ? "puan" : farkAdi}.`);
     } else if (kur) {
       const artis = (son.v / once.v - 1) * 100, kayip = (1 - once.v / son.v) * 100;
       const para = birim === "TRY/USD" ? "dolar" : "euro";
@@ -122,6 +126,12 @@ export function oku(d: Nokta[], siklik: string, birim: string, yaz: Yaz): string
       const f = (son.v / once.v - 1) * 100;
       c.push(`Bir yıl öncesine göre ${f >= 0 ? "+" : "−"}%${pct(Math.abs(f))} (${ek(donemAdi(once.donem), "de")} ${yaz(once.v)}).`);
     }
+  } else if (siklik === "yillik" && fark && d.length >= 3) {
+    // Seyrek yayımlanan seride (Gini) tam on yıl öncesi olmayabilir: en az on yıl önceki son gözlem.
+    const on = [...d].reverse().find((p) => Number(p.donem) <= Number(son.donem) - 10) ?? ilk;
+    const f = son.v - on.v;
+    c.push(`${on.donem}–${son.donem} arasında ${isaretli(f)} ${farkAdi}` +
+      (birim === "puan" && on.v ? ` (göreli değişim ${f / on.v >= 0 ? "+" : "−"}%${pct(Math.abs(f / on.v) * 100)})` : "") + ".");
   } else if (siklik === "yillik" && !oran && d.length > 10) {
     const on = d.find((p) => p.donem === String(Number(son.donem) - 10));
     if (on && on.v > 0 && son.v > 0) {
@@ -130,7 +140,7 @@ export function oku(d: Nokta[], siklik: string, birim: string, yaz: Yaz): string
     }
   }
 
-  if ((oran || birim === "endeks") && d.length >= 10 && siklik !== "gunluk") {
+  if ((oran || birim === "endeks" || birim === "puan") && d.length >= 10 && siklik !== "gunluk") {
     const adet = ({ yillik: 10, yariyillik: 20, ceyreklik: 40, aylik: 120 } as Record<string, number>)[siklik] ?? 10;
     const tum = ortalama(d.map((p) => p.v)), on = ortalama(d.slice(-adet).map((p) => p.v));
     // Seri on yıldan belirgin uzun değilse "son on yıl" ayrı bilgi taşımaz.
@@ -176,11 +186,17 @@ export function sirala(tr: Nokta[], ulkeler: Record<string, Nokta[]>): Sira | nu
   return null;
 }
 
-export function siraCumlesi(s: Sira, yaz: Yaz, ad: (k: string) => string): string {
+/** `trSon`: Türkiye'nin en son gözlemi. Karşılaştırma dönemi ondan eskiyse (emsaller henüz
+ *  açıklamadı) cümle bunu ayrıca söyler; okur son değerle sıralamayı karıştırmasın. */
+export function siraCumlesi(s: Sira, yaz: Yaz, ad: (k: string) => string, trSon?: Nokta): string {
   const yer = s.sira === 1 ? `${s.toplam} ülkenin en yükseği` : s.sira === s.toplam ? `${s.toplam} ülkenin en düşüğü`
     : `${s.toplam} ülke arasında yüksekten düşüğe ${s.sira}.`;
   const ref = s.toplamlar.map((t) => `${ad(t.kod)} ${yaz(t.v)}`).join(", ");
-  return `${ek(donemAdi(s.donem), "de")} Türkiye ${yer}; emsal medyanı ${yaz(s.medyan)}${ref ? `, ${ref}` : ""}.`;
+  const tr = s.satirlar.find((r) => r.kod === "TUR")!;
+  const ayri = trSon && trSon.donem !== s.donem
+    ? ` Karşılaştırma ${ek(donemAdi(s.donem), "de")} yapılıyor: emsallerin çoğu daha yeni dönemi henüz açıklamadı. Türkiye'nin o dönemdeki değeri ${yaz(tr.v)}, en son değeri ${yaz(trSon.v)} (${donemAdi(trSon.donem)}).`
+    : "";
+  return `${ek(donemAdi(s.donem), "de")} Türkiye ${yer}; emsal medyanı ${yaz(s.medyan)}${ref ? `, ${ref}` : ""}.${ayri}`;
 }
 
 // ---- türetilmiş seri: reel politika faizi ------------------------------------------

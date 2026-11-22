@@ -84,7 +84,7 @@ export function deger(s: Pick<Seri, "birim" | "carpan">, ham: string | number | 
       return isaret + sayi(a, 0) + " $";
     }
     case "TRY/USD": case "TRY/EUR": return sayi(v, 2) + " TL";
-    case "endeks": return sayi(v, 1);
+    case "endeks": case "puan": return sayi(v, 1);
     case "PPS": return sayi(v, 0) + " PPS";
     case "yil": return sayi(v, 1) + " yıl";
     case "kisi": return Math.abs(v) >= 1e6 ? sayi(v / 1e6, 1) + " milyon" : sayi(v, 0);
@@ -92,7 +92,7 @@ export function deger(s: Pick<Seri, "birim" | "carpan">, ham: string | number | 
   }
 }
 export function birimAdi(b: string): string {
-  return ({ yuzde: "yüzde", "yuzde-gsyh": "GSYH'ye oran, yüzde", USD: "ABD doları, cari", "TRY/USD": "1 ABD doları kaç TL", "TRY/EUR": "1 euro kaç TL", PPS: "satın alma gücü standardı (PPS)", yil: "yıl", kisi: "kişi", endeks: "endeks" } as Record<string, string>)[b] ?? b;
+  return ({ yuzde: "yüzde", "yuzde-gsyh": "GSYH'ye oran, yüzde", USD: "ABD doları, cari", "TRY/USD": "1 ABD doları kaç TL", "TRY/EUR": "1 euro kaç TL", PPS: "satın alma gücü standardı (PPS)", yil: "yıl", kisi: "kişi", endeks: "endeks", puan: "puan (0–100 ölçek)" } as Record<string, string>)[b] ?? b;
 }
 export function siklikAdi(s: string): string {
   return ({ yillik: "Yıllık", yariyillik: "Yarıyıllık", ceyreklik: "Çeyreklik", aylik: "Aylık", haftalik: "Haftalık", gunluk: "Günlük" } as Record<string, string>)[s] ?? s;
@@ -122,6 +122,11 @@ export function degisim(s: Seri): { metin: string; yon: number } | null {
   if (s.birim.startsWith("yuzde")) {
     const f = y - x;
     return { metin: (f >= 0 ? "+" : "−") + sayi(Math.abs(f), 1) + " puan", yon: Math.sign(f) };
+  }
+  // Sınırlı ölçekli düzeyler: fark birincil; Gini'de göreli değişim yanında.
+  if (s.birim === "puan" || s.birim === "yil") {
+    const f = y - x, rel = x ? ` (göreli ${(f >= 0 ? "+%" : "−%") + sayi(Math.abs(f / x) * 100, 1)})` : "";
+    return { metin: (f >= 0 ? "+" : "−") + sayi(Math.abs(f), 1) + (s.birim === "yil" ? " yıl" : " puan" + rel), yon: Math.sign(f) };
   }
   if (x === 0) return null;
   const f = (y / x - 1) * 100;

@@ -1,6 +1,6 @@
 {
  "surum": 1,
- "uretildi": "2026-11-20T14:05:56.103279Z",
+ "uretildi": "2026-11-22T18:06:01.761734Z",
  "seriler": [
   {
    "id": "wb-ny-gdp-mktp-cd-tur",
@@ -366,8 +366,8 @@
     "deger": "8.4",
     "durum": null
    },
-   "kaynak_guncelleme": "2026-11-19",
-   "cekildi": "2026-11-20T14:05:56.103279Z",
+   "kaynak_guncelleme": "2026-11-20",
+   "cekildi": "2026-11-22T17:21:21.925465Z",
    "izin": {
     "gosterim": true,
     "indirme": true,
@@ -513,7 +513,7 @@
    "baslik": "Gini katsayısı (gelir eşitsizliği)",
    "tema": "toplum",
    "siklik": "yillik",
-   "birim": "endeks",
+   "birim": "puan",
    "kaynak": "world_bank",
    "son": {
     "donem": "2023",
@@ -521,7 +521,7 @@
     "durum": null
    },
    "kaynak_guncelleme": "2026-11-11",
-   "cekildi": "2026-11-18T05:51:59.207759Z",
+   "cekildi": "2026-11-22T18:06:01.761734Z",
    "izin": {
     "gosterim": true,
     "indirme": true,

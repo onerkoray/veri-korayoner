@@ -2,7 +2,9 @@
 
 Yalnız API izni olan seriler girer. Değer DECIMAL(38,14): kanonik metinden
 kayıpsız. Dosya her çalıştırmada baştan üretilir; içerik aynıysa yeniden
-yazılmaz (bayt karşılaştırması yerine satır özeti).
+yazılmaz (karar satır özetiyle verilir: site-veri/gol-satir-ozeti.txt).
+`gozlemler.parquet.sha256` dosyanın kendisinin SHA-256 özetidir (sha256sum biçimi);
+istemci indirdiği dosyayı onunla doğrular.
 """
 
 from __future__ import annotations
@@ -35,7 +37,9 @@ def yaz(cikti: Path) -> bool:
     ozet = hashlib.sha256(json.dumps(s, sort_keys=True).encode()).hexdigest()
     hedef = cikti / "api" / "v1" / "gozlemler.parquet"
     ozet_yolu = cikti / "api" / "v1" / "gozlemler.parquet.sha256"
-    if hedef.exists() and ozet_yolu.exists() and ozet_yolu.read_text().strip() == ozet:
+    satir_yolu = cikti / "site-veri" / "gol-satir-ozeti.txt"
+    if (hedef.exists() and satir_yolu.exists() and satir_yolu.read_text(encoding="utf-8").strip() == ozet
+            and ozet_yolu.exists() and ozet_yolu.read_text(encoding="utf-8").split()[0] == dosya_ozeti(hedef)):
         return False
     hedef.parent.mkdir(parents=True, exist_ok=True)
     fd, gecici = tempfile.mkstemp(dir=hedef.parent, suffix=".parquet")
@@ -50,5 +54,11 @@ def yaz(cikti: Path) -> bool:
     except BaseException:
         Path(gecici).unlink(missing_ok=True)
         raise
-    ozet_yolu.write_text(ozet + "\n", encoding="utf-8", newline="\n")   # Windows'ta da LF
+    satir_yolu.parent.mkdir(parents=True, exist_ok=True)
+    satir_yolu.write_text(ozet + "\n", encoding="utf-8", newline="\n")          # Windows'ta da LF
+    ozet_yolu.write_text(f"{dosya_ozeti(hedef)}  gozlemler.parquet\n", encoding="utf-8", newline="\n")
     return True
+
+
+def dosya_ozeti(yol: Path) -> str:
+    return hashlib.sha256(yol.read_bytes()).hexdigest()

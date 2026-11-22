@@ -1,0 +1,41 @@
+name: Yayın sonrası denetim
+
+# Vercel üretim yayını bittiğinde: canlı /api/v1 dosyaları bu commit'teki yayin/ ile
+# aynı mı, katalogdaki her seri dosyası erişilebilir mi. Fark varsa issue açılır.
+on:
+  deployment_status: {}
+
+permissions:
+  contents: read
+
+jobs:
+  canli:
+    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    defaults: { run: { working-directory: pipeline } }
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with: { persist-credentials: false, ref: "${{ github.event.deployment.sha }}" }
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2  # v10.3.3
+      - run: uv sync --locked
+      - name: Canlı API depodakiyle aynı mı
+        id: canli
+        run: uv run veri canli
+        continue-on-error: true
+      - name: Farklıysa takip issue'su
+        if: steps.canli.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          KOSU: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          SHA: ${{ github.event.deployment.sha }}
+        working-directory: .
+        run: |
+          baslik="Canlı API depodan farklı"
+          no=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "$baslik in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$no" ]; then gh issue comment "$no" --repo "$GITHUB_REPOSITORY" --body "Yine ($SHA): $KOSU"; else gh issue create --repo "$GITHUB_REPOSITORY" --title "$baslik" --body "Yayın $SHA sonrası canlı dosyalar depodakiyle uyuşmuyor. Koşu: $KOSU"; fi
+      - name: Sonuç
+        if: steps.canli.outcome == 'failure'
+        run: exit 1

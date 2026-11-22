@@ -2,3 +2,5 @@ node_modules/
 dist/
 public/api/
 .astro/
+test-results/
+playwright-report/

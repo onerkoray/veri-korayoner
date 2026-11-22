@@ -3,6 +3,9 @@
   veri guncelle [--seri ID ...]   kaynaklardan çek, doğrula, izinle yayımla, katalog yaz
   veri katalog                    yalnız kataloğu yeniden yaz
   veri denetle                    kayıt ve yayımlanmış dosyaları ağsız doğrula (CI)
+  veri panel                      panel veri setini yeniden yaz
+  veri saglik                     durum.json'a göre kırmızı/uyarı; kırmızıda çıkış 1
+  veri canli [--taban URL]        canlı API dosyaları depodakiyle aynı mı (yayın sonrası)
 
 Bir seri düşerse diğerleri sürer; çıkış kodu 1 olur ve düşen seri yazılmaz.
 """
@@ -15,7 +18,7 @@ import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
-from . import gol, panel
+from . import canli, durum, gol, panel
 from .baglayicilar import baglayici
 from .kayit import KOK, kaynaklar, seriler
 from .modeller import SeriDosyasi
@@ -31,6 +34,7 @@ def guncelle(secili: list[str] | None, cikti: Path = CIKTI) -> int:
     hata = 0
     olaylar: list[dict] = []
     bag: dict = {}       # kaynak başına tek bağlayıcı (metaveri önbelleği çekim boyunca yaşar)
+    sonuc: dict[str, str | None] = {}   # seri → None (başarılı) ya da hata iletisi; durum.json için
     for s in ss:
         if secili and s.id not in secili:
             continue
@@ -50,10 +54,12 @@ def guncelle(secili: list[str] | None, cikti: Path = CIKTI) -> int:
             yazilan = yayinla(d, cikti)
             if yazilan:
                 olaylar += farklar(eski, d, gun)
+            sonuc[s.id] = None
             son = next((g for g in reversed(d.gozlemler) if g.deger is not None), None)
             print(f"{'yazdı' if yazilan else 'aynı '}  {s.id}: {len(d.gozlemler)} gözlem, son {son.donem if son else '-'}")
         except Exception as e:  # noqa: BLE001 — bir seri düşerse diğerleri sürer
             hata += 1
+            sonuc[s.id] = f"{type(e).__name__}: {e}"
             print(f"HATA   {s.id}: {type(e).__name__}: {e}", file=sys.stderr)
             continue
         # Emsal ülkeler: biri düşerse önceki verisi kalır; Türkiye serisini düşürmez, hata sayılmaz.
@@ -76,7 +82,20 @@ def guncelle(secili: list[str] | None, cikti: Path = CIKTI) -> int:
     katalog(ks, ss, cikti, simdi)
     print('göl  ' + ('yazıldı' if gol.yaz(cikti) else 'aynı'))
     print(f"panel  {len(panel.yaz(cikti, _yaz_atomik))} dosya yazıldı")
+    d = durum.yaz(cikti, ss, ks, izin, sonuc, simdi, _yaz_atomik)
+    print(f"durum  {d['ozet']}")
     return 1 if hata else 0
+
+
+def saglik(cikti: Path = CIKTI) -> int:
+    icerik = json.loads((cikti / "api" / "v1" / "durum.json").read_text(encoding="utf-8"))
+    kirmizi, uyari = durum.saglik(icerik, datetime.now(UTC))
+    for x in kirmizi:
+        print("  KIRMIZI  " + x)
+    for x in uyari:
+        print("  uyarı    " + x)
+    print(f"sağlık: {len(kirmizi)} kırmızı, {len(uyari)} uyarı (son kontrol {icerik['son_kontrol']})")
+    return 1 if kirmizi else 0
 
 
 def denetle(cikti: Path = CIKTI) -> int:
@@ -105,6 +124,12 @@ def denetle(cikti: Path = CIKTI) -> int:
     for yol in [*(cikti / "api" / "v1" / "seri").glob("*"), *(cikti / "api" / "v1" / "emsal").glob("*")]:
         if yol.stem not in bilinen:
             sorun.append(f"{yol.relative_to(cikti)}: kayıtta olmayan seri")
+    dyol = cikti / "api" / "v1" / "durum.json"
+    if dyol.exists():
+        dj = json.loads(dyol.read_text(encoding="utf-8"))
+        gosterilen = {s.id for s in ss if izin(ks[s.kaynak], s).gosterim}
+        if {r["id"] for r in dj["seriler"]} - gosterilen:
+            sorun.append("api/v1/durum.json: kayıtta ya da gösterim izninde olmayan seri")
     indirilebilir = {s.id for s in ss if izin(ks[s.kaynak], s).indirme}
     for yol in (cikti / "api" / "v1" / "panel").glob("*.json"):
         for t in json.loads(yol.read_text(encoding="utf-8"))["seriler"]:
@@ -123,13 +148,24 @@ def main(argv: list[str] | None = None) -> int:
     g.add_argument("--seri", action="append")
     alt.add_parser("katalog")
     alt.add_parser("panel")
+    alt.add_parser("saglik")
     alt.add_parser("denetle")
+    c = alt.add_parser("canli")
+    c.add_argument("--taban", default="https://veri.korayoner.dev")
     a = p.parse_args(argv)
     if a.komut == "guncelle":
         return guncelle(a.seri)
     if a.komut == "katalog":
         katalog(kaynaklar(), seriler(), CIKTI, datetime.now(UTC))
         return 0
+    if a.komut == "saglik":
+        return saglik()
+    if a.komut == "canli":
+        sorun = canli.denetle(a.taban, CIKTI)
+        for x in sorun:
+            print("  " + x)
+        print(f"canlı: {len(sorun)} sorun ({a.taban})")
+        return 1 if sorun else 0
     if a.komut == "panel":
         print(f"panel  {len(panel.yaz(CIKTI, _yaz_atomik))} dosya yazıldı")
         return 0

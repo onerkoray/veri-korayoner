@@ -20,7 +20,7 @@ export function reelPaket(): ReelPaket | null {
     em = Object.fromEntries(Object.keys(a).filter((k) => b[k]).map((k) => [k, reelFaiz(a[k], b[k])]).filter(([, d]) => (d as Nokta[]).length));
   }
   const seri: Seri = {
-    id: REEL_ID, baslik: "Reel politika faizi", ulke: "TUR", siklik: "aylik", birim: "yuzde", carpan: 1, tema: "para-politikasi",
+    id: REEL_ID, baslik: "Reel politika faizi (gerçekleşen enflasyonla, ex post)", ulke: "TUR", siklik: "aylik", birim: "yuzde", carpan: 1, tema: "para-politikasi",
     kaynak: faiz.kaynak, kaynak_kod: `${faiz.kaynak_kod} ve ${enf.kaynak_kod}`, kaynak_adi: null, kaynak_not: null,
     kaynak_guncelleme: null, cekildi: faiz.cekildi > enf.cekildi ? faiz.cekildi : enf.cekildi,
     izin: { gosterim: true, indirme: false, api: false },
@@ -44,19 +44,19 @@ const SIRA = ["bis-politika-faizi-tr", "bis-tufe-yillik-tr", "eurostat-hicp-yill
   "ilo-isgucune-katilim-tr", "ilo-kadin-isgucune-katilim-tr", "ilo-neet-tr", "ilo-kayitdisi-istihdam-tr",
   "wb-bn-cab-xoka-gd-zs-tur", "wb-ne-exp-gnfs-zs-tur", "wb-ne-imp-gnfs-zs-tur", "wb-bx-klt-dinv-wd-gd-zs-tur",
   "bis-ozel-kredi-gsyh-tr", "bis-borc-servis-orani-tr", "wb-si-pov-gini-tur", "wb-sp-dyn-le00-in-tur"];
-export interface Satir { baslik: string; href: string; sira: Sira; yaz: (v: number) => string; kaynak: string }
+export interface Satir { baslik: string; href: string; sira: Sira; yaz: (v: number) => string; kaynak: string; trSon: string }
 export function emsalSatirlari(): Satir[] {
   const satirlar: Satir[] = [];
   const reel = reelPaket();
   if (reel?.emsal) {
     const s = sirala(reel.r, reel.emsal);
-    if (s) satirlar.push({ baslik: "Reel politika faizi (hesap)", href: "/hesap/reel-politika-faizi", sira: s, yaz: (v) => deger(reel.seri, v), kaynak: "BIS verisiyle" });
+    if (s) satirlar.push({ baslik: "Reel politika faizi (hesap)", href: "/hesap/reel-politika-faizi", sira: s, yaz: (v) => deger(reel.seri, v), kaynak: "BIS verisiyle", trSon: reel.r.at(-1)!.donem });
   }
   for (const s of [...seriler()].sort((a, b) => (SIRA.indexOf(a.id) + 1 || 99) - (SIRA.indexOf(b.id) + 1 || 99))) {
     const e = emsal(s.id);
     if (!e) continue;
-    const sr = sirala(noktalar(s), emsalNoktalari(e));
-    if (sr) satirlar.push({ baslik: s.baslik, href: `/gosterge/${s.id}`, sira: sr, yaz: (v) => deger(s, v, true), kaynak: s.kaynak.kurum });
+    const n = noktalar(s), sr = sirala(n, emsalNoktalari(e));
+    if (sr) satirlar.push({ baslik: s.baslik, href: `/gosterge/${s.id}`, sira: sr, yaz: (v) => deger(s, v, true), kaynak: s.kaynak.kurum, trSon: n.at(-1)!.donem });
   }
   return satirlar;
 }
