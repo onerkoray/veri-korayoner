@@ -1,0 +1,1228 @@
+{
+ "surum": 1,
+ "id": "eurostat-ekonomik-guven-tr",
+ "baslik": "Ekonomik güven endeksi (AB anketleri), mevsimsellikten arındırılmış",
+ "ulke": "TUR",
+ "siklik": "aylik",
+ "birim": "endeks",
+ "carpan": 1,
+ "tema": "buyume",
+ "kaynak": {
+  "id": "eurostat",
+  "ad": "Eurostat",
+  "kurum": "Avrupa Birliği İstatistik Ofisi (Eurostat)",
+  "adres": "https://ec.europa.eu/eurostat",
+  "belge": "https://ec.europa.eu/eurostat/en/web/user-guides/data-browser/api-data-access/api-introduction",
+  "lisans": "CC BY 4.0 (Komisyon Kararı 2011/833/AB)",
+  "lisans_kanit": "https://ec.europa.eu/eurostat/help/copyright-notice",
+  "lisans_inceleme": "2026-11-17",
+  "atif_zorunlu": true,
+  "kosullar": [
+   "Kaynak: Eurostat.",
+   "Seri adları Türkçeye çevrilmiştir; değerler değiştirilmemiştir.",
+   "Eurostat bu sitenin kullanımından sorumlu değildir."
+  ]
+ },
+ "kaynak_kod": "ei_bssi_m_r2/M.BS-ESI-I.SA.TR",
+ "kaynak_adi": "ei_bssi_m_r2",
+ "kaynak_not": null,
+ "kaynak_guncelleme": "2026-10-29",
+ "cekildi": "2026-11-22T20:38:23.869457Z",
+ "izin": {
+  "gosterim": true,
+  "indirme": true,
+  "api": true
+ },
+ "gozlemler": [
+  {
+   "donem": "2007-01",
+   "deger": "107.7",
+   "durum": null
+  },
+  {
+   "donem": "2007-02",
+   "deger": "102.7",
+   "durum": null
+  },
+  {
+   "donem": "2007-03",
+   "deger": "102.6",
+   "durum": null
+  },
+  {
+   "donem": "2007-04",
+   "deger": "96.8",
+   "durum": null
+  },
+  {
+   "donem": "2007-05",
+   "deger": "105.7",
+   "durum": null
+  },
+  {
+   "donem": "2007-06",
+   "deger": "111.0",
+   "durum": null
+  },
+  {
+   "donem": "2007-07",
+   "deger": "113.4",
+   "durum": null
+  },
+  {
+   "donem": "2007-08",
+   "deger": "112.1",
+   "durum": null
+  },
+  {
+   "donem": "2007-09",
+   "deger": "112.6",
+   "durum": null
+  },
+  {
+   "donem": "2007-10",
+   "deger": "107.3",
+   "durum": null
+  },
+  {
+   "donem": "2007-11",
+   "deger": "107.8",
+   "durum": null
+  },
+  {
+   "donem": "2007-12",
+   "deger": "108.5",
+   "durum": null
+  },
+  {
+   "donem": "2008-01",
+   "deger": "106.0",
+   "durum": null
+  },
+  {
+   "donem": "2008-02",
+   "deger": "105.3",
+   "durum": null
+  },
+  {
+   "donem": "2008-03",
+   "deger": "102.9",
+   "durum": null
+  },
+  {
+   "donem": "2008-04",
+   "deger": "97.3",
+   "durum": null
+  },
+  {
+   "donem": "2008-05",
+   "deger": "92.3",
+   "durum": null
+  },
+  {
+   "donem": "2008-06",
+   "deger": "91.7",
+   "durum": null
+  },
+  {
+   "donem": "2008-07",
+   "deger": "93.4",
+   "durum": null
+  },
+  {
+   "donem": "2008-08",
+   "deger": "93.6",
+   "durum": null
+  },
+  {
+   "donem": "2008-09",
+   "deger": "84.6",
+   "durum": null
+  },
+  {
+   "donem": "2008-10",
+   "deger": "68.1",
+   "durum": null
+  },
+  {
+   "donem": "2008-11",
+   "deger": "50.4",
+   "durum": null
+  },
+  {
+   "donem": "2008-12",
+   "deger": "58.2",
+   "durum": null
+  },
+  {
+   "donem": "2009-01",
+   "deger": "64.3",
+   "durum": null
+  },
+  {
+   "donem": "2009-02",
+   "deger": "65.8",
+   "durum": null
+  },
+  {
+   "donem": "2009-03",
+   "deger": "66.6",
+   "durum": null
+  },
+  {
+   "donem": "2009-04",
+   "deger": "95.1",
+   "durum": null
+  },
+  {
+   "donem": "2009-05",
+   "deger": "102.2",
+   "durum": null
+  },
+  {
+   "donem": "2009-06",
+   "deger": "101.7",
+   "durum": null
+  },
+  {
+   "donem": "2009-07",
+   "deger": "103.0",
+   "durum": null
+  },
+  {
+   "donem": "2009-08",
+   "deger": "99.7",
+   "durum": null
+  },
+  {
+   "donem": "2009-09",
+   "deger": "98.5",
+   "durum": null
+  },
+  {
+   "donem": "2009-10",
+   "deger": "98.6",
+   "durum": null
+  },
+  {
+   "donem": "2009-11",
+   "deger": "95.7",
+   "durum": null
+  },
+  {
+   "donem": "2009-12",
+   "deger": "101.9",
+   "durum": null
+  },
+  {
+   "donem": "2010-01",
+   "deger": "108.4",
+   "durum": null
+  },
+  {
+   "donem": "2010-02",
+   "deger": "97.7",
+   "durum": null
+  },
+  {
+   "donem": "2010-03",
+   "deger": "101.6",
+   "durum": null
+  },
+  {
+   "donem": "2010-04",
+   "deger": "106.3",
+   "durum": null
+  },
+  {
+   "donem": "2010-05",
+   "deger": "102.6",
+   "durum": null
+  },
+  {
+   "donem": "2010-06",
+   "deger": "102.5",
+   "durum": null
+  },
+  {
+   "donem": "2010-07",
+   "deger": "105.9",
+   "durum": null
+  },
+  {
+   "donem": "2010-08",
+   "deger": "107.1",
+   "durum": null
+  },
+  {
+   "donem": "2010-09",
+   "deger": "110.3",
+   "durum": null
+  },
+  {
+   "donem": "2010-10",
+   "deger": "106.8",
+   "durum": null
+  },
+  {
+   "donem": "2010-11",
+   "deger": "108.4",
+   "durum": null
+  },
+  {
+   "donem": "2010-12",
+   "deger": "111.6",
+   "durum": null
+  },
+  {
+   "donem": "2011-01",
+   "deger": "110.9",
+   "durum": null
+  },
+  {
+   "donem": "2011-02",
+   "deger": "108.9",
+   "durum": null
+  },
+  {
+   "donem": "2011-03",
+   "deger": "108.5",
+   "durum": null
+  },
+  {
+   "donem": "2011-04",
+   "deger": "108.4",
+   "durum": null
+  },
+  {
+   "donem": "2011-05",
+   "deger": "113.2",
+   "durum": null
+  },
+  {
+   "donem": "2011-06",
+   "deger": "114.5",
+   "durum": null
+  },
+  {
+   "donem": "2011-07",
+   "deger": "113.5",
+   "durum": null
+  },
+  {
+   "donem": "2011-08",
+   "deger": "110.0",
+   "durum": null
+  },
+  {
+   "donem": "2011-09",
+   "deger": "113.7",
+   "durum": null
+  },
+  {
+   "donem": "2011-10",
+   "deger": "109.4",
+   "durum": null
+  },
+  {
+   "donem": "2011-11",
+   "deger": "108.4",
+   "durum": null
+  },
+  {
+   "donem": "2011-12",
+   "deger": "107.7",
+   "durum": null
+  },
+  {
+   "donem": "2012-01",
+   "deger": "106.3",
+   "durum": null
+  },
+  {
+   "donem": "2012-02",
+   "deger": "108.3",
+   "durum": null
+  },
+  {
+   "donem": "2012-03",
+   "deger": "108.7",
+   "durum": null
+  },
+  {
+   "donem": "2012-04",
+   "deger": "107.3",
+   "durum": null
+  },
+  {
+   "donem": "2012-05",
+   "deger": "108.4",
+   "durum": null
+  },
+  {
+   "donem": "2012-06",
+   "deger": "104.5",
+   "durum": null
+  },
+  {
+   "donem": "2012-07",
+   "deger": "107.2",
+   "durum": null
+  },
+  {
+   "donem": "2012-08",
+   "deger": "103.9",
+   "durum": null
+  },
+  {
+   "donem": "2012-09",
+   "deger": "105.0",
+   "durum": null
+  },
+  {
+   "donem": "2012-10",
+   "deger": "102.2",
+   "durum": null
+  },
+  {
+   "donem": "2012-11",
+   "deger": "102.4",
+   "durum": null
+  },
+  {
+   "donem": "2012-12",
+   "deger": "102.2",
+   "durum": null
+  },
+  {
+   "donem": "2013-01",
+   "deger": "102.1",
+   "durum": null
+  },
+  {
+   "donem": "2013-02",
+   "deger": "104.2",
+   "durum": null
+  },
+  {
+   "donem": "2013-03",
+   "deger": "107.8",
+   "durum": null
+  },
+  {
+   "donem": "2013-04",
+   "deger": "107.5",
+   "durum": null
+  },
+  {
+   "donem": "2013-05",
+   "deger": "105.9",
+   "durum": null
+  },
+  {
+   "donem": "2013-06",
+   "deger": "108.0",
+   "durum": null
+  },
+  {
+   "donem": "2013-07",
+   "deger": "106.8",
+   "durum": null
+  },
+  {
+   "donem": "2013-08",
+   "deger": "108.1",
+   "durum": null
+  },
+  {
+   "donem": "2013-09",
+   "deger": "105.4",
+   "durum": null
+  },
+  {
+   "donem": "2013-10",
+   "deger": "105.4",
+   "durum": null
+  },
+  {
+   "donem": "2013-11",
+   "deger": "103.9",
+   "durum": null
+  },
+  {
+   "donem": "2013-12",
+   "deger": "101.7",
+   "durum": null
+  },
+  {
+   "donem": "2014-01",
+   "deger": "102.2",
+   "durum": null
+  },
+  {
+   "donem": "2014-02",
+   "deger": "99.2",
+   "durum": null
+  },
+  {
+   "donem": "2014-03",
+   "deger": "103.1",
+   "durum": null
+  },
+  {
+   "donem": "2014-04",
+   "deger": "105.0",
+   "durum": null
+  },
+  {
+   "donem": "2014-05",
+   "deger": "105.3",
+   "durum": null
+  },
+  {
+   "donem": "2014-06",
+   "deger": "104.3",
+   "durum": null
+  },
+  {
+   "donem": "2014-07",
+   "deger": "102.5",
+   "durum": null
+  },
+  {
+   "donem": "2014-08",
+   "deger": "105.3",
+   "durum": null
+  },
+  {
+   "donem": "2014-09",
+   "deger": "106.0",
+   "durum": null
+  },
+  {
+   "donem": "2014-10",
+   "deger": "106.8",
+   "durum": null
+  },
+  {
+   "donem": "2014-11",
+   "deger": "102.0",
+   "durum": null
+  },
+  {
+   "donem": "2014-12",
+   "deger": "102.8",
+   "durum": null
+  },
+  {
+   "donem": "2015-01",
+   "deger": "103.5",
+   "durum": null
+  },
+  {
+   "donem": "2015-02",
+   "deger": "104.1",
+   "durum": null
+  },
+  {
+   "donem": "2015-03",
+   "deger": "101.2",
+   "durum": null
+  },
+  {
+   "donem": "2015-04",
+   "deger": "102.6",
+   "durum": null
+  },
+  {
+   "donem": "2015-05",
+   "deger": "103.5",
+   "durum": null
+  },
+  {
+   "donem": "2015-06",
+   "deger": "101.0",
+   "durum": null
+  },
+  {
+   "donem": "2015-07",
+   "deger": "100.0",
+   "durum": null
+  },
+  {
+   "donem": "2015-08",
+   "deger": "101.4",
+   "durum": null
+  },
+  {
+   "donem": "2015-09",
+   "deger": "96.7",
+   "durum": null
+  },
+  {
+   "donem": "2015-10",
+   "deger": "100.6",
+   "durum": null
+  },
+  {
+   "donem": "2015-11",
+   "deger": "107.1",
+   "durum": null
+  },
+  {
+   "donem": "2015-12",
+   "deger": "106.2",
+   "durum": null
+  },
+  {
+   "donem": "2016-01",
+   "deger": "104.8",
+   "durum": null
+  },
+  {
+   "donem": "2016-02",
+   "deger": "102.0",
+   "durum": null
+  },
+  {
+   "donem": "2016-03",
+   "deger": "103.2",
+   "durum": null
+  },
+  {
+   "donem": "2016-04",
+   "deger": "101.1",
+   "durum": null
+  },
+  {
+   "donem": "2016-05",
+   "deger": "101.0",
+   "durum": null
+  },
+  {
+   "donem": "2016-06",
+   "deger": "101.4",
+   "durum": null
+  },
+  {
+   "donem": "2016-07",
+   "deger": "103.4",
+   "durum": null
+  },
+  {
+   "donem": "2016-08",
+   "deger": "99.8",
+   "durum": null
+  },
+  {
+   "donem": "2016-09",
+   "deger": "105.4",
+   "durum": null
+  },
+  {
+   "donem": "2016-10",
+   "deger": "103.9",
+   "durum": null
+  },
+  {
+   "donem": "2016-11",
+   "deger": "104.1",
+   "durum": null
+  },
+  {
+   "donem": "2016-12",
+   "deger": "100.5",
+   "durum": null
+  },
+  {
+   "donem": "2017-01",
+   "deger": "96.9",
+   "durum": null
+  },
+  {
+   "donem": "2017-02",
+   "deger": "103.1",
+   "durum": null
+  },
+  {
+   "donem": "2017-03",
+   "deger": "105.2",
+   "durum": null
+  },
+  {
+   "donem": "2017-04",
+   "deger": "106.0",
+   "durum": null
+  },
+  {
+   "donem": "2017-05",
+   "deger": "106.7",
+   "durum": null
+  },
+  {
+   "donem": "2017-06",
+   "deger": "107.4",
+   "durum": null
+  },
+  {
+   "donem": "2017-07",
+   "deger": "109.5",
+   "durum": null
+  },
+  {
+   "donem": "2017-08",
+   "deger": "111.3",
+   "durum": null
+  },
+  {
+   "donem": "2017-09",
+   "deger": "111.5",
+   "durum": null
+  },
+  {
+   "donem": "2017-10",
+   "deger": "111.1",
+   "durum": null
+  },
+  {
+   "donem": "2017-11",
+   "deger": "108.6",
+   "durum": null
+  },
+  {
+   "donem": "2017-12",
+   "deger": "105.0",
+   "durum": null
+  },
+  {
+   "donem": "2018-01",
+   "deger": "108.4",
+   "durum": null
+  },
+  {
+   "donem": "2018-02",
+   "deger": "108.4",
+   "durum": null
+  },
+  {
+   "donem": "2018-03",
+   "deger": "105.3",
+   "durum": null
+  },
+  {
+   "donem": "2018-04",
+   "deger": "103.4",
+   "durum": null
+  },
+  {
+   "donem": "2018-05",
+   "deger": "102.0",
+   "durum": null
+  },
+  {
+   "donem": "2018-06",
+   "deger": "97.7",
+   "durum": null
+  },
+  {
+   "donem": "2018-07",
+   "deger": "98.3",
+   "durum": null
+  },
+  {
+   "donem": "2018-08",
+   "deger": "92.0",
+   "durum": null
+  },
+  {
+   "donem": "2018-09",
+   "deger": "83.5",
+   "durum": null
+  },
+  {
+   "donem": "2018-10",
+   "deger": "79.4",
+   "durum": null
+  },
+  {
+   "donem": "2018-11",
+   "deger": "84.4",
+   "durum": null
+  },
+  {
+   "donem": "2018-12",
+   "deger": "85.0",
+   "durum": null
+  },
+  {
+   "donem": "2019-01",
+   "deger": "83.4",
+   "durum": null
+  },
+  {
+   "donem": "2019-02",
+   "deger": "83.6",
+   "durum": null
+  },
+  {
+   "donem": "2019-03",
+   "deger": "87.6",
+   "durum": null
+  },
+  {
+   "donem": "2019-04",
+   "deger": "91.3",
+   "durum": null
+  },
+  {
+   "donem": "2019-05",
+   "deger": "85.9",
+   "durum": null
+  },
+  {
+   "donem": "2019-06",
+   "deger": "90.1",
+   "durum": null
+  },
+  {
+   "donem": "2019-07",
+   "deger": "85.5",
+   "durum": null
+  },
+  {
+   "donem": "2019-08",
+   "deger": "89.8",
+   "durum": null
+  },
+  {
+   "donem": "2019-09",
+   "deger": "89.3",
+   "durum": null
+  },
+  {
+   "donem": "2019-10",
+   "deger": "93.1",
+   "durum": null
+  },
+  {
+   "donem": "2019-11",
+   "deger": "93.7",
+   "durum": null
+  },
+  {
+   "donem": "2019-12",
+   "deger": "96.6",
+   "durum": null
+  },
+  {
+   "donem": "2020-01",
+   "deger": "97.2",
+   "durum": null
+  },
+  {
+   "donem": "2020-02",
+   "deger": "98.1",
+   "durum": null
+  },
+  {
+   "donem": "2020-03",
+   "deger": "93.0",
+   "durum": null
+  },
+  {
+   "donem": "2020-04",
+   "deger": "38.1",
+   "durum": null
+  },
+  {
+   "donem": "2020-05",
+   "deger": "56.5",
+   "durum": null
+  },
+  {
+   "donem": "2020-06",
+   "deger": "79.4",
+   "durum": null
+  },
+  {
+   "donem": "2020-07",
+   "deger": "89.4",
+   "durum": null
+  },
+  {
+   "donem": "2020-08",
+   "deger": "90.7",
+   "durum": null
+  },
+  {
+   "donem": "2020-09",
+   "deger": "90.8",
+   "durum": null
+  },
+  {
+   "donem": "2020-10",
+   "deger": "93.9",
+   "durum": null
+  },
+  {
+   "donem": "2020-11",
+   "deger": "91.7",
+   "durum": null
+  },
+  {
+   "donem": "2020-12",
+   "deger": "91.1",
+   "durum": null
+  },
+  {
+   "donem": "2021-01",
+   "deger": "92.9",
+   "durum": null
+  },
+  {
+   "donem": "2021-02",
+   "deger": "93.0",
+   "durum": null
+  },
+  {
+   "donem": "2021-03",
+   "deger": "98.5",
+   "durum": null
+  },
+  {
+   "donem": "2021-04",
+   "deger": "94.4",
+   "durum": null
+  },
+  {
+   "donem": "2021-05",
+   "deger": "93.3",
+   "durum": null
+  },
+  {
+   "donem": "2021-06",
+   "deger": "100.5",
+   "durum": null
+  },
+  {
+   "donem": "2021-07",
+   "deger": "101.7",
+   "durum": null
+  },
+  {
+   "donem": "2021-08",
+   "deger": "102.6",
+   "durum": null
+  },
+  {
+   "donem": "2021-09",
+   "deger": "104.4",
+   "durum": null
+  },
+  {
+   "donem": "2021-10",
+   "deger": "101.8",
+   "durum": null
+  },
+  {
+   "donem": "2021-11",
+   "deger": "101.2",
+   "durum": null
+  },
+  {
+   "donem": "2021-12",
+   "deger": "99.7",
+   "durum": null
+  },
+  {
+   "donem": "2022-01",
+   "deger": "101.3",
+   "durum": null
+  },
+  {
+   "donem": "2022-02",
+   "deger": "100.6",
+   "durum": null
+  },
+  {
+   "donem": "2022-03",
+   "deger": "97.4",
+   "durum": null
+  },
+  {
+   "donem": "2022-04",
+   "deger": "97.3",
+   "durum": null
+  },
+  {
+   "donem": "2022-05",
+   "deger": "98.4",
+   "durum": null
+  },
+  {
+   "donem": "2022-06",
+   "deger": "94.8",
+   "durum": null
+  },
+  {
+   "donem": "2022-07",
+   "deger": "93.6",
+   "durum": null
+  },
+  {
+   "donem": "2022-08",
+   "deger": "95.3",
+   "durum": null
+  },
+  {
+   "donem": "2022-09",
+   "deger": "94.6",
+   "durum": null
+  },
+  {
+   "donem": "2022-10",
+   "deger": "95.7",
+   "durum": null
+  },
+  {
+   "donem": "2022-11",
+   "deger": "96.3",
+   "durum": null
+  },
+  {
+   "donem": "2022-12",
+   "deger": "96.9",
+   "durum": null
+  },
+  {
+   "donem": "2023-01",
+   "deger": "96.6",
+   "durum": null
+  },
+  {
+   "donem": "2023-02",
+   "deger": "96.9",
+   "durum": null
+  },
+  {
+   "donem": "2023-03",
+   "deger": "98.5",
+   "durum": null
+  },
+  {
+   "donem": "2023-04",
+   "deger": "101.9",
+   "durum": null
+  },
+  {
+   "donem": "2023-05",
+   "deger": "102.7",
+   "durum": null
+  },
+  {
+   "donem": "2023-06",
+   "deger": "98.8",
+   "durum": null
+  },
+  {
+   "donem": "2023-07",
+   "deger": "97.4",
+   "durum": null
+  },
+  {
+   "donem": "2023-08",
+   "deger": "92.8",
+   "durum": null
+  },
+  {
+   "donem": "2023-09",
+   "deger": "93.1",
+   "durum": null
+  },
+  {
+   "donem": "2023-10",
+   "deger": "94.2",
+   "durum": null
+  },
+  {
+   "donem": "2023-11",
+   "deger": "94.2",
+   "durum": null
+  },
+  {
+   "donem": "2023-12",
+   "deger": "94.0",
+   "durum": null
+  },
+  {
+   "donem": "2024-01",
+   "deger": "95.6",
+   "durum": null
+  },
+  {
+   "donem": "2024-02",
+   "deger": "95.3",
+   "durum": null
+  },
+  {
+   "donem": "2024-03",
+   "deger": "96.2",
+   "durum": null
+  },
+  {
+   "donem": "2024-04",
+   "deger": "97.0",
+   "durum": null
+  },
+  {
+   "donem": "2024-05",
+   "deger": "95.7",
+   "durum": null
+  },
+  {
+   "donem": "2024-06",
+   "deger": "92.8",
+   "durum": null
+  },
+  {
+   "donem": "2024-07",
+   "deger": "92.2",
+   "durum": null
+  },
+  {
+   "donem": "2024-08",
+   "deger": "91.4",
+   "durum": null
+  },
+  {
+   "donem": "2024-09",
+   "deger": "93.3",
+   "durum": null
+  },
+  {
+   "donem": "2024-10",
+   "deger": "96.8",
+   "durum": null
+  },
+  {
+   "donem": "2024-11",
+   "deger": "96.5",
+   "durum": null
+  },
+  {
+   "donem": "2024-12",
+   "deger": "97.4",
+   "durum": null
+  },
+  {
+   "donem": "2025-01",
+   "deger": "98.2",
+   "durum": null
+  },
+  {
+   "donem": "2025-02",
+   "deger": "96.4",
+   "durum": null
+  },
+  {
+   "donem": "2025-03",
+   "deger": "99.4",
+   "durum": null
+  },
+  {
+   "donem": "2025-04",
+   "deger": "96.8",
+   "durum": null
+  },
+  {
+   "donem": "2025-05",
+   "deger": "96.8",
+   "durum": null
+  },
+  {
+   "donem": "2025-06",
+   "deger": "97.0",
+   "durum": null
+  },
+  {
+   "donem": "2025-07",
+   "deger": "96.4",
+   "durum": null
+  },
+  {
+   "donem": "2025-08",
+   "deger": "98.1",
+   "durum": null
+  },
+  {
+   "donem": "2025-09",
+   "deger": "98.0",
+   "durum": null
+  },
+  {
+   "donem": "2025-10",
+   "deger": "99.0",
+   "durum": null
+  },
+  {
+   "donem": "2025-11",
+   "deger": "99.5",
+   "durum": null
+  },
+  {
+   "donem": "2025-12",
+   "deger": "99.8",
+   "durum": null
+  },
+  {
+   "donem": "2026-01",
+   "deger": "99.1",
+   "durum": null
+  },
+  {
+   "donem": "2026-02",
+   "deger": "101.0",
+   "durum": null
+  },
+  {
+   "donem": "2026-03",
+   "deger": "96.1",
+   "durum": null
+  },
+  {
+   "donem": "2026-04",
+   "deger": "96.0",
+   "durum": null
+  },
+  {
+   "donem": "2026-05",
+   "deger": "96.2",
+   "durum": null
+  },
+  {
+   "donem": "2026-06",
+   "deger": "97.7",
+   "durum": null
+  },
+  {
+   "donem": "2026-07",
+   "deger": "98.5",
+   "durum": null
+  },
+  {
+   "donem": "2026-08",
+   "deger": "99.5",
+   "durum": null
+  },
+  {
+   "donem": "2026-09",
+   "deger": "100.9",
+   "durum": null
+  },
+  {
+   "donem": "2026-10",
+   "deger": "95.9",
+   "durum": null
+  }
+ ]
+}

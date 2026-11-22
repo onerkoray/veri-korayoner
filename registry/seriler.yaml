@@ -13,6 +13,8 @@ seriler:
     tema: buyume
     siklik: yillik
     birim: USD
+    baglam: "Ekonominin bir yılda ürettiği nihai mal ve hizmetlerin piyasa değeri, cari dolarla. Dolar cinsinden olduğu için kur hareketleri değeri büyütüp küçültebilir; reel büyüme için sabit fiyatlı büyüme oranına bakılır."
+    iliskili: [wb-ny-gdp-mktp-kd-zg-tur, wb-ny-gdp-pcap-cd-tur, wb-sp-pop-totl-tur]
     carpan: 1
 
   - id: wb-ny-gdp-pcap-cd-tur
@@ -23,6 +25,8 @@ seriler:
     tema: buyume
     siklik: yillik
     birim: USD
+    baglam: "GSYH'nin nüfusa bölümü, cari dolarla. Ülkeler arası refah karşılaştırmasında fiyat düzeyi farkı için satın alma gücü paritesiyle hesaplanan seri daha uygundur."
+    iliskili: [wb-ny-gdp-pcap-pp-kd-tur, wb-sp-pop-totl-tur, wb-ny-gdp-mktp-cd-tur]
     carpan: 1
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
 
@@ -34,6 +38,8 @@ seriler:
     tema: buyume
     siklik: yillik
     birim: yuzde
+    baglam: "Sabit fiyatlarla GSYH'nin bir önceki yıla göre değişimi: fiyat etkisi ayıklanmış üretim artışı. Yıl içindeki seyir için çeyreklik büyüme serisi, gelecek için öncü göstergeler birlikte okunur."
+    iliskili: [oecd-gsyh-buyume-yillik-tr, oecd-oncu-gosterge-tr, wb-ne-gdi-ftot-zs-tur]
     carpan: 1
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
 
@@ -45,6 +51,8 @@ seriler:
     tema: enflasyon
     siklik: yillik
     birim: yuzde
+    baglam: "Tüketici fiyat endeksinin yıllık ortalama değişimi. Aylık seyir için BIS'in aylık yıllık TÜFE serisi, yurt içi üretimin fiyatı için GSYH deflatörü birlikte okunur."
+    iliskili: [bis-tufe-yillik-tr, wb-ny-gdp-defl-kd-zg-tur, bis-politika-faizi-tr]
     carpan: 1
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
 
@@ -56,6 +64,8 @@ seriler:
     tema: dis-sektor
     siklik: yillik
     birim: yuzde-gsyh
+    baglam: "Mal, hizmet, gelir ve transfer akımlarının dengesi. Muhasebe özdeşliği gereği yurt içi tasarruf ile yatırım arasındaki farka eşittir; açık, dış finansman ihtiyacı demektir."
+    iliskili: [wb-ny-gds-totl-zs-tur, wb-ne-gdi-ftot-zs-tur, wb-dt-dod-dect-gn-zs-tur]
     carpan: 1
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
 
@@ -67,6 +77,8 @@ seriler:
     tema: dis-sektor
     siklik: yillik
     birim: USD
+    baglam: "Yurt dışına olan kamu ve özel borcun toplamı, cari dolarla. Ölçek için gelire oranı, geri ödeme kapasitesi için rezervler birlikte okunur."
+    iliskili: [wb-dt-dod-dect-gn-zs-tur, wb-fi-res-totl-cd-tur, wb-bn-cab-xoka-gd-zs-tur]
     carpan: 1
     not: Uluslararası Borç İstatistikleri (IDS) kaynaklı; metaveri kaynak notu okunur.
 
@@ -78,6 +90,8 @@ seriler:
     tema: isgucu
     siklik: yillik
     birim: yuzde
+    baglam: "Dünya Bankası'nın ILO modelli işsizlik tahmini; ülkeler arası karşılaştırma için uyumlaştırılmıştır. Ulusal işgücü anketine dayanan ILO serisi ve aylık Eurostat serisi birlikte okunur."
+    iliskili: [ilo-issizlik-tr, eurostat-issizlik-aylik-tr, ilo-isgucune-katilim-tr]
     carpan: 1
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
     not: ILO model tahmini (ILO modelled estimates); kaynak ILO, CC BY 4.0. Ulusal işgücü anketine dayalı oran için ILO serisine bakın.
@@ -90,6 +104,8 @@ seriler:
     tema: doviz-rezerv
     siklik: yillik
     birim: USD
+    baglam: "Merkez bankasının dış varlıkları (altın dahil), brüt, cari dolarla. Yeterliliği ithalatı kaç ay karşıladığıyla ve dış borçla birlikte okunur."
+    iliskili: [wb-fi-res-totl-mo-tur, wb-dt-dod-dect-cd-tur, wb-ne-imp-gnfs-zs-tur]
     carpan: 1
     not: IMF IFS kaynaklı; kaynak notu okunur.
 
@@ -102,6 +118,8 @@ seriler:
     tema: para-politikasi
     siklik: aylik
     birim: yuzde
+    baglam: "Merkez bankasının politika faizi. Enflasyonla birlikte okunduğunda reel faizi, yani paranın fiyatının enflasyona göre konumunu verir."
+    iliskili: [bis-tufe-yillik-tr, bis-ozel-kredi-gsyh-tr, wb-fm-lbl-bmny-gd-zs-tur]
     carpan: 1
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
 
@@ -113,6 +131,8 @@ seriler:
     tema: enflasyon
     siklik: aylik
     birim: yuzde
+    baglam: "Tüketici fiyatlarının bir yıl önceki aya göre değişimi (BIS uzun seri). Politika faiziyle birlikte reel faizi, deflatörle birlikte fiyat baskısının genişliğini gösterir."
+    iliskili: [bis-politika-faizi-tr, eurostat-hicp-yillik-tr, wb-ny-gdp-defl-kd-zg-tur]
     carpan: 1
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
 
@@ -124,6 +144,8 @@ seriler:
     tema: doviz-rezerv
     siklik: aylik
     birim: endeks
+    baglam: "TL'nin 64 ticaret ortağına göre enflasyon farkı ayıklanmış değeri (BIS tanımı: artış reel değerlenme). İhracatın fiyat rekabeti ve dış denge ile birlikte okunur."
+    iliskili: [wb-ne-exp-gnfs-zs-tur, wb-bn-cab-xoka-gd-zs-tur, bis-tufe-yillik-tr]
     carpan: 1
     not: Endeks 2020 = 100. Değerin artması liranın reel değer kazanması demektir.
 
@@ -135,6 +157,8 @@ seriler:
     tema: konut
     siklik: ceyreklik
     birim: endeks
+    baglam: "Konut fiyatlarının genel fiyat düzeyine göre değişimi. Kredi koşulları ve faizle birlikte okunur."
+    iliskili: [bis-politika-faizi-tr, bis-ozel-kredi-gsyh-tr, bis-tufe-yillik-tr]
     carpan: 1
     not: Endeks 2010 = 100, tüketici fiyatlarıyla reelleştirilmiş.
 
@@ -146,6 +170,8 @@ seriler:
     tema: bankacilik
     siklik: ceyreklik
     birim: yuzde-gsyh
+    baglam: "Hane halkı ve finansal olmayan şirketlere bütün kaynaklardan verilen kredinin GSYH'ye oranı. Uzun dönem eğiliminden sapması (kredi açığı) ve borç servis yüküyle birlikte okunur."
+    iliskili: [bis-kredi-acigi-tr, bis-borc-servis-orani-tr, bis-politika-faizi-tr]
     carpan: 1
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
 
@@ -157,6 +183,8 @@ seriler:
     tema: bankacilik
     siklik: ceyreklik
     birim: yuzde
+    baglam: "Özel kesimin faiz ve anapara ödemelerinin gelirine oranı. Kredi büyüklüğü ve faiz düzeyiyle birlikte okunur."
+    iliskili: [bis-ozel-kredi-gsyh-tr, bis-politika-faizi-tr, bis-kredi-acigi-tr]
     carpan: 1
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN]
     not: Faiz ve anapara ödemelerinin gelire oranı.
@@ -170,6 +198,8 @@ seriler:
     tema: buyume
     siklik: aylik
     birim: endeks
+    baglam: "Ekonomik faaliyetin dönüm noktalarını önceden yakalamak için kurulan bileşik endeks; 100 uzun dönem eğilimidir. Tahmin değil yön sinyalidir; gerçekleşen büyüme ve güven endeksleriyle birlikte okunur."
+    iliskili: [oecd-gsyh-buyume-yillik-tr, oecd-is-guveni-tr, oecd-sanayi-uretimi-tr]
     carpan: 1
     not: Uzun dönem ortalaması = 100. 100'ün üstü ekonomik faaliyetin eğilimin üzerinde seyredeceğine işaret eder; tahmin değil öncü sinyaldir.
 
@@ -182,6 +212,8 @@ seriler:
     tema: enflasyon
     siklik: aylik
     birim: yuzde
+    baglam: "AB'nin uyumlaştırılmış yöntemiyle tüketici fiyatları; Türkiye'yi AB ülkeleriyle aynı tanımla karşılaştırmaya yarar. Ulusal TÜFE ile kapsam ve ağırlık farkları olabilir."
+    iliskili: [bis-tufe-yillik-tr, wb-fp-cpi-totl-zg-tur]
     carpan: 1
     emsal: [EUU, POL, HUN, ROU]
     not: AB ülkeleriyle aynı yöntemle derlenen enflasyon ölçüsü; TÜFE ile aynı değildir. Eurostat 2026'da COICOP 2018 sınıflamasına geçti (prc_hicp_minr).
@@ -194,6 +226,8 @@ seriler:
     tema: isgucu
     siklik: aylik
     birim: yuzde
+    baglam: "Aylık, mevsimsellikten arındırılmış işsizlik oranı. Yıllık ILO serisi ve işgücüne katılımla birlikte okunur: katılım düşerken işsizliğin düşmesi farklı anlam taşır."
+    iliskili: [ilo-issizlik-tr, ilo-isgucune-katilim-tr, oecd-sanayi-uretimi-tr]
     carpan: 1
     emsal: [EUU, POL, HUN, ROU]
     not: 15-74 yaş, işgücüne oran. AB ülkeleriyle karşılaştırılabilir tanım.
@@ -207,6 +241,8 @@ seriler:
     tema: buyume
     siklik: yillik
     birim: USD
+    baglam: "Kişi başına GSYH, ülkeler arası fiyat düzeyi farkı ayıklanmış sabit uluslararası dolarla. Refah düzeyini emsallerle karşılaştırmada cari dolar serisinden daha uygundur."
+    iliskili: [wb-ny-gdp-pcap-cd-tur, wb-sp-pop-dpnd-tur, wb-gb-xpd-rsdv-gd-zs-tur]
     carpan: 1
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
     not: Ülkeler arası fiyat farkı ayıklanmış gelir karşılaştırması; uluslararası dolar, sabit fiyatlar.
@@ -219,6 +255,8 @@ seriler:
     tema: buyume
     siklik: yillik
     birim: yuzde-gsyh
+    baglam: "Makine, bina ve altyapıya yapılan yatırımın GSYH'ye oranı. Tasarruf oranıyla farkı cari dengeyi, büyümeyle ilişkisi üretim kapasitesini anlatır."
+    iliskili: [wb-ny-gds-totl-zs-tur, wb-bn-cab-xoka-gd-zs-tur, wb-ny-gdp-mktp-kd-zg-tur]
     carpan: 1
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
 
@@ -230,6 +268,8 @@ seriler:
     tema: buyume
     siklik: yillik
     birim: yuzde-gsyh
+    baglam: "Yurt içi gelirin tüketilmeyen kısmının GSYH'ye oranı. Yatırımdan düşük kaldığı ölçüde fark dış kaynakla finanse edilir."
+    iliskili: [wb-ne-gdi-ftot-zs-tur, wb-bn-cab-xoka-gd-zs-tur, wb-ne-con-prvt-zs-tur]
     carpan: 1
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
 
@@ -241,6 +281,8 @@ seriler:
     tema: dis-ticaret
     siklik: yillik
     birim: yuzde-gsyh
+    baglam: "Mal ve hizmet ihracatının GSYH'ye oranı: ekonominin dış talebe açıklığı. Reel kur ve ithalatla birlikte okunur."
+    iliskili: [wb-ne-imp-gnfs-zs-tur, bis-reel-efektif-kur-tr, wb-nv-ind-manf-zs-tur]
     carpan: 1
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
 
@@ -252,6 +294,8 @@ seriler:
     tema: dis-ticaret
     siklik: yillik
     birim: yuzde-gsyh
+    baglam: "Mal ve hizmet ithalatının GSYH'ye oranı. İhracatla farkı dış ticaret dengesini, rezervlerle ilişkisi ithalatı karşılama kapasitesini verir."
+    iliskili: [wb-ne-exp-gnfs-zs-tur, wb-fi-res-totl-mo-tur, wb-bn-cab-xoka-gd-zs-tur]
     carpan: 1
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
 
@@ -263,6 +307,8 @@ seriler:
     tema: dis-sektor
     siklik: yillik
     birim: yuzde-gsyh
+    baglam: "Yabancıların şirket ortaklığı ve sermaye yoluyla yaptığı net yatırım girişinin GSYH'ye oranı; borç yaratmayan dış finansmandır. Cari açıkla birlikte okunur."
+    iliskili: [wb-bn-cab-xoka-gd-zs-tur, wb-dt-dod-dect-gn-zs-tur, wb-ne-gdi-ftot-zs-tur]
     carpan: 1
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
 
@@ -274,6 +320,8 @@ seriler:
     tema: toplum
     siklik: yillik
     birim: puan
+    baglam: "Gelir dağılımı eşitsizliği; 0 tam eşitlik, 100 tam eşitsizlik. Emeğin gelirden aldığı pay ve kayıt dışı istihdamla birlikte okunur."
+    iliskili: [ilo-emek-payi-tr, ilo-kayitdisi-istihdam-tr, wb-ny-gdp-pcap-pp-kd-tur]
     carpan: 1
     gecikme_gun: 1460
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
@@ -287,6 +335,8 @@ seriler:
     tema: toplum
     siklik: yillik
     birim: yil
+    baglam: "Bugünkü ölüm oranları sürerse yeni doğanın yaşaması beklenen yıl. Sağlık harcaması ve yaşlı bağımlılık oranıyla birlikte okunur: uzayan ömür emeklilik süresini de uzatır."
+    iliskili: [wb-sh-xpd-chex-gd-zs-tur, wb-sp-pop-dpnd-ol-tur, wb-sp-dyn-tfrt-in-tur]
     carpan: 1
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
 
@@ -298,6 +348,8 @@ seriler:
     tema: toplum
     siklik: yillik
     birim: kisi
+    baglam: "Yıl ortası toplam nüfus. Kişi başına göstergelerin paydasıdır; yaş yapısı (çalışma çağı payı, bağımlılık) ekonomik anlamını belirler."
+    iliskili: [wb-sp-pop-grow-tur, wb-sp-pop-1564-to-zs-tur, wb-ny-gdp-pcap-pp-kd-tur]
     carpan: 1
 
   # ---- ILO (ILOSTAT SDMX; kod = akış/anahtar; ülke alfa-3) --------------------------
@@ -309,6 +361,8 @@ seriler:
     tema: isgucu
     siklik: yillik
     birim: yuzde
+    baglam: "İşgücü anketine göre iş arayan ama bulamayanların işgücüne oranı. İşgücüne katılım ve kayıt dışı istihdamla birlikte okunur."
+    iliskili: [ilo-isgucune-katilim-tr, eurostat-issizlik-aylik-tr, ilo-neet-tr]
     carpan: 1
     baslangic: "1980"
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
@@ -322,6 +376,8 @@ seriler:
     tema: isgucu
     siklik: yillik
     birim: yuzde
+    baglam: "Çalışan ya da iş arayanların 15 yaş üstü nüfusa oranı. Çalışma çağı nüfusunun büyüklüğünün üretime dönüşüp dönüşmediğini gösterir."
+    iliskili: [ilo-kadin-isgucune-katilim-tr, wb-sp-pop-1564-to-zs-tur, ilo-issizlik-tr]
     carpan: 1
     baslangic: "1980"
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
@@ -335,6 +391,8 @@ seriler:
     tema: isgucu
     siklik: yillik
     birim: yuzde
+    baglam: "Kadınların işgücüne katılım oranı. Genel katılımla farkı, demografik yapının sunduğu işgücü potansiyelinin ne kadarının kullanılmadığını gösterir."
+    iliskili: [ilo-isgucune-katilim-tr, wb-sp-pop-dpnd-tur, wb-sp-dyn-tfrt-in-tur]
     carpan: 1
     baslangic: "1980"
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
@@ -348,6 +406,8 @@ seriler:
     tema: isgucu
     siklik: yillik
     birim: yuzde
+    baglam: "15–24 yaş gençlerden ne eğitimde ne istihdamda olanların payı. Genç nüfusun beşerî sermayeye ve istihdama dönüşmeyen kısmıdır."
+    iliskili: [ilo-issizlik-tr, wb-sp-pop-1564-to-zs-tur, ilo-kayitdisi-istihdam-tr]
     carpan: 1
     baslangic: "1980"
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
@@ -361,6 +421,8 @@ seriler:
     tema: isgucu
     siklik: yillik
     birim: yuzde
+    baglam: "Sosyal güvenlik kaydı olmadan çalışanların istihdama oranı. Vergi ve prim tabanını, çalışanların sosyal güvenceye erişimini etkiler."
+    iliskili: [wb-gc-tax-totl-gd-zs-tur, ilo-emek-payi-tr, ilo-issizlik-tr]
     carpan: 1
     baslangic: "1980"
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
@@ -374,6 +436,8 @@ seriler:
     tema: isgucu
     siklik: yillik
     birim: yuzde
+    baglam: "Emek gelirlerinin GSYH'ye oranı (ILO; kendi hesabına çalışanların emek geliri tahmini dahil). Gelir dağılımı ve asgari ücretle birlikte okunur."
+    iliskili: [wb-si-pov-gini-tur, eurostat-asgari-ucret-pps-tr, ilo-kayitdisi-istihdam-tr]
     carpan: 1
     baslangic: "1980"
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
@@ -388,6 +452,320 @@ seriler:
     tema: isgucu
     siklik: yariyillik
     birim: PPS
+    baglam: "Brüt asgari ücret, ülkeler arası fiyat düzeyi farkı ayıklanmış birimle (PPS). AB ülkeleriyle satın alma gücü karşılaştırması verir; net ücret değildir."
+    iliskili: [ilo-emek-payi-tr, wb-ny-gdp-pcap-pp-kd-tur, bis-tufe-yillik-tr]
     carpan: 1
     emsal: [POL, HUN, ROU]
     not: PPS, ülkeler arası fiyat düzeyi farkını ayıklayan yapay ortak birimdir; kur değildir. Eurostat yarıyılda bir (Ocak ve Temmuz) yayımlar.
+
+  # ---- 22 Kasım 2026 genişlemesi: kamu maliyesi, para, yapı, nüfus, güven, çeyreklik büyüme ----
+  - id: wb-gc-dod-totl-gd-zs-tur
+    kaynak: world_bank
+    kod: GC.DOD.TOTL.GD.ZS
+    ulke: TUR
+    baslik: "Merkezi yönetim borç stoku, GSYH'ye oran"
+    tema: kamu-maliyesi
+    siklik: yillik
+    birim: yuzde-gsyh
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    baglam: "Merkezi yönetimin brüt borcunun GSYH'ye oranı. Sürdürülebilirliği faiz ile büyüme farkına ve vergi gelirlerine bağlıdır; ülkeler arası karşılaştırmada kapsam (merkezi yönetim/genel yönetim) farkına dikkat edilir."
+    iliskili: [wb-gc-tax-totl-gd-zs-tur, wb-ny-gdp-mktp-kd-zg-tur, bis-politika-faizi-tr]
+
+  - id: wb-gc-tax-totl-gd-zs-tur
+    kaynak: world_bank
+    kod: GC.TAX.TOTL.GD.ZS
+    ulke: TUR
+    baslik: "Vergi gelirleri, GSYH'ye oran"
+    tema: kamu-maliyesi
+    siklik: yillik
+    birim: yuzde-gsyh
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    baglam: "Merkezi yönetimin vergi gelirlerinin GSYH'ye oranı (sosyal güvenlik primleri hariç). Kamunun borçlanmadan finanse edebildiği payı ve kayıt dışılığın vergi tabanına etkisini birlikte gösterir."
+    iliskili: [wb-gc-dod-totl-gd-zs-tur, ilo-kayitdisi-istihdam-tr, wb-sh-xpd-chex-gd-zs-tur]
+
+  - id: wb-fm-lbl-bmny-gd-zs-tur
+    kaynak: world_bank
+    kod: FM.LBL.BMNY.GD.ZS
+    ulke: TUR
+    baslik: "Geniş para (M2), GSYH'ye oran"
+    tema: para-politikasi
+    siklik: yillik
+    birim: yuzde-gsyh
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    baglam: "Dolaşımdaki para ve banka mevduatlarının GSYH'ye oranı: finansal derinliğin bir ölçüsü. Yüksek enflasyon dönemlerinde parayı elde tutma isteği azaldığı için oran düşebilir."
+    iliskili: [bis-politika-faizi-tr, bis-tufe-yillik-tr, bis-ozel-kredi-gsyh-tr]
+
+  - id: wb-ny-gdp-defl-kd-zg-tur
+    kaynak: world_bank
+    kod: NY.GDP.DEFL.KD.ZG
+    ulke: TUR
+    baslik: "GSYH deflatörü, yıllık değişim"
+    tema: enflasyon
+    siklik: yillik
+    birim: yuzde
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    baglam: "Yurt içinde üretilen bütün mal ve hizmetlerin fiyat değişimi. TÜFE yalnız tüketici sepetini ölçer; ikisi arasındaki fark ithal ürün fiyatları ve yatırım malları fiyatlarındaki ayrışmayı gösterir."
+    iliskili: [wb-fp-cpi-totl-zg-tur, bis-tufe-yillik-tr, wb-ny-gdp-mktp-kd-zg-tur]
+
+  - id: wb-fi-res-totl-mo-tur
+    kaynak: world_bank
+    kod: FI.RES.TOTL.MO
+    ulke: TUR
+    baslik: "Toplam rezervler, kaç aylık ithalatı karşılıyor"
+    tema: doviz-rezerv
+    siklik: yillik
+    birim: ay
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    baglam: "Brüt rezervlerin aylık mal ve hizmet ithalatına bölümü. Yaygın bir yeterlilik ölçüsüdür; kısa vadeli dış borç ve rezervlerin net/brüt ayrımı ayrıca önemlidir."
+    iliskili: [wb-fi-res-totl-cd-tur, wb-ne-imp-gnfs-zs-tur, wb-dt-dod-dect-gn-zs-tur]
+
+  - id: wb-nv-ind-manf-zs-tur
+    kaynak: world_bank
+    kod: NV.IND.MANF.ZS
+    ulke: TUR
+    baslik: "İmalat sanayi katma değeri, GSYH'ye oran"
+    tema: buyume
+    siklik: yillik
+    birim: yuzde-gsyh
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    baglam: "İmalatın ekonomideki payı. İhracat kapasitesi, verimlilik artışı ve sanayi üretiminin aylık seyriyle birlikte okunur."
+    iliskili: [oecd-sanayi-uretimi-tr, wb-ne-exp-gnfs-zs-tur, wb-gb-xpd-rsdv-gd-zs-tur]
+
+  - id: wb-dt-dod-dect-gn-zs-tur
+    kaynak: world_bank
+    kod: DT.DOD.DECT.GN.ZS
+    ulke: TUR
+    baslik: "Dış borç stoku, GSMG'ye oran"
+    tema: dis-sektor
+    siklik: yillik
+    birim: yuzde
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    baglam: "Toplam dış borcun gayrisafi milli gelire oranı (GSYH değil). Borcun gelire göre ölçeğini verir; Dünya Bankası bu seriyi yalnız düşük ve orta gelirli ülkeler için yayımlar, bazı emsallerde veri yoktur."
+    iliskili: [wb-dt-dod-dect-cd-tur, wb-fi-res-totl-mo-tur, wb-bn-cab-xoka-gd-zs-tur]
+
+  - id: wb-ne-con-prvt-zs-tur
+    kaynak: world_bank
+    kod: NE.CON.PRVT.ZS
+    ulke: TUR
+    baslik: "Hane halkı tüketim harcaması, GSYH'ye oran"
+    tema: buyume
+    siklik: yillik
+    birim: yuzde-gsyh
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    baglam: "Hane halklarının nihai tüketiminin GSYH'deki payı: büyümenin iç talep ağırlığı. Tasarruf oranıyla ters yönlü hareket eder."
+    iliskili: [wb-ny-gds-totl-zs-tur, oecd-perakende-hacmi-tr, oecd-tuketici-guveni-tr]
+
+  - id: wb-sh-xpd-chex-gd-zs-tur
+    kaynak: world_bank
+    kod: SH.XPD.CHEX.GD.ZS
+    ulke: TUR
+    baslik: "Cari sağlık harcaması, GSYH'ye oran"
+    tema: toplum
+    siklik: yillik
+    birim: yuzde-gsyh
+    carpan: 1
+    gecikme_gun: 1100   # kurumlar 2–3 yıl geriden yayımlar (WHO GHED, UNESCO UIS kaynaklı)
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    baglam: "Kamu ve özel cari sağlık harcamasının GSYH'ye oranı. Nüfus yaşlandıkça bu payın baskı altına girmesi beklenir; yaşam süresi ve yaşlı bağımlılık oranıyla birlikte okunur."
+    iliskili: [wb-sp-pop-dpnd-ol-tur, wb-sp-dyn-le00-in-tur, wb-gc-tax-totl-gd-zs-tur]
+
+  - id: wb-gb-xpd-rsdv-gd-zs-tur
+    kaynak: world_bank
+    kod: GB.XPD.RSDV.GD.ZS
+    ulke: TUR
+    baslik: "Ar-Ge harcaması, GSYH'ye oran"
+    tema: buyume
+    siklik: yillik
+    birim: yuzde-gsyh
+    carpan: 1
+    gecikme_gun: 1100   # kurumlar 2–3 yıl geriden yayımlar (WHO GHED, UNESCO UIS kaynaklı)
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    baglam: "Kamu ve özel araştırma-geliştirme harcamasının GSYH'ye oranı. Uzun vadeli verimlilik ve katma değerli üretim kapasitesinin girdisidir."
+    iliskili: [wb-nv-ind-manf-zs-tur, wb-ny-gdp-pcap-pp-kd-tur, wb-it-net-user-zs-tur]
+
+  - id: wb-it-net-user-zs-tur
+    kaynak: world_bank
+    kod: IT.NET.USER.ZS
+    ulke: TUR
+    baslik: "İnternet kullanan nüfus oranı"
+    tema: toplum
+    siklik: yillik
+    birim: yuzde
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    baglam: "Son üç ayda internet kullanan bireylerin nüfusa oranı. Dijital hizmetlere, finansal erişime ve uzaktan çalışmaya açıklığın ölçüsüdür."
+    iliskili: [wb-gb-xpd-rsdv-gd-zs-tur, wb-sp-pop-1564-to-zs-tur]
+
+  - id: wb-sp-pop-dpnd-tur
+    kaynak: world_bank
+    kod: SP.POP.DPND
+    ulke: TUR
+    baslik: "Yaş bağımlılık oranı (çalışma çağı nüfusuna oran)"
+    tema: toplum
+    siklik: yillik
+    birim: yuzde
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    baglam: "0–14 ve 65 yaş üstü nüfusun 15–64 yaş nüfusa oranı. Düşük oran, çalışma çağı nüfusunun büyük olduğu \"demografik fırsat penceresi\" demektir; bunun büyümeye dönüşmesi işgücüne katılım ve istihdama bağlıdır."
+    iliskili: [ilo-isgucune-katilim-tr, ilo-kadin-isgucune-katilim-tr, wb-sp-pop-dpnd-ol-tur]
+
+  - id: wb-sp-pop-dpnd-ol-tur
+    kaynak: world_bank
+    kod: SP.POP.DPND.OL
+    ulke: TUR
+    baslik: "Yaşlı bağımlılık oranı (65+ / 15–64 yaş)"
+    tema: toplum
+    siklik: yillik
+    birim: yuzde
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    baglam: "65 yaş üstü nüfusun çalışma çağındaki nüfusa oranı. Emeklilik ve sağlık harcamalarının çalışan başına düşen finansman yükünün demografik tarafını gösterir."
+    iliskili: [wb-sp-dyn-tfrt-in-tur, wb-sh-xpd-chex-gd-zs-tur, wb-sp-dyn-le00-in-tur]
+
+  - id: wb-sp-pop-1564-to-zs-tur
+    kaynak: world_bank
+    kod: SP.POP.1564.TO.ZS
+    ulke: TUR
+    baslik: "Çalışma çağındaki nüfusun (15–64 yaş) payı"
+    tema: toplum
+    siklik: yillik
+    birim: yuzde
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    baglam: "15–64 yaş nüfusun toplam nüfusa oranı: potansiyel işgücünün demografik üst sınırı. Gerçekleşen üretime katkısı katılım ve istihdam oranlarıyla birlikte okunur."
+    iliskili: [ilo-isgucune-katilim-tr, wb-sp-pop-dpnd-tur, ilo-neet-tr]
+
+  - id: wb-sp-dyn-tfrt-in-tur
+    kaynak: world_bank
+    kod: SP.DYN.TFRT.IN
+    ulke: TUR
+    baslik: "Toplam doğurganlık hızı (kadın başına doğum)"
+    tema: toplum
+    siklik: yillik
+    birim: dogum
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    baglam: "Bir kadının doğurganlık çağı boyunca bugünkü oranlarla sahip olması beklenen çocuk sayısı. Yaklaşık 2,1 nüfusun kendini yenileme düzeyidir; altında kalan oran on yıllar içinde çalışma çağı nüfusunu küçültür ve yaşlı bağımlılığını artırır."
+    iliskili: [wb-sp-pop-dpnd-ol-tur, wb-sp-pop-grow-tur, wb-sp-pop-1564-to-zs-tur]
+
+  - id: wb-sp-pop-grow-tur
+    kaynak: world_bank
+    kod: SP.POP.GROW
+    ulke: TUR
+    baslik: "Nüfus artış hızı"
+    tema: toplum
+    siklik: yillik
+    birim: yuzde
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    baglam: "Yıl ortası nüfusun yıllık değişimi (doğum, ölüm ve göç). GSYH büyümesinden düşüldüğünde kişi başı gelirin büyümesine yaklaşık ulaşılır."
+    iliskili: [wb-sp-pop-totl-tur, wb-sp-dyn-tfrt-in-tur, wb-ny-gdp-mktp-kd-zg-tur]
+
+  - id: oecd-gsyh-buyume-yillik-tr
+    kaynak: oecd
+    kod: "OECD.SDD.NAD,DSD_NAMAIN1@DF_QNA_EXPENDITURE_GROWTH_OECD,/Q.Y.TUR.S1.S1.B1GQ._Z._Z._Z.PC.L.GY.T0102.._Z"
+    ulke: TUR
+    baslik: "GSYH büyümesi, çeyreklik, bir yıl önceki çeyreğe göre"
+    tema: buyume
+    siklik: ceyreklik
+    birim: yuzde
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    baglam: "Sabit fiyatlı GSYH'nin bir yıl önceki aynı çeyreğe göre değişimi (OECD üç aylık ulusal hesaplar). Yıllık seriden önce yıl içindeki dönüşü gösterir; öncü gösterge ve güven endeksleriyle birlikte okunur."
+    iliskili: [oecd-gsyh-buyume-ceyrek-tr, oecd-oncu-gosterge-tr, oecd-sanayi-uretimi-tr]
+
+  - id: oecd-gsyh-buyume-ceyrek-tr
+    kaynak: oecd
+    kod: "OECD.SDD.NAD,DSD_NAMAIN1@DF_QNA_EXPENDITURE_GROWTH_OECD,/Q.Y.TUR.S1.S1.B1GQ._Z._Z._Z.PC.L.G1.T0102.._Z"
+    ulke: TUR
+    baslik: "GSYH büyümesi, çeyreklik, bir önceki çeyreğe göre (mevsimsellikten arındırılmış)"
+    tema: buyume
+    siklik: ceyreklik
+    birim: yuzde
+    carpan: 1
+    baglam: "Mevsim ve takvim etkisinden arındırılmış GSYH'nin bir önceki çeyreğe göre değişimi; ivmedeki değişimi en erken gösteren ölçü. Yıllıklaştırılmış değildir."
+    iliskili: [oecd-gsyh-buyume-yillik-tr, oecd-is-guveni-tr]
+
+  - id: oecd-is-guveni-tr
+    kaynak: oecd
+    kod: "OECD.SDD.STES,DSD_STES@DF_CLI,/TUR.M.BCICP.IX._Z.AA.IX._Z.H"
+    ulke: TUR
+    baslik: "Bileşik iş güveni endeksi, genlik ayarlı"
+    tema: buyume
+    siklik: aylik
+    birim: endeks
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    baglam: "Şirket yöneticilerine yapılan anketlerden OECD'nin uluslararası karşılaştırılabilir hâle getirdiği endeks; 100 uzun dönem ortalamasıdır. Resmî üretim verisinden önce yön sinyali verir."
+    iliskili: [oecd-tuketici-guveni-tr, oecd-sanayi-uretimi-tr, eurostat-ekonomik-guven-tr]
+
+  - id: oecd-tuketici-guveni-tr
+    kaynak: oecd
+    kod: "OECD.SDD.STES,DSD_STES@DF_CLI,/TUR.M.CCICP.IX._Z.AA.IX._Z.H"
+    ulke: TUR
+    baslik: "Bileşik tüketici güveni endeksi, genlik ayarlı"
+    tema: buyume
+    siklik: aylik
+    birim: endeks
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    baglam: "Hane halkı anketlerinden OECD'nin karşılaştırılabilir hâle getirdiği endeks; 100 uzun dönem ortalamasıdır. Tüketim harcamaları ve perakende satışlarla birlikte okunur."
+    iliskili: [oecd-perakende-hacmi-tr, wb-ne-con-prvt-zs-tur, bis-tufe-yillik-tr]
+
+  - id: oecd-sanayi-uretimi-tr
+    kaynak: oecd
+    kod: "OECD.SDD.STES,DSD_STES@DF_INDSERV,/TUR.M.PRVM.IX.BTE.Y._Z._Z.N"
+    ulke: TUR
+    baslik: "Sanayi üretim endeksi (inşaat hariç), mevsimsellikten arındırılmış"
+    tema: buyume
+    siklik: aylik
+    birim: endeks
+    carpan: 1
+    baglam: "Madencilik, imalat ve enerji üretiminin hacim endeksi (2015 = 100). Aylık olduğu için çeyreklik GSYH'den önce faaliyetin yönünü gösterir; düzeyi ülkeler arasında karşılaştırılmaz, değişimi karşılaştırılır."
+    iliskili: [oecd-gsyh-buyume-yillik-tr, oecd-is-guveni-tr, wb-nv-ind-manf-zs-tur]
+
+  - id: oecd-perakende-hacmi-tr
+    kaynak: oecd
+    kod: "OECD.SDD.STES,DSD_STES@DF_INDSERV,/TUR.M.TOVM.IX.G47.Y._Z._Z.N"
+    ulke: TUR
+    baslik: "Perakende satış hacim endeksi, mevsimsellikten arındırılmış"
+    tema: buyume
+    siklik: aylik
+    birim: endeks
+    carpan: 1
+    baglam: "Perakende satışların fiyat etkisi ayıklanmış hacmi (2015 = 100). Hane halkı tüketiminin aylık göstergesidir; tüketici güveni ve enflasyonla birlikte okunur."
+    iliskili: [oecd-tuketici-guveni-tr, wb-ne-con-prvt-zs-tur, bis-tufe-yillik-tr]
+
+  - id: bis-kredi-acigi-tr
+    kaynak: bis
+    kod: WS_CREDIT_GAP/1.0/Q.TR.P.A.C
+    ulke: TUR
+    baslik: "Kredi açığı: özel kesim kredisinin GSYH'ye oranının uzun dönem eğiliminden sapması"
+    tema: bankacilik
+    siklik: ceyreklik
+    birim: yuzde-gsyh
+    carpan: 1
+    emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
+    baglam: "Özel kesim kredisinin GSYH'ye oranının uzun dönem eğiliminden farkı, yüzde puan (BIS). Basel III'te karşı döngüsel sermaye tamponu için başvurulan ölçüdür; büyük pozitif açık hızlı kredi genişlemesine işaret eder. Yüksek enflasyonda GSYH'nin nominal büyümesi oranı aşağı çekebilir."
+    iliskili: [bis-ozel-kredi-gsyh-tr, bis-borc-servis-orani-tr, bis-politika-faizi-tr]
+
+  - id: eurostat-ekonomik-guven-tr
+    kaynak: eurostat
+    kod: ei_bssi_m_r2/M.BS-ESI-I.SA.TR
+    ulke: TUR
+    baslik: "Ekonomik güven endeksi (AB anketleri), mevsimsellikten arındırılmış"
+    tema: buyume
+    siklik: aylik
+    birim: endeks
+    carpan: 1
+    emsal: [POL, HUN, ROU, EUU]
+    baglam: "Avrupa Komisyonu'nun uyumlaştırılmış iş ve tüketici anketlerinden (sanayi, hizmet, perakende, inşaat, tüketici) bileşik endeks; 100 uzun dönem ortalamasıdır. Türkiye'yi AB ülkeleriyle aynı anket yöntemiyle karşılaştırır."
+    iliskili: [oecd-is-guveni-tr, oecd-tuketici-guveni-tr, oecd-gsyh-buyume-yillik-tr]

@@ -1,0 +1,359 @@
+{
+ "surum": 1,
+ "id": "wb-gc-tax-totl-gd-zs-tur",
+ "baslik": "Vergi gelirleri, GSYH'ye oran",
+ "ulke": "TUR",
+ "siklik": "yillik",
+ "birim": "yuzde-gsyh",
+ "carpan": 1,
+ "tema": "kamu-maliyesi",
+ "kaynak": {
+  "id": "world_bank",
+  "ad": "Dünya Bankası — Dünya Kalkınma Göstergeleri (WDI)",
+  "kurum": "Dünya Bankası",
+  "adres": "https://data.worldbank.org/",
+  "belge": "https://datahelpdesk.worldbank.org/knowledgebase/articles/889392",
+  "lisans": "CC BY 4.0 (WDI veri seti)",
+  "lisans_kanit": "https://datacatalog.worldbank.org/search/dataset/0037712/World-Development-Indicators",
+  "lisans_inceleme": "2026-11-17",
+  "atif_zorunlu": true,
+  "kosullar": []
+ },
+ "kaynak_kod": "GC.TAX.TOTL.GD.ZS",
+ "kaynak_adi": "Tax revenue (% of GDP)",
+ "kaynak_not": "Government Finance Statistics Yearbook and data files, International Monetary Fund (IMF)",
+ "kaynak_guncelleme": "2026-11-11",
+ "cekildi": "2026-11-22T20:38:23.869457Z",
+ "izin": {
+  "gosterim": true,
+  "indirme": true,
+  "api": true
+ },
+ "gozlemler": [
+  {
+   "donem": "1960",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1961",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1962",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1963",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1964",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1965",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1966",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1967",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1968",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1969",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1970",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1971",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1972",
+   "deger": "13.420961604981",
+   "durum": null
+  },
+  {
+   "donem": "1973",
+   "deger": "14.3131868131868",
+   "durum": null
+  },
+  {
+   "donem": "1974",
+   "deger": "13.1706333198871",
+   "durum": null
+  },
+  {
+   "donem": "1975",
+   "deger": "14.7223084083152",
+   "durum": null
+  },
+  {
+   "donem": "1976",
+   "deger": "16.2657920310982",
+   "durum": null
+  },
+  {
+   "donem": "1977",
+   "deger": "16.6619331629272",
+   "durum": null
+  },
+  {
+   "donem": "1978",
+   "deger": "16.5117896200771",
+   "durum": null
+  },
+  {
+   "donem": "1979",
+   "deger": "14.5927072459595",
+   "durum": null
+  },
+  {
+   "donem": "1980",
+   "deger": "14.3386991932092",
+   "durum": null
+  },
+  {
+   "donem": "1981",
+   "deger": "15.268953297051",
+   "durum": null
+  },
+  {
+   "donem": "1982",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1983",
+   "deger": "13.9380690071769",
+   "durum": null
+  },
+  {
+   "donem": "1984",
+   "deger": "10.8009692186697",
+   "durum": null
+  },
+  {
+   "donem": "1985",
+   "deger": "11.3456141100711",
+   "durum": null
+  },
+  {
+   "donem": "1986",
+   "deger": "11.7281951788689",
+   "durum": null
+  },
+  {
+   "donem": "1987",
+   "deger": "12.1419557050878",
+   "durum": null
+  },
+  {
+   "donem": "1988",
+   "deger": "11.0271659012029",
+   "durum": null
+  },
+  {
+   "donem": "1989",
+   "deger": "11.2491911321247",
+   "durum": null
+  },
+  {
+   "donem": "1990",
+   "deger": "11.5583312683401",
+   "durum": null
+  },
+  {
+   "donem": "1991",
+   "deger": "12.4951735146288",
+   "durum": null
+  },
+  {
+   "donem": "1992",
+   "deger": "12.968826598181",
+   "durum": null
+  },
+  {
+   "donem": "1993",
+   "deger": "13.3427715713127",
+   "durum": null
+  },
+  {
+   "donem": "1994",
+   "deger": "15.2014676965386",
+   "durum": null
+  },
+  {
+   "donem": "1995",
+   "deger": "10.0832780937914",
+   "durum": null
+  },
+  {
+   "donem": "1996",
+   "deger": "11.0165176964637",
+   "durum": null
+  },
+  {
+   "donem": "1997",
+   "deger": "13.7113156263269",
+   "durum": null
+  },
+  {
+   "donem": "1998",
+   "deger": "14.6634178347771",
+   "durum": null
+  },
+  {
+   "donem": "1999",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "2000",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "2001",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "2002",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "2003",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "2004",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "2005",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "2006",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "2007",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "2008",
+   "deger": "17.4414983022933",
+   "durum": null
+  },
+  {
+   "donem": "2009",
+   "deger": "18.0494564965647",
+   "durum": null
+  },
+  {
+   "donem": "2010",
+   "deger": "18.814982327029",
+   "durum": null
+  },
+  {
+   "donem": "2011",
+   "deger": "18.5508150286553",
+   "durum": null
+  },
+  {
+   "donem": "2012",
+   "deger": "18.1051408438041",
+   "durum": null
+  },
+  {
+   "donem": "2013",
+   "deger": "18.3984701714655",
+   "durum": null
+  },
+  {
+   "donem": "2014",
+   "deger": "17.9488969703643",
+   "durum": null
+  },
+  {
+   "donem": "2015",
+   "deger": "18.1419244166015",
+   "durum": null
+  },
+  {
+   "donem": "2016",
+   "deger": "18.3280078863935",
+   "durum": null
+  },
+  {
+   "donem": "2017",
+   "deger": "17.7025349976444",
+   "durum": null
+  },
+  {
+   "donem": "2018",
+   "deger": "17.1432984711192",
+   "durum": null
+  },
+  {
+   "donem": "2019",
+   "deger": "16.5299780625183",
+   "durum": null
+  },
+  {
+   "donem": "2020",
+   "deger": "17.4856241853484",
+   "durum": null
+  },
+  {
+   "donem": "2021",
+   "deger": "17.4752698156496",
+   "durum": null
+  },
+  {
+   "donem": "2022",
+   "deger": "17.1801094099965",
+   "durum": null
+  },
+  {
+   "donem": "2023",
+   "deger": "18.2219303847288",
+   "durum": null
+  },
+  {
+   "donem": "2024",
+   "deger": "17.6239296509985",
+   "durum": null
+  }
+ ]
+}

@@ -33,4 +33,8 @@ def seriler(kok: Path = KOK) -> list[SeriTanimi]:
         gorulen.add(s.id)
         if s.kaynak not in ks:
             raise ValueError(f"{s.id}: kayıtta olmayan kaynak {s.kaynak}")
+    for s in liste:
+        yok = [i for i in s.iliskili if i not in gorulen or i == s.id]
+        if yok or len(set(s.iliskili)) != len(s.iliskili):
+            raise ValueError(f"{s.id}: ilişkili seri kayıtta yok, kendisi ya da tekrarlı: {yok or s.iliskili}")
     return liste

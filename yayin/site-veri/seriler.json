@@ -1,6 +1,6 @@
 {
  "surum": 1,
- "uretildi": "2026-11-22T18:06:01.761734Z",
+ "uretildi": "2026-11-22T20:41:42.658772Z",
  "seriler": [
   {
    "id": "wb-ny-gdp-mktp-cd-tur",
@@ -21,6 +21,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Ekonominin bir yılda ürettiği nihai mal ve hizmetlerin piyasa değeri, cari dolarla. Dolar cinsinden olduğu için kur hareketleri değeri büyütüp küçültebilir; reel büyüme için sabit fiyatlı büyüme oranına bakılır.",
+   "not": null,
+   "iliskili": [
+    "wb-ny-gdp-mktp-kd-zg-tur",
+    "wb-ny-gdp-pcap-cd-tur",
+    "wb-sp-pop-totl-tur"
+   ],
    "api": "/api/v1/seri/wb-ny-gdp-mktp-cd-tur.json",
    "csv": "/api/v1/seri/wb-ny-gdp-mktp-cd-tur.csv"
   },
@@ -43,6 +50,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "GSYH'nin nüfusa bölümü, cari dolarla. Ülkeler arası refah karşılaştırmasında fiyat düzeyi farkı için satın alma gücü paritesiyle hesaplanan seri daha uygundur.",
+   "not": null,
+   "iliskili": [
+    "wb-ny-gdp-pcap-pp-kd-tur",
+    "wb-sp-pop-totl-tur",
+    "wb-ny-gdp-mktp-cd-tur"
+   ],
    "api": "/api/v1/seri/wb-ny-gdp-pcap-cd-tur.json",
    "csv": "/api/v1/seri/wb-ny-gdp-pcap-cd-tur.csv"
   },
@@ -65,6 +79,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Sabit fiyatlarla GSYH'nin bir önceki yıla göre değişimi: fiyat etkisi ayıklanmış üretim artışı. Yıl içindeki seyir için çeyreklik büyüme serisi, gelecek için öncü göstergeler birlikte okunur.",
+   "not": null,
+   "iliskili": [
+    "oecd-gsyh-buyume-yillik-tr",
+    "oecd-oncu-gosterge-tr",
+    "wb-ne-gdi-ftot-zs-tur"
+   ],
    "api": "/api/v1/seri/wb-ny-gdp-mktp-kd-zg-tur.json",
    "csv": "/api/v1/seri/wb-ny-gdp-mktp-kd-zg-tur.csv"
   },
@@ -87,6 +108,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Tüketici fiyat endeksinin yıllık ortalama değişimi. Aylık seyir için BIS'in aylık yıllık TÜFE serisi, yurt içi üretimin fiyatı için GSYH deflatörü birlikte okunur.",
+   "not": null,
+   "iliskili": [
+    "bis-tufe-yillik-tr",
+    "wb-ny-gdp-defl-kd-zg-tur",
+    "bis-politika-faizi-tr"
+   ],
    "api": "/api/v1/seri/wb-fp-cpi-totl-zg-tur.json",
    "csv": "/api/v1/seri/wb-fp-cpi-totl-zg-tur.csv"
   },
@@ -109,6 +137,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Mal, hizmet, gelir ve transfer akımlarının dengesi. Muhasebe özdeşliği gereği yurt içi tasarruf ile yatırım arasındaki farka eşittir; açık, dış finansman ihtiyacı demektir.",
+   "not": null,
+   "iliskili": [
+    "wb-ny-gds-totl-zs-tur",
+    "wb-ne-gdi-ftot-zs-tur",
+    "wb-dt-dod-dect-gn-zs-tur"
+   ],
    "api": "/api/v1/seri/wb-bn-cab-xoka-gd-zs-tur.json",
    "csv": "/api/v1/seri/wb-bn-cab-xoka-gd-zs-tur.csv"
   },
@@ -131,6 +166,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Yurt dışına olan kamu ve özel borcun toplamı, cari dolarla. Ölçek için gelire oranı, geri ödeme kapasitesi için rezervler birlikte okunur.",
+   "not": "Uluslararası Borç İstatistikleri (IDS) kaynaklı; metaveri kaynak notu okunur.",
+   "iliskili": [
+    "wb-dt-dod-dect-gn-zs-tur",
+    "wb-fi-res-totl-cd-tur",
+    "wb-bn-cab-xoka-gd-zs-tur"
+   ],
    "api": "/api/v1/seri/wb-dt-dod-dect-cd-tur.json",
    "csv": "/api/v1/seri/wb-dt-dod-dect-cd-tur.csv"
   },
@@ -153,6 +195,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Dünya Bankası'nın ILO modelli işsizlik tahmini; ülkeler arası karşılaştırma için uyumlaştırılmıştır. Ulusal işgücü anketine dayanan ILO serisi ve aylık Eurostat serisi birlikte okunur.",
+   "not": "ILO model tahmini (ILO modelled estimates); kaynak ILO, CC BY 4.0. Ulusal işgücü anketine dayalı oran için ILO serisine bakın.",
+   "iliskili": [
+    "ilo-issizlik-tr",
+    "eurostat-issizlik-aylik-tr",
+    "ilo-isgucune-katilim-tr"
+   ],
    "api": "/api/v1/seri/wb-sl-uem-totl-zs-tur.json",
    "csv": "/api/v1/seri/wb-sl-uem-totl-zs-tur.csv"
   },
@@ -175,6 +224,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Merkez bankasının dış varlıkları (altın dahil), brüt, cari dolarla. Yeterliliği ithalatı kaç ay karşıladığıyla ve dış borçla birlikte okunur.",
+   "not": "IMF IFS kaynaklı; kaynak notu okunur.",
+   "iliskili": [
+    "wb-fi-res-totl-mo-tur",
+    "wb-dt-dod-dect-cd-tur",
+    "wb-ne-imp-gnfs-zs-tur"
+   ],
    "api": "/api/v1/seri/wb-fi-res-totl-cd-tur.json",
    "csv": "/api/v1/seri/wb-fi-res-totl-cd-tur.csv"
   },
@@ -197,6 +253,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Merkez bankasının politika faizi. Enflasyonla birlikte okunduğunda reel faizi, yani paranın fiyatının enflasyona göre konumunu verir.",
+   "not": null,
+   "iliskili": [
+    "bis-tufe-yillik-tr",
+    "bis-ozel-kredi-gsyh-tr",
+    "wb-fm-lbl-bmny-gd-zs-tur"
+   ],
    "api": "/api/v1/seri/bis-politika-faizi-tr.json",
    "csv": "/api/v1/seri/bis-politika-faizi-tr.csv"
   },
@@ -219,6 +282,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Tüketici fiyatlarının bir yıl önceki aya göre değişimi (BIS uzun seri). Politika faiziyle birlikte reel faizi, deflatörle birlikte fiyat baskısının genişliğini gösterir.",
+   "not": null,
+   "iliskili": [
+    "bis-politika-faizi-tr",
+    "eurostat-hicp-yillik-tr",
+    "wb-ny-gdp-defl-kd-zg-tur"
+   ],
    "api": "/api/v1/seri/bis-tufe-yillik-tr.json",
    "csv": "/api/v1/seri/bis-tufe-yillik-tr.csv"
   },
@@ -241,6 +311,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "TL'nin 64 ticaret ortağına göre enflasyon farkı ayıklanmış değeri (BIS tanımı: artış reel değerlenme). İhracatın fiyat rekabeti ve dış denge ile birlikte okunur.",
+   "not": "Endeks 2020 = 100. Değerin artması liranın reel değer kazanması demektir.",
+   "iliskili": [
+    "wb-ne-exp-gnfs-zs-tur",
+    "wb-bn-cab-xoka-gd-zs-tur",
+    "bis-tufe-yillik-tr"
+   ],
    "api": "/api/v1/seri/bis-reel-efektif-kur-tr.json",
    "csv": "/api/v1/seri/bis-reel-efektif-kur-tr.csv"
   },
@@ -263,6 +340,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Konut fiyatlarının genel fiyat düzeyine göre değişimi. Kredi koşulları ve faizle birlikte okunur.",
+   "not": "Endeks 2010 = 100, tüketici fiyatlarıyla reelleştirilmiş.",
+   "iliskili": [
+    "bis-politika-faizi-tr",
+    "bis-ozel-kredi-gsyh-tr",
+    "bis-tufe-yillik-tr"
+   ],
    "api": "/api/v1/seri/bis-reel-konut-fiyat-tr.json",
    "csv": "/api/v1/seri/bis-reel-konut-fiyat-tr.csv"
   },
@@ -285,6 +369,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Hane halkı ve finansal olmayan şirketlere bütün kaynaklardan verilen kredinin GSYH'ye oranı. Uzun dönem eğiliminden sapması (kredi açığı) ve borç servis yüküyle birlikte okunur.",
+   "not": null,
+   "iliskili": [
+    "bis-kredi-acigi-tr",
+    "bis-borc-servis-orani-tr",
+    "bis-politika-faizi-tr"
+   ],
    "api": "/api/v1/seri/bis-ozel-kredi-gsyh-tr.json",
    "csv": "/api/v1/seri/bis-ozel-kredi-gsyh-tr.csv"
   },
@@ -307,6 +398,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Özel kesimin faiz ve anapara ödemelerinin gelirine oranı. Kredi büyüklüğü ve faiz düzeyiyle birlikte okunur.",
+   "not": "Faiz ve anapara ödemelerinin gelire oranı.",
+   "iliskili": [
+    "bis-ozel-kredi-gsyh-tr",
+    "bis-politika-faizi-tr",
+    "bis-kredi-acigi-tr"
+   ],
    "api": "/api/v1/seri/bis-borc-servis-orani-tr.json",
    "csv": "/api/v1/seri/bis-borc-servis-orani-tr.csv"
   },
@@ -329,6 +427,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Ekonomik faaliyetin dönüm noktalarını önceden yakalamak için kurulan bileşik endeks; 100 uzun dönem eğilimidir. Tahmin değil yön sinyalidir; gerçekleşen büyüme ve güven endeksleriyle birlikte okunur.",
+   "not": "Uzun dönem ortalaması = 100. 100'ün üstü ekonomik faaliyetin eğilimin üzerinde seyredeceğine işaret eder; tahmin değil öncü sinyaldir.",
+   "iliskili": [
+    "oecd-gsyh-buyume-yillik-tr",
+    "oecd-is-guveni-tr",
+    "oecd-sanayi-uretimi-tr"
+   ],
    "api": "/api/v1/seri/oecd-oncu-gosterge-tr.json",
    "csv": "/api/v1/seri/oecd-oncu-gosterge-tr.csv"
   },
@@ -351,6 +456,12 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "AB'nin uyumlaştırılmış yöntemiyle tüketici fiyatları; Türkiye'yi AB ülkeleriyle aynı tanımla karşılaştırmaya yarar. Ulusal TÜFE ile kapsam ve ağırlık farkları olabilir.",
+   "not": "AB ülkeleriyle aynı yöntemle derlenen enflasyon ölçüsü; TÜFE ile aynı değildir. Eurostat 2026'da COICOP 2018 sınıflamasına geçti (prc_hicp_minr).",
+   "iliskili": [
+    "bis-tufe-yillik-tr",
+    "wb-fp-cpi-totl-zg-tur"
+   ],
    "api": "/api/v1/seri/eurostat-hicp-yillik-tr.json",
    "csv": "/api/v1/seri/eurostat-hicp-yillik-tr.csv"
   },
@@ -373,6 +484,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Aylık, mevsimsellikten arındırılmış işsizlik oranı. Yıllık ILO serisi ve işgücüne katılımla birlikte okunur: katılım düşerken işsizliğin düşmesi farklı anlam taşır.",
+   "not": "15-74 yaş, işgücüne oran. AB ülkeleriyle karşılaştırılabilir tanım.",
+   "iliskili": [
+    "ilo-issizlik-tr",
+    "ilo-isgucune-katilim-tr",
+    "oecd-sanayi-uretimi-tr"
+   ],
    "api": "/api/v1/seri/eurostat-issizlik-aylik-tr.json",
    "csv": "/api/v1/seri/eurostat-issizlik-aylik-tr.csv"
   },
@@ -395,6 +513,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Kişi başına GSYH, ülkeler arası fiyat düzeyi farkı ayıklanmış sabit uluslararası dolarla. Refah düzeyini emsallerle karşılaştırmada cari dolar serisinden daha uygundur.",
+   "not": "Ülkeler arası fiyat farkı ayıklanmış gelir karşılaştırması; uluslararası dolar, sabit fiyatlar.",
+   "iliskili": [
+    "wb-ny-gdp-pcap-cd-tur",
+    "wb-sp-pop-dpnd-tur",
+    "wb-gb-xpd-rsdv-gd-zs-tur"
+   ],
    "api": "/api/v1/seri/wb-ny-gdp-pcap-pp-kd-tur.json",
    "csv": "/api/v1/seri/wb-ny-gdp-pcap-pp-kd-tur.csv"
   },
@@ -417,6 +542,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Makine, bina ve altyapıya yapılan yatırımın GSYH'ye oranı. Tasarruf oranıyla farkı cari dengeyi, büyümeyle ilişkisi üretim kapasitesini anlatır.",
+   "not": null,
+   "iliskili": [
+    "wb-ny-gds-totl-zs-tur",
+    "wb-bn-cab-xoka-gd-zs-tur",
+    "wb-ny-gdp-mktp-kd-zg-tur"
+   ],
    "api": "/api/v1/seri/wb-ne-gdi-ftot-zs-tur.json",
    "csv": "/api/v1/seri/wb-ne-gdi-ftot-zs-tur.csv"
   },
@@ -439,6 +571,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Yurt içi gelirin tüketilmeyen kısmının GSYH'ye oranı. Yatırımdan düşük kaldığı ölçüde fark dış kaynakla finanse edilir.",
+   "not": null,
+   "iliskili": [
+    "wb-ne-gdi-ftot-zs-tur",
+    "wb-bn-cab-xoka-gd-zs-tur",
+    "wb-ne-con-prvt-zs-tur"
+   ],
    "api": "/api/v1/seri/wb-ny-gds-totl-zs-tur.json",
    "csv": "/api/v1/seri/wb-ny-gds-totl-zs-tur.csv"
   },
@@ -461,6 +600,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Mal ve hizmet ihracatının GSYH'ye oranı: ekonominin dış talebe açıklığı. Reel kur ve ithalatla birlikte okunur.",
+   "not": null,
+   "iliskili": [
+    "wb-ne-imp-gnfs-zs-tur",
+    "bis-reel-efektif-kur-tr",
+    "wb-nv-ind-manf-zs-tur"
+   ],
    "api": "/api/v1/seri/wb-ne-exp-gnfs-zs-tur.json",
    "csv": "/api/v1/seri/wb-ne-exp-gnfs-zs-tur.csv"
   },
@@ -483,6 +629,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Mal ve hizmet ithalatının GSYH'ye oranı. İhracatla farkı dış ticaret dengesini, rezervlerle ilişkisi ithalatı karşılama kapasitesini verir.",
+   "not": null,
+   "iliskili": [
+    "wb-ne-exp-gnfs-zs-tur",
+    "wb-fi-res-totl-mo-tur",
+    "wb-bn-cab-xoka-gd-zs-tur"
+   ],
    "api": "/api/v1/seri/wb-ne-imp-gnfs-zs-tur.json",
    "csv": "/api/v1/seri/wb-ne-imp-gnfs-zs-tur.csv"
   },
@@ -505,6 +658,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Yabancıların şirket ortaklığı ve sermaye yoluyla yaptığı net yatırım girişinin GSYH'ye oranı; borç yaratmayan dış finansmandır. Cari açıkla birlikte okunur.",
+   "not": null,
+   "iliskili": [
+    "wb-bn-cab-xoka-gd-zs-tur",
+    "wb-dt-dod-dect-gn-zs-tur",
+    "wb-ne-gdi-ftot-zs-tur"
+   ],
    "api": "/api/v1/seri/wb-bx-klt-dinv-wd-gd-zs-tur.json",
    "csv": "/api/v1/seri/wb-bx-klt-dinv-wd-gd-zs-tur.csv"
   },
@@ -527,6 +687,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Gelir dağılımı eşitsizliği; 0 tam eşitlik, 100 tam eşitsizlik. Emeğin gelirden aldığı pay ve kayıt dışı istihdamla birlikte okunur.",
+   "not": "0 tam eşitlik, 100 tam eşitsizlik. Dünya Bankası Yoksulluk ve Eşitsizlik Platformu tahmini; her yıl yayımlanmaz.",
+   "iliskili": [
+    "ilo-emek-payi-tr",
+    "ilo-kayitdisi-istihdam-tr",
+    "wb-ny-gdp-pcap-pp-kd-tur"
+   ],
    "api": "/api/v1/seri/wb-si-pov-gini-tur.json",
    "csv": "/api/v1/seri/wb-si-pov-gini-tur.csv"
   },
@@ -549,6 +716,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Bugünkü ölüm oranları sürerse yeni doğanın yaşaması beklenen yıl. Sağlık harcaması ve yaşlı bağımlılık oranıyla birlikte okunur: uzayan ömür emeklilik süresini de uzatır.",
+   "not": null,
+   "iliskili": [
+    "wb-sh-xpd-chex-gd-zs-tur",
+    "wb-sp-pop-dpnd-ol-tur",
+    "wb-sp-dyn-tfrt-in-tur"
+   ],
    "api": "/api/v1/seri/wb-sp-dyn-le00-in-tur.json",
    "csv": "/api/v1/seri/wb-sp-dyn-le00-in-tur.csv"
   },
@@ -571,6 +745,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Yıl ortası toplam nüfus. Kişi başına göstergelerin paydasıdır; yaş yapısı (çalışma çağı payı, bağımlılık) ekonomik anlamını belirler.",
+   "not": null,
+   "iliskili": [
+    "wb-sp-pop-grow-tur",
+    "wb-sp-pop-1564-to-zs-tur",
+    "wb-ny-gdp-pcap-pp-kd-tur"
+   ],
    "api": "/api/v1/seri/wb-sp-pop-totl-tur.json",
    "csv": "/api/v1/seri/wb-sp-pop-totl-tur.csv"
   },
@@ -593,6 +774,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "İşgücü anketine göre iş arayan ama bulamayanların işgücüne oranı. İşgücüne katılım ve kayıt dışı istihdamla birlikte okunur.",
+   "not": "Ulusal hane halkı işgücü anketinden ILO'nun derlediği oran; model tahmini değildir.",
+   "iliskili": [
+    "ilo-isgucune-katilim-tr",
+    "eurostat-issizlik-aylik-tr",
+    "ilo-neet-tr"
+   ],
    "api": "/api/v1/seri/ilo-issizlik-tr.json",
    "csv": "/api/v1/seri/ilo-issizlik-tr.csv"
   },
@@ -615,6 +803,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Çalışan ya da iş arayanların 15 yaş üstü nüfusa oranı. Çalışma çağı nüfusunun büyüklüğünün üretime dönüşüp dönüşmediğini gösterir.",
+   "not": "Çalışma çağındaki nüfusun işgücündeki (çalışan ya da iş arayan) payı.",
+   "iliskili": [
+    "ilo-kadin-isgucune-katilim-tr",
+    "wb-sp-pop-1564-to-zs-tur",
+    "ilo-issizlik-tr"
+   ],
    "api": "/api/v1/seri/ilo-isgucune-katilim-tr.json",
    "csv": "/api/v1/seri/ilo-isgucune-katilim-tr.csv"
   },
@@ -637,6 +832,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Kadınların işgücüne katılım oranı. Genel katılımla farkı, demografik yapının sunduğu işgücü potansiyelinin ne kadarının kullanılmadığını gösterir.",
+   "not": "15 yaş ve üstü kadınların işgücündeki payı.",
+   "iliskili": [
+    "ilo-isgucune-katilim-tr",
+    "wb-sp-pop-dpnd-tur",
+    "wb-sp-dyn-tfrt-in-tur"
+   ],
    "api": "/api/v1/seri/ilo-kadin-isgucune-katilim-tr.json",
    "csv": "/api/v1/seri/ilo-kadin-isgucune-katilim-tr.csv"
   },
@@ -659,6 +861,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "15–24 yaş gençlerden ne eğitimde ne istihdamda olanların payı. Genç nüfusun beşerî sermayeye ve istihdama dönüşmeyen kısmıdır.",
+   "not": "15-24 yaş gençlerin ne çalışan ne okuyan ne de eğitim alan kısmının payı.",
+   "iliskili": [
+    "ilo-issizlik-tr",
+    "wb-sp-pop-1564-to-zs-tur",
+    "ilo-kayitdisi-istihdam-tr"
+   ],
    "api": "/api/v1/seri/ilo-neet-tr.json",
    "csv": "/api/v1/seri/ilo-neet-tr.csv"
   },
@@ -681,6 +890,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Sosyal güvenlik kaydı olmadan çalışanların istihdama oranı. Vergi ve prim tabanını, çalışanların sosyal güvenceye erişimini etkiler.",
+   "not": "ILO tanımıyla kayıt dışı istihdamın toplam istihdama oranı; ulusal tanımdan farklı olabilir.",
+   "iliskili": [
+    "wb-gc-tax-totl-gd-zs-tur",
+    "ilo-emek-payi-tr",
+    "ilo-issizlik-tr"
+   ],
    "api": "/api/v1/seri/ilo-kayitdisi-istihdam-tr.json",
    "csv": "/api/v1/seri/ilo-kayitdisi-istihdam-tr.csv"
   },
@@ -703,6 +919,13 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Emek gelirlerinin GSYH'ye oranı (ILO; kendi hesabına çalışanların emek geliri tahmini dahil). Gelir dağılımı ve asgari ücretle birlikte okunur.",
+   "not": "Çalışanların ücret ve kendi hesabına çalışanların emek gelirinin GSYH'ye oranı; ILO model tahmini, son yıllar projeksiyondur (gözlem bayrağı).",
+   "iliskili": [
+    "wb-si-pov-gini-tur",
+    "eurostat-asgari-ucret-pps-tr",
+    "ilo-kayitdisi-istihdam-tr"
+   ],
    "api": "/api/v1/seri/ilo-emek-payi-tr.json",
    "csv": "/api/v1/seri/ilo-emek-payi-tr.csv"
   },
@@ -725,8 +948,709 @@
     "indirme": true,
     "api": true
    },
+   "baglam": "Brüt asgari ücret, ülkeler arası fiyat düzeyi farkı ayıklanmış birimle (PPS). AB ülkeleriyle satın alma gücü karşılaştırması verir; net ücret değildir.",
+   "not": "PPS, ülkeler arası fiyat düzeyi farkını ayıklayan yapay ortak birimdir; kur değildir. Eurostat yarıyılda bir (Ocak ve Temmuz) yayımlar.",
+   "iliskili": [
+    "ilo-emek-payi-tr",
+    "wb-ny-gdp-pcap-pp-kd-tur",
+    "bis-tufe-yillik-tr"
+   ],
    "api": "/api/v1/seri/eurostat-asgari-ucret-pps-tr.json",
    "csv": "/api/v1/seri/eurostat-asgari-ucret-pps-tr.csv"
+  },
+  {
+   "id": "wb-gc-dod-totl-gd-zs-tur",
+   "baslik": "Merkezi yönetim borç stoku, GSYH'ye oran",
+   "tema": "kamu-maliyesi",
+   "siklik": "yillik",
+   "birim": "yuzde-gsyh",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2024",
+    "deger": "25.5128667788107",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-22T20:38:23.869457Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Merkezi yönetimin brüt borcunun GSYH'ye oranı. Sürdürülebilirliği faiz ile büyüme farkına ve vergi gelirlerine bağlıdır; ülkeler arası karşılaştırmada kapsam (merkezi yönetim/genel yönetim) farkına dikkat edilir.",
+   "not": null,
+   "iliskili": [
+    "wb-gc-tax-totl-gd-zs-tur",
+    "wb-ny-gdp-mktp-kd-zg-tur",
+    "bis-politika-faizi-tr"
+   ],
+   "api": "/api/v1/seri/wb-gc-dod-totl-gd-zs-tur.json",
+   "csv": "/api/v1/seri/wb-gc-dod-totl-gd-zs-tur.csv"
+  },
+  {
+   "id": "wb-gc-tax-totl-gd-zs-tur",
+   "baslik": "Vergi gelirleri, GSYH'ye oran",
+   "tema": "kamu-maliyesi",
+   "siklik": "yillik",
+   "birim": "yuzde-gsyh",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2024",
+    "deger": "17.6239296509985",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-22T20:38:23.869457Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Merkezi yönetimin vergi gelirlerinin GSYH'ye oranı (sosyal güvenlik primleri hariç). Kamunun borçlanmadan finanse edebildiği payı ve kayıt dışılığın vergi tabanına etkisini birlikte gösterir.",
+   "not": null,
+   "iliskili": [
+    "wb-gc-dod-totl-gd-zs-tur",
+    "ilo-kayitdisi-istihdam-tr",
+    "wb-sh-xpd-chex-gd-zs-tur"
+   ],
+   "api": "/api/v1/seri/wb-gc-tax-totl-gd-zs-tur.json",
+   "csv": "/api/v1/seri/wb-gc-tax-totl-gd-zs-tur.csv"
+  },
+  {
+   "id": "wb-fm-lbl-bmny-gd-zs-tur",
+   "baslik": "Geniş para (M2), GSYH'ye oran",
+   "tema": "para-politikasi",
+   "siklik": "yillik",
+   "birim": "yuzde-gsyh",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "42.405460458804",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-22T20:38:23.869457Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Dolaşımdaki para ve banka mevduatlarının GSYH'ye oranı: finansal derinliğin bir ölçüsü. Yüksek enflasyon dönemlerinde parayı elde tutma isteği azaldığı için oran düşebilir.",
+   "not": null,
+   "iliskili": [
+    "bis-politika-faizi-tr",
+    "bis-tufe-yillik-tr",
+    "bis-ozel-kredi-gsyh-tr"
+   ],
+   "api": "/api/v1/seri/wb-fm-lbl-bmny-gd-zs-tur.json",
+   "csv": "/api/v1/seri/wb-fm-lbl-bmny-gd-zs-tur.csv"
+  },
+  {
+   "id": "wb-ny-gdp-defl-kd-zg-tur",
+   "baslik": "GSYH deflatörü, yıllık değişim",
+   "tema": "enflasyon",
+   "siklik": "yillik",
+   "birim": "yuzde",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "36.4253414432254",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-22T20:38:23.869457Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Yurt içinde üretilen bütün mal ve hizmetlerin fiyat değişimi. TÜFE yalnız tüketici sepetini ölçer; ikisi arasındaki fark ithal ürün fiyatları ve yatırım malları fiyatlarındaki ayrışmayı gösterir.",
+   "not": null,
+   "iliskili": [
+    "wb-fp-cpi-totl-zg-tur",
+    "bis-tufe-yillik-tr",
+    "wb-ny-gdp-mktp-kd-zg-tur"
+   ],
+   "api": "/api/v1/seri/wb-ny-gdp-defl-kd-zg-tur.json",
+   "csv": "/api/v1/seri/wb-ny-gdp-defl-kd-zg-tur.csv"
+  },
+  {
+   "id": "wb-fi-res-totl-mo-tur",
+   "baslik": "Toplam rezervler, kaç aylık ithalatı karşılıyor",
+   "tema": "doviz-rezerv",
+   "siklik": "yillik",
+   "birim": "ay",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "5.127654800312",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-22T20:38:23.869457Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Brüt rezervlerin aylık mal ve hizmet ithalatına bölümü. Yaygın bir yeterlilik ölçüsüdür; kısa vadeli dış borç ve rezervlerin net/brüt ayrımı ayrıca önemlidir.",
+   "not": null,
+   "iliskili": [
+    "wb-fi-res-totl-cd-tur",
+    "wb-ne-imp-gnfs-zs-tur",
+    "wb-dt-dod-dect-gn-zs-tur"
+   ],
+   "api": "/api/v1/seri/wb-fi-res-totl-mo-tur.json",
+   "csv": "/api/v1/seri/wb-fi-res-totl-mo-tur.csv"
+  },
+  {
+   "id": "wb-nv-ind-manf-zs-tur",
+   "baslik": "İmalat sanayi katma değeri, GSYH'ye oran",
+   "tema": "buyume",
+   "siklik": "yillik",
+   "birim": "yuzde-gsyh",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2024",
+    "deger": "16.8424801408013",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-22T20:38:23.869457Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "İmalatın ekonomideki payı. İhracat kapasitesi, verimlilik artışı ve sanayi üretiminin aylık seyriyle birlikte okunur.",
+   "not": null,
+   "iliskili": [
+    "oecd-sanayi-uretimi-tr",
+    "wb-ne-exp-gnfs-zs-tur",
+    "wb-gb-xpd-rsdv-gd-zs-tur"
+   ],
+   "api": "/api/v1/seri/wb-nv-ind-manf-zs-tur.json",
+   "csv": "/api/v1/seri/wb-nv-ind-manf-zs-tur.csv"
+  },
+  {
+   "id": "wb-dt-dod-dect-gn-zs-tur",
+   "baslik": "Dış borç stoku, GSMG'ye oran",
+   "tema": "dis-sektor",
+   "siklik": "yillik",
+   "birim": "yuzde",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "36.3900591836923",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-22T20:38:23.869457Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Toplam dış borcun gayrisafi milli gelire oranı (GSYH değil). Borcun gelire göre ölçeğini verir; Dünya Bankası bu seriyi yalnız düşük ve orta gelirli ülkeler için yayımlar, bazı emsallerde veri yoktur.",
+   "not": null,
+   "iliskili": [
+    "wb-dt-dod-dect-cd-tur",
+    "wb-fi-res-totl-mo-tur",
+    "wb-bn-cab-xoka-gd-zs-tur"
+   ],
+   "api": "/api/v1/seri/wb-dt-dod-dect-gn-zs-tur.json",
+   "csv": "/api/v1/seri/wb-dt-dod-dect-gn-zs-tur.csv"
+  },
+  {
+   "id": "wb-ne-con-prvt-zs-tur",
+   "baslik": "Hane halkı tüketim harcaması, GSYH'ye oran",
+   "tema": "buyume",
+   "siklik": "yillik",
+   "birim": "yuzde-gsyh",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "54.705088365197",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-22T20:38:23.869457Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Hane halklarının nihai tüketiminin GSYH'deki payı: büyümenin iç talep ağırlığı. Tasarruf oranıyla ters yönlü hareket eder.",
+   "not": null,
+   "iliskili": [
+    "wb-ny-gds-totl-zs-tur",
+    "oecd-perakende-hacmi-tr",
+    "oecd-tuketici-guveni-tr"
+   ],
+   "api": "/api/v1/seri/wb-ne-con-prvt-zs-tur.json",
+   "csv": "/api/v1/seri/wb-ne-con-prvt-zs-tur.csv"
+  },
+  {
+   "id": "wb-sh-xpd-chex-gd-zs-tur",
+   "baslik": "Cari sağlık harcaması, GSYH'ye oran",
+   "tema": "toplum",
+   "siklik": "yillik",
+   "birim": "yuzde-gsyh",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2023",
+    "deger": "4.27524424",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-22T20:38:23.869457Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Kamu ve özel cari sağlık harcamasının GSYH'ye oranı. Nüfus yaşlandıkça bu payın baskı altına girmesi beklenir; yaşam süresi ve yaşlı bağımlılık oranıyla birlikte okunur.",
+   "not": null,
+   "iliskili": [
+    "wb-sp-pop-dpnd-ol-tur",
+    "wb-sp-dyn-le00-in-tur",
+    "wb-gc-tax-totl-gd-zs-tur"
+   ],
+   "api": "/api/v1/seri/wb-sh-xpd-chex-gd-zs-tur.json",
+   "csv": "/api/v1/seri/wb-sh-xpd-chex-gd-zs-tur.csv"
+  },
+  {
+   "id": "wb-gb-xpd-rsdv-gd-zs-tur",
+   "baslik": "Ar-Ge harcaması, GSYH'ye oran",
+   "tema": "buyume",
+   "siklik": "yillik",
+   "birim": "yuzde-gsyh",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2023",
+    "deger": "1.42224",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-22T20:38:23.869457Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Kamu ve özel araştırma-geliştirme harcamasının GSYH'ye oranı. Uzun vadeli verimlilik ve katma değerli üretim kapasitesinin girdisidir.",
+   "not": null,
+   "iliskili": [
+    "wb-nv-ind-manf-zs-tur",
+    "wb-ny-gdp-pcap-pp-kd-tur",
+    "wb-it-net-user-zs-tur"
+   ],
+   "api": "/api/v1/seri/wb-gb-xpd-rsdv-gd-zs-tur.json",
+   "csv": "/api/v1/seri/wb-gb-xpd-rsdv-gd-zs-tur.csv"
+  },
+  {
+   "id": "wb-it-net-user-zs-tur",
+   "baslik": "İnternet kullanan nüfus oranı",
+   "tema": "toplum",
+   "siklik": "yillik",
+   "birim": "yuzde",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "89.77024003",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-22T20:38:23.869457Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Son üç ayda internet kullanan bireylerin nüfusa oranı. Dijital hizmetlere, finansal erişime ve uzaktan çalışmaya açıklığın ölçüsüdür.",
+   "not": null,
+   "iliskili": [
+    "wb-gb-xpd-rsdv-gd-zs-tur",
+    "wb-sp-pop-1564-to-zs-tur"
+   ],
+   "api": "/api/v1/seri/wb-it-net-user-zs-tur.json",
+   "csv": "/api/v1/seri/wb-it-net-user-zs-tur.csv"
+  },
+  {
+   "id": "wb-sp-pop-dpnd-tur",
+   "baslik": "Yaş bağımlılık oranı (çalışma çağı nüfusuna oran)",
+   "tema": "toplum",
+   "siklik": "yillik",
+   "birim": "yuzde",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "46.1856736686322",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-22T20:38:23.869457Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "0–14 ve 65 yaş üstü nüfusun 15–64 yaş nüfusa oranı. Düşük oran, çalışma çağı nüfusunun büyük olduğu \"demografik fırsat penceresi\" demektir; bunun büyümeye dönüşmesi işgücüne katılım ve istihdama bağlıdır.",
+   "not": null,
+   "iliskili": [
+    "ilo-isgucune-katilim-tr",
+    "ilo-kadin-isgucune-katilim-tr",
+    "wb-sp-pop-dpnd-ol-tur"
+   ],
+   "api": "/api/v1/seri/wb-sp-pop-dpnd-tur.json",
+   "csv": "/api/v1/seri/wb-sp-pop-dpnd-tur.csv"
+  },
+  {
+   "id": "wb-sp-pop-dpnd-ol-tur",
+   "baslik": "Yaşlı bağımlılık oranı (65+ / 15–64 yaş)",
+   "tema": "toplum",
+   "siklik": "yillik",
+   "birim": "yuzde",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "15.4532004859751",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-22T20:38:23.869457Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "65 yaş üstü nüfusun çalışma çağındaki nüfusa oranı. Emeklilik ve sağlık harcamalarının çalışan başına düşen finansman yükünün demografik tarafını gösterir.",
+   "not": null,
+   "iliskili": [
+    "wb-sp-dyn-tfrt-in-tur",
+    "wb-sh-xpd-chex-gd-zs-tur",
+    "wb-sp-dyn-le00-in-tur"
+   ],
+   "api": "/api/v1/seri/wb-sp-pop-dpnd-ol-tur.json",
+   "csv": "/api/v1/seri/wb-sp-pop-dpnd-ol-tur.csv"
+  },
+  {
+   "id": "wb-sp-pop-1564-to-zs-tur",
+   "baslik": "Çalışma çağındaki nüfusun (15–64 yaş) payı",
+   "tema": "toplum",
+   "siklik": "yillik",
+   "birim": "yuzde",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "68.4061556592084",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-22T20:38:23.869457Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "15–64 yaş nüfusun toplam nüfusa oranı: potansiyel işgücünün demografik üst sınırı. Gerçekleşen üretime katkısı katılım ve istihdam oranlarıyla birlikte okunur.",
+   "not": null,
+   "iliskili": [
+    "ilo-isgucune-katilim-tr",
+    "wb-sp-pop-dpnd-tur",
+    "ilo-neet-tr"
+   ],
+   "api": "/api/v1/seri/wb-sp-pop-1564-to-zs-tur.json",
+   "csv": "/api/v1/seri/wb-sp-pop-1564-to-zs-tur.csv"
+  },
+  {
+   "id": "wb-sp-dyn-tfrt-in-tur",
+   "baslik": "Toplam doğurganlık hızı (kadın başına doğum)",
+   "tema": "toplum",
+   "siklik": "yillik",
+   "birim": "dogum",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2024",
+    "deger": "1.48",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-22T20:38:23.869457Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Bir kadının doğurganlık çağı boyunca bugünkü oranlarla sahip olması beklenen çocuk sayısı. Yaklaşık 2,1 nüfusun kendini yenileme düzeyidir; altında kalan oran on yıllar içinde çalışma çağı nüfusunu küçültür ve yaşlı bağımlılığını artırır.",
+   "not": null,
+   "iliskili": [
+    "wb-sp-pop-dpnd-ol-tur",
+    "wb-sp-pop-grow-tur",
+    "wb-sp-pop-1564-to-zs-tur"
+   ],
+   "api": "/api/v1/seri/wb-sp-dyn-tfrt-in-tur.json",
+   "csv": "/api/v1/seri/wb-sp-dyn-tfrt-in-tur.csv"
+  },
+  {
+   "id": "wb-sp-pop-grow-tur",
+   "baslik": "Nüfus artış hızı",
+   "tema": "toplum",
+   "siklik": "yillik",
+   "birim": "yuzde",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "0.419954927193433",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-22T20:38:23.869457Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Yıl ortası nüfusun yıllık değişimi (doğum, ölüm ve göç). GSYH büyümesinden düşüldüğünde kişi başı gelirin büyümesine yaklaşık ulaşılır.",
+   "not": null,
+   "iliskili": [
+    "wb-sp-pop-totl-tur",
+    "wb-sp-dyn-tfrt-in-tur",
+    "wb-ny-gdp-mktp-kd-zg-tur"
+   ],
+   "api": "/api/v1/seri/wb-sp-pop-grow-tur.json",
+   "csv": "/api/v1/seri/wb-sp-pop-grow-tur.csv"
+  },
+  {
+   "id": "oecd-gsyh-buyume-yillik-tr",
+   "baslik": "GSYH büyümesi, çeyreklik, bir yıl önceki çeyreğe göre",
+   "tema": "buyume",
+   "siklik": "ceyreklik",
+   "birim": "yuzde",
+   "kaynak": "oecd",
+   "son": {
+    "donem": "2026-Q2",
+    "deger": "2.557978446",
+    "durum": "A"
+   },
+   "kaynak_guncelleme": null,
+   "cekildi": "2026-11-22T20:40:34.629061Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Sabit fiyatlı GSYH'nin bir yıl önceki aynı çeyreğe göre değişimi (OECD üç aylık ulusal hesaplar). Yıllık seriden önce yıl içindeki dönüşü gösterir; öncü gösterge ve güven endeksleriyle birlikte okunur.",
+   "not": null,
+   "iliskili": [
+    "oecd-gsyh-buyume-ceyrek-tr",
+    "oecd-oncu-gosterge-tr",
+    "oecd-sanayi-uretimi-tr"
+   ],
+   "api": "/api/v1/seri/oecd-gsyh-buyume-yillik-tr.json",
+   "csv": "/api/v1/seri/oecd-gsyh-buyume-yillik-tr.csv"
+  },
+  {
+   "id": "oecd-gsyh-buyume-ceyrek-tr",
+   "baslik": "GSYH büyümesi, çeyreklik, bir önceki çeyreğe göre (mevsimsellikten arındırılmış)",
+   "tema": "buyume",
+   "siklik": "ceyreklik",
+   "birim": "yuzde",
+   "kaynak": "oecd",
+   "son": {
+    "donem": "2026-Q2",
+    "deger": "1.119024786",
+    "durum": "A"
+   },
+   "kaynak_guncelleme": null,
+   "cekildi": "2026-11-22T20:40:34.629061Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Mevsim ve takvim etkisinden arındırılmış GSYH'nin bir önceki çeyreğe göre değişimi; ivmedeki değişimi en erken gösteren ölçü. Yıllıklaştırılmış değildir.",
+   "not": null,
+   "iliskili": [
+    "oecd-gsyh-buyume-yillik-tr",
+    "oecd-is-guveni-tr"
+   ],
+   "api": "/api/v1/seri/oecd-gsyh-buyume-ceyrek-tr.json",
+   "csv": "/api/v1/seri/oecd-gsyh-buyume-ceyrek-tr.csv"
+  },
+  {
+   "id": "oecd-is-guveni-tr",
+   "baslik": "Bileşik iş güveni endeksi, genlik ayarlı",
+   "tema": "buyume",
+   "siklik": "aylik",
+   "birim": "endeks",
+   "kaynak": "oecd",
+   "son": {
+    "donem": "2026-10",
+    "deger": "99.20889",
+    "durum": "A"
+   },
+   "kaynak_guncelleme": null,
+   "cekildi": "2026-11-22T20:38:23.869457Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Şirket yöneticilerine yapılan anketlerden OECD'nin uluslararası karşılaştırılabilir hâle getirdiği endeks; 100 uzun dönem ortalamasıdır. Resmî üretim verisinden önce yön sinyali verir.",
+   "not": null,
+   "iliskili": [
+    "oecd-tuketici-guveni-tr",
+    "oecd-sanayi-uretimi-tr",
+    "eurostat-ekonomik-guven-tr"
+   ],
+   "api": "/api/v1/seri/oecd-is-guveni-tr.json",
+   "csv": "/api/v1/seri/oecd-is-guveni-tr.csv"
+  },
+  {
+   "id": "oecd-tuketici-guveni-tr",
+   "baslik": "Bileşik tüketici güveni endeksi, genlik ayarlı",
+   "tema": "buyume",
+   "siklik": "aylik",
+   "birim": "endeks",
+   "kaynak": "oecd",
+   "son": {
+    "donem": "2026-10",
+    "deger": "99.75732",
+    "durum": "A"
+   },
+   "kaynak_guncelleme": null,
+   "cekildi": "2026-11-22T20:38:23.869457Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Hane halkı anketlerinden OECD'nin karşılaştırılabilir hâle getirdiği endeks; 100 uzun dönem ortalamasıdır. Tüketim harcamaları ve perakende satışlarla birlikte okunur.",
+   "not": null,
+   "iliskili": [
+    "oecd-perakende-hacmi-tr",
+    "wb-ne-con-prvt-zs-tur",
+    "bis-tufe-yillik-tr"
+   ],
+   "api": "/api/v1/seri/oecd-tuketici-guveni-tr.json",
+   "csv": "/api/v1/seri/oecd-tuketici-guveni-tr.csv"
+  },
+  {
+   "id": "oecd-sanayi-uretimi-tr",
+   "baslik": "Sanayi üretim endeksi (inşaat hariç), mevsimsellikten arındırılmış",
+   "tema": "buyume",
+   "siklik": "aylik",
+   "birim": "endeks",
+   "kaynak": "oecd",
+   "son": {
+    "donem": "2026-09",
+    "deger": "149.4268",
+    "durum": "A"
+   },
+   "kaynak_guncelleme": null,
+   "cekildi": "2026-11-22T20:38:23.869457Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Madencilik, imalat ve enerji üretiminin hacim endeksi (2015 = 100). Aylık olduğu için çeyreklik GSYH'den önce faaliyetin yönünü gösterir; düzeyi ülkeler arasında karşılaştırılmaz, değişimi karşılaştırılır.",
+   "not": null,
+   "iliskili": [
+    "oecd-gsyh-buyume-yillik-tr",
+    "oecd-is-guveni-tr",
+    "wb-nv-ind-manf-zs-tur"
+   ],
+   "api": "/api/v1/seri/oecd-sanayi-uretimi-tr.json",
+   "csv": "/api/v1/seri/oecd-sanayi-uretimi-tr.csv"
+  },
+  {
+   "id": "oecd-perakende-hacmi-tr",
+   "baslik": "Perakende satış hacim endeksi, mevsimsellikten arındırılmış",
+   "tema": "buyume",
+   "siklik": "aylik",
+   "birim": "endeks",
+   "kaynak": "oecd",
+   "son": {
+    "donem": "2026-08",
+    "deger": "266.4808",
+    "durum": "A"
+   },
+   "kaynak_guncelleme": null,
+   "cekildi": "2026-11-22T20:38:23.869457Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Perakende satışların fiyat etkisi ayıklanmış hacmi (2015 = 100). Hane halkı tüketiminin aylık göstergesidir; tüketici güveni ve enflasyonla birlikte okunur.",
+   "not": null,
+   "iliskili": [
+    "oecd-tuketici-guveni-tr",
+    "wb-ne-con-prvt-zs-tur",
+    "bis-tufe-yillik-tr"
+   ],
+   "api": "/api/v1/seri/oecd-perakende-hacmi-tr.json",
+   "csv": "/api/v1/seri/oecd-perakende-hacmi-tr.csv"
+  },
+  {
+   "id": "bis-kredi-acigi-tr",
+   "baslik": "Kredi açığı: özel kesim kredisinin GSYH'ye oranının uzun dönem eğiliminden sapması",
+   "tema": "bankacilik",
+   "siklik": "ceyreklik",
+   "birim": "yuzde-gsyh",
+   "kaynak": "bis",
+   "son": {
+    "donem": "2026-Q1",
+    "deger": "-24.6759",
+    "durum": "A"
+   },
+   "kaynak_guncelleme": null,
+   "cekildi": "2026-11-22T20:38:23.869457Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Özel kesim kredisinin GSYH'ye oranının uzun dönem eğiliminden farkı, yüzde puan (BIS). Basel III'te karşı döngüsel sermaye tamponu için başvurulan ölçüdür; büyük pozitif açık hızlı kredi genişlemesine işaret eder. Yüksek enflasyonda GSYH'nin nominal büyümesi oranı aşağı çekebilir.",
+   "not": null,
+   "iliskili": [
+    "bis-ozel-kredi-gsyh-tr",
+    "bis-borc-servis-orani-tr",
+    "bis-politika-faizi-tr"
+   ],
+   "api": "/api/v1/seri/bis-kredi-acigi-tr.json",
+   "csv": "/api/v1/seri/bis-kredi-acigi-tr.csv"
+  },
+  {
+   "id": "eurostat-ekonomik-guven-tr",
+   "baslik": "Ekonomik güven endeksi (AB anketleri), mevsimsellikten arındırılmış",
+   "tema": "buyume",
+   "siklik": "aylik",
+   "birim": "endeks",
+   "kaynak": "eurostat",
+   "son": {
+    "donem": "2026-10",
+    "deger": "95.9",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-10-29",
+   "cekildi": "2026-11-22T20:38:23.869457Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Avrupa Komisyonu'nun uyumlaştırılmış iş ve tüketici anketlerinden (sanayi, hizmet, perakende, inşaat, tüketici) bileşik endeks; 100 uzun dönem ortalamasıdır. Türkiye'yi AB ülkeleriyle aynı anket yöntemiyle karşılaştırır.",
+   "not": null,
+   "iliskili": [
+    "oecd-is-guveni-tr",
+    "oecd-tuketici-guveni-tr",
+    "oecd-gsyh-buyume-yillik-tr"
+   ],
+   "api": "/api/v1/seri/eurostat-ekonomik-guven-tr.json",
+   "csv": "/api/v1/seri/eurostat-ekonomik-guven-tr.csv"
   }
  ]
 }

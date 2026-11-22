@@ -3,7 +3,7 @@ import Taban from "../../layouts/Taban.astro";
 import SeriGrafik from "../../components/SeriGrafik.astro";
 import EmsalGrafik from "../../components/EmsalGrafik.astro";
 import Serit from "../../components/Serit.astro";
-import { seriler, deger, degisim, son, dolu, tarih, birimAdi, siklikAdi, TEMA, emsal, emsalNoktalari, noktalar, ulkeAdi, durum, degisiklikler, type Seri } from "../../lib/veri";
+import { seriler, deger, degisim, son, dolu, tarih, birimAdi, siklikAdi, TEMA, emsal, emsalNoktalari, noktalar, ulkeAdi, durum, degisiklikler, baglamlar, type Seri } from "../../lib/veri";
 import { oku, sirala, siraCumlesi, donemAdi, yillikDegisimler, type YillikFark } from "../../lib/okuma.ts";
 import { KISI_REF } from "../../lib/kimlik";
 
@@ -37,12 +37,20 @@ const yillik = yillikDegisimler(noktalar(s), s.siklik, s.birim);
 const yfYaz = (f: YillikFark) => {
   const isaret = f.fark > 0 ? "+" : f.fark < 0 ? "−" : "";
   const sayi = Math.abs(f.fark).toLocaleString("tr-TR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-  return f.tur === "yuzde" ? `${isaret}%${sayi}` : `${isaret}${sayi} ${f.tur === "yil" ? "yıl" : "puan"}`;
+  return f.ek === "%" ? `${isaret}%${sayi}` : `${isaret}${sayi} ${f.ek}`;
 };
 const gecmis = `https://github.com/onerkoray/veri-korayoner/commits/main/yayin/site-veri/seri/${s.id}.json`;
 const gezginS = ({ aylik: "aylik", ceyreklik: "ceyreklik" } as Record<string, string>)[s.siklik] ?? "yillik";
 const gezginAdres = s.izin.indirme ? `/gezgin#g=${s.id}${gezginS === "aylik" ? "" : `&s=${gezginS}`}${d[0] && (gezginS === "yillik" || Number(d[0].donem.slice(0, 4)) > 2010) && d[0].donem.slice(0, 4) !== "2010" ? `&b=${d[0].donem.slice(0, 4)}` : ""}` : null;   // yıllıkta bütün seri
 const karsiAdres = s.izin.api && emsal(s.id) ? `/karsilastir#g=${s.id}` : null;
+// Bağlam: kayıttaki okuma metni ve birlikte okunacak göstergeler (yayımlanmış olanlar).
+const bg = baglamlar().get(s.id);
+const tum = seriler();
+const iliskili = (bg?.iliskili ?? []).map((i) => tum.find((x) => x.id === i)).filter((x): x is Seri => !!x);
+const birlikte = [s, ...iliskili].filter((x) => x.izin.indirme).slice(0, 6);
+const SKL = ["aylik", "ceyreklik", "yillik"];
+const ortakS = SKL[Math.max(...birlikte.map((x) => Math.max(0, SKL.indexOf(x.siklik === "yariyillik" ? "yillik" : x.siklik))))];
+const birlikteAdres = birlikte.length > 1 ? `/gezgin#g=${birlikte.map((x) => x.id).join(",")}${ortakS === "aylik" ? "" : `&s=${ortakS}`}` : null;
 const jsonld = {
   "@context": "https://schema.org", "@type": "Dataset",
   name: `${s.baslik} — Türkiye`, description: `${s.baslik}, ${d[0]?.donem}–${sn?.donem}. Kaynak: ${s.kaynak.kurum} (${s.kaynak_kod}). ${okuma[0] ?? ""}`.trim(),
@@ -85,6 +93,29 @@ const aciklama = `${s.baslik}: ${sn ? donemAdi(sn.donem) : ""} ${deger(s, sn?.de
         <h2 id="ok">Veri ne söylüyor</h2>
         <ul>{okuma.map((c) => <li>{c}</li>)}</ul>
         <p class="kucuk">Bu cümleler her güncellemede serinin kendisinden yeniden hesaplanır; yorum değil, konum bilgisidir. <a href="/yontem#okuma">Nasıl hesaplanıyor</a></p>
+      </section>
+    )}
+
+    {bg?.baglam && (
+      <section class="baglam" aria-labelledby="bg">
+        <h2 id="bg">Bu gösterge neyi anlatır</h2>
+        <p>{bg.baglam}</p>
+        {bg.not && <p class="kucuk">Not: {bg.not}</p>}
+        {iliskili.length > 0 && (
+          <>
+            <h3>Birlikte okunacak göstergeler</h3>
+            <ul class="iliskili">
+              {iliskili.map((x) => { const xs = son(x); return (
+                <li>
+                  <a href={`/gosterge/${x.id}`}>{x.baslik}</a>
+                  <span class="sayi">{deger(x, xs?.deger ?? null)}</span>
+                  <span class="kucuk">{xs && donemAdi(xs.donem)} · {x.kaynak.kurum.replace(/\s*\(.*\)$/, "")}</span>
+                </li>
+              ); })}
+            </ul>
+            {birlikteAdres && <p><a class="ok" href={birlikteAdres}>Hepsini veri gezgininde birlikte aç →</a></p>}
+          </>
+        )}
       </section>
     )}
 
@@ -182,6 +213,16 @@ const aciklama = `${s.baslik}: ${sn ? donemAdi(sn.donem) : ""} ${deger(s, sn?.de
   .guncellik { display: flex; flex-wrap: wrap; gap: .3rem 1rem; align-items: center; margin: 0; font-size: .82rem; color: var(--soluk); }
   .eylem { display: flex; flex-wrap: wrap; gap: .5rem 1.2rem; margin: 0; font-weight: 600; font-size: .92rem; }
   .revizyon { display: grid; gap: .6rem; padding-top: 2rem; }
+  .baglam { display: grid; gap: .6rem; padding-block: 1.5rem; max-width: 72ch; }
+  .baglam p { margin: 0; }
+  .baglam h3 { font-size: 1rem; margin-top: .4rem; }
+  .iliskili { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--cizgi); }
+  .iliskili li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .1rem 1rem; padding: .55rem 0; border-bottom: 1px solid var(--cizgi); }
+  .iliskili a { font-weight: 600; text-decoration: none; }
+  .iliskili a:hover { text-decoration: underline; }
+  .iliskili .sayi { font-weight: 650; text-align: right; }
+  .iliskili .kucuk { grid-column: 1 / -1; color: var(--soluk); font-size: .8rem; }
+  .ok { font-weight: 600; }
   .olaylar { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; font-size: .9rem; }
   .olaylar time { color: var(--soluk); font-size: .82rem; margin-right: .5rem; }
   .olaylar .hap { margin-right: .3rem; }

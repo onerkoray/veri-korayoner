@@ -26,6 +26,9 @@ import Taban from "../layouts/Taban.astro";
     </ul>
     <p>Hesap kodu açıktır ve testlidir (<code>web/src/lib/okuma.ts</code>).</p>
 
+    <h2 id="baglam">Bağlam: göstergeler birlikte nasıl okunur</h2>
+    <p>Her gösterge sayfasında "Bu gösterge neyi anlatır" bölümü vardır: göstergenin neyi ölçtüğü, kaynağın tanımına göre neyi ölçmediği ve hangi göstergelerle birlikte okunduğu. Nüfus yapısı, sağlık harcaması ya da internet kullanımı gibi ekonomi dışı görünen seriler, ekonomik göstergelerle ilişkisi kurularak yayımlanır: örneğin bağımlılık oranı işgücüne katılımla, doğurganlık yaşlı bağımlılık oranıyla, tasarruf oranı yatırım ve cari dengeyle. Bu metinler kayıt dosyasında (<code>registry/seriler.yaml</code>, <code>baglam</code> ve <code>iliskili</code> alanları) elle yazılır ve gözden geçirilir; rakam içermez, iyi ya da kötü yorumu ve tahmin yapmaz. Muhasebe özdeşlikleri (tasarruf − yatırım ≈ cari denge gibi) ve kaynak tanımları dışında nedensellik iddiası taşımaz.</p>
+
     <h2 id="olcek">Veri gezgininde ölçek</h2>
     <p>Gezginde seriler kaynaktaki ölçekte durur. İki dönüşüm, farklı birimli serileri tek eksende okumak içindir ve bu sitenin hesabıdır. <strong>Baz = 100</strong>: düzey serileri (GSYH, nüfus, kişi başı gelir) seçili serilerin hepsinin değeri olan ilk döneme bölünüp 100 ile çarpılır; oran ve puan serilerinde oranın oranı anlamsız olduğu için uygulanmaz, baz değeri sıfır ya da negatifse hesaplanmaz. <strong>Fark</strong>: yüzde serilerinde aynı baz döneme göre yüzde puan farkı. Bir panelde en çok dört seri çizilir; daha fazla renk, renk körlüğünde ayırt edilemez. İndirilen CSV her zaman ham değeri verir.</p>
 

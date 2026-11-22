@@ -76,3 +76,11 @@ def test_saglik_kirmizi_kosullari():
     assert saglik({"seriler": [r(ardisik_hata=3, son_hata={"ileti": "502"})]}, simdi)[0]
     assert saglik({"seriler": [r(son_basarili_kontrol="2026-11-01T05:00:00Z")]}, simdi)[0]
     assert saglik({"seriler": [r()]}, simdi) == ([], [])
+
+
+def test_hic_seri_denenmediyse_ust_kontrol_ilerlemez(tmp_path):
+    ks, ss = {"k": _kaynak()}, [_seri("s-a")]
+    _yayinla(tmp_path, "s-a", ["2026-09"])
+    yaz(tmp_path, ss, ks, _izin, {"s-a": None}, datetime(2026, 11, 18, 5, 20, tzinfo=UTC), _yaz_atomik)
+    d = yaz(tmp_path, ss, ks, _izin, {}, datetime(2026, 11, 22, 20, 0, tzinfo=UTC), _yaz_atomik)
+    assert d["son_kontrol"] == "2026-11-18T05:20:00Z"

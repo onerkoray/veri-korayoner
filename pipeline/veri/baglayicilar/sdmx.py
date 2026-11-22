@@ -73,7 +73,9 @@ def ayristir(b: bytes, seri: SeriTanimi, ulke: str, varsayilan_ad: str | None = 
         if r.get("LAST UPDATE"):
             t = _eurostat_tarihi(r["LAST UPDATE"])
             guncel = max(guncel, t) if (guncel and t) else (t or guncel)
-        if (r.get("OBS_CONF") or "F") != "F" or (r.get("CONF_STATUS") or "").strip():
+        # Gizlilik: SDMX CONF_STATUS/OBS_CONF "F" serbest yayındır (OECD her satıra yazar);
+        # C (gizli), N (yayımlanamaz), D (ikincil gizlilik) ve bilinmeyen değerler elenir.
+        if (r.get("OBS_CONF") or "F").strip() != "F" or (r.get("CONF_STATUS") or "F").strip() not in ("F", ""):
             elenen += 1
             continue
         ham = (r.get("OBS_VALUE") or "").strip()
@@ -89,5 +91,7 @@ def ayristir(b: bytes, seri: SeriTanimi, ulke: str, varsayilan_ad: str | None = 
     gozlem.sort(key=lambda g: g.donem)
     while gozlem and gozlem[-1].deger is None:
         gozlem.pop()
+    if not any(g.deger is not None for g in gozlem):    # boş seri yayımlanmaz (0 gözlemli dosya yazılmasın)
+        raise KaynakUyusmazligi(f"{seri.kod}: değeri olan gözlem yok ({elenen} satır gizlilik nedeniyle elendi)")
     return HamSeri(kaynak_adi=ad or varsayilan_ad, kaynak_not=not_, kaynak_guncelleme=guncel,
                    gozlemler=gozlem, elenen=elenen)

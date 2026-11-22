@@ -1,0 +1,647 @@
+{
+ "surum": 1,
+ "id": "oecd-gsyh-buyume-yillik-tr",
+ "baslik": "GSYH büyümesi, çeyreklik, bir yıl önceki çeyreğe göre",
+ "ulke": "TUR",
+ "siklik": "ceyreklik",
+ "birim": "yuzde",
+ "carpan": 1,
+ "tema": "buyume",
+ "kaynak": {
+  "id": "oecd",
+  "ad": "OECD Data Explorer",
+  "kurum": "OECD",
+  "adres": "https://data-explorer.oecd.org/",
+  "belge": null,
+  "lisans": "OECD Terms and Conditions (veri)",
+  "lisans_kanit": "https://www.oecd.org/en/about/terms-conditions.html",
+  "lisans_inceleme": "2026-11-17",
+  "atif_zorunlu": true,
+  "kosullar": [
+   "Kaynak: OECD; veri setinin önerdiği atıf biçimiyle.",
+   "Seri adları Türkçeye çevrilmiştir."
+  ]
+ },
+ "kaynak_kod": "OECD.SDD.NAD,DSD_NAMAIN1@DF_QNA_EXPENDITURE_GROWTH_OECD,/Q.Y.TUR.S1.S1.B1GQ._Z._Z._Z.PC.L.GY.T0102.._Z",
+ "kaynak_adi": null,
+ "kaynak_not": null,
+ "kaynak_guncelleme": null,
+ "cekildi": "2026-11-22T20:40:34.629061Z",
+ "izin": {
+  "gosterim": true,
+  "indirme": true,
+  "api": true
+ },
+ "gozlemler": [
+  {
+   "donem": "1996-Q1",
+   "deger": "8.180209018",
+   "durum": "A"
+  },
+  {
+   "donem": "1996-Q2",
+   "deger": "7.844774488",
+   "durum": "A"
+  },
+  {
+   "donem": "1996-Q3",
+   "deger": "6.26896902",
+   "durum": "A"
+  },
+  {
+   "donem": "1996-Q4",
+   "deger": "7.033844536",
+   "durum": "A"
+  },
+  {
+   "donem": "1997-Q1",
+   "deger": "5.796387523",
+   "durum": "A"
+  },
+  {
+   "donem": "1997-Q2",
+   "deger": "7.73418362",
+   "durum": "A"
+  },
+  {
+   "donem": "1997-Q3",
+   "deger": "7.35842839",
+   "durum": "A"
+  },
+  {
+   "donem": "1997-Q4",
+   "deger": "8.07991058",
+   "durum": "A"
+  },
+  {
+   "donem": "1998-Q1",
+   "deger": "7.950977527",
+   "durum": "A"
+  },
+  {
+   "donem": "1998-Q2",
+   "deger": "2.857060546",
+   "durum": "A"
+  },
+  {
+   "donem": "1998-Q3",
+   "deger": "1.757425344",
+   "durum": "A"
+  },
+  {
+   "donem": "1998-Q4",
+   "deger": "-3.589281716",
+   "durum": "A"
+  },
+  {
+   "donem": "1999-Q1",
+   "deger": "-4.976810401",
+   "durum": "A"
+  },
+  {
+   "donem": "1999-Q2",
+   "deger": "-4.149822033",
+   "durum": "A"
+  },
+  {
+   "donem": "1999-Q3",
+   "deger": "-3.67582309",
+   "durum": "A"
+  },
+  {
+   "donem": "1999-Q4",
+   "deger": "0.809892592",
+   "durum": "A"
+  },
+  {
+   "donem": "2000-Q1",
+   "deger": "3.299360958",
+   "durum": "A"
+  },
+  {
+   "donem": "2000-Q2",
+   "deger": "7.009566485",
+   "durum": "A"
+  },
+  {
+   "donem": "2000-Q3",
+   "deger": "8.657299057",
+   "durum": "A"
+  },
+  {
+   "donem": "2000-Q4",
+   "deger": "8.564982688",
+   "durum": "A"
+  },
+  {
+   "donem": "2001-Q1",
+   "deger": "3.00467522",
+   "durum": "A"
+  },
+  {
+   "donem": "2001-Q2",
+   "deger": "-6.700966036",
+   "durum": "A"
+  },
+  {
+   "donem": "2001-Q3",
+   "deger": "-7.479533451",
+   "durum": "A"
+  },
+  {
+   "donem": "2001-Q4",
+   "deger": "-10.387736338",
+   "durum": "A"
+  },
+  {
+   "donem": "2002-Q1",
+   "deger": "-2.054139236",
+   "durum": "A"
+  },
+  {
+   "donem": "2002-Q2",
+   "deger": "7.846901635",
+   "durum": "A"
+  },
+  {
+   "donem": "2002-Q3",
+   "deger": "8.195642864",
+   "durum": "A"
+  },
+  {
+   "donem": "2002-Q4",
+   "deger": "12.147565732",
+   "durum": "A"
+  },
+  {
+   "donem": "2003-Q1",
+   "deger": "6.768785489",
+   "durum": "A"
+  },
+  {
+   "donem": "2003-Q2",
+   "deger": "4.142490239",
+   "durum": "A"
+  },
+  {
+   "donem": "2003-Q3",
+   "deger": "6.318882523",
+   "durum": "A"
+  },
+  {
+   "donem": "2003-Q4",
+   "deger": "7.02747703",
+   "durum": "A"
+  },
+  {
+   "donem": "2004-Q1",
+   "deger": "8.505786499",
+   "durum": "A"
+  },
+  {
+   "donem": "2004-Q2",
+   "deger": "11.968511418",
+   "durum": "A"
+  },
+  {
+   "donem": "2004-Q3",
+   "deger": "9.571763364",
+   "durum": "A"
+  },
+  {
+   "donem": "2004-Q4",
+   "deger": "8.626698185",
+   "durum": "A"
+  },
+  {
+   "donem": "2005-Q1",
+   "deger": "9.403127298",
+   "durum": "A"
+  },
+  {
+   "donem": "2005-Q2",
+   "deger": "6.977329319",
+   "durum": "A"
+  },
+  {
+   "donem": "2005-Q3",
+   "deger": "9.184047069",
+   "durum": "A"
+  },
+  {
+   "donem": "2005-Q4",
+   "deger": "10.521609976",
+   "durum": "A"
+  },
+  {
+   "donem": "2006-Q1",
+   "deger": "6.971915356",
+   "durum": "A"
+  },
+  {
+   "donem": "2006-Q2",
+   "deger": "10.403097929",
+   "durum": "A"
+  },
+  {
+   "donem": "2006-Q3",
+   "deger": "6.220657753",
+   "durum": "A"
+  },
+  {
+   "donem": "2006-Q4",
+   "deger": "5.54862079",
+   "durum": "A"
+  },
+  {
+   "donem": "2007-Q1",
+   "deger": "6.965924072",
+   "durum": "A"
+  },
+  {
+   "donem": "2007-Q2",
+   "deger": "2.612786286",
+   "durum": "A"
+  },
+  {
+   "donem": "2007-Q3",
+   "deger": "4.374935722",
+   "durum": "A"
+  },
+  {
+   "donem": "2007-Q4",
+   "deger": "6.465933922",
+   "durum": "A"
+  },
+  {
+   "donem": "2008-Q1",
+   "deger": "6.46951559",
+   "durum": "A"
+  },
+  {
+   "donem": "2008-Q2",
+   "deger": "2.854793529",
+   "durum": "A"
+  },
+  {
+   "donem": "2008-Q3",
+   "deger": "0.408456785",
+   "durum": "A"
+  },
+  {
+   "donem": "2008-Q4",
+   "deger": "-5.375448946",
+   "durum": "A"
+  },
+  {
+   "donem": "2009-Q1",
+   "deger": "-12.853293036",
+   "durum": "A"
+  },
+  {
+   "donem": "2009-Q2",
+   "deger": "-5.544217217",
+   "durum": "A"
+  },
+  {
+   "donem": "2009-Q3",
+   "deger": "-2.17009667",
+   "durum": "A"
+  },
+  {
+   "donem": "2009-Q4",
+   "deger": "0.976266556",
+   "durum": "A"
+  },
+  {
+   "donem": "2010-Q1",
+   "deger": "8.871546314",
+   "durum": "A"
+  },
+  {
+   "donem": "2010-Q2",
+   "deger": "7.521249747",
+   "durum": "A"
+  },
+  {
+   "donem": "2010-Q3",
+   "deger": "8.251424579",
+   "durum": "A"
+  },
+  {
+   "donem": "2010-Q4",
+   "deger": "9.858723548",
+   "durum": "A"
+  },
+  {
+   "donem": "2011-Q1",
+   "deger": "12.306106092",
+   "durum": "A"
+  },
+  {
+   "donem": "2011-Q2",
+   "deger": "10.878725809",
+   "durum": "A"
+  },
+  {
+   "donem": "2011-Q3",
+   "deger": "10.762252674",
+   "durum": "A"
+  },
+  {
+   "donem": "2011-Q4",
+   "deger": "9.262363189",
+   "durum": "A"
+  },
+  {
+   "donem": "2012-Q1",
+   "deger": "5.946487347",
+   "durum": "A"
+  },
+  {
+   "donem": "2012-Q2",
+   "deger": "5.078872408",
+   "durum": "A"
+  },
+  {
+   "donem": "2012-Q3",
+   "deger": "4.08776823",
+   "durum": "A"
+  },
+  {
+   "donem": "2012-Q4",
+   "deger": "4.198525989",
+   "durum": "A"
+  },
+  {
+   "donem": "2013-Q1",
+   "deger": "8.001875718",
+   "durum": "A"
+  },
+  {
+   "donem": "2013-Q2",
+   "deger": "9.93252388",
+   "durum": "A"
+  },
+  {
+   "donem": "2013-Q3",
+   "deger": "9.161244929",
+   "durum": "A"
+  },
+  {
+   "donem": "2013-Q4",
+   "deger": "7.654829281",
+   "durum": "A"
+  },
+  {
+   "donem": "2014-Q1",
+   "deger": "6.985896863",
+   "durum": "A"
+  },
+  {
+   "donem": "2014-Q2",
+   "deger": "3.077110032",
+   "durum": "A"
+  },
+  {
+   "donem": "2014-Q3",
+   "deger": "3.775380624",
+   "durum": "A"
+  },
+  {
+   "donem": "2014-Q4",
+   "deger": "4.441695107",
+   "durum": "A"
+  },
+  {
+   "donem": "2015-Q1",
+   "deger": "3.55634372",
+   "durum": "A"
+  },
+  {
+   "donem": "2015-Q2",
+   "deger": "6.840300817",
+   "durum": "A"
+  },
+  {
+   "donem": "2015-Q3",
+   "deger": "5.912441701",
+   "durum": "A"
+  },
+  {
+   "donem": "2015-Q4",
+   "deger": "6.682537262",
+   "durum": "A"
+  },
+  {
+   "donem": "2016-Q1",
+   "deger": "4.708661573",
+   "durum": "A"
+  },
+  {
+   "donem": "2016-Q2",
+   "deger": "3.941848239",
+   "durum": "A"
+  },
+  {
+   "donem": "2016-Q3",
+   "deger": "0.22988138",
+   "durum": "A"
+  },
+  {
+   "donem": "2016-Q4",
+   "deger": "4.204192419",
+   "durum": "A"
+  },
+  {
+   "donem": "2017-Q1",
+   "deger": "5.26157915",
+   "durum": "A"
+  },
+  {
+   "donem": "2017-Q2",
+   "deger": "6.185219681",
+   "durum": "A"
+  },
+  {
+   "donem": "2017-Q3",
+   "deger": "11.998882582",
+   "durum": "A"
+  },
+  {
+   "donem": "2017-Q4",
+   "deger": "7.617309205",
+   "durum": "A"
+  },
+  {
+   "donem": "2018-Q1",
+   "deger": "8.339739144",
+   "durum": "A"
+  },
+  {
+   "donem": "2018-Q2",
+   "deger": "5.95684089",
+   "durum": "A"
+  },
+  {
+   "donem": "2018-Q3",
+   "deger": "2.562538882",
+   "durum": "A"
+  },
+  {
+   "donem": "2018-Q4",
+   "deger": "-2.140484438",
+   "durum": "A"
+  },
+  {
+   "donem": "2019-Q1",
+   "deger": "-1.587341429",
+   "durum": "A"
+  },
+  {
+   "donem": "2019-Q2",
+   "deger": "0.382790304",
+   "durum": "A"
+  },
+  {
+   "donem": "2019-Q3",
+   "deger": "1.115607364",
+   "durum": "A"
+  },
+  {
+   "donem": "2019-Q4",
+   "deger": "5.922234683",
+   "durum": "A"
+  },
+  {
+   "donem": "2020-Q1",
+   "deger": "4.175106245",
+   "durum": "A"
+  },
+  {
+   "donem": "2020-Q2",
+   "deger": "-8.63647585",
+   "durum": "A"
+  },
+  {
+   "donem": "2020-Q3",
+   "deger": "5.658764533",
+   "durum": "A"
+  },
+  {
+   "donem": "2020-Q4",
+   "deger": "5.352974839",
+   "durum": "A"
+  },
+  {
+   "donem": "2021-Q1",
+   "deger": "7.796697454",
+   "durum": "A"
+  },
+  {
+   "donem": "2021-Q2",
+   "deger": "22.21028269",
+   "durum": "A"
+  },
+  {
+   "donem": "2021-Q3",
+   "deger": "9.357934854",
+   "durum": "A"
+  },
+  {
+   "donem": "2021-Q4",
+   "deger": "9.969196621",
+   "durum": "A"
+  },
+  {
+   "donem": "2022-Q1",
+   "deger": "6.78306023",
+   "durum": "A"
+  },
+  {
+   "donem": "2022-Q2",
+   "deger": "6.864765477",
+   "durum": "A"
+  },
+  {
+   "donem": "2022-Q3",
+   "deger": "4.172317778",
+   "durum": "A"
+  },
+  {
+   "donem": "2022-Q4",
+   "deger": "3.289613802",
+   "durum": "A"
+  },
+  {
+   "donem": "2023-Q1",
+   "deger": "2.787292223",
+   "durum": "A"
+  },
+  {
+   "donem": "2023-Q2",
+   "deger": "5.888880905",
+   "durum": "A"
+  },
+  {
+   "donem": "2023-Q3",
+   "deger": "5.759782075",
+   "durum": "A"
+  },
+  {
+   "donem": "2023-Q4",
+   "deger": "5.443847152",
+   "durum": "A"
+  },
+  {
+   "donem": "2024-Q1",
+   "deger": "7.359705753",
+   "durum": "A"
+  },
+  {
+   "donem": "2024-Q2",
+   "deger": "2.283103127",
+   "durum": "A"
+  },
+  {
+   "donem": "2024-Q3",
+   "deger": "2.062297133",
+   "durum": "A"
+  },
+  {
+   "donem": "2024-Q4",
+   "deger": "3.001224746",
+   "durum": "A"
+  },
+  {
+   "donem": "2025-Q1",
+   "deger": "2.901068975",
+   "durum": "A"
+  },
+  {
+   "donem": "2025-Q2",
+   "deger": "4.299043361",
+   "durum": "A"
+  },
+  {
+   "donem": "2025-Q3",
+   "deger": "4.590052204",
+   "durum": "A"
+  },
+  {
+   "donem": "2025-Q4",
+   "deger": "3.22165436",
+   "durum": "A"
+  },
+  {
+   "donem": "2026-Q1",
+   "deger": "2.59049764",
+   "durum": "A"
+  },
+  {
+   "donem": "2026-Q2",
+   "deger": "2.557978446",
+   "durum": "A"
+  }
+ ]
+}

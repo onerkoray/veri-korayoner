@@ -109,12 +109,14 @@ import { yillikDegisimler } from "../src/lib/okuma.ts";
 
 test("yıllık değişim: oranda puan, düzeyde yüzde, eşi yoksa yok", () => {
   const a = yillikDegisimler(ay([10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 25], 2024, 1), "aylik", "yuzde");
-  assert.deepEqual(a.get("2025-01"), { fark: 15, tur: "puan" });
+  assert.deepEqual(a.get("2025-01"), { fark: 15, ek: "puan" });
   assert.equal(a.get("2024-12"), undefined);
   const b = yillikDegisimler(yil([100, 110, 0, 50]), "yillik", "USD");
   assert.ok(Math.abs(b.get("2001")!.fark - 10) < 1e-9);
   assert.equal(b.get("2003"), undefined);                          // önceki 0: yüzde değişim tanımsız
-  assert.deepEqual(yillikDegisimler(yil([70, 71.5]), "yillik", "yil").get("2001"), { fark: 1.5, tur: "yil" });
+  assert.deepEqual(yillikDegisimler(yil([70, 71.5]), "yillik", "yil").get("2001"), { fark: 1.5, ek: "yıl" });
+  assert.deepEqual(yillikDegisimler(yil([2.1, 1.6]), "yillik", "dogum").get("2001")!.ek, "çocuk");
+  assert.deepEqual(yillikDegisimler(yil([6, 5]), "yillik", "ay").get("2001"), { fark: -1, ek: "ay" });
   assert.equal(yillikDegisimler([{ donem: "2025-01-02", v: 1 }], "gunluk", "USD").size, 0);
-  assert.deepEqual(yillikDegisimler([{ donem: "2024-Q2", v: 4 }, { donem: "2025-Q2", v: 6 }], "ceyreklik", "endeks").get("2025-Q2"), { fark: 50, tur: "yuzde" });
+  assert.deepEqual(yillikDegisimler([{ donem: "2024-Q2", v: 4 }, { donem: "2025-Q2", v: 6 }], "ceyreklik", "endeks").get("2025-Q2"), { fark: 50, ek: "%" });
 });

@@ -2,6 +2,24 @@
  "surum": 1,
  "kayitlar": [
   {
+   "gun": "2026-11-22",
+   "seri": "oecd-gsyh-buyume-ceyrek-tr",
+   "tur": "yeni-donem",
+   "adet": 125,
+   "ilk": "1995-Q2",
+   "son": "2026-Q2",
+   "yeni": "1.119024786"
+  },
+  {
+   "gun": "2026-11-22",
+   "seri": "oecd-gsyh-buyume-yillik-tr",
+   "tur": "yeni-donem",
+   "adet": 122,
+   "ilk": "1996-Q1",
+   "son": "2026-Q2",
+   "yeni": "2.557978446"
+  },
+  {
    "gun": "2026-11-19",
    "seri": "bis-reel-efektif-kur-tr",
    "tur": "revizyon",

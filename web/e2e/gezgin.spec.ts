@@ -286,3 +286,22 @@ test.describe("Gösterge sayfası", () => {
     await expect(page.locator(".g-tuval svg")).toHaveCount(1);
   });
 });
+
+test.describe("Bağlam", () => {
+  test("nüfus göstergesi ekonomik göstergelerle birlikte okunur", async ({ page }) => {
+    await page.goto("/gosterge/wb-sp-pop-dpnd-tur");
+    await expect(page.locator("#bg")).toHaveText("Bu gösterge neyi anlatır");
+    await expect(page.locator(".baglam p").first()).toContainText("demografik fırsat penceresi");
+    await expect(page.locator(".iliskili li")).toHaveCount(3);
+    await expect(page.locator(".iliskili")).toContainText("İşgücüne katılım oranı");
+    await page.getByRole("link", { name: "Hepsini veri gezgininde birlikte aç →" }).click();
+    await expect(page).toHaveURL(/gezgin#g=wb-sp-pop-dpnd-tur,ilo-isgucune-katilim-tr,ilo-kadin-isgucune-katilim-tr,wb-sp-pop-dpnd-ol-tur&s=yillik$/);
+    await expect(page.locator(".g-tuval svg")).toHaveCount(4);
+  });
+
+  test("doğurganlık birimi ve değişimi", async ({ page }) => {
+    await page.goto("/gosterge/wb-sp-dyn-tfrt-in-tur");
+    await expect(page.locator(".buyuk")).toContainText("çocuk");
+    await expect(page.locator("table thead").last()).toContainText("Bir yıl önceye göre");
+  });
+});

@@ -129,6 +129,7 @@ def katalog(kaynaklar: dict[str, Kaynak], seriler: list[SeriTanimi], cikti: Path
         s_liste.append({"id": s.id, "baslik": s.baslik, "tema": s.tema, "siklik": s.siklik, "birim": s.birim,
                         "kaynak": s.kaynak, "son": son, "kaynak_guncelleme": d.get("kaynak_guncelleme"),
                         "cekildi": d["cekildi"], "izin": iz.model_dump(),
+                        "baglam": s.baglam, "not": s.not_, "iliskili": s.iliskili,
                         "api": f"/api/v1/seri/{s.id}.json" if iz.api else None,
                         "csv": f"/api/v1/seri/{s.id}.csv" if iz.indirme else None})
     ust = {"surum": 1, "uretildi": simdi.astimezone(UTC).isoformat().replace("+00:00", "Z")}

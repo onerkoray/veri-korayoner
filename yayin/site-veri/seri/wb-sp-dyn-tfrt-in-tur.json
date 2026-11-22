@@ -1,0 +1,359 @@
+{
+ "surum": 1,
+ "id": "wb-sp-dyn-tfrt-in-tur",
+ "baslik": "Toplam doğurganlık hızı (kadın başına doğum)",
+ "ulke": "TUR",
+ "siklik": "yillik",
+ "birim": "dogum",
+ "carpan": 1,
+ "tema": "toplum",
+ "kaynak": {
+  "id": "world_bank",
+  "ad": "Dünya Bankası — Dünya Kalkınma Göstergeleri (WDI)",
+  "kurum": "Dünya Bankası",
+  "adres": "https://data.worldbank.org/",
+  "belge": "https://datahelpdesk.worldbank.org/knowledgebase/articles/889392",
+  "lisans": "CC BY 4.0 (WDI veri seti)",
+  "lisans_kanit": "https://datacatalog.worldbank.org/search/dataset/0037712/World-Development-Indicators",
+  "lisans_inceleme": "2026-11-17",
+  "atif_zorunlu": true,
+  "kosullar": []
+ },
+ "kaynak_kod": "SP.DYN.TFRT.IN",
+ "kaynak_adi": "Fertility rate, total (births per woman)",
+ "kaynak_not": "World Population Prospects, United Nations (UN), publisher: UN Population Division;\nStatistical databases and publications from national statistical offices, National Statistical Offices (NSOs);\nDemographic Statistics, Eurostat (ESTAT)",
+ "kaynak_guncelleme": "2026-11-11",
+ "cekildi": "2026-11-22T20:38:23.869457Z",
+ "izin": {
+  "gosterim": true,
+  "indirme": true,
+  "api": true
+ },
+ "gozlemler": [
+  {
+   "donem": "1960",
+   "deger": "6.383",
+   "durum": null
+  },
+  {
+   "donem": "1961",
+   "deger": "6.419",
+   "durum": null
+  },
+  {
+   "donem": "1962",
+   "deger": "6.382",
+   "durum": null
+  },
+  {
+   "donem": "1963",
+   "deger": "6.339",
+   "durum": null
+  },
+  {
+   "donem": "1964",
+   "deger": "6.291",
+   "durum": null
+  },
+  {
+   "donem": "1965",
+   "deger": "6.22",
+   "durum": null
+  },
+  {
+   "donem": "1966",
+   "deger": "6.152",
+   "durum": null
+  },
+  {
+   "donem": "1967",
+   "deger": "6.057",
+   "durum": null
+  },
+  {
+   "donem": "1968",
+   "deger": "5.962",
+   "durum": null
+  },
+  {
+   "donem": "1969",
+   "deger": "5.872",
+   "durum": null
+  },
+  {
+   "donem": "1970",
+   "deger": "5.775",
+   "durum": null
+  },
+  {
+   "donem": "1971",
+   "deger": "5.671",
+   "durum": null
+  },
+  {
+   "donem": "1972",
+   "deger": "5.548",
+   "durum": null
+  },
+  {
+   "donem": "1973",
+   "deger": "5.41",
+   "durum": null
+  },
+  {
+   "donem": "1974",
+   "deger": "5.243",
+   "durum": null
+  },
+  {
+   "donem": "1975",
+   "deger": "5.087",
+   "durum": null
+  },
+  {
+   "donem": "1976",
+   "deger": "4.931",
+   "durum": null
+  },
+  {
+   "donem": "1977",
+   "deger": "4.784",
+   "durum": null
+  },
+  {
+   "donem": "1978",
+   "deger": "4.691",
+   "durum": null
+  },
+  {
+   "donem": "1979",
+   "deger": "4.579",
+   "durum": null
+  },
+  {
+   "donem": "1980",
+   "deger": "4.453",
+   "durum": null
+  },
+  {
+   "donem": "1981",
+   "deger": "4.351",
+   "durum": null
+  },
+  {
+   "donem": "1982",
+   "deger": "4.205",
+   "durum": null
+  },
+  {
+   "donem": "1983",
+   "deger": "4.056",
+   "durum": null
+  },
+  {
+   "donem": "1984",
+   "deger": "3.911",
+   "durum": null
+  },
+  {
+   "donem": "1985",
+   "deger": "3.779",
+   "durum": null
+  },
+  {
+   "donem": "1986",
+   "deger": "3.658",
+   "durum": null
+  },
+  {
+   "donem": "1987",
+   "deger": "3.542",
+   "durum": null
+  },
+  {
+   "donem": "1988",
+   "deger": "3.445",
+   "durum": null
+  },
+  {
+   "donem": "1989",
+   "deger": "3.336",
+   "durum": null
+  },
+  {
+   "donem": "1990",
+   "deger": "3.107",
+   "durum": null
+  },
+  {
+   "donem": "1991",
+   "deger": "3.003",
+   "durum": null
+  },
+  {
+   "donem": "1992",
+   "deger": "2.939",
+   "durum": null
+  },
+  {
+   "donem": "1993",
+   "deger": "2.916",
+   "durum": null
+  },
+  {
+   "donem": "1994",
+   "deger": "2.874",
+   "durum": null
+  },
+  {
+   "donem": "1995",
+   "deger": "2.835",
+   "durum": null
+  },
+  {
+   "donem": "1996",
+   "deger": "2.779",
+   "durum": null
+  },
+  {
+   "donem": "1997",
+   "deger": "2.744",
+   "durum": null
+  },
+  {
+   "donem": "1998",
+   "deger": "2.707",
+   "durum": null
+  },
+  {
+   "donem": "1999",
+   "deger": "2.63",
+   "durum": null
+  },
+  {
+   "donem": "2000",
+   "deger": "2.487",
+   "durum": null
+  },
+  {
+   "donem": "2001",
+   "deger": "2.392",
+   "durum": null
+  },
+  {
+   "donem": "2002",
+   "deger": "2.268",
+   "durum": null
+  },
+  {
+   "donem": "2003",
+   "deger": "2.202",
+   "durum": null
+  },
+  {
+   "donem": "2004",
+   "deger": "2.197",
+   "durum": null
+  },
+  {
+   "donem": "2005",
+   "deger": "2.197",
+   "durum": null
+  },
+  {
+   "donem": "2006",
+   "deger": "2.193",
+   "durum": null
+  },
+  {
+   "donem": "2007",
+   "deger": "2.16",
+   "durum": null
+  },
+  {
+   "donem": "2008",
+   "deger": "2.15",
+   "durum": null
+  },
+  {
+   "donem": "2009",
+   "deger": "2.1",
+   "durum": null
+  },
+  {
+   "donem": "2010",
+   "deger": "2.08",
+   "durum": null
+  },
+  {
+   "donem": "2011",
+   "deger": "2.05",
+   "durum": null
+  },
+  {
+   "donem": "2012",
+   "deger": "2.11",
+   "durum": null
+  },
+  {
+   "donem": "2013",
+   "deger": "2.11",
+   "durum": null
+  },
+  {
+   "donem": "2014",
+   "deger": "2.19",
+   "durum": null
+  },
+  {
+   "donem": "2015",
+   "deger": "2.16",
+   "durum": null
+  },
+  {
+   "donem": "2016",
+   "deger": "2.11",
+   "durum": null
+  },
+  {
+   "donem": "2017",
+   "deger": "2.08",
+   "durum": null
+  },
+  {
+   "donem": "2018",
+   "deger": "2",
+   "durum": null
+  },
+  {
+   "donem": "2019",
+   "deger": "1.89",
+   "durum": null
+  },
+  {
+   "donem": "2020",
+   "deger": "1.77",
+   "durum": null
+  },
+  {
+   "donem": "2021",
+   "deger": "1.71",
+   "durum": null
+  },
+  {
+   "donem": "2022",
+   "deger": "1.63",
+   "durum": null
+  },
+  {
+   "donem": "2023",
+   "deger": "1.51",
+   "durum": null
+  },
+  {
+   "donem": "2024",
+   "deger": "1.48",
+   "durum": null
+  }
+ ]
+}

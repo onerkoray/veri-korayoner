@@ -92,6 +92,8 @@ class SeriTanimi(Kati):
     baslangic: str | None = Field(default=None, pattern=r"^\d{4}(-\d{2}){0,2}$")   # kaynağa istenen ilk dönem
     emsal: list[str] = Field(default_factory=list)   # aynı serinin çekileceği karşılaştırma ülkeleri (alfa-3)
     gecikme_gun: int | None = Field(default=None, ge=1)   # durum.json gecikme toleransı (gün); sıklık varsayılanını ezer
+    baglam: str | None = None        # okura: gösterge neyi ölçer, ekonomiyle nasıl ilişkilenir (yorum değil, okuma yolu)
+    iliskili: list[str] = Field(default_factory=list)   # birlikte okunacak seri kimlikleri (kayıtta olmalı)
     not_: str | None = Field(default=None, alias="not")
 
     @field_validator("emsal")

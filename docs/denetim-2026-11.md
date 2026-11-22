@@ -288,3 +288,41 @@ Kullanıcı bildirimi: gezgin adresi gereksiz uzun ve standart dışıydı. Vars
 - `web/src/lib/okuma.ts`: `yillikDegisimler` + test.
 - e2e: gösterge sayfası (güncellik, revizyon, yıllık değişim, gezgin bağlantısı). Toplam 53 test.
 - Lighthouse `/gosterge/bis-tufe-yillik-tr`: 97/100/100/100, CLS 0.
+
+## Veri ağı genişlemesi ve bağlam (yedinci tur)
+
+**Hepsi zaten lisansı incelenmiş kaynaklardan 24 yeni seri: 33 → 57.**
+- **Dünya Bankası (16):**
+  - Kamu borcu ve vergi gelirleri (kamu maliyesi teması artık dolu).
+  - Geniş para, GSYH deflatörü, rezervlerin ithalatı karşılama süresi (ay).
+  - İmalat payı, dış borç/GSMG, hane tüketimi, sağlık harcaması, Ar-Ge, internet kullanımı.
+  - Nüfus yapısı: bağımlılık oranı, yaşlı bağımlılık, çalışma çağı payı, doğurganlık, nüfus artışı.
+  - Hepsi 9 emsal ülkeyle.
+- **OECD (6):**
+  - Çeyreklik GSYH büyümesi (yıllık ve çeyrekten çeyreğe); yıllık olan emsallerle.
+  - İş güveni ve tüketici güveni (emsallerle).
+  - Sanayi üretimi ve perakende satış hacmi.
+- **BIS (1):** kredi açığı, emsallerle.
+- **Eurostat (1):** AB anketlerinden ekonomik güven endeksi; Polonya, Macaristan, Romanya ve AB-27 ile.
+
+**Kurallar:**
+- Nominal döviz kuru serileri (OECD'de var) kullanıcı kuralı gereği alınmadı.
+- Merkez bankası bilançosu (BIS) yalnız nominal TL ve dolar cinsinden olduğu için alınmadı; yüksek enflasyonda yanıltıcı olur.
+
+**Bağlam:**
+- `registry/seriler.yaml`'a `baglam` (neyi ölçer, neyle birlikte okunur) ve `iliskili` alanları eklendi. 57 serinin hepsine yazıldı.
+- Kayıt okuyucu, ilişkili kimliklerin kayıtta olduğunu doğruluyor.
+- Katalog (`site-veri/seriler.json`, `api/v1/seriler.json`) `baglam`, `not` ve `iliskili` alanlarını taşıyor. v1'e yalnız alan eklendi.
+- Gösterge sayfasına "Bu gösterge neyi anlatır" bölümü eklendi: ilişkili göstergelerin son değerleri ve hepsini birlikte açan gezgin bağlantısı.
+- Yöntem sayfasına `#baglam` bölümü eklendi.
+
+**Hata düzeltmeleri:**
+- `sdmx.ayristir` `CONF_STATUS` dolu her satırı gizli sayıyordu. OECD her satıra "F" (serbest) yazdığı için çeyreklik GSYH 0 gözlemle yazıldı. Artık yalnız F ve boş kabul ediliyor; C, N, D ve bilinmeyen değerler eleniyor.
+- Değeri olan gözlemi kalmayan seri artık yayımlanmıyor, hata veriyor.
+- OECD bağlayıcısı emsal ülkeler için anahtardaki ülke kodunu değiştirmiyordu. Emsaller artık tek istekte (`BRA+MEX+…`) çekiliyor; OECD'nin saatlik istek sınırı düşük. Boş kalan ülke yalnız kendisi düşüyor.
+- `durum.json`: hiç seri denenmeyen yazımda (yalnız katalog ya da tolerans güncellemesi) üst düzey `son_kontrol` ilerlemiyor. Olmayan bir kontrol yazılmıyor.
+- Sağlık harcaması ve Ar-Ge kurumlarca 2–3 yıl geriden yayımlandığı için bu iki seriye `gecikme_gun: 1100` verildi.
+
+**Yeni birimler:**
+- `ay` (rezervlerin ithalatı karşılama süresi) ve `dogum` (kadın başına doğum).
+- Fark olarak okunan birimler artık tek tabloda (`FARK_BIRIM`: yıl, ay, çocuk). Okuma cümleleri, değişim kutusu ve yıllık sütun aynı kuralı kullanıyor.

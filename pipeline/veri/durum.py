@@ -91,7 +91,10 @@ def yaz(cikti: Path, seriler, kaynaklar, izin, sonuc: dict[str, str | None], sim
         kaynak_ozet.append({"id": kid, "seri": len(rs), "son_basarili_kontrol": max(basarili) if basarili else None,
                             "hatali": [r["id"] for r in rs if r["ardisik_hata"]],
                             "geciken": [r["id"] for r in rs if r["gecikti"]]})
-    icerik = {"surum": 1, "son_kontrol": _z(simdi),
+    # Üst düzey son kontrol: bu çalıştırmada en az bir seri denendiyse şimdi; denenmediyse
+    # (yalnız katalog/tolerans güncellemesi) önceki an korunur, olmayan kontrol yazılmaz.
+    ust_kontrol = _z(simdi) if sonuc else max((r["son_kontrol"] for r in kayit if r.get("son_kontrol")), default=_z(simdi))
+    icerik = {"surum": 1, "son_kontrol": ust_kontrol,
               "aciklama": "son_kontrol: hattın denediği an; son_basarili_kontrol: kaynağın doğrulanmış yanıt verdiği an; "
                           "son_gozlem: yayımlanmış en yeni dönem; gecikti: son gözlem, sıklığa göre beklenen süreyi aştı.",
               "ozet": {"seri": len(kayit), "yayinda": sum(r["yayinda"] for r in kayit),

@@ -1,0 +1,364 @@
+{
+ "surum": 1,
+ "id": "wb-ny-gdp-defl-kd-zg-tur",
+ "baslik": "GSYH deflatörü, yıllık değişim",
+ "ulke": "TUR",
+ "siklik": "yillik",
+ "birim": "yuzde",
+ "carpan": 1,
+ "tema": "enflasyon",
+ "kaynak": {
+  "id": "world_bank",
+  "ad": "Dünya Bankası — Dünya Kalkınma Göstergeleri (WDI)",
+  "kurum": "Dünya Bankası",
+  "adres": "https://data.worldbank.org/",
+  "belge": "https://datahelpdesk.worldbank.org/knowledgebase/articles/889392",
+  "lisans": "CC BY 4.0 (WDI veri seti)",
+  "lisans_kanit": "https://datacatalog.worldbank.org/search/dataset/0037712/World-Development-Indicators",
+  "lisans_inceleme": "2026-11-17",
+  "atif_zorunlu": true,
+  "kosullar": []
+ },
+ "kaynak_kod": "NY.GDP.DEFL.KD.ZG",
+ "kaynak_adi": "Inflation, GDP deflator (annual %)",
+ "kaynak_not": "Country official statistics, National Statistical Offices (NSOs);\nNational Accounts data files, Central Banks;\nStaff estimates, World Bank (WB)",
+ "kaynak_guncelleme": "2026-11-11",
+ "cekildi": "2026-11-22T20:38:23.869457Z",
+ "izin": {
+  "gosterim": true,
+  "indirme": true,
+  "api": true
+ },
+ "gozlemler": [
+  {
+   "donem": "1960",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1961",
+   "deger": "4.37340043959567",
+   "durum": null
+  },
+  {
+   "donem": "1962",
+   "deger": "5.78893779037439",
+   "durum": null
+  },
+  {
+   "donem": "1963",
+   "deger": "6.41669448029047",
+   "durum": null
+  },
+  {
+   "donem": "1964",
+   "deger": "2.35243651899208",
+   "durum": null
+  },
+  {
+   "donem": "1965",
+   "deger": "4.11785566096448",
+   "durum": null
+  },
+  {
+   "donem": "1966",
+   "deger": "5.94759067350772",
+   "durum": null
+  },
+  {
+   "donem": "1967",
+   "deger": "5.93989052660015",
+   "durum": null
+  },
+  {
+   "donem": "1968",
+   "deger": "4.76015624386716",
+   "durum": null
+  },
+  {
+   "donem": "1969",
+   "deger": "6.87631710287739",
+   "durum": null
+  },
+  {
+   "donem": "1970",
+   "deger": "8.64450444669372",
+   "durum": null
+  },
+  {
+   "donem": "1971",
+   "deger": "16.9020871544942",
+   "durum": null
+  },
+  {
+   "donem": "1972",
+   "deger": "10.9756760490107",
+   "durum": null
+  },
+  {
+   "donem": "1973",
+   "deger": "21.9302187016978",
+   "durum": null
+  },
+  {
+   "donem": "1974",
+   "deger": "28.9923473546043",
+   "durum": null
+  },
+  {
+   "donem": "1975",
+   "deger": "21.3092400682887",
+   "durum": null
+  },
+  {
+   "donem": "1976",
+   "deger": "15.6126574914859",
+   "durum": null
+  },
+  {
+   "donem": "1977",
+   "deger": "24.0890232450354",
+   "durum": null
+  },
+  {
+   "donem": "1978",
+   "deger": "47.5411467102414",
+   "durum": null
+  },
+  {
+   "donem": "1979",
+   "deger": "76.7208667189398",
+   "durum": null
+  },
+  {
+   "donem": "1980",
+   "deger": "93.0032247916415",
+   "durum": null
+  },
+  {
+   "donem": "1981",
+   "deger": "44.0570704966979",
+   "durum": null
+  },
+  {
+   "donem": "1982",
+   "deger": "28.2268344007078",
+   "durum": null
+  },
+  {
+   "donem": "1983",
+   "deger": "26.2582454161427",
+   "durum": null
+  },
+  {
+   "donem": "1984",
+   "deger": "48.2368326072073",
+   "durum": null
+  },
+  {
+   "donem": "1985",
+   "deger": "53.054476874505",
+   "durum": null
+  },
+  {
+   "donem": "1986",
+   "deger": "36.0068855504432",
+   "durum": null
+  },
+  {
+   "donem": "1987",
+   "deger": "33.6122290331458",
+   "durum": null
+  },
+  {
+   "donem": "1988",
+   "deger": "69.0181311101416",
+   "durum": null
+  },
+  {
+   "donem": "1989",
+   "deger": "75.4048306122696",
+   "durum": null
+  },
+  {
+   "donem": "1990",
+   "deger": "58.2443981066747",
+   "durum": null
+  },
+  {
+   "donem": "1991",
+   "deger": "59.1641068854034",
+   "durum": null
+  },
+  {
+   "donem": "1992",
+   "deger": "65.1994382869765",
+   "durum": null
+  },
+  {
+   "donem": "1993",
+   "deger": "68.3794283487892",
+   "durum": null
+  },
+  {
+   "donem": "1994",
+   "deger": "104.749137222441",
+   "durum": null
+  },
+  {
+   "donem": "1995",
+   "deger": "157.831380658117",
+   "durum": null
+  },
+  {
+   "donem": "1996",
+   "deger": "76.7664933737485",
+   "durum": null
+  },
+  {
+   "donem": "1997",
+   "deger": "83.104670547928",
+   "durum": null
+  },
+  {
+   "donem": "1998",
+   "deger": "76.2680723321716",
+   "durum": null
+  },
+  {
+   "donem": "1999",
+   "deger": "54.0599201394542",
+   "durum": null
+  },
+  {
+   "donem": "2000",
+   "deger": "49.3731583293067",
+   "durum": null
+  },
+  {
+   "donem": "2001",
+   "deger": "52.5911440857202",
+   "durum": null
+  },
+  {
+   "donem": "2002",
+   "deger": "37.5921225089919",
+   "durum": null
+  },
+  {
+   "donem": "2003",
+   "deger": "23.2883921865035",
+   "durum": null
+  },
+  {
+   "donem": "2004",
+   "deger": "12.364982289683",
+   "durum": null
+  },
+  {
+   "donem": "2005",
+   "deger": "7.05267475616438",
+   "durum": null
+  },
+  {
+   "donem": "2006",
+   "deger": "9.33056658598892",
+   "durum": null
+  },
+  {
+   "donem": "2007",
+   "deger": "6.2487335970909",
+   "durum": null
+  },
+  {
+   "donem": "2008",
+   "deger": "12.0086768083348",
+   "durum": null
+  },
+  {
+   "donem": "2009",
+   "deger": "5.58017075378858",
+   "durum": null
+  },
+  {
+   "donem": "2010",
+   "deger": "6.90506472366725",
+   "durum": null
+  },
+  {
+   "donem": "2011",
+   "deger": "8.33655636534398",
+   "durum": null
+  },
+  {
+   "donem": "2012",
+   "deger": "7.29341387336231",
+   "durum": null
+  },
+  {
+   "donem": "2013",
+   "deger": "6.18702429472933",
+   "durum": null
+  },
+  {
+   "donem": "2014",
+   "deger": "7.63768275587947",
+   "durum": null
+  },
+  {
+   "donem": "2015",
+   "deger": "7.88094110112607",
+   "durum": null
+  },
+  {
+   "donem": "2016",
+   "deger": "8.1276071872056",
+   "durum": null
+  },
+  {
+   "donem": "2017",
+   "deger": "11.1334116585617",
+   "durum": null
+  },
+  {
+   "donem": "2018",
+   "deger": "16.7334812844326",
+   "durum": null
+  },
+  {
+   "donem": "2019",
+   "deger": "14.1603081333496",
+   "durum": null
+  },
+  {
+   "donem": "2020",
+   "deger": "14.7339074242292",
+   "durum": null
+  },
+  {
+   "donem": "2021",
+   "deger": "29.3058995155618",
+   "durum": null
+  },
+  {
+   "donem": "2022",
+   "deger": "95.5255302704182",
+   "durum": null
+  },
+  {
+   "donem": "2023",
+   "deger": "68.2797569244827",
+   "durum": null
+  },
+  {
+   "donem": "2024",
+   "deger": "59.2800755919836",
+   "durum": null
+  },
+  {
+   "donem": "2025",
+   "deger": "36.4253414432254",
+   "durum": null
+  }
+ ]
+}

@@ -50,6 +50,9 @@ export function ek(etiket: string, tur: "de" | "den"): string {
 const BIRIM_ADI: Record<string, string> = { yillik: "yıl", yariyillik: "yarıyıl", ceyreklik: "çeyrek", aylik: "ay", haftalik: "hafta", gunluk: "iş günü" };
 const ESIK: Record<string, number> = { yillik: 3, yariyillik: 4, ceyreklik: 4, aylik: 6, haftalik: 8, gunluk: 20 };
 
+/** Değişimi fark olarak okunan düzey birimleri ve farkın adı (bileşik büyüme anlamsız). */
+export const FARK_BIRIM: Record<string, string> = { yil: "yıl", ay: "ay", dogum: "çocuk" };
+
 export function ortalama(v: number[]): number { return v.reduce((a, b) => a + b, 0) / v.length; }
 export function medyan(v: number[]): number {
   const s = [...v].sort((a, b) => a - b), m = s.length >> 1;
@@ -105,8 +108,8 @@ export function oku(d: Nokta[], siklik: string, birim: string, yaz: Yaz): string
   const kur = birim === "TRY/USD" || birim === "TRY/EUR";
   // Sınırlı ölçekli düzeyler (Gini 0-100, yaşam süresi yıl): değişim fark olarak okunur,
   // bileşik büyüme hızı anlamsız. Gini'de göreli değişim ayrıca verilir.
-  const fark = birim === "puan" || birim === "yil";
-  const farkAdi = birim === "yil" ? "yıl" : "puan";
+  const fark = birim === "puan" || birim in FARK_BIRIM;
+  const farkAdi = FARK_BIRIM[birim] ?? "puan";
   const isaretli = (v: number) => `${v >= 0 ? "+" : "−"}${Math.abs(v).toLocaleString("tr-TR", { maximumFractionDigits: 1, minimumFractionDigits: 1 })}`;
 
   const k = konum(d, siklik);
@@ -207,7 +210,7 @@ export function reelFaiz(faiz: Nokta[], enf: Nokta[]): Nokta[] {
 }
 
 // ---- gözlem tablosu: bir yıl önceye göre ------------------------------------------
-export interface YillikFark { fark: number; tur: "puan" | "yil" | "yuzde" }
+export interface YillikFark { fark: number; ek: string }   // ek: "%" yüzde değişim; aksi hâlde fark birimi
 /** Her gözlem için bir yıl önceki aynı döneme göre değişim (aylıkta aynı ay, çeyreklikte aynı çeyrek,
  *  yarıyıllıkta aynı yarıyıl, yıllıkta önceki yıl). Oran ve puanda fark (puan), yılda fark (yıl),
  *  düzeyde yüzde değişim (önceki değer pozitifse). Günlük ve haftalıkta hesaplanmaz. Eşi yoksa yok. */
@@ -215,12 +218,12 @@ export function yillikDegisimler(d: Nokta[], siklik: string, birim: string): Map
   const sonuc = new Map<string, YillikFark>();
   if (siklik === "gunluk" || siklik === "haftalik") return sonuc;
   const harita = new Map(d.map((p) => [p.donem, p.v]));
-  const tur: YillikFark["tur"] = birim.startsWith("yuzde") || birim === "puan" ? "puan" : birim === "yil" ? "yil" : "yuzde";
+  const ek = birim.startsWith("yuzde") || birim === "puan" ? "puan" : FARK_BIRIM[birim] ?? "%";
   for (const p of d) {
     const once = harita.get(String(Number(p.donem.slice(0, 4)) - 1) + p.donem.slice(4));
     if (once === undefined) continue;
-    if (tur === "yuzde") { if (once > 0) sonuc.set(p.donem, { fark: (p.v / once - 1) * 100, tur }); }
-    else sonuc.set(p.donem, { fark: p.v - once, tur });
+    if (ek === "%") { if (once > 0) sonuc.set(p.donem, { fark: (p.v / once - 1) * 100, ek }); }
+    else sonuc.set(p.donem, { fark: p.v - once, ek });
   }
   return sonuc;
 }
