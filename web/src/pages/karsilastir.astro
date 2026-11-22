@@ -1,0 +1,121 @@
+---
+// Ülke karşılaştırması: Türkiye ve emsal ekonomiler, aynı kaynak ve aynı seri tanımıyla.
+// Sunucuda: her göstergenin son karşılaştırma satırı (JS'siz okunur, dizinlenir).
+// Tarayıcıda: ../scripts/karsilastir.ts yalnız API izinli /api/v1/emsal ve /api/v1/seri dosyalarını okur.
+import Taban from "../layouts/Taban.astro";
+import { seriler, emsal, TEMA, TEMA_SIRA, ULKE, ulkeAdi } from "../lib/veri";
+import { donemAdi } from "../lib/okuma.ts";
+import { emsalSatirlari } from "../lib/turetilmis";
+import { KISI_REF } from "../lib/kimlik";
+
+const ss = seriler().filter((s) => s.izin.api && emsal(s.id));
+const kisa = (k: string) => k.replace(/\s*\(.*\)$/, "").replace("Uluslararası Ödemeler Bankası", "BIS").replace("Avrupa Birliği İstatistik Ofisi", "Eurostat").replace("Uluslararası Çalışma Örgütü", "ILO");
+const katalog = ss.map((s) => ({ id: s.id, baslik: s.baslik, birim: s.birim, siklik: s.siklik, tema: s.tema, kaynak: kisa(s.kaynak.kurum), indir: s.izin.indirme }));
+const gruplar = TEMA_SIRA.map((t) => ({ ad: TEMA[t], liste: katalog.filter((k) => k.tema === t) })).filter((g) => g.liste.length);
+const ulkeler = [...new Set(ss.flatMap((s) => Object.keys(emsal(s.id)!.ulkeler)))].filter((k) => k !== "EUU");
+const satirlar = emsalSatirlari().filter((r) => r.href.startsWith("/gosterge/"));
+const VARSAYILAN = "wb-ny-gdp-mktp-kd-zg-tur";
+const site = "https://veri.korayoner.dev";
+const jsonld = {
+  "@context": "https://schema.org", "@type": "WebPage", name: "Türkiye ve emsal ekonomiler: ülke karşılaştırması",
+  url: `${site}/karsilastir`, inLanguage: "tr", author: KISI_REF,
+  about: { "@type": "Country", name: "Türkiye" },
+};
+---
+<Taban baslik="Ülke karşılaştırması — Türkiye ve emsal ekonomiler | Türkiye Verisi" aciklama={`Türkiye'yi ${ulkeler.map(ulkeAdi).join(", ")} ile ${ss.length} göstergede karşılaştırın: aynı kaynak ve seri tanımı, emsal medyanı, sıra, zaman içinde konum, CSV.`} yol="/karsilastir" jsonld={jsonld}>
+  <div class="sar karsi">
+    <header class="k-bas">
+      <p class="etiket">Emsal karşılaştırması · {ss.length} gösterge · {ulkeler.length} ülke</p>
+      <h1>Ülke karşılaştırması</h1>
+      <p class="ozet">Türkiye'yi sık karşılaştırıldığı ekonomilerle yan yana koyun. Her ülkenin değeri Türkiye'yle aynı kurumdan, aynı seri tanımıyla çekilir. Bir dönem, Türkiye'nin değeri ve emsallerin en az %60'ının değeri varsa karşılaştırılır; verisi olmayan ülke sıfır sayılmaz, adıyla yazılır. Sıra yüksekten düşüğe bir dizilimdir, başarı puanı değildir: yüksek enflasyon ile yüksek büyüme aynı anlamı taşımaz. <a href="/yontem#emsal">Neden bu ülkeler</a></p>
+    </header>
+
+    <form class="k-kontrol" id="k-form" aria-label="Karşılaştırma ayarları" data-katalog={JSON.stringify({ katalog, ulke: ULKE, varsayilan: VARSAYILAN })}>
+      <div class="k-satir">
+        <label class="k-alan"><span>Gösterge</span>
+          <select id="k-gosterge">
+            {gruplar.map((g) => <optgroup label={g.ad}>{g.liste.map((k) => <option value={k.id} selected={k.id === VARSAYILAN}>{k.baslik} · {k.kaynak}</option>)}</optgroup>)}
+          </select>
+        </label>
+        <label class="k-alan"><span>Dönem</span><select id="k-donem" disabled><option>—</option></select></label>
+      </div>
+      <fieldset class="k-ulkeler"><legend>Emsal ülkeler</legend>
+        {ulkeler.map((k) => <label><input type="checkbox" name="u" value={k} checked /><span>{ulkeAdi(k)}</span></label>)}
+      </fieldset>
+    </form>
+    <p class="k-durum" id="k-durum" role="status" aria-live="polite"></p>
+    <div id="k-cikti" class="k-cikti" data-bekle></div>
+    <div class="k-eylem">
+      <button type="button" id="k-csv">CSV indir</button>
+      <button type="button" id="k-bagla">Bağlantıyı kopyala</button>
+      <a id="k-gosterge-bag" href={`/gosterge/${VARSAYILAN}`}>Gösterge sayfası →</a>
+    </div>
+    <noscript><p class="ozet">Etkileşimli karşılaştırma JavaScript gerektirir. Aşağıdaki tablo her göstergenin son karşılaştırmasını verir.</p></noscript>
+
+    <section class="k-ozet-tablo" aria-labelledby="k-son">
+      <h2 id="k-son">Her göstergede son karşılaştırma</h2>
+      <p class="ozet">Her satırda karşılaştırılabilir en yeni dönem. Türkiye'nin daha yeni bir verisi varsa parantezde.</p>
+      <div class="kaydir">
+        <table>
+          <thead><tr><th scope="col">Gösterge</th><th scope="col">Dönem</th><th scope="col" class="n">Türkiye</th><th scope="col" class="n">Emsal medyanı</th><th scope="col">Sıra</th><th scope="col">Kaynak</th></tr></thead>
+          <tbody>
+            {satirlar.map((r) => { const tr = r.sira.satirlar.find((x) => x.kod === "TUR")!; return (
+              <tr>
+                <th scope="row"><a href={r.href}>{r.baslik}</a></th>
+                <td class="kucuk-h">{donemAdi(r.sira.donem)}{r.trSon !== r.sira.donem && <> (son: {donemAdi(r.trSon)})</>}</td>
+                <td class="n sayi">{r.yaz(tr.v)}</td>
+                <td class="n sayi">{r.yaz(r.sira.medyan)}</td>
+                <td class="kucuk-h">{r.sira.toplam} ülke içinde {r.sira.sira}.</td>
+                <td class="kucuk-h">{kisa(r.kaynak)}</td>
+              </tr>
+            ); })}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</Taban>
+<script>
+  import "../scripts/karsilastir.ts";
+</script>
+<style is:global>
+  .karsi { display: grid; gap: 1.1rem; padding-block: clamp(2rem, 5vw, 3.5rem) 0; }
+  .k-bas { display: grid; gap: .7rem; }
+  .k-kontrol { display: grid; gap: 1rem; background: var(--yuzey); border: 1px solid var(--cizgi); padding: 1rem 1.1rem; }
+  .k-satir { display: grid; gap: .8rem 1.2rem; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+  @media (max-width: 40rem) { .k-satir { grid-template-columns: minmax(0, 1fr); } }
+  .k-alan { display: grid; gap: .35rem; min-width: 0; }
+  .k-alan > span, .k-ulkeler legend { font: 600 .68rem/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--soluk); }
+  .k-alan select { font: .92rem var(--font); padding: .5rem .6rem; min-height: 2.6rem; width: 100%; background: var(--bg); color: var(--metin); border: 1px solid var(--cizgi); }
+  .k-alan select:focus-visible, .k-ulkeler input:focus-visible + span, .k-eylem :focus-visible { outline: 2px solid var(--vurgu); outline-offset: 2px; }
+  .k-ulkeler { border: 0; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .35rem; min-width: 0; }
+  .k-ulkeler legend { width: 100%; margin-bottom: .4rem; padding: 0; }
+  .k-ulkeler label { position: relative; }
+  .k-ulkeler input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .k-ulkeler span { display: inline-flex; align-items: center; min-height: 2.4rem; padding: .3rem .7rem; border: 1px solid var(--cizgi); font-size: .85rem; color: var(--soluk); text-decoration: line-through; }
+  .k-ulkeler input:checked + span { color: var(--metin); border-color: var(--metin); text-decoration: none; }
+  .k-ulkeler input:disabled + span { opacity: .4; text-decoration: none; border-style: dashed; }
+  .k-durum { margin: 0; font-size: .85rem; color: var(--soluk); min-height: 1.2em; }
+  .k-cikti { display: grid; gap: 1rem; }
+  .k-cikti[data-bekle] { min-height: 40rem; }
+  .k-panel { background: var(--yuzey); border: 1px solid var(--cizgi); padding: .9rem 1rem .6rem; min-width: 0; }
+  .k-panel h2 { font-size: 1.05rem; margin: 0 0 .3rem; }
+  .k-panel .k-cumle { margin: 0 0 .6rem; font-size: .92rem; }
+  .k-panel .g-not { font-size: .75rem; color: var(--soluk); margin: .3rem 0 0; }
+  .k-tuval svg { display: block; max-width: 100%; height: auto; overflow: visible; }
+  .k-lejant { list-style: none; margin: 0 0 .4rem; padding: 0; display: flex; flex-wrap: wrap; gap: .3rem 1.2rem; font-size: .8rem; color: var(--soluk); }
+  .k-lejant li { display: inline-flex; align-items: center; gap: .4rem; }
+  .k-ornek { display: inline-block; width: 1.1rem; height: 3px; }
+  .k-ornek.bant { height: .7rem; opacity: .35; }
+  .k-ornek.kesik { background: repeating-linear-gradient(90deg, var(--metin) 0 4px, transparent 4px 7px) !important; }
+  .k-bos { border-style: dashed; display: grid; gap: .5rem; }
+  .k-bos p { margin: 0; font-size: .88rem; }
+  .g-eylem-d { justify-self: start; font: 600 .78rem/1 var(--mono); padding: .6rem .9rem; min-height: 2.5rem; background: none; color: var(--metin); border: 1px solid var(--metin); cursor: pointer; }
+  .g-eylem-d:hover { background: var(--metin); color: var(--bg); }
+  .k-eylem { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .k-eylem button, .k-eylem a { font: 600 .78rem/1 var(--mono); padding: .6rem .9rem; min-height: 2.5rem; display: inline-flex; align-items: center; background: none; color: var(--metin); border: 1px solid var(--metin); cursor: pointer; text-decoration: none; }
+  .k-eylem button:hover, .k-eylem a:hover { background: var(--metin); color: var(--bg); }
+  .k-ozet-tablo { display: grid; gap: .6rem; padding-top: 2rem; }
+  .k-ozet-tablo th a { text-decoration: none; font-weight: 600; }
+  .kucuk-h { font-size: .82rem; color: var(--soluk); }
+</style>

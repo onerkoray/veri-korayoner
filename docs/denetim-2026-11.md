@@ -191,3 +191,31 @@ yoklandı:
 | `/` önce | 99 | 100 | 100 | 100 | 0 |
 | `/` sonra | 99 | 100 | 100 | 100 | 0 |
 | `/gezgin` sonra (4 ölçüm) | 99 | 100 | — | — | 0 |
+
+## Veri gezgini 2 ve ülke karşılaştırması (üçüncü tur)
+
+- `web/src/scripts/gezgin.ts`:
+  - Geri/ileri tuşları çalışıyor: her değişiklik `pushState`, adres `popstate`/`hashchange` ile yeniden kuruluyor.
+  - Ölçek seçimi (Değer / Baz = 100 / Fark): uygun seriler ortak baz döneminden itibaren tek eksende.
+  - Bir panelde en çok 4 seri; daha fazlası yeni panele geçiyor. Uygun olmayan seri için ölçek önerisi çıkıyor.
+  - Tablo sütun başlığından sıralanıyor (`aria-sort`).
+  - Kurum ve sıklık süzgeçleri eklendi; adrese yazılmıyor.
+- `web/src/lib/gezgin-cekirdek.ts`: `olcekUygun`, `ortakBaz`, `donustur`, `sirala`; testler `web/test/gezgin.test.ts`.
+- `web/src/lib/bicim.ts` (yeni): gezgin ve karşılaştırmanın ortak değer ve dönem biçimi (yarıyıl dahil).
+- `web/src/styles/taban.css`: `--kat-1..4` dört renkli palet. OKLab ölçüsünde renk körlüğü benzetimiyle bütün çiftler ≥ 9, normal görüşte ≥ 16. Yüzeye karşıtlık ≥ 3:1. Altı renk denendi; renk körlüğünde ayrışmadığı için 4 ile sınırlandı.
+- `web/src/pages/karsilastir.astro` ve `web/src/scripts/karsilastir.ts` (yeni):
+  - Gösterge, dönem ve ülke seçimi; sıralı çubuklarda Türkiye vurgulu.
+  - Emsal medyanı ve AB-27 başvuru çizgisi.
+  - Zaman içinde Türkiye, emsal medyanı ve en düşük–en yüksek bandı.
+  - Verisi olmayan ülke adıyla yazılıyor.
+  - CSV (indirme izniyle), bağlantı kopyalama, geri/ileri ve yeniden deneme var.
+  - Yalnız API izinli `/api/v1/emsal` ve `/api/v1/seri` dosyalarını okuyor.
+  - Sunucuda her göstergenin son karşılaştırma tablosu çiziliyor (JS'siz okunur).
+- `web/src/lib/karsilastir-cekirdek.ts` + `web/test/karsilastir.test.ts`: dönem kuralı `okuma.ts`'deki `sirala` ile aynı (test bunu doğruluyor).
+- Menü ve site haritası `/karsilastir`'ı içeriyor; `web/src/pages/yontem.astro`'ya `#olcek` bölümü eklendi.
+
+| Sayfa (Lighthouse 12.8.2, telefon) | Performans | Erişilebilirlik | En iyi uygulama | SEO | CLS |
+|---|---|---|---|---|---|
+| `/` | 99 | 100 | 100 | 100 | 0 |
+| `/gezgin` | 99 | 100 | 100 | 100 | 0 |
+| `/karsilastir` | 99 | 100 | 100 | 100 | 0 |

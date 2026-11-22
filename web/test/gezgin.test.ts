@@ -53,3 +53,30 @@ test("metaveri her sütunu ve türetilmiş değeri açıklar", () => {
   assert.match(String(m.sutunlar[1].deger), /bu sitenin hesabı: dönem ortalaması/);
   assert.equal(m.baglanti, "https://veri.korayoner.dev/gezgin#g=x-1");
 });
+
+import { olcekUygun, ortakBaz, donustur, sirala } from "../src/lib/gezgin-cekirdek.ts";
+
+test("ölçek uygunluğu: oranda endeks yok, düzeyde fark yok", () => {
+  assert.equal(olcekUygun("USD", "endeks"), true);
+  assert.equal(olcekUygun("yuzde", "endeks"), false);
+  assert.equal(olcekUygun("puan", "endeks"), false);
+  assert.equal(olcekUygun("yuzde-gsyh", "fark"), true);
+  assert.equal(olcekUygun("kisi", "fark"), false);
+  assert.equal(olcekUygun("kisi", "deger"), true);
+});
+
+test("ortak baz: hepsinin değeri olan ilk dönem; dönüştürme bazdan başlar", () => {
+  const a = [s("2019", "50"), s("2020", "100"), s("2021", "150")], b = [s("2020", "4"), s("2021", "6")];
+  assert.equal(ortakBaz([a, b], 1), "2020");
+  assert.equal(ortakBaz([a, [s("1990", "1")]], 1), null);
+  assert.deepEqual(donustur(a, 1, "endeks", "2020")!.map((x) => x.v), [100, 150]);
+  assert.deepEqual(donustur(b, 1, "fark", "2020")!.map((x) => x.v), [0, 2]);
+  assert.equal(donustur([s("2020", "-3"), s("2021", "2")], 1, "endeks", "2020"), null);   // negatif baz: endeks yok
+  assert.equal(donustur(a, 1, "endeks", "1999"), null);
+});
+
+test("tablo sıralaması: boş hücre sonda, eşitlikte yeni dönem önce", () => {
+  const r = [{ donem: "2020", v: 2 }, { donem: "2021", v: null }, { donem: "2022", v: 5 }, { donem: "2023", v: 2 }];
+  assert.deepEqual(sirala(r, (x) => x.v, "artan").map((x) => x.donem), ["2023", "2020", "2022", "2021"]);
+  assert.deepEqual(sirala(r, (x) => x.v, "azalan").map((x) => x.donem), ["2022", "2023", "2020", "2021"]);
+});

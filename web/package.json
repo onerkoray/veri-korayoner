@@ -8,7 +8,7 @@
   "scripts": {
     "veri": "node betikler/veri-kopyala.mjs",
     "build": "npm run veri && astro build && node betikler/denetle.mjs",
-    "test": "node --test test/okuma.test.ts test/gezgin.test.ts test/ana-grafik.test.ts",
+    "test": "node --test test/okuma.test.ts test/gezgin.test.ts test/ana-grafik.test.ts test/karsilastir.test.ts",
     "e2e": "playwright test",
     "dev": "npm run veri && astro dev"
   },

@@ -67,12 +67,50 @@ export function csvMetni(secili: Tanim[], satir: Record<string, Satir[]>, kolon:
   return satirlar.join("\n") + "\n";
 }
 
-export interface GorunumDurumu { s: string; d: "ort" | "son"; b: number; e: number }
+export type Olcek = "deger" | "endeks" | "fark";
+/** Ortak grafikte aynı eksene konabilecek seri sayısı: renk körlüğünde ayırt edilebilen palet 4 renk. */
+export const ORTAK_AZAMI = 4;
+/** Ölçek uygun mu: endeks (baz = 100) yalnız pozitif düzeylerde; oran ve puan serisinde oranın
+ *  oranı anlamsız. Fark (baz döneme göre puan) yalnız yüzde serilerinde. */
+export function olcekUygun(birim: string, o: Olcek): boolean {
+  if (o === "deger") return true;
+  const oran = birim.startsWith("yuzde");
+  return o === "endeks" ? !oran && birim !== "puan" : oran;
+}
+/** Bütün serilerin değeri olan ilk dönem (ortak baz); yoksa null. */
+export function ortakBaz(satirlar: Satir[][], i: 1 | 2): string | null {
+  if (!satirlar.length) return null;
+  const kume = satirlar.map((s) => new Set(s.filter((r) => Number.isFinite(Number(r[i])) && r[i] !== "").map((r) => r[0])));
+  return [...kume[0]].sort().find((d) => kume.every((k) => k.has(d))) ?? null;
+}
+export interface Nokta { donem: string; v: number; tam: boolean }
+/** Baz döneme göre dönüştürür; bazdan önceki dönemler düşer. Endeks: v / v0 × 100 (v0 > 0 değilse null).
+ *  Fark: v − v0 (yüzde puan). Değer: aynen. */
+export function donustur(sat: Satir[], i: 1 | 2, o: Olcek, baz: string | null): Nokta[] | null {
+  const n = sat.map((r) => ({ donem: r[0], v: Number(r[i]), tam: r[4] })).filter((x) => Number.isFinite(x.v) && (!baz || x.donem >= baz));
+  if (o === "deger") return n;
+  const v0 = n.find((x) => x.donem === baz)?.v;
+  if (v0 === undefined) return null;
+  if (o === "endeks") return v0 > 0 ? n.map((x) => ({ ...x, v: (x.v / v0) * 100 })) : null;
+  return n.map((x) => ({ ...x, v: x.v - v0 }));
+}
+/** Tablo sıralaması: boş hücre yöne bakmadan sonda; eşitlikte dönem yeniden eskiye. */
+export function sirala<T extends { donem: string }>(satirlar: T[], deger: (s: T) => number | null, yon: "artan" | "azalan"): T[] {
+  const k = yon === "artan" ? 1 : -1;
+  return [...satirlar].sort((a, b) => {
+    const x = deger(a), y = deger(b);
+    if (x == null || y == null) return x == null && y == null ? b.donem.localeCompare(a.donem) : x == null ? 1 : -1;
+    return (x - y) * k || b.donem.localeCompare(a.donem);
+  });
+}
+
+export interface GorunumDurumu { s: string; d: "ort" | "son"; b: number; e: number; o?: Olcek }
 /** CSV'nin yanında indirilen metaveri: her sütunun kaynağı, lisansı, türetilmiş olup olmadığı. */
 export function metaveri(secili: Tanim[], g: GorunumDurumu, yontem: string, baglanti: string, simdi: Date) {
   return {
     olusturuldu: simdi.toISOString(), baglanti, kaynak_site: "https://veri.korayoner.dev/gezgin",
-    gorunum: { siklik: g.s, deger: g.d === "ort" ? "dönem ortalaması" : "dönem sonu", baslangic_yili: g.b, bitis_yili: g.e },
+    gorunum: { siklik: g.s, deger: g.d === "ort" ? "dönem ortalaması" : "dönem sonu", baslangic_yili: g.b, bitis_yili: g.e,
+      olcek: g.o === "endeks" ? "ekranda endeks (ortak baz dönemi = 100); CSV ham değerdir" : g.o === "fark" ? "ekranda baz döneme göre yüzde puan farkı; CSV ham değerdir" : "değer" },
     yontem,
     sutunlar: [{ ad: "donem", aciklama: "dönem anahtarı (YYYY, YYYY-Qn ya da YYYY-AA)" },
       ...secili.flatMap((t) => [

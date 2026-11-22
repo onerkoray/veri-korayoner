@@ -19,8 +19,9 @@ Eurostat, ILO. ECB'nin lisansı onaylı ama şu an yayımlanan serisi yok.
 - `yayin/site-veri/` — sitenin derlemede okuduğu dosyalar; kamuya açık değildir.
 - Her commit o günün vintage'ıdır: `git log -p yayin/` bir gözlemin ilk
   açıklanan değerini ve her düzeltmesini gösterir.
-- `web/` — Astro statik site; veri gezgini (`/gezgin`) panel veri setini
-  tarayıcıda okur, durum adresin `#` kısmında durur.
+- `web/` — Astro statik site. Panorama (`/`): KPI kartları ve enflasyon–faiz grafiği.
+  Veri gezgini (`/gezgin`) panel veri setini, ülke karşılaştırması (`/karsilastir`)
+  API izinli emsal dosyalarını tarayıcıda okur; durum adresin `#` kısmında durur.
 
 Kararlar: [mimari](docs/adr/0001-mimari.md) ·
 [depolama ve panel veri seti](docs/adr/0002-depolama-ve-panel.md) ·

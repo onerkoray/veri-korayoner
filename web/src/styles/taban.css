@@ -3,6 +3,8 @@
   --bg: #f5f7f6; --yuzey: #fff; --yuzey-2: #eef3f0; --cizgi: #dbe4df;
   --metin: #17201d; --soluk: #56605c; --vurgu: #3d4b5c; --marka: #0e7c66;
   --dv-1: #4b64ae; --dv-2: #ca653c; --dv-iyi: #157056; --dv-kotu: #b34806; --izgara: #dbe4df;
+  /* Çok serili ortak grafik (en çok 4 seri): renk körlüğünde bütün çiftler OKLab ΔE ≥ 10, yüzeye ≥ 3:1. */
+  --kat-1: #3d59a8; --kat-2: #b8741a; --kat-3: #1f8a7a; --kat-4: #17201d;
   --font: -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   --genislik: 1120px; --kenar: clamp(16px, 4vw, 40px);
@@ -13,6 +15,7 @@
     --bg: #0b0d10; --yuzey: #14181d; --yuzey-2: #1b2027; --cizgi: #2a313a;
     --metin: #eef1f4; --soluk: #a4adb6; --vurgu: #a3b1c2; --marka: #3fbf9a;
     --dv-1: #7b93db; --dv-2: #e08560; --dv-iyi: #5cbb9d; --dv-kotu: #f5843c; --izgara: #2a313a;
+    --kat-1: #7b93db; --kat-2: #e8a23f; --kat-3: #3fbfaa; --kat-4: #eef1f4;
   }
 }
 * { box-sizing: border-box; }
