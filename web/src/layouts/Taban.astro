@@ -1,10 +1,15 @@
 ---
 import "../styles/taban.css";
+import { durum, tarih } from "../lib/veri";
 interface Props { baslik: string; aciklama: string; yol: string; jsonld?: object }
 const { baslik, aciklama, yol, jsonld } = Astro.props;
 const kanonik = new URL(yol, Astro.site).href;
 const menu = [["/", "Panorama"], ["/gezgin", "Veri gezgini"], ["/karsilastir", "Karşılaştır"], ["/kaynaklar", "Kaynaklar"], ["/api", "API"], ["/yontem", "Yöntem"], ["/koray-oner", "Koray Öner"]];
 const etkin = (h: string) => (h === "/" ? yol === "/" : yol.startsWith(h));
+// Veri durumu derlemede durum.json'dan (site her veri commit'inde yeniden derlenir).
+const d = durum();
+const sorun = d ? d.ozet.hatali + d.ozet.geciken : 0;
+const kisaTarih = d ? tarih(d.son_kontrol).replace(/ \d{4}$/, "") : null;
 ---
 <!doctype html>
 <html lang="tr">
@@ -21,6 +26,9 @@ const etkin = (h: string) => (h === "/" ? yol === "/" : yol.startsWith(h));
   <meta property="og:url" content={kanonik}>
   <meta property="og:locale" content="tr_TR">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#0e7c66" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0b0d10" media="(prefers-color-scheme: dark)">
+  <script is:inline src="/tema-erken.js"></script>
   {jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />}
 </head>
 <body>
@@ -28,8 +36,20 @@ const etkin = (h: string) => (h === "/" ? yol === "/" : yol.startsWith(h));
   <header class="ust">
     <div class="sar ust-ic">
       <a class="marka" href="/" aria-label="Türkiye Verisi ana sayfa">
-        <span class="marka-isaret" aria-hidden="true"></span><span>Türkiye Verisi</span>
+        <svg class="marka-isaret" viewBox="0 0 32 32" width="26" height="26" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="6" /><path d="M7 23 12.5 16.5 17.5 19.5 23.5 10" /><circle cx="24" cy="9.5" r="2.9" /></svg><span>Türkiye Verisi</span>
       </a>
+      <div class="ust-arac">
+        {d && (
+          <a class="ust-durum" href="/kaynaklar" title={`Son veri kontrolü ${tarih(d.son_kontrol)}; ${d.ozet.yayinda}/${d.ozet.seri} seri yayında`}>
+            <span class:list={["nokta", sorun ? "nokta--uyari" : "nokta--iyi"]} aria-hidden="true"></span>
+            <span>Veri {kisaTarih}{sorun > 0 && <span class="ust-sorun"> · {sorun} uyarı</span>}</span>
+          </a>
+        )}
+        <button type="button" id="tema-dugme" class="tema-dugme" aria-label="Tema: Sistem. Değiştirmek için basın">
+          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><circle cx="8" cy="8" r="6.2" /><path d="M8 1.8a6.2 6.2 0 0 1 0 12.4z" /></svg>
+          <span class="tema-ad">Sistem</span>
+        </button>
+      </div>
       <nav aria-label="Birincil">
         <ul>{menu.map(([h, a]) => <li><a href={h} aria-current={etkin(h) ? "page" : undefined}>{a}</a></li>)}</ul>
       </nav>
@@ -48,11 +68,37 @@ const etkin = (h: string) => (h === "/" ? yol === "/" : yol.startsWith(h));
   .ust { border-bottom: 1px solid var(--cizgi); background: var(--yuzey); }
   .ust-ic { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 60px; flex-wrap: wrap; }
   .marka { display: inline-flex; align-items: center; gap: .6rem; font-weight: 700; text-decoration: none; }
-  .marka-isaret { width: 22px; height: 22px; border: 2px solid var(--metin); border-radius: 2px;
-    background: linear-gradient(to top right, transparent 46%, var(--marka) 46% 58%, transparent 58%); }
-  nav ul { display: flex; gap: 1.2rem; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
-  nav a { text-decoration: none; color: var(--soluk); font-size: .95rem; padding-block: .3rem; }
+  .marka-isaret { flex: none; }
+  .marka-isaret rect { fill: var(--isaret-zemin); }
+  .marka-isaret path { fill: none; stroke: var(--isaret-cizgi); stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }
+  .marka-isaret circle { fill: var(--isaret-cizgi); }
+  /* Masaüstü: marka · menü · araçlar tek satır. Telefon: marka + araçlar, altında yatay kayan menü. */
+  .ust-arac { order: 3; display: flex; align-items: center; gap: .5rem; }
+  nav { order: 2; min-width: 0; }
+  nav ul { display: flex; gap: 1.2rem; list-style: none; margin: 0; padding: 0; }
+  nav a { text-decoration: none; color: var(--soluk); font-size: .95rem; padding-block: .3rem; white-space: nowrap; }
   nav a[aria-current="page"] { color: var(--metin); box-shadow: inset 0 -2px 0 var(--metin); }
+  .ust-durum { display: inline-flex; align-items: center; gap: .4rem; font: 600 .7rem/1 var(--mono); letter-spacing: .03em; color: var(--soluk);
+    text-decoration: none; padding: .45rem .6rem; border: 1px solid var(--cizgi); white-space: nowrap; }
+  .ust-durum:hover { color: var(--metin); border-color: var(--metin); }
+  .nokta { width: .5rem; height: .5rem; border-radius: 50%; }
+  .nokta--iyi { background: var(--dv-iyi); }
+  .nokta--uyari { background: var(--dv-kotu); }
+  .tema-dugme { visibility: hidden; display: inline-flex; align-items: center; gap: .4rem; min-height: 2.25rem; padding: .35rem .6rem;
+    font: 600 .7rem/1 var(--mono); color: var(--soluk); background: none; border: 1px solid var(--cizgi); cursor: pointer; }
+  .tema-dugme:hover { color: var(--metin); border-color: var(--metin); }
+  .tema-dugme svg circle { fill: none; stroke: currentColor; stroke-width: 1.6; }
+  .tema-dugme svg path { fill: currentColor; }
+  @media (max-width: 70rem) { .ust-durum { display: none; } }
+  @media (max-width: 56rem) {
+    .ust-ic { padding-top: .5rem; gap: .5rem 1rem; }
+    .ust-arac { order: 2; margin-left: auto; }
+    nav { order: 3; flex-basis: 100%; }
+    nav ul { overflow-x: auto; scrollbar-width: none; gap: 1.1rem; padding-bottom: .5rem;
+      mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent); }
+    nav ul::-webkit-scrollbar { display: none; }
+    nav li:last-child { padding-right: 2rem; }
+  }
   main { min-height: 70vh; }
   .alt { border-top: 1px solid var(--cizgi); margin-top: 4rem; padding-block: 2rem; color: var(--soluk); font-size: .85rem; }
   .alt p { margin: .3rem 0; max-width: 80ch; }

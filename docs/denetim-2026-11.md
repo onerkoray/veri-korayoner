@@ -254,3 +254,26 @@ Kullanıcı bildirimi: gezgin adresi gereksiz uzun ve standart dışıydı. Vars
   - Kullanıcının gönderdiği adres: `/gezgin`.
   - Sıklığı yıllık yapınca: `/gezgin#s=yillik`.
   - Panorama'da 3 yıl seçince: `/#aralik=3`.
+
+## Görsel kimlik, tema düğmesi ve favicon (beşinci tur)
+
+- `web/public/favicon.svg`: eski favicon `#17201d` çizgiliydi ve koyu sekme çubuğunda neredeyse
+  görünmüyordu. Yenisi koyu karo üstünde yeşil, yükselen çizgi. SVG içindeki
+  `prefers-color-scheme` ile koyu tarayıcıda karo açık, çizgi koyu yeşil oluyor. PNG yok
+  (kullanıcı tercihi).
+- `web/public/tema-erken.js` (yeni): tema tercihini ilk boyamadan önce uyguluyor. Değerler
+  korayoner.dev ile aynı (`data-theme` light/dark, yoksa sistem). Tercih yalnız bu cihazda,
+  `localStorage` içinde. Düğme Sistem → Açık → Koyu döngüsüyle çalışıyor. Telefonda kayan
+  menüde etkin öğe ortalanıyor.
+- `web/src/styles/taban.css`: koyu tokenlar hem sistem tercihi
+  (`:root:not([data-theme="light"])`) hem elle seçim (`:root[data-theme="dark"]`) için
+  tanımlı. Logo ve favicon renkleri `--isaret-*`.
+- `web/src/layouts/Taban.astro`:
+  - Logo, favicon ile aynı satır içi SVG.
+  - Başlıkta veri durumu (son kontrol günü ve uyarı sayısı, `/kaynaklar`'a bağlantı).
+  - Tema düğmesi; boşluğu `visibility` ile ayrılıyor, CLS 0.
+  - Telefonda başlık iki satır, menü tek satırda yatay kayıyor (önce üç satırdı).
+  - `theme-color` meta etiketleri eklendi.
+- `web/betikler/kare.mjs`: tam sayfa AVIF 16.000 px'te kesiliyor (AVIF sınırı 16.384).
+- e2e: tema döngüsü ve sayfalar arası kalıcılık, favicon, telefonda tek satır menü.
+  Toplam 51 test.

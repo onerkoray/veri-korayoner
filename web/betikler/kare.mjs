@@ -20,7 +20,7 @@ const PY = `import sys
 from PIL import Image
 kaynak, hedef, ust = sys.argv[1], sys.argv[2], int(sys.argv[3])
 im = Image.open(kaynak).convert("RGB")
-im.save(hedef + ".avif", quality=60)
+im.crop((0, 0, im.width, min(im.height, 16000))).save(hedef + ".avif", quality=60)   # AVIF en çok 16384 px
 im.crop((0, 0, im.width, min(im.height, ust))).save(hedef + "-ust.avif", quality=60)`;
 for (const yol of yollar.length ? yollar : ["/"]) {
   const ad = yol === "/" ? "ana" : yol.replace(/^\/|\/$/g, "").replace(/[/#?&=]/g, "_");

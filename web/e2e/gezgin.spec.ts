@@ -243,3 +243,32 @@ test.describe("Kaynaklar ve API", () => {
     expect(hata.filter((h) => !h.includes("404"))).toEqual([]);
   });
 });
+
+test.describe("Tema ve başlık", () => {
+  test("tema düğmesi Sistem → Açık → Koyu döner, tercih bu cihazda kalır", async ({ page }) => {
+    const hata = hataTopla(page);
+    await page.goto("/");
+    const d = page.locator("#tema-dugme");
+    await expect(d).toBeVisible();
+    await expect(d).toHaveAttribute("data-tema", "auto");
+    await d.click(); await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+    await d.click(); await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    const zemin = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+    expect(zemin).toBe("rgb(11, 13, 16)");
+    await page.goto("/gezgin");                                    // başka sayfada da ilk boyamadan koyu
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    await page.locator("#tema-dugme").click();
+    await expect(page.locator("html")).not.toHaveAttribute("data-theme", /./);
+    expect(hata).toEqual([]);
+  });
+
+  test("favicon SVG ve tema renkli; telefonda menü tek satır, etkin öğe görünür", async ({ page, isMobile }) => {
+    await page.goto("/koray-oner");
+    await expect(page.locator('link[rel="icon"]')).toHaveAttribute("href", "/favicon.svg");
+    if (!isMobile) return;
+    const ul = page.locator(".ust nav ul");
+    const [h, sh] = await ul.evaluate((e) => [e.clientHeight, e.scrollWidth > e.clientWidth]);
+    expect(h).toBeLessThan(60); expect(sh).toBe(true);
+    await expect(page.locator('.ust nav a[aria-current="page"]')).toBeInViewport();
+  });
+});
