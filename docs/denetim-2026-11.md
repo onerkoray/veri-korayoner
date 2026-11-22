@@ -219,3 +219,23 @@ yoklandı:
 | `/` | 99 | 100 | 100 | 100 | 0 |
 | `/gezgin` | 99 | 100 | 100 | 100 | 0 |
 | `/karsilastir` | 99 | 100 | 100 | 100 | 0 |
+
+## Kaynak sağlığı ve geliştirici sayfası (dördüncü tur)
+
+- `web/src/pages/kaynaklar.astro`: `durum.json`'dan beslenen "Veri sağlığı" paneli eklendi.
+  - Özet sayılar: yayımlayan kurum, yayında seri, gözlem, son kontrol, son çekimi başarısız, takvimin gerisinde.
+  - Kurum başına son başarılı kontrol, başarısız ve gecikmiş seriler; hata metni sayfaya konmuyor, yalnız sayı ve seri adı.
+  - İzni olup yayımlanan serisi olmayan kurum (ECB) açıkça işaretli.
+- `web/src/pages/api.astro`:
+  - Kod örnekleri: curl, Python (standart kitaplık ve pandas), JavaScript ve DuckDB. Dördü de 22 Kasım'da canlı siteye karşı çalıştırıldı.
+  - Seri dosyası alan sözlüğü, dönem biçimleri, hata ve boş veri davranışı, atıf örneği, v1 sözleşmesi.
+- `web/src/scripts/api-dene.ts` (yeni): tarayıcıda deneme aracı.
+  - Uç nokta, seri ve sıklık seçiliyor; yanıt biçimlenip 400 satırda kısaltılıyor, kopyalama yanıtın tamamını alıyor.
+  - HTTP durumu, boyut ve süre gösteriliyor; 404'te açıklama çıkıyor.
+  - Sunucu yok, durum tutulmuyor.
+- `web/betikler/denetle.mjs`: yinelenen `id` artık derlemeyi kırıyor. Deneme aracı bu yüzden çalışmıyordu (`<h2 id="dene">` formla aynı kimlikteydi). Kapı ayrıca `/koray-oner`'de atlama bağlantısının hedefi `main#ana` ile aynı kimliği taşıyan bir başlık buldu; düzeltildi.
+
+| Sayfa (Lighthouse 12.8.2, telefon) | Performans | Erişilebilirlik | En iyi uygulama | SEO | CLS |
+|---|---|---|---|---|---|
+| `/kaynaklar` | 100 | 100 | 100 | 100 | 0 |
+| `/api` | 100 | 100 | 100 | 100 | 0 |

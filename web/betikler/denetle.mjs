@@ -23,6 +23,9 @@ for (const y of sayfalar) {
   }
   const metin = s.replace(/<script[\s\S]*?<\/script>/g, "").replace(/<[^>]+>/g, " ");
   for (const k of ["NaN", "undefined", "Infinity"]) if (new RegExp("\\b" + k + "\\b").test(metin)) hatalar.push(ad + ": '" + k + "' yazılmış");
+  // Yinelenen id: getElementById ilkini döndürür, betik yanlış öğeye bağlanır (API deneme aracında oldu).
+  const idler = [...s.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]);
+  for (const i of new Set(idler.filter((x, j) => idler.indexOf(x) !== j))) hatalar.push(ad + `: id="${i}" birden fazla`);
   if (ad !== "404.html") {
     if ((s.match(/<h1\b/g) || []).length !== 1) hatalar.push(ad + ": tek <h1> değil");
     if (!/<link rel="canonical"/.test(s)) hatalar.push(ad + ": canonical yok");

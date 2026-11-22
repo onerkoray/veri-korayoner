@@ -1,9 +1,16 @@
 ---
 import Taban from "../layouts/Taban.astro";
-import { kaynaklar, seriler, DURUM, tarih } from "../lib/veri";
-const ks = kaynaklar();
-const say = (id: string) => seriler().filter((s) => s.kaynak.id === id).length;
+import { kaynaklar, seriler, DURUM, tarih, durum } from "../lib/veri";
+const ks = kaynaklar(), ss = seriler();
+const say = (id: string) => ss.filter((s) => s.kaynak.id === id).length;
 const evet = (b: boolean) => (b ? "Evet" : "Hayır");
+// Veri sağlığı: api/v1/durum.json (her çalıştırmada yazılır). Hata metni sayfaya konmaz; yalnız sayı.
+const d = durum();
+const yayimlayan = ks.filter((k) => say(k.id) > 0);
+const gozlem = ss.reduce((a, s) => a + s.gozlemler.filter((g) => g.deger != null).length, 0);
+const kurumAdi = (id: string) => ks.find((k) => k.id === id)?.kurum.replace(/\s*\(.*\)$/, "") ?? id;
+const seriAdi = (id: string) => ss.find((s) => s.id === id)?.baslik ?? id;
+const saat = (iso: string | null) => (iso ? `${tarih(iso)}, ${iso.slice(11, 16)} UTC` : "henüz yok");
 ---
 <Taban baslik="Kaynaklar ve lisans durumu | Türkiye Verisi" aciklama="Kayıtlı kurumlar, erişim yöntemi, entegrasyon durumu ve yeniden yayın izinleri; her izin kanıt adresiyle." yol="/kaynaklar">
   <section class="sar giris">
@@ -11,7 +18,38 @@ const evet = (b: boolean) => (b ? "Evet" : "Hayır");
     <h1>Kaynaklar ve lisans durumu</h1>
     <p class="ozet">Bir kaynağın listede olması verisinin yayımlandığı anlamına gelmez. Gösterim, indirme ve API izni ayrı ayrı açılır; her biri resmî kullanım şartı okunup kanıt adresi kayda geçtikten sonra. API'ye erişebilmek, veriyi yeniden yayımlama hakkı vermez.</p>
   </section>
+  {d && (
+    <section class="sar saglik" aria-labelledby="s-baslik">
+      <h2 id="s-baslik">Veri sağlığı</h2>
+      <p class="ozet">Hat her iş günü sabah çalışır. Bir kaynak o sabah okunamazsa serinin önceki verisi yerinde kalır ve burada sayılır; üç ardışık başarısızlık ya da yedi günden eski başarılı kontrol bakım kaydı açar. Seri bazında ayrıntı: <a href="/api/v1/durum.json">durum.json</a>.</p>
+      <dl class="s-ozet">
+        <div><dt>Veri yayımlayan kurum</dt><dd class="sayi">{yayimlayan.length}</dd></div>
+        <div><dt>Yayında seri</dt><dd class="sayi">{d.ozet.yayinda}/{d.ozet.seri}</dd></div>
+        <div><dt>Gözlem</dt><dd class="sayi">{gozlem.toLocaleString("tr-TR")}</dd></div>
+        <div><dt>Son kontrol</dt><dd>{saat(d.son_kontrol)}</dd></div>
+        <div><dt>Son çekimi başarısız</dt><dd class="sayi">{d.ozet.hatali}</dd></div>
+        <div><dt>Takvimin gerisinde</dt><dd class="sayi">{d.ozet.geciken}</dd></div>
+      </dl>
+      <div class="kaydir">
+        <table>
+          <thead><tr><th scope="col">Kurum</th><th scope="col" class="n">Seri</th><th scope="col">Son başarılı kontrol</th><th scope="col">Son çekimi başarısız</th><th scope="col">Takvimin gerisinde</th></tr></thead>
+          <tbody>
+            {d.kaynaklar.map((k) => (
+              <tr>
+                <th scope="row">{kurumAdi(k.id)}</th>
+                <td class="n">{k.seri}</td>
+                <td class="kucuk">{saat(k.son_basarili_kontrol)}</td>
+                <td>{k.hatali.length ? <><span class="hap hap--uyari">{k.hatali.length} seri</span><span class="alt"> {k.hatali.map(seriAdi).join(", ")}; önceki veri gösteriliyor</span></> : <span class="hap hap--iyi">yok</span>}</td>
+                <td>{k.geciken.length ? <><span class="hap hap--uyari">{k.geciken.length} seri</span><span class="alt"> {k.geciken.map(seriAdi).join(", ")}</span></> : <span class="hap hap--iyi">yok</span>}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  )}
   <section class="sar">
+    <h2 class="kayit-bas">Kaynak kaydı ve izinler</h2>
     <div class="kaydir">
       <table>
         <thead><tr><th scope="col">Kurum</th><th scope="col">Durum</th><th scope="col">Erişim</th><th scope="col">Gösterim</th><th scope="col">İndirme</th><th scope="col">API</th><th scope="col" class="n">Seri</th><th scope="col">Lisans</th></tr></thead>
@@ -21,7 +59,7 @@ const evet = (b: boolean) => (b ? "Evet" : "Hayır");
             return (
               <tr>
                 <th scope="row"><a href={k.adres}>{k.kurum}</a><br /><span class="alt">{k.ad}</span></th>
-                <td><span class={`hap hap--${sinif}`}>{ad}</span></td>
+                <td><span class={`hap hap--${sinif}`}>{ad}</span>{k.yayin.gosterim && say(k.id) === 0 && <><br /><span class="alt">İzin var, yayımlanan seri yok</span></>}</td>
                 <td>{k.erisim}</td>
                 <td>{evet(k.yayin.gosterim)}</td><td>{evet(k.yayin.indirme)}</td><td>{evet(k.yayin.api)}</td>
                 <td class="n">{say(k.id)}</td>
@@ -39,4 +77,13 @@ const evet = (b: boolean) => (b ? "Evet" : "Hayır");
   .giris { padding-block: clamp(2.5rem, 6vw, 4rem) 1.5rem; display: grid; gap: 1rem; }
   .alt { color: var(--soluk); font-size: .8rem; }
   .dip { margin-top: 1.5rem; font-size: .88rem; }
+  .saglik { display: grid; gap: .8rem; padding-bottom: 2rem; }
+  .saglik .ozet { margin: 0; font-size: .92rem; }
+  .s-ozet { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 1.5rem; margin: 0; border-top: 1px solid var(--metin); }
+  .s-ozet div { padding: .7rem 0; border-bottom: 1px solid var(--cizgi); }
+  .s-ozet dt { font: 600 .68rem/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--soluk); }
+  .s-ozet dd { margin: .25rem 0 0; font-size: 1.15rem; font-weight: 650; }
+  @media (min-width: 48rem) { .s-ozet { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .kucuk { font-size: .85rem; white-space: nowrap; }
+  .kayit-bas { margin: 0 0 .8rem; }
 </style>

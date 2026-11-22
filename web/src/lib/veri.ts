@@ -42,7 +42,8 @@ export function degisiklikler(): Olay[] {
   return existsSync(join(YAYIN, y)) ? oku(y).kayitlar : [];
 }
 export interface SeriDurumu { id: string; gecikti: boolean; ardisik_hata: number; son_basarili_kontrol: string | null; son_gozlem: string | null }
-export interface Durum { son_kontrol: string; ozet: { seri: number; yayinda: number; hatali: number; geciken: number }; seriler: SeriDurumu[] }
+export interface KaynakDurumu { id: string; seri: number; son_basarili_kontrol: string | null; hatali: string[]; geciken: string[] }
+export interface Durum { son_kontrol: string; ozet: { seri: number; yayinda: number; hatali: number; geciken: number }; kaynaklar: KaynakDurumu[]; seriler: SeriDurumu[] }
 /** api/v1/durum.json: sağlık ve tazelik (yoksa null). */
 export function durum(): Durum | null {
   const y = "api/v1/durum.json";

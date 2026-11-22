@@ -83,7 +83,7 @@ test("grafik üzerinde gezinme ipucu gösterir", async ({ page, isMobile }) => {
   await expect(page.locator(".g-tuval g[aria-label]")).toHaveCount(0);
 });
 
-for (const yol of ["/", "/gezgin", "/karsilastir", `/gosterge/${GINI}`, "/hesap/reel-politika-faizi", "/api"]) {
+for (const yol of ["/", "/gezgin", "/karsilastir", `/gosterge/${GINI}`, "/hesap/reel-politika-faizi", "/api", "/kaynaklar"]) {
   test(`yatay taşma yok: ${yol}`, async ({ page }) => {
     await page.goto(yol);
     await page.waitForLoadState("networkidle");
@@ -213,5 +213,33 @@ test.describe("Karşılaştırma", () => {
     await expect(page.locator("#k-durum")).toContainText("HTTP 502");
     await page.getByRole("button", { name: "Yeniden dene" }).click();
     await expect(page.locator(".k-tuval svg")).toHaveCount(2);
+  });
+});
+
+test.describe("Kaynaklar ve API", () => {
+  test("sağlık paneli durum.json'dan; ECB serisiz olarak işaretli", async ({ page }) => {
+    await page.goto("/kaynaklar");
+    await expect(page.locator(".s-ozet")).toContainText("Yayında seri");
+    await expect(page.locator(".saglik tbody tr")).not.toHaveCount(0);
+    await expect(page.getByText("İzin var, yayımlanan seri yok").first()).toBeVisible();
+  });
+
+  test("API deneme aracı: seri seçimi, yanıt, 404 açıklaması", async ({ page }) => {
+    const hata = hataTopla(page);
+    await page.goto("/api");
+    await page.locator("#d-uc").selectOption("/api/v1/seri/{id}.json");
+    await expect(page.locator("#d-id-alan")).toBeVisible();
+    await page.locator("#d-id").selectOption("bis-tufe-yillik-tr");
+    await expect(page.locator("#d-adres")).toContainText("/api/v1/seri/bis-tufe-yillik-tr.json");
+    await page.getByRole("button", { name: "İsteği gönder" }).click();
+    await expect(page.locator("#d-durum")).toContainText("HTTP 200");
+    await expect(page.locator("#d-yanit")).toContainText('"kaynak_kod"');
+    await expect(page.getByRole("button", { name: "Yanıtı kopyala" })).toBeEnabled();
+    await page.route("**/api/v1/seriler.json", (r) => r.fulfill({ status: 404, body: "yok" }));
+    await page.locator("#d-uc").selectOption("/api/v1/seriler.json");
+    await page.getByRole("button", { name: "İsteği gönder" }).click();
+    await expect(page.locator("#d-durum")).toContainText("HTTP 404");
+    await expect(page.locator("#d-durum")).toContainText("dosya yok");
+    expect(hata.filter((h) => !h.includes("404"))).toEqual([]);
   });
 });

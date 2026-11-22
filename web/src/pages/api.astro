@@ -1,14 +1,72 @@
 ---
 import Taban from "../layouts/Taban.astro";
-import { seriler } from "../lib/veri";
-const ornek = seriler().find((s) => s.izin.api && s.izin.indirme);
+import { seriler, emsal } from "../lib/veri";
+const ss = seriler().filter((s) => s.izin.api);
+const ornek = ss.find((s) => s.izin.indirme && s.id === "bis-tufe-yillik-tr") ?? ss.find((s) => s.izin.indirme)!;
 const kok = "https://veri.korayoner.dev";
+const secenek = {
+  seri: ss.map((s) => [s.id, s.baslik]),
+  csv: ss.filter((s) => s.izin.indirme).map((s) => [s.id, s.baslik]),
+  emsal: ss.filter((s) => emsal(s.id)).map((s) => [s.id, s.baslik]),
+};
+const UC: [string, string][] = [
+  ["/api/v1/seriler.json", "Katalog"], ["/api/v1/kaynaklar.json", "Kaynaklar"], ["/api/v1/durum.json", "Sağlık ve tazelik"],
+  ["/api/v1/degisiklikler.json", "Değişiklik günlüğü"], ["/api/v1/seri/{id}.json", "Tek seri (JSON)"], ["/api/v1/seri/{id}.csv", "Tek seri (CSV)"],
+  ["/api/v1/emsal/{id}.json", "Emsal ülkeler"], ["/api/v1/panel/{siklik}.json", "Panel (JSON)"], ["/api/v1/panel/{siklik}.csv", "Panel (CSV)"],
+];
+const py = `import json, urllib.request
+from decimal import Decimal
+
+URL = "${kok}/api/v1/seri/${ornek.id}.json"
+with urllib.request.urlopen(URL) as y:
+    seri = json.load(y)
+
+# Değer metin olarak gelir: Decimal ile kayıpsız okuyun; null yayımlanmamış dönemdir.
+gozlem = [(g["donem"], Decimal(g["deger"])) for g in seri["gozlemler"] if g["deger"] is not None]
+print(seri["baslik"], seri["birim"], gozlem[-1])
+print("Kaynak:", seri["kaynak"]["kurum"], seri["kaynak_kod"], "·", seri["kaynak"]["lisans"])`;
+const pd = `import pandas as pd
+
+# Geniş panel: satır dönem, sütun seri; yalnız tam dönemler, dönem ortalaması.
+panel = pd.read_csv("${kok}/api/v1/panel/yillik.csv", index_col="donem", dtype={"donem": str})
+print(panel["${ornek.id}"].dropna().tail())`;
+const js = `const kok = "${kok}/api/v1";
+const yanit = await fetch(\`\${kok}/seri/${ornek.id}.json\`);
+if (!yanit.ok) throw new Error(\`HTTP \${yanit.status}\`);   // izinsiz ya da bilinmeyen seri: 404
+const seri = await yanit.json();
+const son = seri.gozlemler.filter((g) => g.deger !== null).at(-1);
+console.log(seri.baslik, son.donem, Number(son.deger), seri.birim);`;
+const duck = `import duckdb
+duckdb.sql("""
+  SELECT seri, donem, deger
+  FROM '${kok}/api/v1/gozlemler.parquet'
+  WHERE seri = '${ornek.id}'
+  ORDER BY donem DESC LIMIT 5
+""").show()`;
+const ALAN: [string, string][] = [
+  ["surum", "Şema sürümü (1). v1'de alan silinmez, yalnız eklenir."],
+  ["id", "Bu sitenin seri kimliği; dosya adı da budur."],
+  ["baslik, tema", "Türkçe ad ve konu grubu."],
+  ["ulke", "ISO 3166 alfa-3 (TUR)."],
+  ["siklik", "yillik, yariyillik, ceyreklik, aylik, haftalik, gunluk."],
+  ["birim, carpan", "yuzde, yuzde-gsyh, USD, endeks, puan, PPS, yil, kisi; değer × carpan gerçek değeri verir."],
+  ["kaynak", "Kurum, kaynak adresi, belge, lisans, lisans kanıt adresi, inceleme tarihi, atıf zorunluluğu, koşullar."],
+  ["kaynak_kod, kaynak_adi, kaynak_not", "Kurumun kendi seri kodu, adı ve kaynak notu (doğrulama için)."],
+  ["kaynak_guncelleme", "Kurumun bildirdiği son güncelleme günü; bilinmiyorsa null."],
+  ["cekildi", "Bu sitenin seriyi kaynaktan son kez değişmiş olarak yazdığı an (UTC). Veri değişmezse ilerlemez; son başarılı kontrol durum.json'da."],
+  ["izin", "gosterim, indirme, api: kaynağın lisansının izin verdiği kullanım."],
+  ["gozlemler[]", "{donem, deger, durum}: deger metin ya da null; durum kaynağın gözlem bayrağı (ör. tahmini), yoksa null."],
+];
+const DONEM: [string, string, string][] = [
+  ["yillik", "YYYY", "2025"], ["yariyillik", "YYYY-Sn", "2025-S2"], ["ceyreklik", "YYYY-Qn", "2025-Q3"],
+  ["aylik", "YYYY-AA", "2025-09"], ["haftalik", "YYYY-Www", "2025-W38"], ["gunluk", "YYYY-AA-GG", "2025-09-30"],
+];
 ---
-<Taban baslik="API | Türkiye Verisi" aciklama="Sürümlü, anahtarsız JSON, CSV ve Parquet uç noktaları; yalnız yeniden yayın izni olan seriler." yol="/api">
+<Taban baslik="API | Türkiye Verisi" aciklama="Sürümlü, anahtarsız JSON, CSV ve Parquet uç noktaları; curl, Python, JavaScript örnekleri, alan sözlüğü ve tarayıcıda deneme aracı. Yalnız yeniden yayın izni olan seriler." yol="/api">
   <article class="sar metin">
     <p class="etiket">Geliştirici</p>
     <h1>API</h1>
-    <p class="ozet">Anahtar gerekmez. Dosyalar CDN'den servis edilir, her yanıt bir saat önbelleğe alınır, her kaynaktan (CORS) okunabilir. Yalnız kaynağının lisansı API üzerinden yeniden yayına izin veren seriler listelenir.</p>
+    <p class="ozet">Anahtar gerekmez. Dosyalar CDN'den servis edilir, her yanıt bir saat önbelleğe alınır, her kaynaktan (CORS) okunabilir. Yalnız kaynağının lisansı API üzerinden yeniden yayına izin veren seriler listelenir. Şu an {ss.length} seri.</p>
 
     <h2>Uç noktalar</h2>
     <div class="kaydir"><table>
@@ -20,7 +78,7 @@ const kok = "https://veri.korayoner.dev";
         <tr><th scope="row"><code>/api/v1/seri/&#123;id&#125;.csv</code></th><td>Aynı seri, CSV (indirme izni varsa).</td></tr>
         <tr><th scope="row"><code>/api/v1/panel/&#123;aylik|ceyreklik|yillik&#125;.csv</code></th><td>Panel veri seti, geniş biçim: satır dönem, sütun seri; dönem ortalaması, yalnız tam dönemler. İndirme izni olan bütün seriler.</td></tr>
         <tr><th scope="row"><code>/api/v1/panel/&#123;aylik|ceyreklik|yillik&#125;.json</code></th><td>Aynı panel, uzun biçim: her seri için <code>[donem, ort, son, n, tam]</code>; eksik dönemler işaretli, seri metaverisi ve yöntem notuyla. <a href="/gezgin">Veri gezgini</a> bu dosyaları okur.</td></tr>
-        <tr><th scope="row"><code>/api/v1/emsal/&#123;id&#125;.json</code></th><td>Aynı serinin emsal ülkelerdeki değerleri (alfa-3 ülke kodu → gözlemler). Yalnız emsali tanımlı seriler.</td></tr>
+        <tr><th scope="row"><code>/api/v1/emsal/&#123;id&#125;.json</code></th><td>Aynı serinin emsal ülkelerdeki değerleri (alfa-3 ülke kodu → gözlemler). Yalnız emsali tanımlı seriler. <a href="/karsilastir">Ülke karşılaştırması</a> bu dosyaları okur.</td></tr>
         <tr><th scope="row"><code>/api/v1/degisiklikler.json</code></th><td>Değişiklik günlüğü: kaynakların açıkladığı yeni dönemler ve önceki değerleri düzelttiği revizyonlar, tarihiyle, yeniden eskiye.</td></tr>
         <tr><th scope="row"><code>/api/v1/gozlemler.parquet</code></th><td>API izinli bütün gözlemler, uzun biçim; değer DECIMAL(38,14).</td></tr>
         <tr><th scope="row"><code>/api/v1/gozlemler.parquet.sha256</code></th><td>Parquet dosyasının SHA-256 özeti, <code>sha256sum</code> biçiminde: indirdiğiniz dosyayı <code>sha256sum -c gozlemler.parquet.sha256</code> ile doğrulayın.</td></tr>
@@ -28,32 +86,95 @@ const kok = "https://veri.korayoner.dev";
       </tbody>
     </table></div>
 
-    <h2>Değerler</h2>
-    <p>Gözlem değeri JSON'da <strong>metin</strong> olarak durur (<code>"1141242864657.45"</code>): kaynaktaki basamaklar kayan nokta yuvarlamasına uğramaz. Yayımlanmamış dönem <code>null</code>'dır, sıfır değildir. <code>donem</code> gözlemin ait olduğu dönem, <code>kaynak_guncelleme</code> kurumun bildirdiği son güncelleme, <code>cekildi</code> bu sitenin çektiği an (UTC).</p>
+    <h2 id="deneyin">Deneyin</h2>
+    <p>Uç noktayı seçin, isteği tarayıcınızdan gönderin. Yanıt bu sayfada biçimlenir; uzun yanıtlar ekranda kısaltılır, "Yanıtı kopyala" tamamını kopyalar.</p>
+    <form class="dene" id="dene" data-secenek={JSON.stringify(secenek)}>
+      <label class="d-alan"><span>Uç nokta</span>
+        <select id="d-uc">{UC.map(([u, a]) => <option value={u}>{a} · {u}</option>)}</select>
+      </label>
+      <label class="d-alan" id="d-id-alan" hidden><span>Seri</span><select id="d-id"></select></label>
+      <label class="d-alan" id="d-siklik-alan" hidden><span>Sıklık</span>
+        <select id="d-siklik"><option value="aylik">aylık</option><option value="ceyreklik">çeyreklik</option><option value="yillik" selected>yıllık</option></select>
+      </label>
+      <div class="d-eylem">
+        <button type="submit">İsteği gönder</button>
+        <button type="button" id="d-kopyala" disabled>Yanıtı kopyala</button>
+      </div>
+      <p class="d-adres"><code id="d-adres">{kok}/api/v1/seriler.json</code></p>
+    </form>
+    <p class="d-durum" id="d-durum" role="status" aria-live="polite"></p>
+    <pre class="d-yanit" id="d-yanit" tabindex="0" aria-label="Yanıt" hidden><code></code></pre>
+    <noscript><p>Deneme aracı JavaScript gerektirir; uç noktalar doğrudan tarayıcıda da açılır.</p></noscript>
 
-    {ornek && <>
-      <h2>Örnek</h2>
-      <pre><code>curl {kok}/api/v1/seri/{ornek.id}.json</code></pre>
-      <pre><code>{`import duckdb
-duckdb.sql("""
-  SELECT seri, donem, deger
-  FROM '${kok}/api/v1/gozlemler.parquet'
-  WHERE seri = '${ornek.id}'
-  ORDER BY donem DESC LIMIT 5
-""").show()`}</code></pre>
-    </>}
+    <h2>Örnekler</h2>
+    <h3>curl</h3>
+    <pre><code>{`curl -s ${kok}/api/v1/seri/${ornek.id}.json
+curl -s ${kok}/api/v1/seri/${ornek.id}.csv
+curl -sO ${kok}/api/v1/gozlemler.parquet && curl -sO ${kok}/api/v1/gozlemler.parquet.sha256 && sha256sum -c gozlemler.parquet.sha256`}</code></pre>
+    <h3>Python (yalnız standart kitaplık)</h3>
+    <pre><code>{py}</code></pre>
+    <h3>Python (pandas, panel)</h3>
+    <pre><code>{pd}</code></pre>
+    <h3>JavaScript / TypeScript</h3>
+    <pre><code>{js}</code></pre>
+    <h3>DuckDB (Parquet)</h3>
+    <pre><code>{duck}</code></pre>
+
+    <h2>Alanlar: <code>/api/v1/seri/&#123;id&#125;.json</code></h2>
+    <div class="kaydir"><table>
+      <thead><tr><th scope="col">Alan</th><th scope="col">Anlamı</th></tr></thead>
+      <tbody>{ALAN.map(([a, b]) => <tr><th scope="row"><code>{a}</code></th><td>{b}</td></tr>)}</tbody>
+    </table></div>
+
+    <h2>Dönem biçimi</h2>
+    <div class="kaydir"><table>
+      <thead><tr><th scope="col">Sıklık</th><th scope="col">Biçim</th><th scope="col">Örnek</th></tr></thead>
+      <tbody>{DONEM.map(([a, b, c]) => <tr><th scope="row"><code>{a}</code></th><td><code>{b}</code></td><td><code>{c}</code></td></tr>)}</tbody>
+    </table></div>
+
+    <h2>Değerler</h2>
+    <p>Gözlem değeri JSON'da <strong>metin</strong> olarak durur (<code>"1141242864657.45"</code>): kaynaktaki basamaklar kayan nokta yuvarlamasına uğramaz. Yayımlanmamış dönem <code>null</code>'dır, sıfır değildir. <code>donem</code> gözlemin ait olduğu dönem, <code>kaynak_guncelleme</code> kurumun bildirdiği son güncelleme, <code>cekildi</code> bu sitenin çektiği an (UTC). CSV'de ondalık ayırıcı noktadır, boş hücre yayımlanmamış dönemdir.</p>
+
+    <h2>Hata ve boş veri</h2>
+    <ul>
+      <li>Bilinmeyen seri ya da API izni olmayan seri: <code>404</code>. Katalogda (<code>seriler.json</code>) olmayan seri istenmez.</li>
+      <li>İndirme izni olmayan serinin CSV'si yayımlanmaz (<code>404</code>); JSON'u API izni varsa vardır.</li>
+      <li>Kaynak bir sabah okunamazsa dosya değişmez, önceki veri kalır; bu durum <code>durum.json</code>'da <code>ardisik_hata</code> ve <code>son_hata</code> ile görünür.</li>
+      <li>Yeni dönem henüz açıklanmadıysa son gözlem eski dönemdir; tazelik için <code>durum.json</code>'daki <code>gecikti</code> alanına bakın.</li>
+    </ul>
 
     <h2>Revizyon geçmişi</h2>
     <p>Kaynak bir değeri düzelttiğinde ya da yeni dönem açıkladığında olay <code>degisiklikler.json</code>'a yazılır: <code>&#123;"gun", "seri", "tur": "revizyon" | "yeni-donem", "donem", "onceki", "yeni"&#125;</code>. Tek çekimde 12'den fazla değişiklik tek kayda toplanır (<code>adet</code>, <code>ilk</code>, <code>son</code>). Her güncelleme ayrıca ayrı bir commit'tir ve rakamı değişmeyen seri yeniden yazılmaz. Bir gözlemin ilk açıklanan değerine ve her düzeltmesine depodan ulaşılır: <code>git log -p yayin/site-veri/seri/&#123;id&#125;.json</code>.</p>
 
     <h2>Atıf ve sürüm</h2>
-    <p>Veriyi kullanırken asıl kaynak kuruma ve seri koduna atıf yapın; her dosya lisansı ve şart metni adresini taşır. <code>v1</code> geriye dönük uyumlu kalır; alan silinmez, yalnız eklenir. Kırıcı değişiklik <code>v2</code> altında yayımlanır.</p>
+    <p>Veriyi kullanırken asıl kaynak kuruma ve seri koduna atıf yapın; her dosya lisansı ve şart metni adresini taşır. Örnek:</p>
+    <pre><code>{`Kaynak: ${ornek.kaynak.kurum}, ${ornek.kaynak_kod} (${ornek.kaynak.lisans ?? "lisans dosyada"}).
+Erişim: ${kok}/api/v1/seri/${ornek.id}.json, <erişim tarihi>.`}</code></pre>
+    <p><code>v1</code> geriye dönük uyumlu kalır; alan silinmez, anlamı değişmez, yalnız alan eklenir. Kırıcı değişiklik <code>v2</code> altında yayımlanır.</p>
   </article>
 </Taban>
+<script>
+  import "../scripts/api-dene.ts";
+</script>
 <style>
   .metin { padding-block: clamp(2.5rem, 6vw, 4rem); display: grid; gap: 1rem; max-width: 860px; }
   h2 { font-size: 1.2rem; margin-top: 1.25rem; }
-  p { margin: 0; max-width: 70ch; }
+  h3 { font-size: .95rem; margin: .4rem 0 0; }
+  p, ul { margin: 0; max-width: 70ch; }
+  ul { padding-left: 1.2rem; display: grid; gap: .3rem; }
   pre { background: var(--yuzey); border: 1px solid var(--cizgi); padding: 1rem; overflow-x: auto; margin: 0; }
   code { font: .85rem/1.5 var(--mono); }
+  .dene { display: grid; gap: .8rem; background: var(--yuzey); border: 1px solid var(--cizgi); padding: 1rem; }
+  .d-alan { display: grid; gap: .3rem; min-width: 0; }
+  .d-alan[hidden] { display: none; }
+  .d-alan > span { font: 600 .68rem/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--soluk); }
+  .d-alan select { font: .9rem var(--font); padding: .5rem .6rem; min-height: 2.6rem; width: 100%; background: var(--bg); color: var(--metin); border: 1px solid var(--cizgi); }
+  .d-eylem { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .d-eylem button { font: 600 .78rem/1 var(--mono); padding: .6rem .9rem; min-height: 2.5rem; background: none; color: var(--metin); border: 1px solid var(--metin); cursor: pointer; }
+  .d-eylem button[type="submit"] { background: var(--metin); color: var(--bg); }
+  .d-eylem button:disabled { opacity: .45; cursor: not-allowed; }
+  .d-eylem button:focus-visible, .d-alan select:focus-visible, .d-yanit:focus-visible { outline: 2px solid var(--vurgu); outline-offset: 2px; }
+  .d-adres { margin: 0; overflow-wrap: anywhere; color: var(--soluk); }
+  .d-durum { min-height: 1.2em; font-size: .85rem; color: var(--soluk); }
+  .d-yanit { max-height: 28rem; overflow: auto; }
 </style>
