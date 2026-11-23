@@ -42,6 +42,18 @@ const YAZILAR: [string, [string, string][]][] = [
     [`${K}/makaleler/turkiyede-sosyal-guvenligin-donusumu/`, "Türkiye'de Sosyal Güvenliğin Dönüşümü"],
   ]],
 ];
+// DOI'li çalışmalardan yalnız bu sitenin verisiyle (enflasyon, faiz, banka, tasarruf, nüfus) doğrudan
+// ilgili olanlar; tek satır künye. Özet ve tam liste korayoner.dev/yayinlar'da (kopyalanmaz).
+// Başlıklar korayoner.dev'in yayinlar/yayin.js modülünden, 23 Kasım 2026'da alındı (Zenodo kaydıyla aynı).
+const YAYINLAR: [string, string, string, string][] = [
+  ["10.5281/zenodo.24446986", "2026", "Faiz Oranı Riski, Mevduat İmtiyazı ve Banka Kırılganlığı: Vade Dönüşümünün Ekonomisi Üzerine Analitik Bir İnceleme", "bis-politika-faizi-tr"],
+  ["10.5281/zenodo.22852342", "2026", "Faiz Oranı Değişimlerinin Banka Kârlılığı ve Kredi Büyümesine Etkisi: Türkiye'de Fiyat ve Miktar Araçlarının Ayrışması (2021–2026)", "bis-ozel-kredi-gsyh-tr"],
+  ["10.5281/zenodo.22819842", "2026", "OECD Verileriyle Türkiye Ekonomisinin Finansal Haritası: Tasarruf, Yatırım, Borçluluk ve Sermaye Akımları", "wb-ny-gds-totl-zs-tur"],
+  ["10.5281/zenodo.22972368", "2026", "Yüksek Enflasyon Ortamında Sermaye Yapısı Kararları ve Finansal Kaldıracın Ölçümü: TMS 29 Uygulamasının Kuramsal ve Yöntemsel Sonuçları", "bis-tufe-yillik-tr"],
+  ["10.5281/zenodo.22818390", "2026", "Endekslemenin Aritmetiği: Türkiye'de Ücret Vergisi Tarifesinde Dilim Kayması (2022–2026 Dönemi İçin Bir Ölçüm ve Bir Nötrleştirme Önermesi)", "bis-tufe-yillik-tr"],
+  ["10.5281/zenodo.22819909", "2026", "Türkiye'de Emekliliğin Finansal Matematiği: Nüfus yaşlanması, çalışma hayatı, gelir ve tasarruf ilişkileri", "wb-sp-pop-dpnd-ol-tur"],
+];
+const seriAdi = (id: string) => ss.find((s) => s.id === id)?.baslik;
 const ARACLAR: [string, string][] = [
   [`${K}/enflasyon-hesaplama/`, "Enflasyon Hesaplama"],
   [`${K}/reel-maas-hesaplama/`, "Reel Maaş Hesaplama"],
@@ -117,6 +129,19 @@ const jsonld = {
       <p class="kucuk">Bütün araçlar, yazılar ve yayınlar: <a href="https://korayoner.dev/koray-oner/">korayoner.dev çalışma dizini</a>.</p>
     </section>
 
+    <section aria-labelledby="yayin">
+      <h2 id="yayin">DOI ile kayıtlı veri çalışmaları</h2>
+      <p class="ozet">Zenodo'da kalıcı kaydı olan çalışmalardan bu sitenin verisiyle doğrudan ilgili olanlar; yanlarında ilgili gösterge. Özetler ve bütün çalışmalar: <a href={`${K}/yayinlar/`}>korayoner.dev/yayinlar</a>.</p>
+      <ul class="yayinlar">
+        {YAYINLAR.map(([doi, yil, ad, seri]) => (
+          <li>
+            <a href={`https://doi.org/${doi}`} rel="noopener">{ad}</a>
+            <span class="alt">Öner, K. ({yil}). Zenodo. {doi}{seriAdi(seri) && <> · ilgili gösterge: <a href={`/gosterge/${seri}`}>{seriAdi(seri)}</a></>}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+
     <section aria-labelledby="kim">
       <h2 id="kim">Kayıt ve iletişim</h2>
       <dl class="kunye">
@@ -141,6 +166,11 @@ const jsonld = {
   .isler p { margin: 0; font-size: .9rem; color: var(--soluk); }
   .is-bas { font-weight: 700; text-decoration: none; }
   .is-bas:hover { text-decoration: underline; }
+  .yayinlar { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid var(--cizgi); }
+  .yayinlar li { display: grid; gap: .25rem; padding: .7rem 0; border-bottom: 1px solid var(--cizgi); }
+  .yayinlar > li > a { font-weight: 600; text-decoration: none; }
+  .yayinlar > li > a:hover { text-decoration: underline; }
+  .yayinlar .alt { font-size: .82rem; color: var(--soluk); }
   .isler .is-sayi { font-size: 1.6rem; font-weight: 750; color: var(--metin); letter-spacing: -.01em; }
   .is-sayi span { font-size: .85rem; font-weight: 500; color: var(--soluk); }
   .gruplar { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); }
