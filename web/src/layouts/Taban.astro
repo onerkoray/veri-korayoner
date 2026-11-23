@@ -36,7 +36,7 @@ const kisaTarih = d ? tarih(d.son_kontrol).replace(/ \d{4}$/, "") : null;
   <header class="ust">
     <div class="sar ust-ic">
       <a class="marka" href="/" aria-label="Türkiye Verisi ana sayfa">
-        <svg class="marka-isaret" viewBox="0 0 32 32" width="26" height="26" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="6" /><path d="M7 23 12.5 16.5 17.5 19.5 23.5 10" /><circle cx="24" cy="9.5" r="2.9" /></svg><span>Türkiye Verisi</span>
+        <svg class="marka-isaret" viewBox="1 1 30 30" width="26" height="26" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="6" /><path d="M7 23 12.5 16.5 17.5 19.5 24 9.5" /><circle cx="24" cy="9.5" r="2.9" /></svg><span>Türkiye Verisi</span>
       </a>
       <div class="ust-arac">
         {d && (
@@ -68,7 +68,9 @@ const kisaTarih = d ? tarih(d.son_kontrol).replace(/ \d{4}$/, "") : null;
   .ust { border-bottom: 1px solid var(--cizgi); background: var(--yuzey); }
   .ust-ic { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 60px; flex-wrap: wrap; }
   .marka { display: inline-flex; align-items: center; gap: .6rem; font-weight: 700; text-decoration: none; }
-  .marka-isaret { flex: none; }
+  /* Karo viewBox'u tam doldurur: kenarlar yarım piksele düşmez. Çizgi
+     noktanın merkezinde biter: birleşimde çıkıntı kalmaz. */
+  .marka-isaret { flex: none; display: block; }
   .marka-isaret rect { fill: var(--isaret-zemin); }
   .marka-isaret path { fill: none; stroke: var(--isaret-cizgi); stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }
   .marka-isaret circle { fill: var(--isaret-cizgi); }
