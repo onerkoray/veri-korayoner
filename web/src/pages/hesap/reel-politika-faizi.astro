@@ -3,7 +3,7 @@ import Taban from "../../layouts/Taban.astro";
 import SeriGrafik from "../../components/SeriGrafik.astro";
 import EmsalGrafik from "../../components/EmsalGrafik.astro";
 import Serit from "../../components/Serit.astro";
-import { deger, ulkeAdi, tarih, sayi } from "../../lib/veri";
+import { deger, ulkeAdi, tarih, sayi, kaynaklar } from "../../lib/veri";
 import { reelPaket, isaretSuresi } from "../../lib/turetilmis";
 import { oku, sirala, siraCumlesi, donemAdi, ek } from "../../lib/okuma.ts";
 import { KISI_REF } from "../../lib/kimlik";
@@ -22,7 +22,10 @@ const baslik = "Türkiye'nin reel politika faizi";
 const aciklama = `${donemAdi(son.donem)}: politika faizi %${sayi(i, 1)}, yıllık TÜFE %${sayi(e, 1)}, gerçekleşen enflasyona göre (ex post) reel faiz ${yaz(son.v)}. BIS verisiyle Fisher hesabı ve emsal ülkeler.`;
 const jsonld = {
   "@context": "https://schema.org", "@type": "Dataset", name: `${baslik} (hesaplanmış)`, description: aciklama,
-  url: new URL("/hesap/reel-politika-faizi", Astro.site).href, inLanguage: "tr", isAccessibleForFree: true,
+  "@id": new URL("/hesap/reel-politika-faizi#veri", Astro.site).href,
+  url: new URL("/hesap/reel-politika-faizi", Astro.site).href,
+  // Hesap BIS verisinden türüyor; yeniden yayımlama BIS şartlarına bağlı.
+  license: kaynaklar().find((k) => k.id === "bis")!.lisans_kanit!, inLanguage: "tr", isAccessibleForFree: true,
   temporalCoverage: `${p.r[0].donem}/${son.donem}`, spatialCoverage: { "@type": "Country", name: "Türkiye" },
   isBasedOn: ["https://data.bis.org/topics/CBPOL", "https://data.bis.org/topics/LONG_CPI"],
   creator: KISI_REF,

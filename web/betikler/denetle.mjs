@@ -3,6 +3,8 @@
 //  - "NaN", "undefined", "Infinity" yazılmış sayfa yok
 //  - her yayımlanmış seri için sayfa var; API izni olmayan serinin API dosyası yok
 //  - her sayfada tek <h1>, <title>, canonical
+//  - her Dataset düğümünde 50-5000 karakter description ve license var
+//    (Search Console 18 Kasım 2026: iç içe açıklamasız düğüm ve lisanssız panel)
 import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -14,11 +16,28 @@ function gez(d, out = []) {
   for (const a of readdirSync(d)) { const y = join(d, a); statSync(y).isDirectory() ? gez(y, out) : out.push(y); }
   return out;
 }
+/* @type'ı Dataset olan her düğüm, iç içe olanlar dahil (@id başvurusu düğüm sayılmaz). */
+function veriKumeleri(x, out = []) {
+  if (Array.isArray(x)) { for (const v of x) veriKumeleri(v, out); return out; }
+  if (!x || typeof x !== "object") return out;
+  const t = x["@type"];
+  if (t === "Dataset" || (Array.isArray(t) && t.includes("Dataset"))) out.push(x);
+  for (const v of Object.values(x)) veriKumeleri(v, out);
+  return out;
+}
 const sayfalar = gez(DIST).filter((y) => y.endsWith(".html"));
 for (const y of sayfalar) {
   const s = readFileSync(y, "utf8"), ad = y.slice(DIST.length + 1);
   for (const m of s.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)) {
-    if (/type="application\/ld\+json"/.test(m[1])) { try { JSON.parse(m[2]); } catch { hatalar.push(ad + ": geçersiz JSON-LD"); } continue; }
+    if (/type="application\/ld\+json"/.test(m[1])) {
+      let j; try { j = JSON.parse(m[2]); } catch { hatalar.push(ad + ": geçersiz JSON-LD"); continue; }
+      for (const d of veriKumeleri(j)) {
+        const n = (d.description || "").length;
+        if (n < 50 || n > 5000) hatalar.push(ad + ": Dataset description " + n + " karakter (50-5000 olmalı)");
+        if (!d.license) hatalar.push(ad + ": Dataset license yok");
+      }
+      continue;
+    }
     if (!/\bsrc=/.test(m[1]) && m[2].trim()) hatalar.push(ad + ": satır içi betik");
   }
   const metin = s.replace(/<script[\s\S]*?<\/script>/g, "").replace(/<[^>]+>/g, " ");

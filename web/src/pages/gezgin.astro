@@ -27,6 +27,8 @@ const jsonld = {
   url: `${site}/gezgin`, inLanguage: "tr", isAccessibleForFree: true,
   temporalCoverage: `${ilkYil}/${sonYil}`, spatialCoverage: { "@type": "Country", name: "Türkiye" },
   creator: KISI_REF, maintainer: KISI_REF,
+  // Tek lisans yok: her seri kendi kaynağının şartlarıyla yayımlanır; tablo hepsini listeler.
+  license: `${site}/kaynaklar#lisanslar`,
   isBasedOn: panelKaynak.map((k) => k.adres),
   variableMeasured: ss.filter((s) => s.izin.indirme).map((s) => s.baslik),
   distribution: ["aylik", "ceyreklik", "yillik"].flatMap((h) => [

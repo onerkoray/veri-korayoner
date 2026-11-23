@@ -70,7 +70,7 @@ const jsonld = {
       "@type": "CollectionPage", "@id": "https://veri.korayoner.dev/koray-oner#sayfa", url: "https://veri.korayoner.dev/koray-oner",
       name: baslik, description: aciklama, inLanguage: "tr",
       about: { "@id": KISI["@id"] }, author: { "@id": KISI["@id"] }, isPartOf: { "@id": "https://veri.korayoner.dev/#site" },
-      ...(reel ? { hasPart: [{ "@type": "Dataset", name: "Türkiye'nin reel politika faizi (hesaplanmış)", url: "https://veri.korayoner.dev/hesap/reel-politika-faizi", creator: { "@id": KISI["@id"] } }] } : {}),
+      ...(reel ? { hasPart: [{ "@id": "https://veri.korayoner.dev/hesap/reel-politika-faizi#veri" }] } : {}),
     },
     KISI,
   ],
