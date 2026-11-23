@@ -47,6 +47,7 @@ const secenek: [number, string][] = seri.siklik === "yillik" ? [[0, "Tümü"], [
 </figure>
 <script>
   import * as Plot from "@observablehq/plot";
+  import { izciTanimla } from "../lib/hareket";
   const bicim = new Intl.NumberFormat("tr-TR", { maximumFractionDigits: 1 });
   for (const fig of document.querySelectorAll<HTMLElement>("[data-seri-grafik]")) {
     const { birim, carpan, d } = JSON.parse(fig.dataset.seriGrafik!) as { birim: string; carpan: number; d: { donem: string; v: number }[] };
@@ -84,6 +85,16 @@ const secenek: [number, string][] = seri.siklik === "yillik" ? [[0, "Tümü"], [
         ],
       });
       plot.setAttribute("aria-hidden", "true");
+      /* Çizim sırasında çizginin ucunda değeri sayan izci: değer, ölçeğin
+         tersinden okunur; bitişte izci kaybolur, son nokta yerinde kalır. */
+      const ys = plot.scale("y") as { domain: number[]; range: number[] } | undefined;
+      if (ys && plot instanceof SVGSVGElement) {
+        const [d0, d1] = ys.domain, [r0, r1] = ys.range;
+        izciTanimla(plot, {
+          ters: (py) => d0 + ((py - r0) * (d1 - d0)) / (r1 - r0 || 1), bicim: yaz,
+          yol: (svg) => svg.querySelector<SVGPathElement>('g[stroke="var(--dv-1)"] path'),
+        });
+      }
       tuval.querySelector(".plot, figure, svg.canli")?.remove();
       plot.classList.add("canli");
       tuval.appendChild(plot);

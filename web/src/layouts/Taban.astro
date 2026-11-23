@@ -58,10 +58,15 @@ const kisaTarih = d ? tarih(d.son_kontrol).replace(/ \d{4}$/, "") : null;
   <main id="ana"><slot /></main>
   <footer class="alt">
     <div class="sar alt-ic">
-      <p>Hazırlayan <a href="/koray-oner">Koray Öner</a> · <a href="https://korayoner.dev/">korayoner.dev</a> · <a href="https://github.com/onerkoray/veri-korayoner">Kaynak kod</a> · <a href="https://korayoner.dev/gizlilik/#veri-sitesi">Gizlilik ve KVKK</a></p>
+      <p>Hazırlayan <a href="/koray-oner">Koray Öner</a> · <a href="https://korayoner.dev/">korayoner.dev</a> · <a href="https://github.com/onerkoray/veri-korayoner">Kaynak kod</a> · <a href="/gizlilik">Gizlilik ve KVKK</a></p>
       <p>Kurumlardan bağımsızdır; resmî kurum sitesi değildir. Her seri kendi kaynağının lisansıyla yayımlanır; kullanırken asıl kaynağa atıf yapın. Yatırım tavsiyesi değildir.</p>
     </div>
   </footer>
+  <script>
+    import { grafikHareketi, konumSeridi } from "../lib/hareket";
+    grafikHareketi();
+    konumSeridi();
+  </script>
 </body>
 </html>
 <style>

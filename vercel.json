@@ -51,6 +51,11 @@
   ],
   "redirects": [
     {
+      "source": "/gizlilik",
+      "destination": "https://korayoner.dev/gizlilik/#veri-sitesi",
+      "permanent": false
+    },
+    {
       "source": "/gosterge/ecb-eur-try-gunluk",
       "destination": "/gezgin",
       "permanent": true

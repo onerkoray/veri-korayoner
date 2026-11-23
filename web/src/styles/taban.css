@@ -56,3 +56,47 @@ td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
 .kaydir { overflow-x: auto; }
 .gizli { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+/* ---- Grafik izcisi: çizim sırasında çizginin ucunda değeri sayar (lib/hareket.ts) ---- */
+.izci { pointer-events: none; }
+.izci circle { fill: var(--dv-1); stroke: var(--yuzey); stroke-width: 2; }
+.izci .izci-hale { fill: var(--dv-1); stroke: none; opacity: .16; }
+.izci text { fill: var(--metin); font: 600 12px var(--mono); font-variant-numeric: tabular-nums; paint-order: stroke; stroke: var(--yuzey); stroke-width: 4px; stroke-linejoin: round; }
+
+/* ---- Konum şeridi: uzun sayfada neredeyiz (lib/hareket.ts). İşlevsel katman:
+   buzlu cam yalnız burada, okunurluk için. ---- */
+.konum {
+  position: fixed; left: 50%; bottom: 12px; z-index: 40; width: max-content; max-width: calc(100vw - 24px);
+  transform: translate(-50%, 140%); opacity: 0; pointer-events: none;
+  transition: transform .4s cubic-bezier(.22, 1, .36, 1), opacity .25s ease;
+}
+.konum.konum--acik { transform: translate(-50%, 0); opacity: 1; pointer-events: auto; }
+.konum-ic {
+  position: relative; display: flex; align-items: center; gap: 2px; padding: 4px 4px 6px;
+  background: color-mix(in srgb, var(--yuzey) 90%, transparent); backdrop-filter: saturate(160%) blur(12px);
+  border: 1px solid var(--cizgi); box-shadow: 0 10px 28px rgba(16, 24, 20, .14);
+}
+.konum button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+.konum-dugme { min-width: 36px; min-height: 36px; font: 600 1.05rem/1 var(--font); color: var(--soluk); }
+.konum-dugme:hover, .konum-dugme:focus-visible { color: var(--metin); background: var(--yuzey-2); }
+.konum-ad { display: inline-flex; align-items: baseline; gap: .55rem; min-height: 36px; padding: 0 .7rem; max-width: min(46ch, calc(100vw - 190px)); }
+.konum-ad:hover, .konum-ad:focus-visible, .konum-ad[aria-expanded="true"] { background: var(--yuzey-2); }
+.konum-sira { font: 600 .72rem/1 var(--mono); letter-spacing: .06em; color: var(--soluk); font-variant-numeric: tabular-nums; flex: none; }
+.konum-baslik { font-size: .86rem; font-weight: 600; color: var(--metin); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.konum-satir { font: 600 .76rem/1 var(--mono); color: var(--dv-2); font-variant-numeric: tabular-nums; white-space: nowrap; flex: none; }
+.konum-satir:empty { display: none; }
+.konum-yuzde { padding: 0 .3rem 0 .3rem; font: 600 .74rem/1 var(--mono); color: var(--soluk); font-variant-numeric: tabular-nums; }
+.konum-cubuk { position: absolute; left: 4px; right: 4px; bottom: 2px; height: 2px; background: var(--cizgi); }
+.konum-cubuk i { display: block; height: 100%; background: var(--dv-2); transform-origin: left; transform: scaleX(0); }
+.konum-liste {
+  position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+  width: min(360px, calc(100vw - 24px)); max-height: min(60vh, 480px); overflow-y: auto;
+  margin: 0; padding: 4px; list-style: none; background: var(--yuzey); border: 1px solid var(--cizgi); box-shadow: 0 14px 34px rgba(16, 24, 20, .18);
+}
+.konum-liste button { display: flex; gap: .7rem; align-items: baseline; width: 100%; padding: .55rem .6rem; text-align: left; font-size: .88rem; color: var(--metin); }
+.konum-liste button span { font: 600 .7rem/1 var(--mono); color: var(--soluk); flex: none; }
+.konum-liste button:hover, .konum-liste button:focus-visible { background: var(--yuzey-2); }
+.konum-liste button[aria-current="true"] { background: var(--metin); color: var(--bg); }
+.konum-liste button[aria-current="true"] span { color: var(--bg); }
+@media print { .konum { display: none; } }
+.konum-yuzde + .konum-satir { padding-right: .7rem; }

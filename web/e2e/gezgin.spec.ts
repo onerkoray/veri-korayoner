@@ -305,3 +305,33 @@ test.describe("Bağlam", () => {
     await expect(page.locator("table thead").last()).toContainText("Bir yıl önceye göre");
   });
 });
+
+test.describe("Konum şeridi ve grafik hareketi", () => {
+  test("uzun sayfada şerit bölümü, satırı ve ilerlemeyi gösterir; adres durumuna dokunmaz", async ({ page }) => {
+    await page.goto("/gosterge/bis-politika-faizi-tr");
+    const serit = page.locator("nav.konum");
+    await expect(serit).not.toHaveClass(/konum--acik/);
+    await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight * 0.6));
+    await expect(serit).toHaveClass(/konum--acik/);
+    await expect(serit.locator(".konum-sira")).toHaveText("07/07");
+    await expect(serit.locator(".konum-baslik")).toHaveText("Gözlemler");
+    await expect(serit.locator(".konum-satir")).toHaveText(/ · \d{4}-\d{2}/);
+    await serit.locator(".konum-ad").click();
+    await expect(page.locator("#konum-liste li")).toHaveCount(7);
+    await page.locator("#konum-liste button", { hasText: "Emsallerle" }).click();
+    await expect(serit.locator(".konum-baslik")).toHaveText("Emsallerle");
+    await serit.locator(".konum-ust").click();
+    await expect.poll(() => page.evaluate(() => scrollY)).toBe(0);
+    expect(new URL(page.url()).hash).toBe("");
+  });
+
+  test("hareketi azalt açıkken grafikler ilk karede tam çizilidir", async ({ page }) => {
+    // playwright.config: reducedMotion "reduce"
+    await page.goto("/gosterge/bis-politika-faizi-tr");
+    await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight));
+    const gizli = await page.evaluate(() => [...document.querySelectorAll<SVGPathElement>("main svg path")]
+      .filter((p) => p.style.strokeDashoffset && p.style.strokeDashoffset !== "0").length);
+    expect(gizli).toBe(0);
+    await expect(page.locator(".izci")).toHaveCount(0);
+  });
+});
