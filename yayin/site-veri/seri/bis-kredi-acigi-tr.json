@@ -4,7 +4,7 @@
  "baslik": "Kredi açığı: özel kesim kredisinin GSYH'ye oranının uzun dönem eğiliminden sapması",
  "ulke": "TUR",
  "siklik": "ceyreklik",
- "birim": "yuzde-gsyh",
+ "birim": "yuzde-puan",
  "carpan": 1,
  "tema": "bankacilik",
  "kaynak": {
@@ -28,7 +28,7 @@
  "kaynak_adi": null,
  "kaynak_not": null,
  "kaynak_guncelleme": null,
- "cekildi": "2026-11-22T20:38:23.869457Z",
+ "cekildi": "2026-11-24T05:26:29.857547Z",
  "izin": {
   "gosterim": true,
   "indirme": true,

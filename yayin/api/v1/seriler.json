@@ -1,6 +1,6 @@
 {
  "surum": 1,
- "uretildi": "2026-11-23T16:04:31.359306Z",
+ "uretildi": "2026-11-24T05:26:29.857547Z",
  "seriler": [
   {
    "id": "wb-ny-gdp-mktp-cd-tur",
@@ -28,6 +28,7 @@
     "wb-ny-gdp-pcap-cd-tur",
     "wb-sp-pop-totl-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-ny-gdp-mktp-cd-tur.json",
    "csv": "/api/v1/seri/wb-ny-gdp-mktp-cd-tur.csv"
   },
@@ -57,6 +58,7 @@
     "wb-sp-pop-totl-tur",
     "wb-ny-gdp-mktp-cd-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-ny-gdp-pcap-cd-tur.json",
    "csv": "/api/v1/seri/wb-ny-gdp-pcap-cd-tur.csv"
   },
@@ -86,6 +88,7 @@
     "oecd-oncu-gosterge-tr",
     "wb-ne-gdi-ftot-zs-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-ny-gdp-mktp-kd-zg-tur.json",
    "csv": "/api/v1/seri/wb-ny-gdp-mktp-kd-zg-tur.csv"
   },
@@ -115,6 +118,7 @@
     "wb-ny-gdp-defl-kd-zg-tur",
     "bis-politika-faizi-tr"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-fp-cpi-totl-zg-tur.json",
    "csv": "/api/v1/seri/wb-fp-cpi-totl-zg-tur.csv"
   },
@@ -144,6 +148,7 @@
     "wb-ne-gdi-ftot-zs-tur",
     "wb-dt-dod-dect-gn-zs-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-bn-cab-xoka-gd-zs-tur.json",
    "csv": "/api/v1/seri/wb-bn-cab-xoka-gd-zs-tur.csv"
   },
@@ -173,6 +178,7 @@
     "wb-fi-res-totl-cd-tur",
     "wb-bn-cab-xoka-gd-zs-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-dt-dod-dect-cd-tur.json",
    "csv": "/api/v1/seri/wb-dt-dod-dect-cd-tur.csv"
   },
@@ -202,6 +208,7 @@
     "eurostat-issizlik-aylik-tr",
     "ilo-isgucune-katilim-tr"
    ],
+   "deger_turu": "model_tahmini",
    "api": "/api/v1/seri/wb-sl-uem-totl-zs-tur.json",
    "csv": "/api/v1/seri/wb-sl-uem-totl-zs-tur.csv"
   },
@@ -231,6 +238,7 @@
     "wb-dt-dod-dect-cd-tur",
     "wb-ne-imp-gnfs-zs-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-fi-res-totl-cd-tur.json",
    "csv": "/api/v1/seri/wb-fi-res-totl-cd-tur.csv"
   },
@@ -260,6 +268,7 @@
     "bis-ozel-kredi-gsyh-tr",
     "wb-fm-lbl-bmny-gd-zs-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/bis-politika-faizi-tr.json",
    "csv": "/api/v1/seri/bis-politika-faizi-tr.csv"
   },
@@ -289,6 +298,7 @@
     "eurostat-hicp-yillik-tr",
     "wb-ny-gdp-defl-kd-zg-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/bis-tufe-yillik-tr.json",
    "csv": "/api/v1/seri/bis-tufe-yillik-tr.csv"
   },
@@ -318,6 +328,7 @@
     "wb-bn-cab-xoka-gd-zs-tur",
     "bis-tufe-yillik-tr"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/bis-reel-efektif-kur-tr.json",
    "csv": "/api/v1/seri/bis-reel-efektif-kur-tr.csv"
   },
@@ -347,6 +358,7 @@
     "bis-ozel-kredi-gsyh-tr",
     "bis-tufe-yillik-tr"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/bis-reel-konut-fiyat-tr.json",
    "csv": "/api/v1/seri/bis-reel-konut-fiyat-tr.csv"
   },
@@ -376,6 +388,7 @@
     "bis-borc-servis-orani-tr",
     "bis-politika-faizi-tr"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/bis-ozel-kredi-gsyh-tr.json",
    "csv": "/api/v1/seri/bis-ozel-kredi-gsyh-tr.csv"
   },
@@ -405,6 +418,7 @@
     "bis-politika-faizi-tr",
     "bis-kredi-acigi-tr"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/bis-borc-servis-orani-tr.json",
    "csv": "/api/v1/seri/bis-borc-servis-orani-tr.csv"
   },
@@ -434,6 +448,7 @@
     "oecd-is-guveni-tr",
     "oecd-sanayi-uretimi-tr"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/oecd-oncu-gosterge-tr.json",
    "csv": "/api/v1/seri/oecd-oncu-gosterge-tr.csv"
   },
@@ -462,6 +477,7 @@
     "bis-tufe-yillik-tr",
     "wb-fp-cpi-totl-zg-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/eurostat-hicp-yillik-tr.json",
    "csv": "/api/v1/seri/eurostat-hicp-yillik-tr.csv"
   },
@@ -491,6 +507,7 @@
     "ilo-isgucune-katilim-tr",
     "oecd-sanayi-uretimi-tr"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/eurostat-issizlik-aylik-tr.json",
    "csv": "/api/v1/seri/eurostat-issizlik-aylik-tr.csv"
   },
@@ -520,6 +537,7 @@
     "wb-sp-pop-dpnd-tur",
     "wb-gb-xpd-rsdv-gd-zs-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-ny-gdp-pcap-pp-kd-tur.json",
    "csv": "/api/v1/seri/wb-ny-gdp-pcap-pp-kd-tur.csv"
   },
@@ -549,6 +567,7 @@
     "wb-bn-cab-xoka-gd-zs-tur",
     "wb-ny-gdp-mktp-kd-zg-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-ne-gdi-ftot-zs-tur.json",
    "csv": "/api/v1/seri/wb-ne-gdi-ftot-zs-tur.csv"
   },
@@ -578,6 +597,7 @@
     "wb-bn-cab-xoka-gd-zs-tur",
     "wb-ne-con-prvt-zs-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-ny-gds-totl-zs-tur.json",
    "csv": "/api/v1/seri/wb-ny-gds-totl-zs-tur.csv"
   },
@@ -607,6 +627,7 @@
     "bis-reel-efektif-kur-tr",
     "wb-nv-ind-manf-zs-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-ne-exp-gnfs-zs-tur.json",
    "csv": "/api/v1/seri/wb-ne-exp-gnfs-zs-tur.csv"
   },
@@ -636,6 +657,7 @@
     "wb-fi-res-totl-mo-tur",
     "wb-bn-cab-xoka-gd-zs-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-ne-imp-gnfs-zs-tur.json",
    "csv": "/api/v1/seri/wb-ne-imp-gnfs-zs-tur.csv"
   },
@@ -665,6 +687,7 @@
     "wb-dt-dod-dect-gn-zs-tur",
     "wb-ne-gdi-ftot-zs-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-bx-klt-dinv-wd-gd-zs-tur.json",
    "csv": "/api/v1/seri/wb-bx-klt-dinv-wd-gd-zs-tur.csv"
   },
@@ -694,6 +717,7 @@
     "ilo-kayitdisi-istihdam-tr",
     "wb-ny-gdp-pcap-pp-kd-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-si-pov-gini-tur.json",
    "csv": "/api/v1/seri/wb-si-pov-gini-tur.csv"
   },
@@ -723,6 +747,7 @@
     "wb-sp-pop-dpnd-ol-tur",
     "wb-sp-dyn-tfrt-in-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-sp-dyn-le00-in-tur.json",
    "csv": "/api/v1/seri/wb-sp-dyn-le00-in-tur.csv"
   },
@@ -752,6 +777,7 @@
     "wb-sp-pop-1564-to-zs-tur",
     "wb-ny-gdp-pcap-pp-kd-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-sp-pop-totl-tur.json",
    "csv": "/api/v1/seri/wb-sp-pop-totl-tur.csv"
   },
@@ -781,6 +807,7 @@
     "eurostat-issizlik-aylik-tr",
     "ilo-neet-tr"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/ilo-issizlik-tr.json",
    "csv": "/api/v1/seri/ilo-issizlik-tr.csv"
   },
@@ -810,6 +837,7 @@
     "wb-sp-pop-1564-to-zs-tur",
     "ilo-issizlik-tr"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/ilo-isgucune-katilim-tr.json",
    "csv": "/api/v1/seri/ilo-isgucune-katilim-tr.csv"
   },
@@ -839,6 +867,7 @@
     "wb-sp-pop-dpnd-tur",
     "wb-sp-dyn-tfrt-in-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/ilo-kadin-isgucune-katilim-tr.json",
    "csv": "/api/v1/seri/ilo-kadin-isgucune-katilim-tr.csv"
   },
@@ -868,6 +897,7 @@
     "wb-sp-pop-1564-to-zs-tur",
     "ilo-kayitdisi-istihdam-tr"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/ilo-neet-tr.json",
    "csv": "/api/v1/seri/ilo-neet-tr.csv"
   },
@@ -897,6 +927,7 @@
     "ilo-emek-payi-tr",
     "ilo-issizlik-tr"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/ilo-kayitdisi-istihdam-tr.json",
    "csv": "/api/v1/seri/ilo-kayitdisi-istihdam-tr.csv"
   },
@@ -926,6 +957,7 @@
     "eurostat-asgari-ucret-pps-tr",
     "ilo-kayitdisi-istihdam-tr"
    ],
+   "deger_turu": "model_tahmini",
    "api": "/api/v1/seri/ilo-emek-payi-tr.json",
    "csv": "/api/v1/seri/ilo-emek-payi-tr.csv"
   },
@@ -955,6 +987,7 @@
     "wb-ny-gdp-pcap-pp-kd-tur",
     "bis-tufe-yillik-tr"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/eurostat-asgari-ucret-pps-tr.json",
    "csv": "/api/v1/seri/eurostat-asgari-ucret-pps-tr.csv"
   },
@@ -984,6 +1017,7 @@
     "wb-ny-gdp-mktp-kd-zg-tur",
     "bis-politika-faizi-tr"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-gc-dod-totl-gd-zs-tur.json",
    "csv": "/api/v1/seri/wb-gc-dod-totl-gd-zs-tur.csv"
   },
@@ -1013,6 +1047,7 @@
     "ilo-kayitdisi-istihdam-tr",
     "wb-sh-xpd-chex-gd-zs-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-gc-tax-totl-gd-zs-tur.json",
    "csv": "/api/v1/seri/wb-gc-tax-totl-gd-zs-tur.csv"
   },
@@ -1042,6 +1077,7 @@
     "bis-tufe-yillik-tr",
     "bis-ozel-kredi-gsyh-tr"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-fm-lbl-bmny-gd-zs-tur.json",
    "csv": "/api/v1/seri/wb-fm-lbl-bmny-gd-zs-tur.csv"
   },
@@ -1071,6 +1107,7 @@
     "bis-tufe-yillik-tr",
     "wb-ny-gdp-mktp-kd-zg-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-ny-gdp-defl-kd-zg-tur.json",
    "csv": "/api/v1/seri/wb-ny-gdp-defl-kd-zg-tur.csv"
   },
@@ -1100,6 +1137,7 @@
     "wb-ne-imp-gnfs-zs-tur",
     "wb-dt-dod-dect-gn-zs-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-fi-res-totl-mo-tur.json",
    "csv": "/api/v1/seri/wb-fi-res-totl-mo-tur.csv"
   },
@@ -1129,6 +1167,7 @@
     "wb-ne-exp-gnfs-zs-tur",
     "wb-gb-xpd-rsdv-gd-zs-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-nv-ind-manf-zs-tur.json",
    "csv": "/api/v1/seri/wb-nv-ind-manf-zs-tur.csv"
   },
@@ -1158,6 +1197,7 @@
     "wb-fi-res-totl-mo-tur",
     "wb-bn-cab-xoka-gd-zs-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-dt-dod-dect-gn-zs-tur.json",
    "csv": "/api/v1/seri/wb-dt-dod-dect-gn-zs-tur.csv"
   },
@@ -1187,6 +1227,7 @@
     "oecd-perakende-hacmi-tr",
     "oecd-tuketici-guveni-tr"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-ne-con-prvt-zs-tur.json",
    "csv": "/api/v1/seri/wb-ne-con-prvt-zs-tur.csv"
   },
@@ -1216,6 +1257,7 @@
     "wb-sp-dyn-le00-in-tur",
     "wb-gc-tax-totl-gd-zs-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-sh-xpd-chex-gd-zs-tur.json",
    "csv": "/api/v1/seri/wb-sh-xpd-chex-gd-zs-tur.csv"
   },
@@ -1245,6 +1287,7 @@
     "wb-ny-gdp-pcap-pp-kd-tur",
     "wb-it-net-user-zs-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-gb-xpd-rsdv-gd-zs-tur.json",
    "csv": "/api/v1/seri/wb-gb-xpd-rsdv-gd-zs-tur.csv"
   },
@@ -1273,6 +1316,7 @@
     "wb-gb-xpd-rsdv-gd-zs-tur",
     "wb-sp-pop-1564-to-zs-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-it-net-user-zs-tur.json",
    "csv": "/api/v1/seri/wb-it-net-user-zs-tur.csv"
   },
@@ -1302,6 +1346,7 @@
     "ilo-kadin-isgucune-katilim-tr",
     "wb-sp-pop-dpnd-ol-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-sp-pop-dpnd-tur.json",
    "csv": "/api/v1/seri/wb-sp-pop-dpnd-tur.csv"
   },
@@ -1331,6 +1376,7 @@
     "wb-sh-xpd-chex-gd-zs-tur",
     "wb-sp-dyn-le00-in-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-sp-pop-dpnd-ol-tur.json",
    "csv": "/api/v1/seri/wb-sp-pop-dpnd-ol-tur.csv"
   },
@@ -1360,6 +1406,7 @@
     "wb-sp-pop-dpnd-tur",
     "ilo-neet-tr"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-sp-pop-1564-to-zs-tur.json",
    "csv": "/api/v1/seri/wb-sp-pop-1564-to-zs-tur.csv"
   },
@@ -1389,6 +1436,7 @@
     "wb-sp-pop-grow-tur",
     "wb-sp-pop-1564-to-zs-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-sp-dyn-tfrt-in-tur.json",
    "csv": "/api/v1/seri/wb-sp-dyn-tfrt-in-tur.csv"
   },
@@ -1418,6 +1466,7 @@
     "wb-sp-dyn-tfrt-in-tur",
     "wb-ny-gdp-mktp-kd-zg-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/wb-sp-pop-grow-tur.json",
    "csv": "/api/v1/seri/wb-sp-pop-grow-tur.csv"
   },
@@ -1447,6 +1496,7 @@
     "oecd-oncu-gosterge-tr",
     "oecd-sanayi-uretimi-tr"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/oecd-gsyh-buyume-yillik-tr.json",
    "csv": "/api/v1/seri/oecd-gsyh-buyume-yillik-tr.csv"
   },
@@ -1475,6 +1525,7 @@
     "oecd-gsyh-buyume-yillik-tr",
     "oecd-is-guveni-tr"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/oecd-gsyh-buyume-ceyrek-tr.json",
    "csv": "/api/v1/seri/oecd-gsyh-buyume-ceyrek-tr.csv"
   },
@@ -1504,6 +1555,7 @@
     "oecd-sanayi-uretimi-tr",
     "eurostat-ekonomik-guven-tr"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/oecd-is-guveni-tr.json",
    "csv": "/api/v1/seri/oecd-is-guveni-tr.csv"
   },
@@ -1533,6 +1585,7 @@
     "wb-ne-con-prvt-zs-tur",
     "bis-tufe-yillik-tr"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/oecd-tuketici-guveni-tr.json",
    "csv": "/api/v1/seri/oecd-tuketici-guveni-tr.csv"
   },
@@ -1562,6 +1615,7 @@
     "oecd-is-guveni-tr",
     "wb-nv-ind-manf-zs-tur"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/oecd-sanayi-uretimi-tr.json",
    "csv": "/api/v1/seri/oecd-sanayi-uretimi-tr.csv"
   },
@@ -1591,6 +1645,7 @@
     "wb-ne-con-prvt-zs-tur",
     "bis-tufe-yillik-tr"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/oecd-perakende-hacmi-tr.json",
    "csv": "/api/v1/seri/oecd-perakende-hacmi-tr.csv"
   },
@@ -1599,7 +1654,7 @@
    "baslik": "Kredi açığı: özel kesim kredisinin GSYH'ye oranının uzun dönem eğiliminden sapması",
    "tema": "bankacilik",
    "siklik": "ceyreklik",
-   "birim": "yuzde-gsyh",
+   "birim": "yuzde-puan",
    "kaynak": "bis",
    "son": {
     "donem": "2026-Q1",
@@ -1607,7 +1662,7 @@
     "durum": "A"
    },
    "kaynak_guncelleme": null,
-   "cekildi": "2026-11-22T20:38:23.869457Z",
+   "cekildi": "2026-11-24T05:26:29.857547Z",
    "izin": {
     "gosterim": true,
     "indirme": true,
@@ -1620,6 +1675,7 @@
     "bis-borc-servis-orani-tr",
     "bis-politika-faizi-tr"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/bis-kredi-acigi-tr.json",
    "csv": "/api/v1/seri/bis-kredi-acigi-tr.csv"
   },
@@ -1649,6 +1705,7 @@
     "oecd-tuketici-guveni-tr",
     "oecd-gsyh-buyume-yillik-tr"
    ],
+   "deger_turu": "gozlem",
    "api": "/api/v1/seri/eurostat-ekonomik-guven-tr.json",
    "csv": "/api/v1/seri/eurostat-ekonomik-guven-tr.csv"
   }

@@ -2,7 +2,7 @@
  "surum": 1,
  "id": "bis-kredi-acigi-tr",
  "baslik": "Kredi açığı: özel kesim kredisinin GSYH'ye oranının uzun dönem eğiliminden sapması",
- "birim": "yuzde-gsyh",
+ "birim": "yuzde-puan",
  "siklik": "ceyreklik",
  "kaynak": "bis",
  "kaynak_kod": "WS_CREDIT_GAP/1.0/Q.TR.P.A.C",

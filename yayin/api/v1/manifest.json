@@ -1,0 +1,874 @@
+{
+ "release_id": "db209faa371435d2fe1abf4b5a6c6589db10c2c6b848cb7372bf355ea971920b",
+ "series_count": 57,
+ "observation_count": 6914,
+ "files": [
+  {
+   "path": "degisiklikler.json",
+   "bytes": 820,
+   "sha256": "9cf4e51b43da3e52f4d81acd8fba5216b634f0ad67ef62ed224706f6ab6d7c86"
+  },
+  {
+   "path": "durum.json",
+   "bytes": 43249,
+   "sha256": "399016aeb69dce87ef1480fad0d99cca7b698ea6d962047f2ba74dffa8074747"
+  },
+  {
+   "path": "emsal/bis-borc-servis-orani-tr.json",
+   "bytes": 41638,
+   "sha256": "9fc632318bc44e152bb409e3dd97af50c02a94bf47f40b930732f7f086421b54"
+  },
+  {
+   "path": "emsal/bis-kredi-acigi-tr.json",
+   "bytes": 77579,
+   "sha256": "0c615d98b8d3bf53f3e9ee5220b2b485bd5af6c43e77ca78e0ea3e711b5c565c"
+  },
+  {
+   "path": "emsal/bis-ozel-kredi-gsyh-tr.json",
+   "bytes": 93692,
+   "sha256": "b22377d085e5d59d581a94345c555bb0084b5b94767a2810d35aa3b1f2168df8"
+  },
+  {
+   "path": "emsal/bis-politika-faizi-tr.json",
+   "bytes": 227480,
+   "sha256": "9a0d1f94d139efa7db5998d99b87b58324b0c895130e886fcb2a6b23ea65de6b"
+  },
+  {
+   "path": "emsal/bis-tufe-yillik-tr.json",
+   "bytes": 403914,
+   "sha256": "9405ab99e323e689b42e70a2f33f71286d4155f2d6d53f56f79ce1c2b56bbc39"
+  },
+  {
+   "path": "emsal/eurostat-asgari-ucret-pps-tr.json",
+   "bytes": 9386,
+   "sha256": "b79ef926a908a03f5d62f0dd0daede01958fadab16f7dfa4da97e68e19799065"
+  },
+  {
+   "path": "emsal/eurostat-ekonomik-guven-tr.json",
+   "bytes": 97602,
+   "sha256": "a76ecffca656a576b6e1f550004f564580fa4130320e0c7d4bf6ee63cab65cb3"
+  },
+  {
+   "path": "emsal/eurostat-hicp-yillik-tr.json",
+   "bytes": 75409,
+   "sha256": "14c5dfbd9da22542c4021ece6eccbb309eb8507102ab5d0d93da2868d84d88cf"
+  },
+  {
+   "path": "emsal/eurostat-issizlik-aylik-tr.json",
+   "bytes": 76416,
+   "sha256": "132d85c2b4e684b039af8ef23ea70a7780b9f030b99613b4b9d423c554458a58"
+  },
+  {
+   "path": "emsal/ilo-emek-payi-tr.json",
+   "bytes": 11482,
+   "sha256": "99a8b03f8efc3b1776b8effbff3f9d66f9f8452aa57ea5b13780d10afb6d2eca"
+  },
+  {
+   "path": "emsal/ilo-isgucune-katilim-tr.json",
+   "bytes": 18023,
+   "sha256": "0f62668fff4b54740521a838861033d2261d9e0f395b71b08bd0afae159e89d9"
+  },
+  {
+   "path": "emsal/ilo-issizlik-tr.json",
+   "bytes": 17417,
+   "sha256": "314cf0cc7f81b6d56f6e0cf4a79c28f847f7e29e21e493abf7ba1064ad9bb9ff"
+  },
+  {
+   "path": "emsal/ilo-kadin-isgucune-katilim-tr.json",
+   "bytes": 17992,
+   "sha256": "d91af775c71f72d43cfc03e409376da27d7494bed00592bfe3be210acd55fe98"
+  },
+  {
+   "path": "emsal/ilo-kayitdisi-istihdam-tr.json",
+   "bytes": 8332,
+   "sha256": "d54fc06113e5445509c61982d83642b1108148e779e75ec2cbce5b12629b7c1a"
+  },
+  {
+   "path": "emsal/ilo-neet-tr.json",
+   "bytes": 12221,
+   "sha256": "e356aaa22594eb4821a3763ae47964e7fc1f77e7052622a4bb5a321bb2a945c3"
+  },
+  {
+   "path": "emsal/oecd-gsyh-buyume-yillik-tr.json",
+   "bytes": 83810,
+   "sha256": "e9148050989260e5c65d2bed2e4aabf0cd12066f9a75e39d74b0700cca198a7d"
+  },
+  {
+   "path": "emsal/oecd-is-guveni-tr.json",
+   "bytes": 207719,
+   "sha256": "fb3b5bdcea4eb51eb04031b5ccc95ef5264c565df45b1472406f288de7ba9933"
+  },
+  {
+   "path": "emsal/oecd-tuketici-guveni-tr.json",
+   "bytes": 177612,
+   "sha256": "c759881b712c57160cb149bbda11d79cfec3a6676747fbd8e011184fd110a5b8"
+  },
+  {
+   "path": "emsal/wb-bn-cab-xoka-gd-zs-tur.json",
+   "bytes": 36750,
+   "sha256": "f0e99f31dcf8601fcaafbb129340fea78a896083851f7c32ba156dcddbfad967"
+  },
+  {
+   "path": "emsal/wb-bx-klt-dinv-wd-gd-zs-tur.json",
+   "bytes": 36746,
+   "sha256": "fc42d9fa9d1f776985d72f3105bd01de7103d0b03b959b1d16511c6a78ef01a7"
+  },
+  {
+   "path": "emsal/wb-dt-dod-dect-gn-zs-tur.json",
+   "bytes": 24454,
+   "sha256": "f27884111e5cfdc3e752f1be4a80d9da09e1808b37f2ce0e3898153744faac75"
+  },
+  {
+   "path": "emsal/wb-fi-res-totl-mo-tur.json",
+   "bytes": 36381,
+   "sha256": "d7344293aaae211cba909cc70e9118d62eed211418a2c8bfef500f3c08b9f147"
+  },
+  {
+   "path": "emsal/wb-fm-lbl-bmny-gd-zs-tur.json",
+   "bytes": 36944,
+   "sha256": "b807dc7bb901ad49db5b67851a5a1f7e176451b2fc63cd211ef98f3a327e6dbd"
+  },
+  {
+   "path": "emsal/wb-fp-cpi-totl-zg-tur.json",
+   "bytes": 37549,
+   "sha256": "5bc1aa81b7fbe529898781f62d11a652cc5e57c6486e0dc142b4d17d62bb8e5f"
+  },
+  {
+   "path": "emsal/wb-gb-xpd-rsdv-gd-zs-tur.json",
+   "bytes": 29646,
+   "sha256": "f6cbcfa8ba351aa0b0158535852538c7053148f946df621277e1833be9ea0391"
+  },
+  {
+   "path": "emsal/wb-gc-dod-totl-gd-zs-tur.json",
+   "bytes": 28069,
+   "sha256": "26a08d61e05233984787ce8d6365b3b78951b4dc7ce3a6839e54dd3aa9e21f25"
+  },
+  {
+   "path": "emsal/wb-gc-tax-totl-gd-zs-tur.json",
+   "bytes": 33509,
+   "sha256": "7ea04a8fc26a575888dbd9ae3c7835626e2ea95d0f48457abea75a52fb51225e"
+  },
+  {
+   "path": "emsal/wb-it-net-user-zs-tur.json",
+   "bytes": 31855,
+   "sha256": "524b330ae80ca064e8dfd158a4959c37fe040b58266c1d9b71041357d6019867"
+  },
+  {
+   "path": "emsal/wb-ne-con-prvt-zs-tur.json",
+   "bytes": 37388,
+   "sha256": "1c7bd4e717c14c127441f89415ccc832a4b0c5f051b4d512d050c5d1cb3c3df1"
+  },
+  {
+   "path": "emsal/wb-ne-exp-gnfs-zs-tur.json",
+   "bytes": 37386,
+   "sha256": "c8eb5d10c25cb0ee4c1dc400486b6e4e16a79c9d32f964e60ae396769bc5a7e4"
+  },
+  {
+   "path": "emsal/wb-ne-gdi-ftot-zs-tur.json",
+   "bytes": 37257,
+   "sha256": "1da9d3076eedf5d9af738b4980096c71967ac50bc18388a3f4f8194fb37e0937"
+  },
+  {
+   "path": "emsal/wb-ne-imp-gnfs-zs-tur.json",
+   "bytes": 37393,
+   "sha256": "4ec2865ad208f9e14b5530cddec8dadbe1e621622298091886cf85ce1f386385"
+  },
+  {
+   "path": "emsal/wb-nv-ind-manf-zs-tur.json",
+   "bytes": 36592,
+   "sha256": "ae874f6c174c019b1287bf5e4b5a5fc231318ad7fdbe5a26e381782457986de4"
+  },
+  {
+   "path": "emsal/wb-ny-gdp-defl-kd-zg-tur.json",
+   "bytes": 37798,
+   "sha256": "d542c9c3921db41aa7c62492aaac4583d2e07473a97558e37e2958ee7e3354bb"
+  },
+  {
+   "path": "emsal/wb-ny-gdp-mktp-kd-zg-tur.json",
+   "bytes": 37861,
+   "sha256": "992205861f3af178b7fbe72daaa236bb726692859fd2eb0b85fdc83fc9053329"
+  },
+  {
+   "path": "emsal/wb-ny-gdp-pcap-cd-tur.json",
+   "bytes": 37668,
+   "sha256": "51ca6f87f008b1874612f2776a96798b3dcbef6c54205e2942cca7ec02d971c0"
+  },
+  {
+   "path": "emsal/wb-ny-gdp-pcap-pp-kd-tur.json",
+   "bytes": 34595,
+   "sha256": "efdd9b0704993e5dae27a6ac1f1c578d1cbfe3a318267a0e92d4c8887bfd01c7"
+  },
+  {
+   "path": "emsal/wb-ny-gds-totl-zs-tur.json",
+   "bytes": 37375,
+   "sha256": "a6ec1085846f18775ffa9741241070c641a05617509dc5da33a2f5847253baf2"
+  },
+  {
+   "path": "emsal/wb-sh-xpd-chex-gd-zs-tur.json",
+   "bytes": 31041,
+   "sha256": "863a68dc76e4d9f9732b6f158525da1b930326f23146a5cbdb01cad686cd1668"
+  },
+  {
+   "path": "emsal/wb-si-pov-gini-tur.json",
+   "bytes": 29486,
+   "sha256": "681bb0f0341e4baada85f236cf4d6e75598a88cae0b18be11877f063a9ec97c3"
+  },
+  {
+   "path": "emsal/wb-sl-uem-totl-zs-tur.json",
+   "bytes": 31059,
+   "sha256": "729671c7b947736b1a5afab9d01cd745009a603954a6a500890a5c1b255326fb"
+  },
+  {
+   "path": "emsal/wb-sp-dyn-le00-in-tur.json",
+   "bytes": 33089,
+   "sha256": "1d281aea10c43cccb371b9e7d48718d0d409fa3ff1a40804364b3c3118ecef24"
+  },
+  {
+   "path": "emsal/wb-sp-dyn-tfrt-in-tur.json",
+   "bytes": 31179,
+   "sha256": "f7c7a571108c78e5350a4e3b1cd5f2469932a8ca8d02d62d3820e940799d8245"
+  },
+  {
+   "path": "emsal/wb-sp-pop-1564-to-zs-tur.json",
+   "bytes": 38325,
+   "sha256": "e2041c185bc35d4861727f8890e77fa0d1562e53d72c1975ac7b0411e95f3eee"
+  },
+  {
+   "path": "emsal/wb-sp-pop-dpnd-ol-tur.json",
+   "bytes": 38308,
+   "sha256": "4b67233f4de40d2cbbca3c699a75e80149c96dd695e4448e609daa330b423c44"
+  },
+  {
+   "path": "emsal/wb-sp-pop-dpnd-tur.json",
+   "bytes": 38312,
+   "sha256": "c3d0d340ee7dc9c49fdbd3a43a4121bf86bbadb054fb60c753c7ce2317fc1d4a"
+  },
+  {
+   "path": "emsal/wb-sp-pop-grow-tur.json",
+   "bytes": 38424,
+   "sha256": "d4455cc7cc414d5e8beeba90c33c2bc28ec90477ca0d9f811a8a6c8a5934be1d"
+  },
+  {
+   "path": "gozlemler.parquet",
+   "bytes": 56955,
+   "sha256": "b1bbc3695357b58e6f749c2ede24a4ed35974146983507a32970b1a35e77cffa"
+  },
+  {
+   "path": "gozlemler.parquet.sha256",
+   "bytes": 84,
+   "sha256": "cd8c056fbeb9705c4daaccd409390011bacfa329f778cead0c5c2e9c1bcd4fdf"
+  },
+  {
+   "path": "kaynaklar.json",
+   "bytes": 6671,
+   "sha256": "1965368e60c92ef7754c7022d41b165a0bccc91054febbee2096f01c22ec0247"
+  },
+  {
+   "path": "panel/aylik.csv",
+   "bytes": 44848,
+   "sha256": "d8b54786af75020cda7478600c9b4c71aafd8b893165f122751abaaf65133566"
+  },
+  {
+   "path": "panel/aylik.json",
+   "bytes": 169121,
+   "sha256": "fae55a6baea742870d1af17ccca4bd4740679bc97af04a935a9ab4e1c3cc1b65"
+  },
+  {
+   "path": "panel/ceyreklik.csv",
+   "bytes": 26576,
+   "sha256": "b5c7af7f12578b352b7bea123dfc79a70a6223ba70a107c3b2937da220558b5e"
+  },
+  {
+   "path": "panel/ceyreklik.json",
+   "bytes": 93715,
+   "sha256": "e2da64e7b0c2cb01de5757ca83817c8a4e020961c10374eb2fc1b77a60a42821"
+  },
+  {
+   "path": "panel/yillik.csv",
+   "bytes": 37688,
+   "sha256": "f063dc173c05ceaf40e05e725dc1209bd26e803dd768661a18c474427db72c81"
+  },
+  {
+   "path": "panel/yillik.json",
+   "bytes": 138122,
+   "sha256": "2c7341af47e20fea49af3442e97de3a616742dbf47fe24bdcc7dfe04ee8d8009"
+  },
+  {
+   "path": "seri/bis-borc-servis-orani-tr.csv",
+   "bytes": 12495,
+   "sha256": "910857e7b057f81e1285a7044fe11e80e78dd7e3c8f5fe51b5c6d70442972098"
+  },
+  {
+   "path": "seri/bis-borc-servis-orani-tr.json",
+   "bytes": 7673,
+   "sha256": "3efeab38eb9de09a19f128d81b99a07b5f8b459728e7019cb72e2f355e7b9cf6"
+  },
+  {
+   "path": "seri/bis-kredi-acigi-tr.csv",
+   "bytes": 17182,
+   "sha256": "5a30d88150342104b41ae5b4de8d9c96fbf82ba134623ebae94dd5568d5f23c7"
+  },
+  {
+   "path": "seri/bis-kredi-acigi-tr.json",
+   "bytes": 9720,
+   "sha256": "ecef11d1fcde358f1d130eeed836749df985a3e22ec998bd4318c0bf2fdddead"
+  },
+  {
+   "path": "seri/bis-ozel-kredi-gsyh-tr.csv",
+   "bytes": 22722,
+   "sha256": "f5654e921ef766ced914bbb3188c3e23c3004be6d63aed86cdff3ae9174fb86d"
+  },
+  {
+   "path": "seri/bis-ozel-kredi-gsyh-tr.json",
+   "bytes": 12179,
+   "sha256": "e2a778352087d61a43428a0dd6e43845480ad7ed9e16334aea3287a7d7aa5888"
+  },
+  {
+   "path": "seri/bis-politika-faizi-tr.csv",
+   "bytes": 37139,
+   "sha256": "06974f7cfc51cf9299c0f95662119362fa0404835cee0aaef6c18b3bc1ea0214"
+  },
+  {
+   "path": "seri/bis-politika-faizi-tr.json",
+   "bytes": 21073,
+   "sha256": "fc31d64e0dd48870d561c9c34d5074d76654dfe39a2f5fbc9eda420369f686db"
+  },
+  {
+   "path": "seri/bis-reel-efektif-kur-tr.csv",
+   "bytes": 52331,
+   "sha256": "b13df25ad351ee80bd95e82a8bab87114e341b350ea86293881dcc60607d3dd7"
+  },
+  {
+   "path": "seri/bis-reel-efektif-kur-tr.json",
+   "bytes": 28621,
+   "sha256": "a4b65ccff374b0c72c1f2affe649738f3133243281bbf1011a34d911fcd061d2"
+  },
+  {
+   "path": "seri/bis-reel-konut-fiyat-tr.csv",
+   "bytes": 9082,
+   "sha256": "a3c9e7955256445faaed899d51e4da1facb8556a5925357ce24db15321deefdc"
+  },
+  {
+   "path": "seri/bis-reel-konut-fiyat-tr.json",
+   "bytes": 5839,
+   "sha256": "8f330fb7f34ca97913e60dba52cd9c934679969fe730af3e9b7d389ef0685007"
+  },
+  {
+   "path": "seri/bis-tufe-yillik-tr.csv",
+   "bytes": 102744,
+   "sha256": "01a273c6f16b9e54f72f40fa3f575db5e940c2e991d5129865d732727977bf88"
+  },
+  {
+   "path": "seri/bis-tufe-yillik-tr.json",
+   "bytes": 57865,
+   "sha256": "779939cba91e336a3d6bbb17d92eee9ff74e53a368d71e6e24f10eaa871619ac"
+  },
+  {
+   "path": "seri/eurostat-asgari-ucret-pps-tr.csv",
+   "bytes": 7558,
+   "sha256": "5e6d4b02e5269bc170f1500ebe008304c9caa9f4ea77261b015242aa7de9690e"
+  },
+  {
+   "path": "seri/eurostat-asgari-ucret-pps-tr.json",
+   "bytes": 4795,
+   "sha256": "b3eb15c7e11688a57c0c6f273a732224ed00e705ed26e9bfaf7d74eaaa01e5ff"
+  },
+  {
+   "path": "seri/eurostat-ekonomik-guven-tr.csv",
+   "bytes": 35875,
+   "sha256": "05cdea71ec5d0505ac0072328f8611b65818b932ee2d4b720e94ae1e910fb36f"
+  },
+  {
+   "path": "seri/eurostat-ekonomik-guven-tr.json",
+   "bytes": 17684,
+   "sha256": "ba2479bced32f57578e369a86a7f4ccf4fe6d6f176c60b88743f8cb0a62332f0"
+  },
+  {
+   "path": "seri/eurostat-hicp-yillik-tr.csv",
+   "bytes": 52545,
+   "sha256": "947cc0f0459e7b04e6fa8c23c40661c1c9f8e73e8b595b2acb9f35c63e19a7b9"
+  },
+  {
+   "path": "seri/eurostat-hicp-yillik-tr.json",
+   "bytes": 25704,
+   "sha256": "d38d572e561709cb2503a9d9fd46c7938ed92c3aa8f8be45cbf405680d173567"
+  },
+  {
+   "path": "seri/eurostat-issizlik-aylik-tr.csv",
+   "bytes": 39328,
+   "sha256": "1dc27dc7691e2257628019319280fc3f769cb0b5358de78a0e121c9b8e118507"
+  },
+  {
+   "path": "seri/eurostat-issizlik-aylik-tr.json",
+   "bytes": 18995,
+   "sha256": "baf7a4ab74c9f471dc6317ecd3fb497976315bf155d83ecdf9586a080fe727cc"
+  },
+  {
+   "path": "seri/ilo-emek-payi-tr.csv",
+   "bytes": 3035,
+   "sha256": "65ff78a6e527caa8a874c04c0ef74d4458f3183ca7e6d03f5f891ade82e612aa"
+  },
+  {
+   "path": "seri/ilo-emek-payi-tr.json",
+   "bytes": 2528,
+   "sha256": "6eb5f0d811ce5b054415f0739460fef278da121b35341bb1f086d524f40762b0"
+  },
+  {
+   "path": "seri/ilo-isgucune-katilim-tr.csv",
+   "bytes": 5194,
+   "sha256": "8bfe83e620fff7ff603d74ce9d2aaf9bb84eaacdd2abe1ed62dcbd84fd7621bb"
+  },
+  {
+   "path": "seri/ilo-isgucune-katilim-tr.json",
+   "bytes": 3143,
+   "sha256": "b5c7c609a30d0d26c4abbb70da82d9c5b8d957aa7c565fbf14fd374287c9c312"
+  },
+  {
+   "path": "seri/ilo-issizlik-tr.csv",
+   "bytes": 6662,
+   "sha256": "040027a083158a293833ffec3c69c21c83b6d006929c2a53b29c4f76293b8f45"
+  },
+  {
+   "path": "seri/ilo-issizlik-tr.json",
+   "bytes": 3868,
+   "sha256": "04451a5edaa4c8b944d236eabc9d837bb00e3e7e0fb565a6538dbf6e8d56fe0b"
+  },
+  {
+   "path": "seri/ilo-kadin-isgucune-katilim-tr.csv",
+   "bytes": 5378,
+   "sha256": "431e896b7534a22ed47c31b94ba0b5028577539377b3a7076500c6026a75c231"
+  },
+  {
+   "path": "seri/ilo-kadin-isgucune-katilim-tr.json",
+   "bytes": 3159,
+   "sha256": "67500df893fea019167e7a489dee2703649f2c801c9d1a771e3888abb42a893b"
+  },
+  {
+   "path": "seri/ilo-kayitdisi-istihdam-tr.csv",
+   "bytes": 3817,
+   "sha256": "b0f3c5eaf81797f15c6680f8a0809de102c3a9972a71ba5796278d3f54cea04a"
+  },
+  {
+   "path": "seri/ilo-kayitdisi-istihdam-tr.json",
+   "bytes": 2759,
+   "sha256": "8891f4ddc6cb0bb6fc8c76a7d0066ad097f4d85644ec7b1e35795cc0c4bc3fb5"
+  },
+  {
+   "path": "seri/ilo-neet-tr.csv",
+   "bytes": 3454,
+   "sha256": "50c3dd8c373ff49065932b25906fd5d8a7fbee48a15ec710a1bdc62a51997d66"
+  },
+  {
+   "path": "seri/ilo-neet-tr.json",
+   "bytes": 2775,
+   "sha256": "d62804b928704120326f54cf3ebc3aa0fa44d0d44670818feacbb9f54f4f0842"
+  },
+  {
+   "path": "seri/oecd-gsyh-buyume-ceyrek-tr.csv",
+   "bytes": 23941,
+   "sha256": "3bd271455e3ecc8a0943357e65b7cd92de14c772e57d846103e95c5bd87d5223"
+  },
+  {
+   "path": "seri/oecd-gsyh-buyume-ceyrek-tr.json",
+   "bytes": 10417,
+   "sha256": "93295ef197c95cbdb718b0178600ef3e7775bf28735802838324bebf24103755"
+  },
+  {
+   "path": "seri/oecd-gsyh-buyume-yillik-tr.csv",
+   "bytes": 23356,
+   "sha256": "0a188bf5c9108618b3bcec47751bac58cd81408e3c1cb52f0352806a74343931"
+  },
+  {
+   "path": "seri/oecd-gsyh-buyume-yillik-tr.json",
+   "bytes": 10149,
+   "sha256": "b49a97f1379a323095a1330af883e1887058ff0ecdef4ae149639c33ca775373"
+  },
+  {
+   "path": "seri/oecd-is-guveni-tr.csv",
+   "bytes": 58912,
+   "sha256": "1393c30daf48f9d24f53054be7f4122833f1ed91f17ba633f3a181758a443e7f"
+  },
+  {
+   "path": "seri/oecd-is-guveni-tr.json",
+   "bytes": 31835,
+   "sha256": "ec040eff7455e13992721d22a3aba0578aca84dac8ff5d7bbb95254713a19cba"
+  },
+  {
+   "path": "seri/oecd-oncu-gosterge-tr.csv",
+   "bytes": 60698,
+   "sha256": "7c4af96e133d07ed075dcff49720d8ab4cca46f57557b202e81f8f2f40c449a5"
+  },
+  {
+   "path": "seri/oecd-oncu-gosterge-tr.json",
+   "bytes": 34481,
+   "sha256": "1d0a44407833b64e2c4bf709140de170189aae10bd2f1f75cfe4519d20eae86d"
+  },
+  {
+   "path": "seri/oecd-perakende-hacmi-tr.csv",
+   "bytes": 29222,
+   "sha256": "bfeddb7c0a904c1a5b0da1e2d96f62a7c08740de5f4abe616a8e7e097eaccb9e"
+  },
+  {
+   "path": "seri/oecd-perakende-hacmi-tr.json",
+   "bytes": 15326,
+   "sha256": "6e8e8fa7e889b0bcc1659fd3af744180c41d8615d6bacc6d9a1dbca21a9faf08"
+  },
+  {
+   "path": "seri/oecd-sanayi-uretimi-tr.csv",
+   "bytes": 72643,
+   "sha256": "a1fd9785b9370c3928ebbcf4996b0b3b57dcacd73e64de6d6f20d2598af3a74a"
+  },
+  {
+   "path": "seri/oecd-sanayi-uretimi-tr.json",
+   "bytes": 36981,
+   "sha256": "a87280a453de386d871cdd27559c2e24a82317f6fae333877b1f771c0b99aec9"
+  },
+  {
+   "path": "seri/oecd-tuketici-guveni-tr.csv",
+   "bytes": 39210,
+   "sha256": "d11fa947293c584fdd6167ae3c4bdd419b8a3fbf8234be6829e5df43e49bafdb"
+  },
+  {
+   "path": "seri/oecd-tuketici-guveni-tr.json",
+   "bytes": 20641,
+   "sha256": "6ed3a783955be1f49517dd319fca73a59882db2ea41809fc9ee9ce3f88753a41"
+  },
+  {
+   "path": "seri/wb-bn-cab-xoka-gd-zs-tur.csv",
+   "bytes": 7797,
+   "sha256": "a992b4656b13e63d498c4853e866da5c65e8d33447762064d35033c3d790c43b"
+  },
+  {
+   "path": "seri/wb-bn-cab-xoka-gd-zs-tur.json",
+   "bytes": 6200,
+   "sha256": "7664436b1f2b5ddf677aa0aa15c7bf048dae13e3043459e86cf08d914d8062a1"
+  },
+  {
+   "path": "seri/wb-bx-klt-dinv-wd-gd-zs-tur.csv",
+   "bytes": 8243,
+   "sha256": "f799f43a70a4d686ccf4bd36e77ca933e377b7340570fbd112b7d2062226add5"
+  },
+  {
+   "path": "seri/wb-bx-klt-dinv-wd-gd-zs-tur.json",
+   "bytes": 6321,
+   "sha256": "c8c169dcb78c787cb554bf89a7d059e7243667bfa2c550eaf75ce52af60847fb"
+  },
+  {
+   "path": "seri/wb-dt-dod-dect-cd-tur.csv",
+   "bytes": 6791,
+   "sha256": "efe4fff5e000fad101f6fc12d7d933d5a4629c9fa73945cba16bde1b73435799"
+  },
+  {
+   "path": "seri/wb-dt-dod-dect-cd-tur.json",
+   "bytes": 5855,
+   "sha256": "d350e7b388a48f20caf8783a41d94e054fdb968000581fc3ccb073e28065e8a3"
+  },
+  {
+   "path": "seri/wb-dt-dod-dect-gn-zs-tur.csv",
+   "bytes": 7467,
+   "sha256": "b17779f84c09f103baa2f5bcc2cd7dc389b65f9355909ea8a1bf6a947a5cb4a0"
+  },
+  {
+   "path": "seri/wb-dt-dod-dect-gn-zs-tur.json",
+   "bytes": 5985,
+   "sha256": "02d6d78fee59e7622d1b990dac93c3e0917c449dac46397a96a87162ce3408f1"
+  },
+  {
+   "path": "seri/wb-fi-res-totl-cd-tur.csv",
+   "bytes": 7028,
+   "sha256": "1fdcd204452505296472e3ecbf87a378d5698348a0531e1addc0821aaf630a13"
+  },
+  {
+   "path": "seri/wb-fi-res-totl-cd-tur.json",
+   "bytes": 6110,
+   "sha256": "875e3ed29d52e524b6aac496e344447f0c52171bc282008b2562f163149be558"
+  },
+  {
+   "path": "seri/wb-fi-res-totl-mo-tur.csv",
+   "bytes": 6813,
+   "sha256": "937f12f4c07d049ecbb35ca46e0fe286e5ccd7df8f43fc82e304036157383d00"
+  },
+  {
+   "path": "seri/wb-fi-res-totl-mo-tur.json",
+   "bytes": 5984,
+   "sha256": "ee897808581b4fcb987520ed13156650ac31645ad664f8d2858655dbe82fb3d6"
+  },
+  {
+   "path": "seri/wb-fm-lbl-bmny-gd-zs-tur.csv",
+   "bytes": 7962,
+   "sha256": "8830a325c6cd7951915497e3be82385e94dbd61a238dcd3a0e1d506494767c0e"
+  },
+  {
+   "path": "seri/wb-fm-lbl-bmny-gd-zs-tur.json",
+   "bytes": 6313,
+   "sha256": "36cfb1768c4ef93bf33c750754947d94ed11c64e72bc331c42556ed21a2c9d81"
+  },
+  {
+   "path": "seri/wb-fp-cpi-totl-zg-tur.csv",
+   "bytes": 7235,
+   "sha256": "36e2d50bf322c5e4daa22d5a7c0d4813198748365f3f4e4ad1dff00c272640b6"
+  },
+  {
+   "path": "seri/wb-fp-cpi-totl-zg-tur.json",
+   "bytes": 6170,
+   "sha256": "92d97e34e52b4896bfa74109d016599cbc859c9bb4b4cf30d153b7e0b75b6217"
+  },
+  {
+   "path": "seri/wb-gb-xpd-rsdv-gd-zs-tur.csv",
+   "bytes": 6899,
+   "sha256": "08fad12b1dde02ca6961f6a0e70f9253cc440777b2dab315ac58aeb4d1122c18"
+  },
+  {
+   "path": "seri/wb-gb-xpd-rsdv-gd-zs-tur.json",
+   "bytes": 5445,
+   "sha256": "2cfcaaf2e68a61e54c692e5057044cfd6ec13a0ac35d7084c9b9e23318d7df57"
+  },
+  {
+   "path": "seri/wb-gc-dod-totl-gd-zs-tur.csv",
+   "bytes": 7223,
+   "sha256": "94f8c6e255650383ab5d6e14f424a7ff7227aee978d535fa58d91ebf0fd3c381"
+  },
+  {
+   "path": "seri/wb-gc-dod-totl-gd-zs-tur.json",
+   "bytes": 5582,
+   "sha256": "0578586296f22baa78b39c08d4d9c3b6ea8cde7909df5c75189e0062fd7722d1"
+  },
+  {
+   "path": "seri/wb-gc-tax-totl-gd-zs-tur.csv",
+   "bytes": 7493,
+   "sha256": "56548ed2ab9e8045b4e1f50a74ab465f4e15e92dea8a87e5034ca772f25e4b2f"
+  },
+  {
+   "path": "seri/wb-gc-tax-totl-gd-zs-tur.json",
+   "bytes": 5786,
+   "sha256": "33b2443de33ebc6024f664c19539fe8833b881477247424f8868fc0f556c0f28"
+  },
+  {
+   "path": "seri/wb-it-net-user-zs-tur.csv",
+   "bytes": 6485,
+   "sha256": "c48571882a25321c1b1d8d3e0cff2db35535081631ef81d43db34b245cb5178e"
+  },
+  {
+   "path": "seri/wb-it-net-user-zs-tur.json",
+   "bytes": 5528,
+   "sha256": "8c88e572b1e513cbb3801625a60a927b400abb3d8d8db439a02a431e9a0c3e25"
+  },
+  {
+   "path": "seri/wb-ne-con-prvt-zs-tur.csv",
+   "bytes": 7568,
+   "sha256": "3d27ddbd48e608dac9d6f49194477b12ddc016dc29ca8c24a1552705b1ee6865"
+  },
+  {
+   "path": "seri/wb-ne-con-prvt-zs-tur.json",
+   "bytes": 6339,
+   "sha256": "aa6f4298138b26d549ddc6ec8a499b4d104cdc1c6256cff6ffa3bc133e8604dd"
+  },
+  {
+   "path": "seri/wb-ne-exp-gnfs-zs-tur.csv",
+   "bytes": 7567,
+   "sha256": "c669af2a4123a3fb4672a477afd903fc76a2e143cf99471ead4d9a34c97622b3"
+  },
+  {
+   "path": "seri/wb-ne-exp-gnfs-zs-tur.json",
+   "bytes": 6245,
+   "sha256": "19d3f195055302d2bae19e37c776d78632b72f0f7ac5040f40e60be5c92b1b39"
+  },
+  {
+   "path": "seri/wb-ne-gdi-ftot-zs-tur.csv",
+   "bytes": 7439,
+   "sha256": "473defbdae94f755dd19031dfcad8ab69909ebdea73991fffe7e263d109b14e7"
+  },
+  {
+   "path": "seri/wb-ne-gdi-ftot-zs-tur.json",
+   "bytes": 6198,
+   "sha256": "41c0d7566f0adf6688e4bfb278e7bb4a9bd67db57e6c28a95684bd6e66de160e"
+  },
+  {
+   "path": "seri/wb-ne-imp-gnfs-zs-tur.csv",
+   "bytes": 7569,
+   "sha256": "4ed84e131facbd35976413e89396cc83718610fd7e55b33675094e74a1157282"
+  },
+  {
+   "path": "seri/wb-ne-imp-gnfs-zs-tur.json",
+   "bytes": 6247,
+   "sha256": "82e062eb476f9c1537fbe8a34ef4b8cbd7949ccbdae5865aa34ac119f05e5c7e"
+  },
+  {
+   "path": "seri/wb-nv-ind-manf-zs-tur.csv",
+   "bytes": 7453,
+   "sha256": "b1bb8280a08c604fe7c0a9c3c7a1178636621f4c0a5053483b23549e557cca36"
+  },
+  {
+   "path": "seri/wb-nv-ind-manf-zs-tur.json",
+   "bytes": 6164,
+   "sha256": "36ad7b2e17b1c8ce6699ffdd5699929d9c35d9da528b2126293ee962d24c915f"
+  },
+  {
+   "path": "seri/wb-ny-gdp-defl-kd-zg-tur.csv",
+   "bytes": 7618,
+   "sha256": "1cda09cf15d04209c8d3941aa9c667d186ba0b807ded5127e1965c55eb68e011"
+  },
+  {
+   "path": "seri/wb-ny-gdp-defl-kd-zg-tur.json",
+   "bytes": 6224,
+   "sha256": "1a1c866d5501154cbf85e88af84caeef28a30efc97033f81259b3e6e371f8951"
+  },
+  {
+   "path": "seri/wb-ny-gdp-mktp-cd-tur.csv",
+   "bytes": 7073,
+   "sha256": "3db68e7b486ebaba06cd8b54fff0a70c6dba26464e6acea39e9a3e9a6c24a2b2"
+  },
+  {
+   "path": "seri/wb-ny-gdp-mktp-cd-tur.json",
+   "bytes": 6254,
+   "sha256": "923b574fe13ed9b9506fa9124b279548eaaf692486f1010cc7bb85d140a0e54b"
+  },
+  {
+   "path": "seri/wb-ny-gdp-mktp-kd-zg-tur.csv",
+   "bytes": 7625,
+   "sha256": "9d51e819f308c1b8e02a640d589de31ed933f319f90551036509b61035ec1510"
+  },
+  {
+   "path": "seri/wb-ny-gdp-mktp-kd-zg-tur.json",
+   "bytes": 6290,
+   "sha256": "56791e87591d9bcb051fe90f036f417f6ccb8451565d9ed0215bacabaf7d852b"
+  },
+  {
+   "path": "seri/wb-ny-gdp-pcap-cd-tur.csv",
+   "bytes": 7106,
+   "sha256": "9c4b529a791c2453f61f6ec11ea0d8d001d574c56c9390c7972c071c246d88f4"
+  },
+  {
+   "path": "seri/wb-ny-gdp-pcap-cd-tur.json",
+   "bytes": 6290,
+   "sha256": "4f4dc0d4457dec7cc7696a43abc7120aad10a91100702cd47f123d60fa5a7505"
+  },
+  {
+   "path": "seri/wb-ny-gdp-pcap-pp-kd-tur.csv",
+   "bytes": 7021,
+   "sha256": "10ff459afdde2321b9828c0dc36e56b650f142522c1d2a6a6f9b52b7351be41f"
+  },
+  {
+   "path": "seri/wb-ny-gdp-pcap-pp-kd-tur.json",
+   "bytes": 6481,
+   "sha256": "67449ef27d262b7675df0f03c644d2206f08f8a44aebd3278e042a4c8d8c69ff"
+  },
+  {
+   "path": "seri/wb-ny-gds-totl-zs-tur.csv",
+   "bytes": 7569,
+   "sha256": "8164dbb89aa07b4c5c5b12d71f7971a003328a7fbb711f6e08c6fc80e3bcc5fd"
+  },
+  {
+   "path": "seri/wb-ny-gds-totl-zs-tur.json",
+   "bytes": 6298,
+   "sha256": "384ccbadb58aafeee643dd99023317111033ef90580d5595f3bdb60c52de6d95"
+  },
+  {
+   "path": "seri/wb-sh-xpd-chex-gd-zs-tur.csv",
+   "bytes": 6943,
+   "sha256": "1deb3d5cb711fe6d6f159bdc99d1bb9127cb0abc91b980b0450013d6e2aac46c"
+  },
+  {
+   "path": "seri/wb-sh-xpd-chex-gd-zs-tur.json",
+   "bytes": 5379,
+   "sha256": "367a72cd44f905c605b11b486f60ae1082f87ab01c646cf01ee65dd51eca96fa"
+  },
+  {
+   "path": "seri/wb-si-pov-gini-tur.csv",
+   "bytes": 5639,
+   "sha256": "83f5333b49b6f71a7768e6607c7e9bfefc865d7eeec760e8c219c4e56fa1aabd"
+  },
+  {
+   "path": "seri/wb-si-pov-gini-tur.json",
+   "bytes": 5650,
+   "sha256": "fea2c1fa0a0cfd495888d6516477897653941633fc0571e84796bb3033f150ed"
+  },
+  {
+   "path": "seri/wb-sl-uem-totl-zs-tur.csv",
+   "bytes": 6373,
+   "sha256": "ce8b7cf819a6c8af14c605314136073317e53e7f0abbb36823a0ef5c88e8613b"
+  },
+  {
+   "path": "seri/wb-sl-uem-totl-zs-tur.json",
+   "bytes": 5526,
+   "sha256": "4ad65991984158c760e66119846e0c6051fc17cb4099337116c17ac01730aced"
+  },
+  {
+   "path": "seri/wb-sp-dyn-le00-in-tur.csv",
+   "bytes": 6345,
+   "sha256": "5850668a68cc3791f702fa3bb0cab8c773966e485f4ab76fa2a7235c00b95583"
+  },
+  {
+   "path": "seri/wb-sp-dyn-le00-in-tur.json",
+   "bytes": 5854,
+   "sha256": "fa1399276b162f648f64786cf352c51c1bf801f947c1428178a40b132e05a1a3"
+  },
+  {
+   "path": "seri/wb-sp-dyn-tfrt-in-tur.csv",
+   "bytes": 6394,
+   "sha256": "b725b38954147146ebc8b9850ab76ab0e8820dbaf5db6c25565608cfdc137262"
+  },
+  {
+   "path": "seri/wb-sp-dyn-tfrt-in-tur.json",
+   "bytes": 5530,
+   "sha256": "54212aeea6205d8272a21ad71741ec23c4bf9af5a1386dfed088719d0c825692"
+  },
+  {
+   "path": "seri/wb-sp-pop-1564-to-zs-tur.csv",
+   "bytes": 7632,
+   "sha256": "08ab714f5e9a9f0c1ba37cabdee501f8fc51a88562278c354847119ac47e3680"
+  },
+  {
+   "path": "seri/wb-sp-pop-1564-to-zs-tur.json",
+   "bytes": 6198,
+   "sha256": "6a9a8be5de403dae907c314c65df1c61aa7da8594524630b9769762b737dc7f1"
+  },
+  {
+   "path": "seri/wb-sp-pop-dpnd-ol-tur.csv",
+   "bytes": 7236,
+   "sha256": "ced72c03874d23cb7c5d678afa7186785f239fcacc37cc50b201f6555079c8e9"
+  },
+  {
+   "path": "seri/wb-sp-pop-dpnd-ol-tur.json",
+   "bytes": 6234,
+   "sha256": "46fc2dfb48a8eac2d03206257d158c06ac35d84295dc9735ccc8460fc67623d4"
+  },
+  {
+   "path": "seri/wb-sp-pop-dpnd-tur.csv",
+   "bytes": 6839,
+   "sha256": "949e79ffdf86b64d4e75ba24865389b254ac5d23996fa1484af0cbe78a7373b3"
+  },
+  {
+   "path": "seri/wb-sp-pop-dpnd-tur.json",
+   "bytes": 6234,
+   "sha256": "f043e259ec956f6533ec6911a42a510ab5c33707720f534298075d09e9245a35"
+  },
+  {
+   "path": "seri/wb-sp-pop-grow-tur.csv",
+   "bytes": 6825,
+   "sha256": "97038e8894ce255e3c63e9bf3bc8797858c5332cf4f9fbff33cc0c625b3211f8"
+  },
+  {
+   "path": "seri/wb-sp-pop-grow-tur.json",
+   "bytes": 6541,
+   "sha256": "c57d300724db316947f4c0bf12ae773f476fc1f681ecacdc0d03bee658c1a592"
+  },
+  {
+   "path": "seri/wb-sp-pop-totl-tur.csv",
+   "bytes": 6253,
+   "sha256": "0506c11253b4e3246fa60137266ba96cdbf3e458e1f2971524d5880e8fce8fff"
+  },
+  {
+   "path": "seri/wb-sp-pop-totl-tur.json",
+   "bytes": 6117,
+   "sha256": "6ba5cb143e6397204a9efc25a431e83789fb037cdc039b14ffd82271fbcfa647"
+  },
+  {
+   "path": "seriler.json",
+   "bytes": 53077,
+   "sha256": "0dea1bda9214bd962693831c3b211946ac732f7faf8ced5d2c624cbe85a0145e"
+  }
+ ],
+ "generated_at": "2026-11-24T05:29:02.886068+00:00",
+ "build_id": "db209faa371435d2fe1abf4b5a6c6589db10c2c6b848cb7372bf355ea971920b"
+}
