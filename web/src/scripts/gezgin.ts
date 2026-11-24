@@ -10,7 +10,7 @@ interface Panel { siklik: string; yontem: string; seriler: Tanim[]; veri: Record
 interface Durum { g: string[]; s: "aylik" | "ceyreklik" | "yillik"; d: "ort" | "son"; b: number; e: number; v: "grafik" | "isi" | "tablo"; o: Olcek }
 
 const SIKLIK: Record<string, string> = { aylik: "aylık", ceyreklik: "çeyreklik", yariyillik: "yarıyıllık", yillik: "yıllık", gunluk: "günlük", haftalik: "haftalık" };
-const BIRIM: Record<string, string> = { yuzde: "yüzde", "yuzde-gsyh": "GSYH'ye oran, %", USD: "ABD doları", endeks: "endeks", puan: "puan (0–100)", PPS: "PPS", yil: "yıl", kisi: "kişi", ay: "ay", dogum: "kadın başına doğum" };
+const BIRIM: Record<string, string> = { yuzde: "yüzde", "yuzde-gsyh": "GSYH'ye oran, %", "yuzde-puan": "yüzde puan", USD: "ABD doları", endeks: "endeks", puan: "puan (0–100)", PPS: "PPS", yil: "yıl", kisi: "kişi", ay: "ay", dogum: "kadın başına doğum" };
 const AY = ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"];
 const AZAMI = 6;
 const VARSAYILAN = ["bis-tufe-yillik-tr", "bis-politika-faizi-tr", "eurostat-issizlik-aylik-tr"];
@@ -401,18 +401,19 @@ function baslat(form: HTMLFormElement) {
 
   // Arama, kurum ve sıklık süzgeçleri gösterge listesini süzer; seçimi değiştirmez, adrese yazılmaz.
   const kurumSec = document.getElementById("g-kurum") as HTMLSelectElement | null, siklikSec = document.getElementById("g-ssuz") as HTMLSelectElement | null;
-  const suzgec = [ara, kurumSec, siklikSec].filter((x): x is HTMLInputElement | HTMLSelectElement => !!x);
+  const temaSec = document.querySelector<HTMLSelectElement>("#g-tema-sec");
+  const suzgec = [ara, kurumSec, siklikSec, temaSec].filter((x): x is HTMLInputElement | HTMLSelectElement => !!x);
   const suz = () => {
     const q = ara?.value ?? "", kr = kurumSec?.value ?? "", sk = siklikSec?.value ?? "";
     const sec = [...form.querySelectorAll<HTMLElement>(".g-sec")], temalar = [...form.querySelectorAll<HTMLElement>(".g-tema")];
     let n = 0;
     for (const l of sec) {
-      const ok = eslesir(`${l.textContent ?? ""} ${l.querySelector("input")?.value ?? ""}`, q) && (!kr || l.dataset.kurum === kr) && (!sk || l.dataset.siklik === sk);
+      const ok = eslesir(`${l.dataset.arama} ${l.textContent ?? ""} ${l.querySelector("input")?.value ?? ""}`, q) && (!temaSec?.value || l.dataset.tema === temaSec.value) && (!kr || l.dataset.kurum === kr) && (!sk || l.dataset.siklik === sk);
       l.hidden = !ok; if (ok) n++;
     }
     for (const t of temalar) t.hidden = ![...t.querySelectorAll<HTMLElement>(".g-sec")].some((l) => !l.hidden);
     const sonuc = document.getElementById("g-ara-sonuc");
-    const aktif = q.trim() || kr || sk;
+    const aktif = q.trim() || kr || sk || temaSec?.value;
     if (sonuc) sonuc.textContent = aktif ? (n ? `${n} gösterge eşleşti.` : "Eşleşen gösterge yok; süzgeçleri gevşetin.") : "";
     const liste = document.getElementById("g-liste") as HTMLDetailsElement | null;
     if (liste && aktif) liste.open = true;

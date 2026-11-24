@@ -54,6 +54,8 @@ const jsonld = {
           <input type="search" id="g-ara" placeholder="Gösterge ara: işsizlik, Gini, faiz…" autocomplete="off" enterkeyhint="search" />
           <label for="g-kurum" class="gizli">Kuruma göre süz</label>
           <select id="g-kurum"><option value="">Bütün kurumlar</option>{kurumlar.map((k) => <option value={k}>{k}</option>)}</select>
+          <label class="gizli" for="g-tema-sec">Temaya göre süz</label>
+          <select id="g-tema-sec"><option value="">Bütün temalar</option>{gruplar.map((g) => <option value={g.t}>{g.ad}</option>)}</select>
           <label for="g-ssuz" class="gizli">Kaynak sıklığına göre süz</label>
           <select id="g-ssuz"><option value="">Bütün sıklıklar</option>{sikliklar.map((h) => <option value={h}>{siklikAdi(h)}</option>)}</select>
           <span id="g-ara-sonuc" class="g-not" aria-live="polite"></span>
@@ -65,7 +67,7 @@ const jsonld = {
             <div class="g-tema">
               <p>{g.ad}</p>
               {g.liste.map((s) => (
-                <label class:list={["g-sec", !s.izin.indirme && "kapali"]} data-siklik={s.siklik} data-kurum={kisaAd(s.kaynak.kurum).replace("Avrupa Merkez Bankası", "ECB")}>
+                <label class:list={["g-sec", !s.izin.indirme && "kapali"]} data-tema={g.t} data-arama={`${g.ad} ${s.kaynak_kod} ${s.kaynak.id} ${s.kaynak_adi ?? ""}`} data-siklik={s.siklik} data-kurum={kisaAd(s.kaynak.kurum).replace("Avrupa Merkez Bankası", "ECB")}>
                   <input type="checkbox" name="g" value={s.id} disabled={!s.izin.indirme} />
                   <span>{s.baslik}</span>
                   <small>{s.kaynak.kurum.replace(/\s*\(.*\)$/, "").replace("Uluslararası Ödemeler Bankası", "BIS").replace("Avrupa Birliği İstatistik Ofisi", "Eurostat").replace("Avrupa Merkez Bankası", "ECB")} · {siklikAdi(s.siklik).toLowerCase()}{!s.izin.indirme && " · yalnız gösterim"}</small>

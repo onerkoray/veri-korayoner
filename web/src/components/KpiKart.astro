@@ -3,7 +3,7 @@
 // değişim, küçük çizgi ve kaynak. Değer yalnız yayımlanmış seriden gelir; dönem kaynağın
 // dönemidir, çekim zamanı değil. Gecikme ve başarısız son çekim ayrı işaretlenir.
 import Kivilcim from "./Kivilcim.astro";
-import { deger, degisim, son, onceki, tarih, type Seri, type SeriDurumu } from "../lib/veri";
+import { deger, degerTuru, degisim, son, onceki, tarih, type Seri, type SeriDurumu } from "../lib/veri";
 import { donemAdi } from "../lib/okuma.ts";
 
 interface Props { seri: Seri; ad: string; href: string; kaynak: string; hesap?: boolean; durum?: SeriDurumu; not?: string }
@@ -16,7 +16,7 @@ const n = seri.siklik === "aylik" ? 36 : seri.siklik === "ceyreklik" ? 20 : 15;
     <a href={href}>
       <span class="kpi-ad">{ad}</span>
       <span class="kpi-deger sayi">{deger(seri, sn.deger, true)}</span>
-      <span class="kpi-donem">{donemAdi(sn.donem)}{seri.birim === "yuzde-gsyh" && " · GSYH'ye oran"}</span>
+      <span class="kpi-donem">{donemAdi(sn.donem)}{seri.birim === "yuzde-gsyh" && " · GSYH'ye oran"}{degerTuru(seri) && ` · ${degerTuru(seri)!.toLocaleLowerCase("tr")}`}</span>
       {dg && on && (
         <span class="kpi-deg sayi">{dg.metin}<span class="kpi-onceki"> · {donemAdi(on.donem)}: <span class="kpi-nw">{deger(seri, on.deger, true)}</span></span></span>
       )}

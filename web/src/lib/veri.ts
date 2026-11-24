@@ -16,6 +16,8 @@ export interface Seri {
   id: string; baslik: string; ulke: string; siklik: string; birim: string; carpan: number; tema: string;
   kaynak: KaynakOzet; kaynak_kod: string; kaynak_adi: string | null; kaynak_not: string | null;
   kaynak_guncelleme: string | null; cekildi: string; izin: Izin; gozlemler: Gozlem[];
+  /** Katalogdan: kaynağın gözlemi mi, kaynağın kendi model tahmini mi (kayıtta beyan). */
+  deger_turu?: "gozlem" | "model_tahmini";
 }
 export interface Kaynak extends KaynakOzet { durum: string; erisim: string; yayin: Izin }
 
@@ -23,7 +25,16 @@ const oku = (y: string) => JSON.parse(readFileSync(join(YAYIN, y), "utf8"));
 
 export function seriler(): Seri[] {
   const k = oku("site-veri/seriler.json");
-  return k.seriler.map((s: { id: string }) => oku(`site-veri/seri/${s.id}.json`) as Seri);
+  return k.seriler.map((s: { id: string; deger_turu?: Seri["deger_turu"] }) =>
+    ({ ...oku(`site-veri/seri/${s.id}.json`), deger_turu: s.deger_turu ?? "gozlem" }) as Seri);
+}
+/** Model tahmini etiketi (denetim D-06): kaynağın modelle ürettiği seri; son değer içinde
+ *  bulunulan ya da gelecek bir yıla aitse projeksiyondur. Gözlem serisinde null. */
+export function degerTuru(s: Pick<Seri, "deger_turu" | "gozlemler" | "cekildi">): string | null {
+  if (s.deger_turu !== "model_tahmini") return null;
+  const sn = [...s.gozlemler].reverse().find((g) => g.deger != null);
+  const proj = sn && Number(sn.donem.slice(0, 4)) >= Number(s.cekildi.slice(0, 4));
+  return proj ? `Model tahmini · ${sn!.donem.slice(0, 4)} projeksiyon` : "Model tahmini";
 }
 export function kaynaklar(): Kaynak[] { return oku("api/v1/kaynaklar.json").kaynaklar; }
 /** Kayıttaki okuma bilgisi (site-veri/seriler.json): bağlam metni, not, ilişkili göstergeler. */
@@ -80,6 +91,8 @@ export const DURUM: Record<string, [string, string]> = {
 // ---- sayılar: Türkçe biçim ----------------------------------------------------
 const AYLAR = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
 export function sayi(v: number, ondalik = 0): string {
+  // Gösterim hassasiyetinde sıfıra yuvarlanan negatif değer "−0,0" yazılmaz (denetim D-09).
+  if (Number(Math.abs(v).toFixed(ondalik)) === 0) v = 0;
   return new Intl.NumberFormat("tr-TR", { minimumFractionDigits: ondalik, maximumFractionDigits: ondalik })
     .format(v).replace("-", "−");
 }
@@ -90,6 +103,8 @@ export function deger(s: Pick<Seri, "birim" | "carpan">, ham: string | number | 
   switch (s.birim) {
     case "yuzde": return (v < 0 ? "−%" : "%") + sayi(Math.abs(v), 1);
     case "yuzde-gsyh": return (v < 0 ? "−%" : "%") + sayi(Math.abs(v), 1) + (kisa ? "" : " GSYH");
+    // İki oranın farkı (ör. BIS kredi açığı: fiili − eğilim): yüzde değil yüzde puan.
+    case "yuzde-puan": return sayi(v, 1) + (kisa ? "" : " yüzde puan");
     case "USD": {
       const a = Math.abs(v), isaret = v < 0 ? "−" : "";
       if (a >= 1e12) return isaret + sayi(a / 1e12, 2) + " trilyon $";
@@ -108,7 +123,7 @@ export function deger(s: Pick<Seri, "birim" | "carpan">, ham: string | number | 
   }
 }
 export function birimAdi(b: string): string {
-  return ({ yuzde: "yüzde", "yuzde-gsyh": "GSYH'ye oran, yüzde", USD: "ABD doları, cari", "TRY/USD": "1 ABD doları kaç TL", "TRY/EUR": "1 euro kaç TL", PPS: "satın alma gücü standardı (PPS)", yil: "yıl", kisi: "kişi", endeks: "endeks", puan: "puan (0–100 ölçek)", ay: "ay (ithalatı karşılama)", dogum: "kadın başına doğum" } as Record<string, string>)[b] ?? b;
+  return ({ yuzde: "yüzde", "yuzde-gsyh": "GSYH'ye oran, yüzde", "yuzde-puan": "yüzde puan (iki oranın farkı)", USD: "ABD doları, cari", "TRY/USD": "1 ABD doları kaç TL", "TRY/EUR": "1 euro kaç TL", PPS: "satın alma gücü standardı (PPS)", yil: "yıl", kisi: "kişi", endeks: "endeks", puan: "puan (0–100 ölçek)", ay: "ay (ithalatı karşılama)", dogum: "kadın başına doğum" } as Record<string, string>)[b] ?? b;
 }
 export function siklikAdi(s: string): string {
   return ({ yillik: "Yıllık", yariyillik: "Yarıyıllık", ceyreklik: "Çeyreklik", aylik: "Aylık", haftalik: "Haftalık", gunluk: "Günlük" } as Record<string, string>)[s] ?? s;
@@ -137,7 +152,7 @@ export function degisim(s: Seri): { metin: string; yon: number } | null {
   const x = Number(a.deger), y = Number(b.deger);
   if (s.birim.startsWith("yuzde")) {
     const f = y - x;
-    return { metin: (f >= 0 ? "+" : "−") + sayi(Math.abs(f), 1) + " puan", yon: Math.sign(f) };
+    return { metin: (Math.abs(f) < 0.05 ? "" : f > 0 ? "+" : "−") + sayi(Math.abs(f), 1) + " puan", yon: Math.sign(f) };
   }
   // Sınırlı ölçekli düzeyler: fark birincil; Gini'de göreli değişim yanında.
   if (s.birim === "puan" || s.birim in FARK_BIRIM) {

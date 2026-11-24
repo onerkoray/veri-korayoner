@@ -3,7 +3,7 @@ import Taban from "../../layouts/Taban.astro";
 import SeriGrafik from "../../components/SeriGrafik.astro";
 import EmsalGrafik from "../../components/EmsalGrafik.astro";
 import Serit from "../../components/Serit.astro";
-import { seriler, deger, degisim, son, dolu, tarih, birimAdi, siklikAdi, TEMA, emsal, emsalNoktalari, noktalar, ulkeAdi, durum, degisiklikler, baglamlar, type Seri } from "../../lib/veri";
+import { seriler, degerTuru, deger, degisim, son, dolu, tarih, birimAdi, siklikAdi, TEMA, emsal, emsalNoktalari, noktalar, ulkeAdi, durum, degisiklikler, baglamlar, type Seri } from "../../lib/veri";
 import { oku, sirala, siraCumlesi, donemAdi, yillikDegisimler, type YillikFark } from "../../lib/okuma.ts";
 import { KISI_REF } from "../../lib/kimlik";
 
@@ -72,10 +72,12 @@ const aciklama = `${s.baslik}: ${sn ? donemAdi(sn.donem) : ""} ${deger(s, sn?.de
     <header class="bas">
       <p class="etiket">{s.kaynak.kurum} · {s.kaynak_kod} · {siklikAdi(s.siklik)}</p>
       <h1>{s.baslik}</h1>
+      {degerTuru(s) && <p class="hap hap--bilgi" title="Kaynak bu seriyi kendi modeliyle tahmin ediyor; içinde bulunulan yılın değeri projeksiyondur.">{degerTuru(s)} ({s.kaynak.kurum.replace(/\s*\(.*\)$/, "")})</p>}
+      {s.birim === "yuzde-puan" && <p class="kucuk">Değer iki oranın farkıdır; yüzde değil yüzde puan olarak okunur.</p>}
       <p class="buyuk sayi">{deger(s, sn?.deger ?? null)} <span>{sn && donemAdi(sn.donem)}</span></p>
       <p class="guncellik">
-        <span>Kaynağın son güncellemesi: {tarih(s.kaynak_guncelleme)}</span>
-        {sd && <span>Son başarılı kontrol: {tarih(sd.son_basarili_kontrol)}</span>}
+        <span>Kaynağın son güncellemesi: {s.kaynak_guncelleme ? tarih(s.kaynak_guncelleme) : "bilinmiyor"}</span>
+        {sd && <span>Son başarılı kontrol: {sd.son_basarili_kontrol ? tarih(sd.son_basarili_kontrol) : "bilinmiyor"}</span>}
         {sd?.gecikti && <span class="hap hap--uyari" title="Beklenen yayın takviminin gerisinde">gecikmiş</span>}
         {sd && sd.ardisik_hata > 0 && <span class="hap hap--uyari" title="Son çekim başarısız; önceki veri gösteriliyor">son çekim başarısız</span>}
       </p>
@@ -124,6 +126,7 @@ const aciklama = `${s.baslik}: ${sn ? donemAdi(sn.donem) : ""} ${deger(s, sn?.de
     {sira && emN && (
       <section class="emsal" aria-labelledby="em">
         <h2 id="em">Emsallerle</h2>
+        {sn && Number(sn.donem.slice(0, 4)) - Number(sira.donem.slice(0, 4)) > 2 && <p><span class="hap hap--uyari">Tarihsel karşılaştırma</span> Emsallerle ortak son dönem {donemAdi(sira.donem)}; Türkiye'nin son verisi {donemAdi(sn.donem)}. Sıralama bugünkü konumu değil o dönemi anlatır.</p>}
         <p class="ozet">{siraCumlesi(sira, yaz, ulkeAdi, noktalar(s).at(-1))} Emsal kümesi, Türkiye'yle sık karşılaştırılan yükselen ekonomilerdir{Object.keys(emN).includes("EUU") ? "; Eurostat serilerinde AB üyeleri ve AB-27 toplamı" : ""}. <a href="/yontem#emsal">Neden bu ülkeler</a></p>
         <Serit sira={sira} yaz={yaz} />
         <EmsalGrafik tr={noktalar(s)} ulkeler={emN} birim={s.birim} baslik={s.baslik} />
@@ -149,8 +152,8 @@ const aciklama = `${s.baslik}: ${sn ? donemAdi(sn.donem) : ""} ${deger(s, sn?.de
           <div><dt>Birim</dt><dd>{birimAdi(s.birim)}{s.carpan !== 1 && ` × ${s.carpan}`}</dd></div>
           <div><dt>Sıklık</dt><dd>{siklikAdi(s.siklik)}</dd></div>
           <div><dt>Kapsam</dt><dd>{d[0] && donemAdi(d[0].donem)} – {sn && donemAdi(sn.donem)}, {d.length.toLocaleString("tr-TR")} gözlem</dd></div>
-          <div><dt>Kaynağın son güncellemesi</dt><dd>{tarih(s.kaynak_guncelleme)}</dd></div>
-          <div><dt>Bu sitenin son çekimi</dt><dd>{tarih(s.cekildi)}</dd></div>
+          <div><dt>Kaynağın son güncellemesi</dt><dd>{s.kaynak_guncelleme ? tarih(s.kaynak_guncelleme) : "bilinmiyor"}</dd></div>
+          <div><dt>Verinin son değiştiği çekim</dt><dd>{tarih(s.cekildi)}</dd></div>
           {s.kaynak_not && <div><dt>Kaynağın veri notu</dt><dd class="not">{s.kaynak_not}</dd></div>}
         </dl>
       </section>

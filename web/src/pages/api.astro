@@ -10,7 +10,7 @@ const secenek = {
   emsal: ss.filter((s) => emsal(s.id)).map((s) => [s.id, s.baslik]),
 };
 const UC: [string, string][] = [
-  ["/api/v1/seriler.json", "Katalog"], ["/api/v1/kaynaklar.json", "Kaynaklar"], ["/api/v1/durum.json", "Sağlık ve tazelik"],
+  ["/api/v1/manifest.json", "Yayın kimliği, dosya boyutları ve SHA-256 özetleri"], ["/api/v1/seriler.json", "Katalog"], ["/api/v1/kaynaklar.json", "Kaynaklar"], ["/api/v1/durum.json", "Sağlık ve tazelik"],
   ["/api/v1/degisiklikler.json", "Değişiklik günlüğü"], ["/api/v1/seri/{id}.json", "Tek seri (JSON)"], ["/api/v1/seri/{id}.csv", "Tek seri (CSV)"],
   ["/api/v1/emsal/{id}.json", "Emsal ülkeler"], ["/api/v1/panel/{siklik}.json", "Panel (JSON)"], ["/api/v1/panel/{siklik}.csv", "Panel (CSV)"],
 ];
@@ -49,7 +49,8 @@ const ALAN: [string, string][] = [
   ["baslik, tema", "Türkçe ad ve konu grubu."],
   ["ulke", "ISO 3166 alfa-3 (TUR)."],
   ["siklik", "yillik, yariyillik, ceyreklik, aylik, haftalik, gunluk."],
-  ["birim, carpan", "yuzde, yuzde-gsyh, USD, endeks, puan, PPS, yil, kisi; değer × carpan gerçek değeri verir."],
+  ["birim, carpan", "yuzde, yuzde-gsyh, yuzde-puan (iki oranın farkı), USD, endeks, puan, PPS, yil, kisi; değer × carpan gerçek değeri verir."],
+  ["deger_turu", "gozlem (kaynağın gözlemi) ya da model_tahmini (kaynağın kendi modeliyle ürettiği değer; içinde bulunulan yılın değeri projeksiyondur)."],
   ["kaynak", "Kurum, kaynak adresi, belge, lisans, lisans kanıt adresi, inceleme tarihi, atıf zorunluluğu, koşullar."],
   ["kaynak_kod, kaynak_adi, kaynak_not", "Kurumun kendi seri kodu, adı ve kaynak notu (doğrulama için)."],
   ["kaynak_guncelleme", "Kurumun bildirdiği son güncelleme günü; bilinmiyorsa null."],
@@ -152,6 +153,12 @@ curl -sO ${kok}/api/v1/gozlemler.parquet && curl -sO ${kok}/api/v1/gozlemler.par
 Erişim: ${kok}/api/v1/seri/${ornek.id}.json, <erişim tarihi>.`}</code></pre>
     <p><code>v1</code> geriye dönük uyumlu kalır; alan silinmez, anlamı değişmez, yalnız alan eklenir. Kırıcı değişiklik <code>v2</code> altında yayımlanır.</p>
   </article>
+  <section class="sar">
+    <h2>Yayın bütünlüğü</h2>
+    <p><a href="/api/v1/manifest.json">Manifest</a> dosyaları UTF-8 yol, bayt sayısı ve SHA-256 özetiyle listeler. JSON ve CSV metin, Parquet ikili biçimdedir. İndirilen gövdenin özetini hesaplayarak dosyayı doğrulayabilirsiniz. HTML içindeki <code>veri-release</code> metaverisi manifestteki <code>release_id</code> ile eşleşir.</p>
+    <p>API önbellek süresi bir saattir. Yenileme sırasında önbellek bir güne kadar eski yanıt sunabilir. Sunucu ETag döndürdüğünde sonraki istekte If-None-Match kullanabilirsiniz.</p>
+    <p>Sağlık kaydında <code>source_published_at</code> kaynağın bildirdiği güncelleme tarihidir. Kesin yayın ve dağıtım zamanı bilinmediğinde ilgili alanlar boştur. <code>lag_days</code>, gözlem döneminin sonuna tahmini tolerans eklendikten sonraki aşımı ölçer.</p>
+  </section>
 </Taban>
 <script>
   import "../scripts/api-dene.ts";

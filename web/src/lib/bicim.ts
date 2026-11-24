@@ -7,7 +7,9 @@ export const n0 = new Intl.NumberFormat("tr-TR", { maximumFractionDigits: 1 });
 // kip: "tam" metin ve ipucu, "eksen" kısa ve yuvarlak, "hucre" tabloda sabit ondalık, birimsiz.
 export function yaz(birim: string, v: number, kip: "tam" | "eksen" | "hucre" = "tam"): string {
   if (!Number.isFinite(v)) return "—";
-  const a = Math.abs(v), e = v < 0 ? "−" : "", kisa = kip !== "tam";
+  const a = Math.abs(v), kisa = kip !== "tam";
+  const e = v < 0 && Number(a.toFixed(kip === "eksen" ? 1 : 2)) > 0 ? "−" : "";   // "−0,0" yazılmaz
+  if (birim === "yuzde-puan") return `${e}${(kip === "eksen" ? n0 : n1).format(a)}${kisa ? "" : " puan"}`;
   if (birim.startsWith("yuzde")) return `${e}%${(kip === "eksen" ? n0 : n1).format(a)}`;
   if (birim === "PPS") return `${n0.format(a)}${kisa ? "" : " PPS"}`;
   if (birim === "yil") return `${n1.format(a)}${kisa ? "" : " yıl"}`;

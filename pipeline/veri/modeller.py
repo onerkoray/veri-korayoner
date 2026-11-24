@@ -95,6 +95,9 @@ class SeriTanimi(Kati):
     baglam: str | None = None        # okura: gösterge neyi ölçer, ekonomiyle nasıl ilişkilenir (yorum değil, okuma yolu)
     iliskili: list[str] = Field(default_factory=list)   # birlikte okunacak seri kimlikleri (kayıtta olmalı)
     not_: str | None = Field(default=None, alias="not")
+    # Değerin niteliği: kaynağın gözlemi mi, kaynağın kendi modeliyle ürettiği tahmin mi.
+    # Kaynak öyle beyan ediyorsa yazılır (ör. ILO "modelled estimates"); varsayılan gözlem.
+    deger_turu: Literal["gozlem", "model_tahmini"] = "gozlem"
 
     @field_validator("emsal")
     @classmethod

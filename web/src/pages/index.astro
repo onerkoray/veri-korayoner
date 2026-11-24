@@ -4,7 +4,7 @@ import Kivilcim from "../components/Kivilcim.astro";
 import KpiKart from "../components/KpiKart.astro";
 import AnaGrafik from "../components/AnaGrafik.astro";
 import Serit from "../components/Serit.astro";
-import { seriler, kaynaklar, uretildi, TEMA, TEMA_SIRA, deger, degisim, son, onceki, tarih, siklikAdi, ulkeAdi, degisiklikler, durum } from "../lib/veri";
+import { seriler, degerTuru, kaynaklar, uretildi, TEMA, TEMA_SIRA, deger, degisim, son, onceki, tarih, siklikAdi, ulkeAdi, degisiklikler, durum } from "../lib/veri";
 import { donemAdi, zaman, ek } from "../lib/okuma.ts";
 import { reelPaket, isaretSuresi, emsalSatirlari } from "../lib/turetilmis";
 import { KISI } from "../lib/kimlik";
@@ -23,8 +23,14 @@ const durumOf = (id: string) => saglik?.seriler.find((r) => r.id === id);
 const reel = reelPaket();
 const reelIsaret = reel ? isaretSuresi(reel.r) : null;
 
-// Türkiye nerede: emsali olan her gösterge bir şerit
-const satirlar = emsalSatirlari();
+// Türkiye nerede: emsali olan her gösterge bir şerit. Ortak dönem Türkiye'nin son verisinden
+// TARIHSEL_YIL yıldan eskiyse (ör. 2024 verisine karşı 1998 sıralaması) satır bugünkü konum gibi
+// okunmasın diye burada gösterilmez; gösterge sayfasında "tarihsel karşılaştırma" etiketiyle durur (D-07).
+const TARIHSEL_YIL = 5;
+const yilFarki = (r: { trSon: string; sira: { donem: string } }) => Number(r.trSon.slice(0, 4)) - Number(r.sira.donem.slice(0, 4));
+const tumSatirlar = emsalSatirlari();
+const satirlar = tumSatirlar.filter((r) => yilFarki(r) <= TARIHSEL_YIL);
+const tarihsel = tumSatirlar.filter((r) => yilFarki(r) > TARIHSEL_YIL);
 
 // Panorama KPI'ları: her biri yayımlanmış bir seriden (reel faiz bu sitenin hesabı, işaretli).
 const KPI: [string, string][] = [["bis-tufe-yillik-tr", "Yıllık enflasyon (TÜFE)"], ["bis-politika-faizi-tr", "Politika faizi"],
@@ -51,8 +57,13 @@ const jsonld = {
 <Taban baslik="Türkiye Verisi — uluslararası kurumların Türkiye serileri ve emsal karşılaştırması" aciklama="BIS, Dünya Bankası, OECD, Eurostat ve ILO'nun Türkiye verileri: emsal ülkelerle sıralama, reel faiz hesabı, revizyon kaydı, lisansıyla açık API." yol="/" jsonld={jsonld}>
   <section class="sar giris">
     <p class="etiket">Türkiye · uluslararası kaynaklar</p>
-    <h1>Türkiye ekonomisinin görünümü</h1>
+    <h1>Türkiye Ekonomik Görünümü</h1>
     <p class="ozet">Temel göstergeler, kaynağından: {kaynakListesi}. Seriler her iş günü sabah asıl kaynağından çekilir; her gösterge emsal ekonomilerin aynı serisiyle yan yana durur. Kartlardaki dönem kaynağın açıkladığı dönemdir, çekim günü değil.</p>
+    <div class="p-arama" hidden>
+      <label for="panorama-ara">Gösterge, seri kodu veya kurum ara</label>
+      <input id="panorama-ara" type="search" autocomplete="off" placeholder="Örn. enflasyon, NY.GDP, OECD" />
+      <span id="p-sonuc" role="status"></span>
+    </div>
     <p class="gezgin-cta"><a href="/gezgin">Veri gezginini açın →</a> <span>Göstergeleri seçin; aylık, çeyreklik ya da yıllık karşılaştırın, yıl×ay tablosunda görün, CSV indirin.</span></p>
     <dl class="durum">
       <div><dt>Gösterge</dt><dd class="sayi">{ss.length}</dd></div>
@@ -88,12 +99,15 @@ const jsonld = {
           <li>
             <div class="satir-bas">
               <a href={r.href}>{r.baslik}</a>
-              <span class="satir-yer">{donemAdi(r.sira.donem)} · {r.sira.sira === 1 ? "en yüksek" : r.sira.sira === r.sira.toplam ? "en düşük" : `${r.sira.toplam} ülke içinde ${r.sira.sira}.`}{r.trSon !== r.sira.donem && ` (Türkiye'nin son verisi ${donemAdi(r.trSon)})`} · {r.kaynak}</span>
+              <span class="satir-yer">{yilFarki(r) > 2 && "Tarihsel karşılaştırma · "}{donemAdi(r.sira.donem)} · {r.sira.sira === 1 ? "en yüksek" : r.sira.sira === r.sira.toplam ? "en düşük" : `${r.sira.toplam} ülke içinde ${r.sira.sira}.`}{r.trSon !== r.sira.donem && ` (Türkiye'nin son verisi ${donemAdi(r.trSon)})`} · {r.kaynak}</span>
             </div>
             <Serit sira={r.sira} yaz={r.yaz} />
           </li>
         ))}
       </ul>
+      {tarihsel.length > 0 && (
+        <p class="ozet kucuk">{tarihsel.length} göstergede emsallerle ortak son dönem {TARIHSEL_YIL} yıldan eski olduğu için burada yok; sıralama kendi sayfasında tarihsel karşılaştırma olarak duruyor: {tarihsel.map((r, i) => <>{i > 0 && ", "}<a href={r.href}>{r.baslik}</a> ({donemAdi(r.sira.donem)})</>)}.</p>
+      )}
     </section>
   )}
 
@@ -148,7 +162,7 @@ const jsonld = {
         {g.liste.map((s) => {
           const sn = son(s), dg = degisim(s);
           return (
-            <li class="kart">
+            <li class="kart" data-ara={`${s.baslik} ${s.id} ${s.kaynak_kod} ${s.kaynak.kurum} ${g.ad}`}>
               <a href={`/gosterge/${s.id}`} class="kart-bag">
                 <p class="kart-baslik">{s.baslik}</p>
                 <p class="kart-deger sayi">{deger(s, sn?.deger ?? null)}</p>
@@ -157,7 +171,7 @@ const jsonld = {
                   {dg && <span class="deg">{dg.metin}</span>}
                 </p>
                 <Kivilcim seri={s} n={s.siklik === "gunluk" ? 250 : s.siklik === "aylik" ? 36 : 20} />
-                <p class="kart-kaynak">{s.kaynak.kurum.replace(/\s*\(.*\)$/, "")} · {siklikAdi(s.siklik)}{!s.izin.api && " · yalnız gösterim"}</p>
+                <p class="kart-kaynak">{s.kaynak.kurum.replace(/\s*\(.*\)$/, "")} · {siklikAdi(s.siklik)}{!s.izin.api && " · yalnız gösterim"}{degerTuru(s) && ` · ${degerTuru(s)!.toLocaleLowerCase("tr")}`}</p>
               </a>
             </li>
           );
@@ -171,8 +185,39 @@ const jsonld = {
     <p class="ozet">Lisansı ve erişimi doğrulandıkça eklenecek kaynaklar. Planlanan bir kaynak, kullanım şartı okunup kanıt adresi kayda geçmeden yayımlanmaz. <a href="/kaynaklar">Bütün kaynaklar ve durumları</a></p>
     <ul class="sirada">{ks.filter((k) => !k.yayin.gosterim).map((k) => <li>{k.kurum}</li>)}</ul>
   </section>
+  <script>
+    import { eslesir } from "../lib/gezgin-cekirdek";
+    const ara = document.querySelector<HTMLInputElement>("#panorama-ara")!;
+    ara.parentElement!.hidden = false;
+    ara.addEventListener("input", () => {
+      let toplam = 0;
+      for (const bolum of document.querySelectorAll<HTMLElement>("section[aria-labelledby^='t-']")) {
+        let adet = 0;
+        for (const kart of bolum.querySelectorAll<HTMLElement>("[data-ara]")) {
+          kart.hidden = !eslesir(kart.dataset.ara!, ara.value);
+          if (!kart.hidden) adet++;
+        }
+        bolum.hidden = !adet;
+        toplam += adet;
+      }
+      const sonuc = document.getElementById("p-sonuc")!;
+      sonuc.replaceChildren(document.createTextNode(ara.value ? toplam + " gösterge eşleşti. " : ""));
+      const ilk = document.querySelector<HTMLElement>("section[aria-labelledby^='t-']:not([hidden]) h2");
+      if (ara.value && ilk) {
+        const git = document.createElement("a");
+        git.href = "#" + ilk.id;
+        git.textContent = "Sonuçlara git";
+        sonuc.append(git);
+      }
+    });
+  </script>
 </Taban>
 <style>
+  .p-arama:not([hidden]) { display: grid; max-width: 38rem; gap: .4rem; }
+  .p-arama label { font-weight: 650; }
+  .p-arama input { padding: .75rem 1rem; border: 1px solid var(--soluk); background: var(--yuzey); color: var(--metin); font: inherit; }
+  .p-arama [role=status]:empty { display: none; }
+  .tema[hidden], .kart[hidden] { display: none; }
   .giris { padding-block: clamp(2.5rem, 6vw, 4rem) 1rem; display: grid; gap: 1rem; }
   .gezgin-cta { margin: 0; display: flex; flex-wrap: wrap; gap: .4rem 1rem; align-items: baseline; }
   .gezgin-cta a { display: inline-block; background: var(--metin); color: var(--bg); padding: .65rem 1rem; font-weight: 650; text-decoration: none; }

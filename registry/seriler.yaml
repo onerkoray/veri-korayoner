@@ -90,6 +90,7 @@ seriler:
     tema: isgucu
     siklik: yillik
     birim: yuzde
+    deger_turu: model_tahmini   # kaynak beyanı: ILO modelled estimates
     baglam: "Dünya Bankası'nın ILO modelli işsizlik tahmini; ülkeler arası karşılaştırma için uyumlaştırılmıştır. Ulusal işgücü anketine dayanan ILO serisi ve aylık Eurostat serisi birlikte okunur."
     iliskili: [ilo-issizlik-tr, eurostat-issizlik-aylik-tr, ilo-isgucune-katilim-tr]
     carpan: 1
@@ -436,6 +437,7 @@ seriler:
     tema: isgucu
     siklik: yillik
     birim: yuzde
+    deger_turu: model_tahmini   # kaynak beyanı: ILO modelled estimates
     baglam: "Emek gelirlerinin GSYH'ye oranı (ILO; kendi hesabına çalışanların emek geliri tahmini dahil). Gelir dağılımı ve asgari ücretle birlikte okunur."
     iliskili: [wb-si-pov-gini-tur, eurostat-asgari-ucret-pps-tr, ilo-kayitdisi-istihdam-tr]
     carpan: 1
@@ -751,7 +753,8 @@ seriler:
     baslik: "Kredi açığı: özel kesim kredisinin GSYH'ye oranının uzun dönem eğiliminden sapması"
     tema: bankacilik
     siklik: ceyreklik
-    birim: yuzde-gsyh
+    # Oran değil, iki oranın farkı: BIS "percentage points" (fiili − eğilim). 24 Kasım 2026'ya kadar yuzde-gsyh yazıyordu.
+    birim: yuzde-puan
     carpan: 1
     emsal: [BRA, MEX, ZAF, POL, HUN, IND, IDN, CHL, COL]
     baglam: "Özel kesim kredisinin GSYH'ye oranının uzun dönem eğiliminden farkı, yüzde puan (BIS). Basel III'te karşı döngüsel sermaye tamponu için başvurulan ölçüdür; büyük pozitif açık hızlı kredi genişlemesine işaret eder. Yüksek enflasyonda GSYH'nin nominal büyümesi oranı aşağı çekebilir."

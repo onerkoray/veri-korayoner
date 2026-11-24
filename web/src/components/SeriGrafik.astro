@@ -29,7 +29,7 @@ const secenek: [number, string][] = seri.siklik === "yillik" ? [[0, "Tümü"], [
 ---
 <figure class="grafik" data-seri-grafik={veri}>
   <div class="grafik-ust">
-    <p class="etiket">{seri.baslik} · {({ USD: "ABD doları", "yuzde-gsyh": "GSYH'ye oran, yüzde" } as Record<string, string>)[seri.birim] ?? birimAdi(seri.birim)}</p>
+    <p class="etiket">{seri.baslik} · {({ USD: "ABD doları", "yuzde-gsyh": "GSYH'ye oran, yüzde", "yuzde-puan": "yüzde puan" } as Record<string, string>)[seri.birim] ?? birimAdi(seri.birim)}</p>
     <div class="donem" role="group" aria-label="Dönem" hidden>
       {secenek.map(([y, a]) => <button type="button" data-yil={y} aria-pressed={String(y === 0)}>{a}</button>)}
     </div>
@@ -37,7 +37,7 @@ const secenek: [number, string][] = seri.siklik === "yillik" ? [[0, "Tümü"], [
   <div class="tuval">
     <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={etiket} class="statik">
       {izgara.map((v) => <g><line x1={sol} x2={W - sag} y1={y(v)} y2={y(v)} class={v === 0 ? "sifir" : "izgara"} />
-        <text x={sol - 8} y={y(v) + 4} text-anchor="end">{oran ? (v < 0 ? "−%" : "%") + sayi(Math.abs(v)) : seri.birim === "USD" ? deger(seri, v, true).replace(" $", "") : sayi(v, v % 1 ? 1 : 0)}</text></g>)}
+        <text x={sol - 8} y={y(v) + 4} text-anchor="end">{seri.birim === "yuzde-puan" ? sayi(v) : oran ? (v < 0 ? "−%" : "%") + sayi(Math.abs(v)) : seri.birim === "USD" ? deger(seri, v, true).replace(" $", "") : sayi(v, v % 1 ? 1 : 0)}</text></g>)}
       {yillar.map(([dn, px]) => <text x={px} y={H - 8} text-anchor="middle">{dn}</text>)}
       <path d={yol} class="cizgi" />
       {d.length > 0 && <circle cx={x(d.length - 1)} cy={y(d[d.length - 1].v)} r="4" class="son" />}
@@ -55,7 +55,9 @@ const secenek: [number, string][] = seri.siklik === "yillik" ? [[0, "Tümü"], [
     const iki = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const yaz = (v: number) => {
       v *= carpan || 1;
-      if (oran) return (v < 0 ? "−%" : "%") + bicim.format(Math.abs(v));
+      const e = v < 0 && Math.abs(v) >= 0.05 ? "−" : "";
+      if (birim === "yuzde-puan") return e + bicim.format(Math.abs(v)) + " puan";
+      if (oran) return (e ? "−%" : "%") + bicim.format(Math.abs(v));
       if (birim === "TRY/USD" || birim === "TRY/EUR") return iki.format(v) + " TL";
       if (birim !== "USD") return bicim.format(v);
       const a = Math.abs(v);
@@ -74,7 +76,7 @@ const secenek: [number, string][] = seri.siklik === "yillik" ? [[0, "Tümü"], [
         width: tuval.clientWidth || 960, height: 340, marginLeft: 64,
         style: { background: "transparent", color: "var(--soluk)", fontSize: "12px" },
         x: { type: "utc", label: null, ticks: Math.max(3, Math.floor((tuval.clientWidth || 960) / 110)) },
-        y: { grid: true, label: null, nice: true, zero: oran || birim === "USD", tickFormat: (v: number) => yaz(v).replace(" trilyon $", "T").replace(" milyar $", "B").replace(" TL", "") },
+        y: { grid: true, label: null, nice: true, zero: oran || birim === "USD", tickFormat: (v: number) => yaz(v).replace(" trilyon $", "T").replace(" milyar $", "B").replace(" TL", "").replace(" puan", "") },
         marks: [
           Plot.ruleY([0], { stroke: "var(--soluk)", strokeOpacity: oran ? 0.8 : 0 }),
           Plot.lineY(veri, { x: "yil", y: "v", stroke: "var(--dv-1)", strokeWidth: 2 }),

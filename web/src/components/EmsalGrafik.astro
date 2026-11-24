@@ -22,7 +22,9 @@ const y0 = new Date(t0).getUTCFullYear(), y1 = new Date(sonT).getUTCFullYear();
 const aralik = y1 - y0 > 12 ? 5 : y1 - y0 > 5 ? 2 : 1;
 const yillar: number[] = []; for (let yy = Math.ceil(y0 / aralik) * aralik; yy <= y1; yy += aralik) yillar.push(yy);
 const yol = (d: Nokta[]) => d.map((p, i) => `${i ? "L" : "M"}${xt(p.donem).toFixed(1)} ${y(p.v).toFixed(1)}`).join(" ");
-const etiket = (v: number) => (oran ? (v < 0 ? "−%" : "%") + sayi(Math.abs(v), Math.abs(v) < 10 && v % 1 ? 1 : 0) : sayi(v, 0));
+const puan = birim === "yuzde-puan";
+const etiket = (v: number) => (puan ? sayi(v, Math.abs(v) < 10 && v % 1 ? 1 : 0)
+  : oran ? (v < 0 ? "−%" : "%") + sayi(Math.abs(v), Math.abs(v) < 10 && v % 1 ? 1 : 0) : sayi(v, 0));
 const sinif = (k: string) => (k === "TUR" ? "tr" : TOPLAM.has(k) ? "toplam" : "emsal");
 const sirali = [...cizgiler].sort((a, b) => (sinif(a.k) === "tr" ? 1 : 0) - (sinif(b.k) === "tr" ? 1 : 0));
 const veri = JSON.stringify({ birim, cizgiler: [...Object.entries(ulkeler).map(([k, d]) => ({ k, ad: ulkeAdi(k), d })), { k: "TUR", ad: "Türkiye", d: tr }] });
@@ -59,7 +61,9 @@ const veri = JSON.stringify({ birim, cizgiler: [...Object.entries(ulkeler).map((
   for (const fig of document.querySelectorAll<HTMLElement>("[data-emsal-grafik]")) {
     const { birim, cizgiler } = JSON.parse(fig.dataset.emsalGrafik!) as { birim: string; cizgiler: { k: string; ad: string; d: { donem: string; v: number }[] }[] };
     const oran = birim.startsWith("yuzde");
-    const yaz = (v: number) => (oran ? (v < 0 ? "−%" : "%") + bir.format(Math.abs(v)) : bir.format(v));
+    const puan = birim === "yuzde-puan", e = (v: number) => (v < 0 && Math.abs(v) >= 0.05 ? "−" : "");
+    const yaz = (v: number) => (puan ? e(v) + bir.format(Math.abs(v)) + " puan"
+      : oran ? (e(v) ? "−%" : "%") + bir.format(Math.abs(v)) : bir.format(v));
     const tum = cizgiler.flatMap((c) => c.d.map((p) => ({ k: c.k, ad: c.ad, t: tarih(p.donem), donem: p.donem, v: p.v })));
     const sonT = Math.max(...tum.filter((p) => p.k === "TUR").map((p) => +p.t));
     const tuval = fig.querySelector<HTMLElement>(".tuval")!;
@@ -70,7 +74,7 @@ const veri = JSON.stringify({ birim, cizgiler: [...Object.entries(ulkeler).map((
         width: tuval.clientWidth || 960, height: 360, marginLeft: 56, marginRight: 92,
         style: { background: "transparent", color: "var(--soluk)", fontSize: "12px" },
         x: { type: "utc", label: null, ticks: Math.max(3, Math.floor((tuval.clientWidth || 960) / 110)) },
-        y: { grid: true, label: null, nice: true, zero: oran, tickFormat: (v: number) => (oran ? (v < 0 ? "−%" : "%") : "") + tam.format(Math.abs(v)) },
+        y: { grid: true, label: null, nice: true, zero: oran, tickFormat: (v: number) => (puan ? (v < 0 ? "−" : "") : oran ? (v < 0 ? "−%" : "%") : "") + tam.format(Math.abs(v)) },
         marks: [
           Plot.ruleY([0], { stroke: "var(--soluk)", strokeOpacity: oran ? 0.8 : 0 }),
           Plot.line(g.filter((p) => p.k !== "TUR" && p.k !== "EUU"), { x: "t", y: "v", z: "k", stroke: "var(--soluk)", strokeOpacity: 0.45, strokeWidth: 1.2 }),
