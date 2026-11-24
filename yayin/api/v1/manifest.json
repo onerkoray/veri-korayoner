@@ -1,5 +1,5 @@
 {
- "release_id": "db209faa371435d2fe1abf4b5a6c6589db10c2c6b848cb7372bf355ea971920b",
+ "release_id": "ca4ef96a903322f060c958cb39a510ec93d8efc5c6811fdc0018a86d29b1d7a5",
  "series_count": 57,
  "observation_count": 6914,
  "files": [
@@ -11,7 +11,7 @@
   {
    "path": "durum.json",
    "bytes": 43249,
-   "sha256": "399016aeb69dce87ef1480fad0d99cca7b698ea6d962047f2ba74dffa8074747"
+   "sha256": "ae046c91d8f4e0691b0639eb598e703df9bf194c2d15ad6790e804bc9ed3a975"
   },
   {
    "path": "emsal/bis-borc-servis-orani-tr.json",
@@ -251,17 +251,17 @@
   {
    "path": "gozlemler.parquet",
    "bytes": 56955,
-   "sha256": "b1bbc3695357b58e6f749c2ede24a4ed35974146983507a32970b1a35e77cffa"
+   "sha256": "23aac2a70f0a12f9fcf9de8cd513250ca0bf35d7986da60447c68a434a4ed76d"
   },
   {
    "path": "gozlemler.parquet.sha256",
    "bytes": 84,
-   "sha256": "cd8c056fbeb9705c4daaccd409390011bacfa329f778cead0c5c2e9c1bcd4fdf"
+   "sha256": "c2c82da779f77744d07220d79f18c6e03baf5ea9738910f117561d2d9cf23aaa"
   },
   {
    "path": "kaynaklar.json",
    "bytes": 6671,
-   "sha256": "1965368e60c92ef7754c7022d41b165a0bccc91054febbee2096f01c22ec0247"
+   "sha256": "0c7bd6d986f87bb84fa3d40f16f29cae32d7cbce26a3b35354a36b5752c3b5e1"
   },
   {
    "path": "panel/aylik.csv",
@@ -396,12 +396,12 @@
   {
    "path": "seri/eurostat-issizlik-aylik-tr.csv",
    "bytes": 39328,
-   "sha256": "1dc27dc7691e2257628019319280fc3f769cb0b5358de78a0e121c9b8e118507"
+   "sha256": "d9d277223bb83dc855b4e150a6b39af10ceebb0f09116c7eb34ee28b53541ea2"
   },
   {
    "path": "seri/eurostat-issizlik-aylik-tr.json",
    "bytes": 18995,
-   "sha256": "baf7a4ab74c9f471dc6317ecd3fb497976315bf155d83ecdf9586a080fe727cc"
+   "sha256": "a3752f2864c9bd7a2e6791e35cf4338edd3a883e802ee25d5723d80fa23f7067"
   },
   {
    "path": "seri/ilo-emek-payi-tr.csv",
@@ -866,9 +866,9 @@
   {
    "path": "seriler.json",
    "bytes": 53077,
-   "sha256": "0dea1bda9214bd962693831c3b211946ac732f7faf8ced5d2c624cbe85a0145e"
+   "sha256": "9f123170ad93ad2f460e4fc31f1a52918779238222945690bc8eaa5a056a17cf"
   }
  ],
- "generated_at": "2026-11-24T05:29:02.886068+00:00",
- "build_id": "db209faa371435d2fe1abf4b5a6c6589db10c2c6b848cb7372bf355ea971920b"
+ "generated_at": "2026-11-24T16:01:04.654213+00:00",
+ "build_id": "45431253861"
 }

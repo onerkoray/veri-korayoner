@@ -1,6 +1,6 @@
 {
  "surum": 1,
- "uretildi": "2026-11-24T05:26:29.857547Z",
+ "uretildi": "2026-11-24T15:56:36.000855Z",
  "seriler": [
   {
    "id": "wb-ny-gdp-mktp-cd-tur",
@@ -493,8 +493,8 @@
     "deger": "8.4",
     "durum": null
    },
-   "kaynak_guncelleme": "2026-11-20",
-   "cekildi": "2026-11-22T17:21:21.925465Z",
+   "kaynak_guncelleme": "2026-11-24",
+   "cekildi": "2026-11-24T15:56:36.000855Z",
    "izin": {
     "gosterim": true,
     "indirme": true,
