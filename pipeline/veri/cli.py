@@ -16,9 +16,11 @@ import argparse
 import json
 import sys
 from datetime import UTC, datetime
+from functools import partial
 from pathlib import Path
 
-from . import canli, durum, gol, panel
+from . import canli, durum, gol, manifest, panel
+from .ag import AgHatasi, getir, istemci_ac
 from .baglayicilar import baglayici
 from .kayit import KOK, kaynaklar, seriler
 from .modeller import SeriDosyasi
@@ -28,63 +30,93 @@ CIKTI = KOK / "yayin"
 
 
 def guncelle(secili: list[str] | None, cikti: Path = CIKTI) -> int:
+    with istemci_ac() as istemci:
+        return _guncelle(secili, cikti, partial(getir, istemci=istemci))
+
+
+# İkinci tur: geçici sınıftaki hatalar (zaman aşımı, 5xx, 429, ağ) turun sonunda bir kez daha
+# denenir. Dünya Bankası 23 Kasım 2026'da GitHub koşucusundan 11 seride ReadTimeout/502 verdi;
+# aynı seriler dakikalar sonra yerelden yanıt verdi. Kalıcı hatalar (4xx, şema) yeniden denenmez.
+GECICI = frozenset({"connect_timeout", "read_timeout", "total_timeout", "rate_limited", "upstream_5xx", "transport"})
+IKINCI_TUR_BEKLEME = 90.0
+
+
+def _guncelle(secili, cikti, getirici, uyu=None):
+    import time
+    uyu = uyu or time.sleep
     ks, ss = kaynaklar(), seriler()
     simdi = datetime.now(UTC)
     gun = simdi.date().isoformat()
-    hata = 0
     olaylar: list[dict] = []
     bag: dict = {}       # kaynak başına tek bağlayıcı (metaveri önbelleği çekim boyunca yaşar)
     sonuc: dict[str, str | None] = {}   # seri → None (başarılı) ya da hata iletisi; durum.json için
+    hedef = []
     for s in ss:
         if secili and s.id not in secili:
             continue
         k = ks[s.kaynak]
-        iz = izin(k, s)
-        if not iz.gosterim:
+        if not izin(k, s).gosterim:
             print(f"atla   {s.id}: yayın izni yok ({k.durum})")
             continue
-        try:
-            b = bag.setdefault(s.kaynak, baglayici(s.kaynak))
-            ham = b.cek(s)
-            d = SeriDosyasi(id=s.id, baslik=s.baslik, ulke=s.ulke, siklik=s.siklik, birim=s.birim, carpan=s.carpan,
-                            tema=s.tema, kaynak=kaynak_ozeti(k), kaynak_kod=s.kod, kaynak_adi=ham.kaynak_adi,
-                            kaynak_not=ham.kaynak_not, kaynak_guncelleme=ham.kaynak_guncelleme, cekildi=simdi,
-                            izin=iz, gozlemler=ham.gozlemler)
-            eski = onceki(cikti / "site-veri" / "seri" / f"{s.id}.json")
-            yazilan = yayinla(d, cikti)
-            if yazilan:
-                olaylar += farklar(eski, d, gun)
-            sonuc[s.id] = None
-            son = next((g for g in reversed(d.gozlemler) if g.deger is not None), None)
-            print(f"{'yazdı' if yazilan else 'aynı '}  {s.id}: {len(d.gozlemler)} gözlem, son {son.donem if son else '-'}")
-        except Exception as e:  # noqa: BLE001 — bir seri düşerse diğerleri sürer
-            hata += 1
-            sonuc[s.id] = f"{type(e).__name__}: {e}"
-            print(f"HATA   {s.id}: {type(e).__name__}: {e}", file=sys.stderr)
-            continue
-        # Emsal ülkeler: biri düşerse önceki verisi kalır; Türkiye serisini düşürmez, hata sayılmaz.
-        if s.emsal:
-            alinan = {}
-            if hasattr(b, "cek_coklu"):
-                try:
-                    alinan = b.cek_coklu(s, s.emsal)
-                except Exception as e:  # noqa: BLE001 — toplu istek düşerse ülke ülke denenir
-                    print(f"uyarı  {s.id} [emsal toplu]: {type(e).__name__}: {e}", file=sys.stderr)
-            if not alinan:
-                for u in s.emsal:
-                    try:
-                        alinan[u] = b.cek(s.model_copy(update={"ulke": u})).gozlemler
-                    except Exception as e:  # noqa: BLE001
-                        print(f"uyarı  {s.id} [{u}]: {type(e).__name__}: {e}", file=sys.stderr)
-            yazildi = emsal_yaz(s, iz, alinan, cikti)
-            print(f"emsal  {s.id}: {len(alinan)}/{len(s.emsal)} ülke" + (" yazıldı" if yazildi else " aynı"))
+        hedef.append(s)
+    for s in hedef:
+        _seri_isle(s, ks[s.kaynak], cikti, getirici, bag, simdi, gun, olaylar, sonuc)
+    tekrar = [s for s in hedef if sonuc.get(s.id) and durum.hata_sinifi(sonuc[s.id]) in GECICI]
+    if tekrar:
+        print(f"ikinci tur: {len(tekrar)} seri {IKINCI_TUR_BEKLEME:.0f} sn sonra yeniden denenecek")
+        uyu(IKINCI_TUR_BEKLEME)
+        for s in tekrar:
+            _seri_isle(s, ks[s.kaynak], cikti, getirici, bag, simdi, gun, olaylar, sonuc)
+    hata = sum(1 for s in hedef if sonuc.get(s.id))
     gunluge_ekle(olaylar, cikti)
     katalog(ks, ss, cikti, simdi)
     print('göl  ' + ('yazıldı' if gol.yaz(cikti) else 'aynı'))
     print(f"panel  {len(panel.yaz(cikti, _yaz_atomik))} dosya yazıldı")
     d = durum.yaz(cikti, ss, ks, izin, sonuc, simdi, _yaz_atomik)
     print(f"durum  {d['ozet']}")
+    manifest.yaz(cikti)
     return 1 if hata else 0
+
+
+def _seri_isle(s, k, cikti, getirici, bag, simdi, gun, olaylar, sonuc) -> None:
+    """Bir seriyi çeker ve yayımlar; sonucu `sonuc`a yazar (None: başarılı)."""
+    iz = izin(k, s)
+    try:
+        if s.kaynak not in bag:
+            bag[s.kaynak] = baglayici(s.kaynak, getirici)
+        b = bag[s.kaynak]
+        ham = b.cek(s)
+        d = SeriDosyasi(id=s.id, baslik=s.baslik, ulke=s.ulke, siklik=s.siklik, birim=s.birim, carpan=s.carpan,
+                        tema=s.tema, kaynak=kaynak_ozeti(k), kaynak_kod=s.kod, kaynak_adi=ham.kaynak_adi,
+                        kaynak_not=ham.kaynak_not, kaynak_guncelleme=ham.kaynak_guncelleme, cekildi=simdi,
+                        izin=iz, gozlemler=ham.gozlemler)
+        eski = onceki(cikti / "site-veri" / "seri" / f"{s.id}.json")
+        yazilan = yayinla(d, cikti)
+        if yazilan:
+            olaylar += farklar(eski, d, gun)
+        sonuc[s.id] = None
+        son = next((g for g in reversed(d.gozlemler) if g.deger is not None), None)
+        print(f"{'yazdı' if yazilan else 'aynı '}  {s.id}: {len(d.gozlemler)} gözlem, son {son.donem if son else '-'}")
+    except Exception as e:  # noqa: BLE001 — bir seri düşerse diğerleri sürer
+        sonuc[s.id] = str(e) if isinstance(e, AgHatasi) else type(e).__name__
+        print(f"HATA   {s.id}: {sonuc[s.id]}", file=sys.stderr)
+        return
+    # Emsal ülkeler: biri düşerse önceki verisi kalır; Türkiye serisini düşürmez, hata sayılmaz.
+    if s.emsal:
+        alinan = {}
+        if hasattr(b, "cek_coklu"):
+            try:
+                alinan = b.cek_coklu(s, s.emsal)
+            except Exception as e:  # noqa: BLE001 — toplu istek düşerse ülke ülke denenir
+                print(f"uyarı  {s.id} [emsal toplu]: {type(e).__name__}", file=sys.stderr)
+        if not alinan:
+            for u in s.emsal:
+                try:
+                    alinan[u] = b.cek(s.model_copy(update={"ulke": u})).gozlemler
+                except Exception as e:  # noqa: BLE001
+                    print(f"uyarı  {s.id} [{u}]: {type(e).__name__}", file=sys.stderr)
+        yazildi = emsal_yaz(s, iz, alinan, cikti)
+        print(f"emsal  {s.id}: {len(alinan)}/{len(s.emsal)} ülke" + (" yazıldı" if yazildi else " aynı"))
 
 
 def saglik(cikti: Path = CIKTI) -> int:
@@ -120,6 +152,10 @@ def denetle(cikti: Path = CIKTI) -> int:
         csvyol = cikti / "api" / "v1" / "seri" / f"{s.id}.csv"
         if csvyol.exists() and not iz.indirme:
             sorun.append(f"{csvyol.relative_to(cikti)}: indirme izni yokken yayımlanmış")
+    myol = cikti / "api/v1/manifest.json"
+    mevcut = json.loads(myol.read_bytes()) if myol.exists() else {}
+    if any(mevcut.get(k) != v for k, v in manifest.envanter(cikti).items()):
+        sorun.append("manifest: dosya envanteri ile yayın farklı")
     bilinen = {s.id for s in ss}
     for yol in [*(cikti / "api" / "v1" / "seri").glob("*"), *(cikti / "api" / "v1" / "emsal").glob("*")]:
         if yol.stem not in bilinen:
@@ -157,6 +193,7 @@ def main(argv: list[str] | None = None) -> int:
         return guncelle(a.seri)
     if a.komut == "katalog":
         katalog(kaynaklar(), seriler(), CIKTI, datetime.now(UTC))
+        manifest.yaz(CIKTI)
         return 0
     if a.komut == "saglik":
         return saglik()
@@ -168,6 +205,7 @@ def main(argv: list[str] | None = None) -> int:
         return 1 if sorun else 0
     if a.komut == "panel":
         print(f"panel  {len(panel.yaz(CIKTI, _yaz_atomik))} dosya yazıldı")
+        manifest.yaz(CIKTI)
         return 0
     return denetle()
 

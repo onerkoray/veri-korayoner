@@ -25,37 +25,51 @@ class AgHatasi(RuntimeError):
     pass
 
 
+def istemci_ac() -> httpx.Client:
+    return httpx.Client(follow_redirects=False, headers={"User-Agent": KULLANICI, "Accept": "application/json, text/csv;q=0.9"})
+
+
 def getir(url: str, *, istemci: httpx.Client | None = None, uyu=time.sleep) -> bytes:
     host = urlsplit(url).hostname
     if urlsplit(url).scheme != "https" or host not in IZINLI_HOSTLAR:
-        raise AgHatasi(f"izinsiz adres: {url}")
+        raise AgHatasi("izinsiz adres")
     kendi = istemci is None
-    ist = istemci or httpx.Client(timeout=httpx.Timeout(30.0, connect=10.0), follow_redirects=False,
-                                   headers={"User-Agent": KULLANICI, "Accept": "application/json, text/csv;q=0.9"})
+    ist = istemci or istemci_ac()
+    bitis = time.monotonic() + 150
+    okuma = 50 if host == "api.worldbank.org" else 30
     try:
         son_hata: str = ""
         for deneme in range(DENEME):
             try:
-                with ist.stream("GET", url) as y:
+                kalan = bitis - time.monotonic()
+                if kalan <= 0:
+                    break
+                timeout = httpx.Timeout(min(kalan, okuma), connect=min(kalan, 10))
+                with ist.stream("GET", url, timeout=timeout) as y:
                     if y.status_code == 200:
                         parca: list[bytes] = []
                         boyut = 0
                         for b in y.iter_bytes():
+                            if time.monotonic() >= bitis:
+                                raise AgHatasi("ToplamSüreAşıldı")
                             boyut += len(b)
                             if boyut > AZAMI_BOYUT:
-                                raise AgHatasi(f"yanıt {AZAMI_BOYUT} baytı aştı: {url}")
+                                raise AgHatasi(f"yanıt {AZAMI_BOYUT} baytı aştı")
                             parca.append(b)
                         return b"".join(parca)
                     if y.status_code in (429, 500, 502, 503, 504):
                         son_hata = f"HTTP {y.status_code}"
                         bekle = _retry_after(y.headers.get("Retry-After"))
                     else:
-                        raise AgHatasi(f"HTTP {y.status_code}: {url}")
+                        raise AgHatasi(f"HTTP {y.status_code}")
             except (httpx.TimeoutException, httpx.TransportError) as e:
                 son_hata = type(e).__name__
                 bekle = None
-            uyu(bekle if bekle is not None else min(60.0, 2 ** deneme) + random.uniform(0, 1))  # noqa: S311
-        raise AgHatasi(f"{DENEME} denemede alınamadı ({son_hata}): {url}")
+            bekleme = bekle if bekle is not None else 2 ** deneme + random.uniform(0, 1)  # noqa: S311
+            if deneme + 1 == DENEME or time.monotonic() + bekleme >= bitis:
+                break
+            uyu(bekleme)
+        raise AgHatasi(f"{deneme + 1} denemede alınamadı ({son_hata})")
     finally:
         if kendi:
             ist.close()

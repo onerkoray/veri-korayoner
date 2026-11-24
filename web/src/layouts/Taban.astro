@@ -3,6 +3,7 @@ import "../styles/taban.css";
 import { durum, tarih } from "../lib/veri";
 interface Props { baslik: string; aciklama: string; yol: string; jsonld?: object }
 const { baslik, aciklama, yol, jsonld } = Astro.props;
+import manifest from "../../../yayin/api/v1/manifest.json";
 const kanonik = new URL(yol, Astro.site).href;
 const menu = [["/", "Panorama"], ["/gezgin", "Veri gezgini"], ["/karsilastir", "Karşılaştır"], ["/kaynaklar", "Kaynaklar"], ["/api", "API"], ["/yontem", "Yöntem"], ["/koray-oner", "Koray Öner"]];
 const etkin = (h: string) => (h === "/" ? yol === "/" : yol.startsWith(h));
@@ -15,6 +16,8 @@ const kisaTarih = d ? tarih(d.son_kontrol).replace(/ \d{4}$/, "") : null;
 <html lang="tr">
 <head>
   <meta charset="utf-8">
+  <meta name="veri-release" content={manifest.release_id}>
+  <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{baslik}</title>
   <meta name="description" content={aciklama}>
@@ -58,7 +61,14 @@ const kisaTarih = d ? tarih(d.son_kontrol).replace(/ \d{4}$/, "") : null;
   <main id="ana"><slot /></main>
   <footer class="alt">
     <div class="sar alt-ic">
-      <p>Hazırlayan <a href="/koray-oner">Koray Öner</a> · <a href="https://korayoner.dev/">korayoner.dev</a> · <a href="https://github.com/onerkoray/veri-korayoner">Kaynak kod</a> · <a href="/gizlilik">Gizlilik ve KVKK</a></p>
+      <div class="alt-baglantilar">
+        <p>Hazırlayan <a href="/koray-oner">Koray Öner</a></p>
+        <ul aria-label="Site bağlantıları">
+          <li><a href="https://korayoner.dev/">korayoner.dev</a></li>
+          <li><a href="https://github.com/onerkoray/veri-korayoner">Kaynak kod</a></li>
+          <li><a href="/gizlilik">Gizlilik ve KVKK</a></li>
+        </ul>
+      </div>
       <p>Kurumlardan bağımsızdır; resmî kurum sitesi değildir. Her seri kendi kaynağının lisansıyla yayımlanır; kullanırken asıl kaynağa atıf yapın. Yatırım tavsiyesi değildir.</p>
     </div>
   </footer>
@@ -109,4 +119,8 @@ const kisaTarih = d ? tarih(d.son_kontrol).replace(/ \d{4}$/, "") : null;
   main { min-height: 70vh; }
   .alt { border-top: 1px solid var(--cizgi); margin-top: 4rem; padding-block: 2rem; color: var(--soluk); font-size: .85rem; }
   .alt p { margin: .3rem 0; max-width: 80ch; }
+  .alt-baglantilar, .alt-baglantilar ul { display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem 1.25rem; }
+  .alt-baglantilar { justify-content: space-between; margin-bottom: .75rem; }
+  .alt-baglantilar ul { list-style: none; margin: 0; padding: 0; }
+  .alt-baglantilar a { display: inline-block; padding-block: .35rem; }
 </style>
