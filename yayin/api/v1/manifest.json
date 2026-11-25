@@ -1,5 +1,5 @@
 {
- "release_id": "ca4ef96a903322f060c958cb39a510ec93d8efc5c6811fdc0018a86d29b1d7a5",
+ "release_id": "c61a9ae9884b51f20bf773e014b4217e22cb5f3d1a1892658afb0c7cd08939e8",
  "series_count": 57,
  "observation_count": 6914,
  "files": [
@@ -11,7 +11,7 @@
   {
    "path": "durum.json",
    "bytes": 43249,
-   "sha256": "ae046c91d8f4e0691b0639eb598e703df9bf194c2d15ad6790e804bc9ed3a975"
+   "sha256": "a1a33afa770a8fb5c2ebd68b6af66bce470d875e33781096751b7641d7b9f731"
   },
   {
    "path": "emsal/bis-borc-servis-orani-tr.json",
@@ -261,7 +261,7 @@
   {
    "path": "kaynaklar.json",
    "bytes": 6671,
-   "sha256": "0c7bd6d986f87bb84fa3d40f16f29cae32d7cbce26a3b35354a36b5752c3b5e1"
+   "sha256": "8f3138e7838ade87f6de749e21b99548138fe3314e1b8e14a7f7b306ed52f29a"
   },
   {
    "path": "panel/aylik.csv",
@@ -866,9 +866,9 @@
   {
    "path": "seriler.json",
    "bytes": 53077,
-   "sha256": "9f123170ad93ad2f460e4fc31f1a52918779238222945690bc8eaa5a056a17cf"
+   "sha256": "9d4d9d511be8edae7c8e223c0d58f2e99e0773bc7ab188c5de0cdf131b74281d"
   }
  ],
- "generated_at": "2026-11-24T16:01:04.654213+00:00",
- "build_id": "45431253861"
+ "generated_at": "2026-11-25T15:45:22.862779+00:00",
+ "build_id": "45648114062"
 }
