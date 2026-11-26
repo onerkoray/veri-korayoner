@@ -254,7 +254,7 @@ test.describe("Tema ve başlık", () => {
     await d.click(); await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
     await d.click(); await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
     const zemin = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
-    expect(zemin).toBe("rgb(11, 13, 16)");
+    expect(zemin).toBe("rgb(11, 18, 32)");
     await page.goto("/gezgin");                                    // başka sayfada da ilk boyamadan koyu
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
     await page.locator("#tema-dugme").click();
