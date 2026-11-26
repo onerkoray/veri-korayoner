@@ -1,0 +1,344 @@
+{
+ "surum": 1,
+ "id": "wb-eg-elc-rnew-zs-tur",
+ "baslik": "Yenilenebilir kaynaklardan elektrik, toplam üretime oran",
+ "ulke": "TUR",
+ "siklik": "yillik",
+ "birim": "yuzde",
+ "carpan": 1,
+ "tema": "enerji",
+ "kaynak": {
+  "id": "world_bank",
+  "ad": "Dünya Bankası — Dünya Kalkınma Göstergeleri (WDI)",
+  "kurum": "Dünya Bankası",
+  "adres": "https://data.worldbank.org/",
+  "belge": "https://datahelpdesk.worldbank.org/knowledgebase/articles/889392",
+  "lisans": "CC BY 4.0 (WDI veri seti)",
+  "lisans_kanit": "https://datacatalog.worldbank.org/search/dataset/0037712/World-Development-Indicators",
+  "lisans_inceleme": "2026-11-17",
+  "atif_zorunlu": true,
+  "kosullar": []
+ },
+ "kaynak_kod": "EG.ELC.RNEW.ZS",
+ "kaynak_adi": "Renewable electricity output (% of total electricity output)",
+ "kaynak_not": "IEA Energy Statistics Data Browser, International Energy Agency (IEA), uri: https://www.iea.org/data-and-statistics/data-tools/energy-statistics-data-browser, publisher: International Energy Agency (IEA), date accessed: 2025-03-25",
+ "kaynak_guncelleme": "2026-11-11",
+ "cekildi": "2026-11-26T19:21:59.416865Z",
+ "izin": {
+  "gosterim": true,
+  "indirme": true,
+  "api": true
+ },
+ "gozlemler": [
+  {
+   "donem": "1960",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1961",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1962",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1963",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1964",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1965",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1966",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1967",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1968",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1969",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1970",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1971",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1972",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1973",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1974",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1975",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1976",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1977",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1978",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1979",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1980",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1981",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1982",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1983",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1984",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1985",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1986",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1987",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1988",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1989",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1990",
+   "deger": "40.3663347409763",
+   "durum": null
+  },
+  {
+   "donem": "1991",
+   "deger": "37.8481558941672",
+   "durum": null
+  },
+  {
+   "donem": "1992",
+   "deger": "39.6260877312821",
+   "durum": null
+  },
+  {
+   "donem": "1993",
+   "deger": "46.1806308259267",
+   "durum": null
+  },
+  {
+   "donem": "1994",
+   "deger": "39.2180896566693",
+   "durum": null
+  },
+  {
+   "donem": "1995",
+   "deger": "41.5655037276659",
+   "durum": null
+  },
+  {
+   "donem": "1996",
+   "deger": "42.9413252935844",
+   "durum": null
+  },
+  {
+   "donem": "1997",
+   "deger": "38.9105096034696",
+   "durum": null
+  },
+  {
+   "donem": "1998",
+   "deger": "38.334744465061",
+   "durum": null
+  },
+  {
+   "donem": "1999",
+   "deger": "29.9828237718997",
+   "durum": null
+  },
+  {
+   "donem": "2000",
+   "deger": "24.9388818622821",
+   "durum": null
+  },
+  {
+   "donem": "2001",
+   "deger": "19.8382155225097",
+   "durum": null
+  },
+  {
+   "donem": "2002",
+   "deger": "26.2495285935085",
+   "durum": null
+  },
+  {
+   "donem": "2003",
+   "deger": "25.2953741970821",
+   "durum": null
+  },
+  {
+   "donem": "2004",
+   "deger": "30.732478201436",
+   "durum": null
+  },
+  {
+   "donem": "2005",
+   "deger": "24.5440551754798",
+   "durum": null
+  },
+  {
+   "donem": "2006",
+   "deger": "25.2556735999637",
+   "durum": null
+  },
+  {
+   "donem": "2007",
+   "deger": "19.0341045531902",
+   "durum": null
+  },
+  {
+   "donem": "2008",
+   "deger": "17.3506335110726",
+   "durum": null
+  },
+  {
+   "donem": "2009",
+   "deger": "19.5821920620906",
+   "durum": null
+  },
+  {
+   "donem": "2010",
+   "deger": "26.3818037195561",
+   "durum": null
+  },
+  {
+   "donem": "2011",
+   "deger": "25.3319717689729",
+   "durum": null
+  },
+  {
+   "donem": "2012",
+   "deger": "27.2382252730735",
+   "durum": null
+  },
+  {
+   "donem": "2013",
+   "deger": "28.8353931227462",
+   "durum": null
+  },
+  {
+   "donem": "2014",
+   "deger": "20.8888686037236",
+   "durum": null
+  },
+  {
+   "donem": "2015",
+   "deger": "31.9582364019054",
+   "durum": null
+  },
+  {
+   "donem": "2016",
+   "deger": "32.8881446605055",
+   "durum": null
+  },
+  {
+   "donem": "2017",
+   "deger": "29.3458592491178",
+   "durum": null
+  },
+  {
+   "donem": "2018",
+   "deger": "32.0769912172204",
+   "durum": null
+  },
+  {
+   "donem": "2019",
+   "deger": "43.522591535948",
+   "durum": null
+  },
+  {
+   "donem": "2020",
+   "deger": "41.8476963055464",
+   "durum": null
+  },
+  {
+   "donem": "2021",
+   "deger": "35.4189464124067",
+   "durum": null
+  }
+ ]
+}

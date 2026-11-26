@@ -78,7 +78,7 @@ export function uretildi(): string { return oku("api/v1/kaynaklar.json").uretild
 export const TEMA: Record<string, string> = {
   buyume: "Büyüme ve gelir", enflasyon: "Enflasyon", "dis-sektor": "Dış sektör", isgucu: "İşgücü",
   "doviz-rezerv": "Döviz ve rezervler", "para-politikasi": "Para politikası", "kamu-maliyesi": "Kamu maliyesi",
-  bankacilik: "Bankacılık ve kredi", konut: "Konut", "dis-ticaret": "Dış ticaret", toplum: "Nüfus ve toplum",
+  bankacilik: "Bankacılık ve kredi", konut: "Konut", "dis-ticaret": "Dış ticaret", toplum: "Nüfus ve toplum", enerji: "Enerji",
 };
 export const TEMA_SIRA = Object.keys(TEMA);
 
@@ -105,6 +105,8 @@ export function deger(s: Pick<Seri, "birim" | "carpan">, ham: string | number | 
     case "yuzde-gsyh": return (v < 0 ? "−%" : "%") + sayi(Math.abs(v), 1) + (kisa ? "" : " GSYH");
     // İki oranın farkı (ör. BIS kredi açığı: fiili − eğilim): yüzde değil yüzde puan.
     case "yuzde-puan": return sayi(v, 1) + (kisa ? "" : " yüzde puan");
+    case "PPP-2021-USD": return sayi(v, 0) + " SAGP $";
+    case "abonelik": return sayi(v, 1) + (kisa ? "" : " hat / 100 kişi");
     case "USD": {
       const a = Math.abs(v), isaret = v < 0 ? "−" : "";
       if (a >= 1e12) return isaret + sayi(a / 1e12, 2) + " trilyon $";
@@ -123,7 +125,7 @@ export function deger(s: Pick<Seri, "birim" | "carpan">, ham: string | number | 
   }
 }
 export function birimAdi(b: string): string {
-  return ({ yuzde: "yüzde", "yuzde-gsyh": "GSYH'ye oran, yüzde", "yuzde-puan": "yüzde puan (iki oranın farkı)", USD: "ABD doları, cari", "TRY/USD": "1 ABD doları kaç TL", "TRY/EUR": "1 euro kaç TL", PPS: "satın alma gücü standardı (PPS)", yil: "yıl", kisi: "kişi", endeks: "endeks", puan: "puan (0–100 ölçek)", ay: "ay (ithalatı karşılama)", dogum: "kadın başına doğum" } as Record<string, string>)[b] ?? b;
+  return ({ yuzde: "yüzde", "yuzde-gsyh": "GSYH'ye oran, yüzde", "yuzde-puan": "yüzde puan (iki oranın farkı)", USD: "ABD doları, cari", "PPP-2021-USD": "sabit 2021 uluslararası doları (SAGP)", abonelik: "100 kişi başına hat aboneliği", "TRY/USD": "1 ABD doları kaç TL", "TRY/EUR": "1 euro kaç TL", PPS: "satın alma gücü standardı (PPS)", yil: "yıl", kisi: "kişi", endeks: "endeks", puan: "puan (0–100 ölçek)", ay: "ay (ithalatı karşılama)", dogum: "kadın başına doğum" } as Record<string, string>)[b] ?? b;
 }
 export function siklikAdi(s: string): string {
   return ({ yillik: "Yıllık", yariyillik: "Yarıyıllık", ceyreklik: "Çeyreklik", aylik: "Aylık", haftalik: "Haftalık", gunluk: "Günlük" } as Record<string, string>)[s] ?? s;

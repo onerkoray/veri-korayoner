@@ -16,6 +16,8 @@ export function yaz(birim: string, v: number, kip: "tam" | "eksen" | "hucre" = "
   if (birim === "ay") return `${n1.format(a)}${kisa ? "" : " ay"}`;
   if (birim === "dogum") return `${a.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}${kisa ? "" : " çocuk"}`;
   if (birim === "kisi") return a >= 1e6 ? `${n1.format(a / 1e6)}${kip === "eksen" ? " mn" : " milyon"}` : n0.format(a);
+  if (birim === "PPP-2021-USD") return `${e}${n0.format(a)}${kisa ? "" : " SAGP $"}`;
+  if (birim === "abonelik") return `${e}${n1.format(a)}${kisa ? "" : " hat / 100 kişi"}`;
   if (birim === "USD") {
     if (a >= 1e12) return `${e}${n2.format(a / 1e12)} tr $`;
     if (a >= 1e9) return `${e}${n1.format(a / 1e9)} mr $`;

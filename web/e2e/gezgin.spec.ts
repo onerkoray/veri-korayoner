@@ -229,6 +229,24 @@ test.describe("Kaynaklar ve API", () => {
     await expect(page.getByText("İzin var, yayımlanan seri yok").first()).toBeVisible();
   });
 
+  test("API kataloğu yeni Eurostat serisini bulur ve konsolda açar", async ({ page }) => {
+    await page.goto("/api");
+    await page.getByLabel("Seri veya kod").fill("sts_inpr_m");
+    await page.getByLabel("Kurum", { exact: true }).selectOption("Eurostat");
+    await page.getByLabel("Sıklık", { exact: true }).first().selectOption("aylik");
+    const satir = page.locator("[data-k-seri]:visible");
+    await expect(satir).toHaveCount(1);
+    await expect(satir.getByRole("link", { name: "CSV", exact: true })).toHaveAttribute("href", "/api/v1/seri/eurostat-sanayi-uretimi-tr.csv");
+    await satir.getByRole("button", { name: /Konsolda dene/ }).click();
+    await expect(page.locator("#d-adres")).toContainText("/api/v1/seri/eurostat-sanayi-uretimi-tr.json");
+    await expect(page.getByRole("heading", { name: "İstek konsolu" })).toBeFocused();
+    await page.getByRole("button", { name: "İsteği gönder" }).click();
+    await expect(page.locator("#d-durum")).toContainText("HTTP 200");
+    await expect(page.locator("#d-yanit")).toContainText("sts_inpr_m");
+    await page.getByLabel("Seri veya kod").fill("eşleşmeyen gösterge");
+    await expect(page.getByText("Bu filtrelerle eşleşen seri yok.")).toBeVisible();
+  });
+
   test("API deneme aracı: seri seçimi, yanıt, 404 açıklaması", async ({ page }) => {
     const hata = hataTopla(page);
     await page.goto("/api");

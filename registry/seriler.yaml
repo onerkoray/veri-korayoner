@@ -772,3 +772,113 @@ seriler:
     emsal: [POL, HUN, ROU, EUU]
     baglam: "Avrupa Komisyonu'nun uyumlaştırılmış iş ve tüketici anketlerinden (sanayi, hizmet, perakende, inşaat, tüketici) bileşik endeks; 100 uzun dönem ortalamasıdır. Türkiye'yi AB ülkeleriyle aynı anket yöntemiyle karşılaştırır."
     iliskili: [oecd-is-guveni-tr, oecd-tuketici-guveni-tr, oecd-gsyh-buyume-yillik-tr]
+
+  - id: wb-fs-ast-prvt-gd-zs-tur
+    kaynak: world_bank
+    kod: FS.AST.PRVT.GD.ZS
+    ulke: TUR
+    baslik: "Özel sektöre yurt içi kredi, GSYH’ye oran"
+    tema: bankacilik
+    siklik: yillik
+    birim: yuzde-gsyh
+    carpan: 1
+    baglam: "Özel sektöre sağlanan yurt içi finansman. Kurumsal kapsam BIS’in özel kesim kredi serisiyle aynı olmayabilir."
+
+  - id: wb-ne-con-govt-zs-tur
+    kaynak: world_bank
+    kod: NE.CON.GOVT.ZS
+    ulke: TUR
+    baslik: "Genel devlet nihai tüketim harcamaları, GSYH’ye oran"
+    tema: kamu-maliyesi
+    siklik: yillik
+    birim: yuzde-gsyh
+    carpan: 1
+    baglam: "Mal ve hizmetlerin nihai tüketimine ilişkin genel devlet harcamaları. Transfer ödemelerini ve toplam kamu harcamasını ölçmez."
+
+  - id: wb-sp-urb-totl-in-zs-tur
+    kaynak: world_bank
+    kod: SP.URB.TOTL.IN.ZS
+    ulke: TUR
+    baslik: "Kentsel nüfus, toplam nüfusa oran"
+    tema: toplum
+    siklik: yillik
+    birim: yuzde
+    carpan: 1
+    baglam: "Kentsel alanlarda yaşayan nüfusun payı. Kentsel alan tanımı ülkelere göre farklılaşabilir."
+
+  - id: wb-it-cel-sets-p2-tur
+    kaynak: world_bank
+    kod: IT.CEL.SETS.P2
+    ulke: TUR
+    baslik: "Mobil hat aboneliği, 100 kişi başına"
+    tema: toplum
+    siklik: yillik
+    birim: abonelik
+    carpan: 1
+    baglam: "Her 100 kişiye düşen mobil hat aboneliği. Aynı kişinin birden çok hattı olabileceği için değer 100’ü aşabilir."
+
+  - id: wb-eg-elc-rnew-zs-tur
+    kaynak: world_bank
+    kod: EG.ELC.RNEW.ZS
+    ulke: TUR
+    baslik: "Yenilenebilir kaynaklardan elektrik, toplam üretime oran"
+    tema: enerji
+    siklik: yillik
+    birim: yuzde
+    carpan: 1
+    baglam: "Yenilenebilir kaynaklardan üretilen elektriğin toplam elektrik üretimindeki payı. Son açıklanan yıl, gözlem dönemi olarak gösterilir."
+
+  - id: wb-sl-gdp-pcap-em-kd-tur
+    kaynak: world_bank
+    kod: SL.GDP.PCAP.EM.KD
+    ulke: TUR
+    baslik: "Çalışan kişi başına reel GSYH, 2021 SAGP doları"
+    tema: isgucu
+    siklik: yillik
+    birim: PPP-2021-USD
+    carpan: 1
+    baglam: "İstihdam edilen kişi başına çıktı. Sabit 2021 satın alma gücü paritesiyle ölçülür; saat başına verimlilik değildir."
+
+  - id: wb-nv-srv-totl-zs-tur
+    kaynak: world_bank
+    kod: NV.SRV.TOTL.ZS
+    ulke: TUR
+    baslik: "Hizmetler katma değeri, GSYH’ye oran"
+    tema: buyume
+    siklik: yillik
+    birim: yuzde-gsyh
+    carpan: 1
+    baglam: "Hizmet sektörlerinin GSYH içindeki katma değer payı. İstihdam payı ya da üretim hacmi değişimi değildir."
+
+  - id: wb-ne-rsb-gnfs-zs-tur
+    kaynak: world_bank
+    kod: NE.RSB.GNFS.ZS
+    ulke: TUR
+    baslik: "Mal ve hizmet dış dengesi, GSYH’ye oran"
+    tema: dis-ticaret
+    siklik: yillik
+    birim: yuzde-gsyh
+    carpan: 1
+    baglam: "Ulusal hesaplarda mal ve hizmet ihracatı eksi ithalatı. Gelir ve transferleri içeren cari işlemler dengesiyle aynı değildir."
+
+  - id: eurostat-sanayi-uretimi-tr
+    kaynak: eurostat
+    kod: sts_inpr_m/M.PRD.B-D.SCA.I21.TR
+    ulke: TUR
+    baslik: "Sanayi üretim endeksi (2021 = 100), takvim ve mevsim etkilerinden arındırılmış"
+    tema: buyume
+    siklik: aylik
+    birim: endeks
+    carpan: 1
+    baglam: "NACE Rev. 2 B–D toplamı: madencilik, imalat ve enerji. İnşaat dahil değildir."
+
+  - id: eurostat-perakende-hacmi-tr
+    kaynak: eurostat
+    kod: sts_trtu_m/M.VOL_SLS.G47.SCA.I21.TR
+    ulke: TUR
+    baslik: "Perakende satış hacmi (2021 = 100), takvim ve mevsim etkilerinden arındırılmış"
+    tema: buyume
+    siklik: aylik
+    birim: endeks
+    carpan: 1
+    baglam: "NACE Rev. 2 G47: motorlu taşıt ve motosiklet satışları dışındaki perakende ticaretin fiyat etkilerinden arındırılmış hacmi."

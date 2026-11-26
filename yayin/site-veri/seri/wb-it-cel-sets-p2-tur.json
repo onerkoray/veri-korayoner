@@ -1,0 +1,359 @@
+{
+ "surum": 1,
+ "id": "wb-it-cel-sets-p2-tur",
+ "baslik": "Mobil hat aboneliği, 100 kişi başına",
+ "ulke": "TUR",
+ "siklik": "yillik",
+ "birim": "abonelik",
+ "carpan": 1,
+ "tema": "toplum",
+ "kaynak": {
+  "id": "world_bank",
+  "ad": "Dünya Bankası — Dünya Kalkınma Göstergeleri (WDI)",
+  "kurum": "Dünya Bankası",
+  "adres": "https://data.worldbank.org/",
+  "belge": "https://datahelpdesk.worldbank.org/knowledgebase/articles/889392",
+  "lisans": "CC BY 4.0 (WDI veri seti)",
+  "lisans_kanit": "https://datacatalog.worldbank.org/search/dataset/0037712/World-Development-Indicators",
+  "lisans_inceleme": "2026-11-17",
+  "atif_zorunlu": true,
+  "kosullar": []
+ },
+ "kaynak_kod": "IT.CEL.SETS.P2",
+ "kaynak_adi": "Mobile cellular subscriptions (per 100 people)",
+ "kaynak_not": "World Telecommunication/ICT Indicators Database, International Telecommunication Union (ITU)",
+ "kaynak_guncelleme": "2026-11-11",
+ "cekildi": "2026-11-26T19:21:59.416865Z",
+ "izin": {
+  "gosterim": true,
+  "indirme": true,
+  "api": true
+ },
+ "gozlemler": [
+  {
+   "donem": "1960",
+   "deger": "0",
+   "durum": null
+  },
+  {
+   "donem": "1961",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1962",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1963",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1964",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1965",
+   "deger": "0",
+   "durum": null
+  },
+  {
+   "donem": "1966",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1967",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1968",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1969",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1970",
+   "deger": "0",
+   "durum": null
+  },
+  {
+   "donem": "1971",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1972",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1973",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1974",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1975",
+   "deger": "0",
+   "durum": null
+  },
+  {
+   "donem": "1976",
+   "deger": "0",
+   "durum": null
+  },
+  {
+   "donem": "1977",
+   "deger": "0",
+   "durum": null
+  },
+  {
+   "donem": "1978",
+   "deger": "0",
+   "durum": null
+  },
+  {
+   "donem": "1979",
+   "deger": "0",
+   "durum": null
+  },
+  {
+   "donem": "1980",
+   "deger": "0",
+   "durum": null
+  },
+  {
+   "donem": "1981",
+   "deger": "0",
+   "durum": null
+  },
+  {
+   "donem": "1982",
+   "deger": "0",
+   "durum": null
+  },
+  {
+   "donem": "1983",
+   "deger": "0",
+   "durum": null
+  },
+  {
+   "donem": "1984",
+   "deger": "0",
+   "durum": null
+  },
+  {
+   "donem": "1985",
+   "deger": "0",
+   "durum": null
+  },
+  {
+   "donem": "1986",
+   "deger": "0.000726746",
+   "durum": null
+  },
+  {
+   "donem": "1987",
+   "deger": "0.009953141",
+   "durum": null
+  },
+  {
+   "donem": "1988",
+   "deger": "0.018834687",
+   "durum": null
+  },
+  {
+   "donem": "1989",
+   "deger": "0.029276675",
+   "durum": null
+  },
+  {
+   "donem": "1990",
+   "deger": "0.058554077",
+   "durum": null
+  },
+  {
+   "donem": "1991",
+   "deger": "0.086455146",
+   "durum": null
+  },
+  {
+   "donem": "1992",
+   "deger": "0.109045788",
+   "durum": null
+  },
+  {
+   "donem": "1993",
+   "deger": "0.146933448",
+   "durum": null
+  },
+  {
+   "donem": "1994",
+   "deger": "0.29973978",
+   "durum": null
+  },
+  {
+   "donem": "1995",
+   "deger": "0.737081845",
+   "durum": null
+  },
+  {
+   "donem": "1996",
+   "deger": "1.337350088",
+   "durum": null
+  },
+  {
+   "donem": "1997",
+   "deger": "2.627083259",
+   "durum": null
+  },
+  {
+   "donem": "1998",
+   "deger": "5.633037995",
+   "durum": null
+  },
+  {
+   "donem": "1999",
+   "deger": "12.85342716",
+   "durum": null
+  },
+  {
+   "donem": "2000",
+   "deger": "24.659026406964",
+   "durum": null
+  },
+  {
+   "donem": "2001",
+   "deger": "29.5461682857644",
+   "durum": null
+  },
+  {
+   "donem": "2002",
+   "deger": "34.7852903247553",
+   "durum": null
+  },
+  {
+   "donem": "2003",
+   "deger": "41.1128169663371",
+   "durum": null
+  },
+  {
+   "donem": "2004",
+   "deger": "50.5995404724097",
+   "durum": null
+  },
+  {
+   "donem": "2005",
+   "deger": "62.9009716591727",
+   "durum": null
+  },
+  {
+   "donem": "2006",
+   "deger": "75.1837213345885",
+   "durum": null
+  },
+  {
+   "donem": "2007",
+   "deger": "87.5975882376437",
+   "durum": null
+  },
+  {
+   "donem": "2008",
+   "deger": "91.981497306586",
+   "durum": null
+  },
+  {
+   "donem": "2009",
+   "deger": "86.6344934581247",
+   "durum": null
+  },
+  {
+   "donem": "2010",
+   "deger": "84.215890954924",
+   "durum": null
+  },
+  {
+   "donem": "2011",
+   "deger": "88.0166628392838",
+   "durum": null
+  },
+  {
+   "donem": "2012",
+   "deger": "90.0040810031246",
+   "durum": null
+  },
+  {
+   "donem": "2013",
+   "deger": "91.1758435342703",
+   "durum": null
+  },
+  {
+   "donem": "2014",
+   "deger": "92.1219361989572",
+   "durum": null
+  },
+  {
+   "donem": "2015",
+   "deger": "92.0327105332494",
+   "durum": null
+  },
+  {
+   "donem": "2016",
+   "deger": "91.9286950751339",
+   "durum": null
+  },
+  {
+   "donem": "2017",
+   "deger": "93.6407569517097",
+   "durum": null
+  },
+  {
+   "donem": "2018",
+   "deger": "94.9085818111026",
+   "durum": null
+  },
+  {
+   "donem": "2019",
+   "deger": "94.6498130829997",
+   "durum": null
+  },
+  {
+   "donem": "2020",
+   "deger": "95.3960853737199",
+   "durum": null
+  },
+  {
+   "donem": "2021",
+   "deger": "99.5415432248525",
+   "durum": null
+  },
+  {
+   "donem": "2022",
+   "deger": "103.720593629066",
+   "durum": null
+  },
+  {
+   "donem": "2023",
+   "deger": "105.684032912794",
+   "durum": null
+  },
+  {
+   "donem": "2024",
+   "deger": "107.826875714392",
+   "durum": null
+  }
+ ]
+}

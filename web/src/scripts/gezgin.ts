@@ -10,7 +10,7 @@ interface Panel { siklik: string; yontem: string; seriler: Tanim[]; veri: Record
 interface Durum { g: string[]; s: "aylik" | "ceyreklik" | "yillik"; d: "ort" | "son"; b: number; e: number; v: "grafik" | "isi" | "tablo" | "analiz"; o: Olcek }
 
 const SIKLIK: Record<string, string> = { aylik: "aylık", ceyreklik: "çeyreklik", yariyillik: "yarıyıllık", yillik: "yıllık", gunluk: "günlük", haftalik: "haftalık" };
-const BIRIM: Record<string, string> = { yuzde: "yüzde", "yuzde-gsyh": "GSYH'ye oran, %", "yuzde-puan": "yüzde puan", USD: "ABD doları", endeks: "endeks", puan: "puan (0–100)", PPS: "PPS", yil: "yıl", kisi: "kişi", ay: "ay", dogum: "kadın başına doğum" };
+const BIRIM: Record<string, string> = { yuzde: "yüzde", "yuzde-gsyh": "GSYH'ye oran, %", "yuzde-puan": "yüzde puan", USD: "ABD doları", "PPP-2021-USD": "sabit 2021 uluslararası doları (SAGP)", abonelik: "100 kişi başına hat aboneliği", endeks: "endeks", puan: "puan (0–100)", PPS: "PPS", yil: "yıl", kisi: "kişi", ay: "ay", dogum: "kadın başına doğum" };
 const AY = ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"];
 const AZAMI = 6;
 const VARSAYILAN = ["bis-tufe-yillik-tr", "bis-politika-faizi-tr", "eurostat-issizlik-aylik-tr"];

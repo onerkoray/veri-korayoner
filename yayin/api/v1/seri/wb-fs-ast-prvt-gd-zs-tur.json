@@ -1,0 +1,364 @@
+{
+ "surum": 1,
+ "id": "wb-fs-ast-prvt-gd-zs-tur",
+ "baslik": "Özel sektöre yurt içi kredi, GSYH’ye oran",
+ "ulke": "TUR",
+ "siklik": "yillik",
+ "birim": "yuzde-gsyh",
+ "carpan": 1,
+ "tema": "bankacilik",
+ "kaynak": {
+  "id": "world_bank",
+  "ad": "Dünya Bankası — Dünya Kalkınma Göstergeleri (WDI)",
+  "kurum": "Dünya Bankası",
+  "adres": "https://data.worldbank.org/",
+  "belge": "https://datahelpdesk.worldbank.org/knowledgebase/articles/889392",
+  "lisans": "CC BY 4.0 (WDI veri seti)",
+  "lisans_kanit": "https://datacatalog.worldbank.org/search/dataset/0037712/World-Development-Indicators",
+  "lisans_inceleme": "2026-11-17",
+  "atif_zorunlu": true,
+  "kosullar": []
+ },
+ "kaynak_kod": "FS.AST.PRVT.GD.ZS",
+ "kaynak_adi": "Domestic credit to private sector (% of GDP)",
+ "kaynak_not": "International Financial Statistics database, International Monetary Fund (IMF);\nWorld Development Indicators Database, World Bank (WB);\nNational Accounts data files, Organisation for Economic Co-operation and Development (OECD)",
+ "kaynak_guncelleme": "2026-11-11",
+ "cekildi": "2026-11-26T19:21:59.416865Z",
+ "izin": {
+  "gosterim": true,
+  "indirme": true,
+  "api": true
+ },
+ "gozlemler": [
+  {
+   "donem": "1960",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1961",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1962",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1963",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1964",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1965",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1966",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1967",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1968",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1969",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1970",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1971",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1972",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1973",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1974",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1975",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1976",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1977",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1978",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1979",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1980",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1981",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1982",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1983",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1984",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1985",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1986",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1987",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1988",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1989",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1990",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1991",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1992",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1993",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1994",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1995",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1996",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1997",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1998",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "1999",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "2000",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "2001",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "2002",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "2003",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "2004",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "2005",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "2006",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "2007",
+   "deger": null,
+   "durum": null
+  },
+  {
+   "donem": "2008",
+   "deger": "33.1628558443027",
+   "durum": null
+  },
+  {
+   "donem": "2009",
+   "deger": "36.8190783164554",
+   "durum": null
+  },
+  {
+   "donem": "2010",
+   "deger": "44.0459707563417",
+   "durum": null
+  },
+  {
+   "donem": "2011",
+   "deger": "48.7422084050822",
+   "durum": null
+  },
+  {
+   "donem": "2012",
+   "deger": "51.5586765950104",
+   "durum": null
+  },
+  {
+   "donem": "2013",
+   "deger": "59.9792914244142",
+   "durum": null
+  },
+  {
+   "donem": "2014",
+   "deger": "63.2376327204216",
+   "durum": null
+  },
+  {
+   "donem": "2015",
+   "deger": "66.3898521051604",
+   "durum": null
+  },
+  {
+   "donem": "2016",
+   "deger": "69.2826364676664",
+   "durum": null
+  },
+  {
+   "donem": "2017",
+   "deger": "70.0844027288208",
+   "durum": null
+  },
+  {
+   "donem": "2018",
+   "deger": "66.6976668187438",
+   "durum": null
+  },
+  {
+   "donem": "2019",
+   "deger": "64.2557519386265",
+   "durum": null
+  },
+  {
+   "donem": "2020",
+   "deger": "75.2676019236764",
+   "durum": null
+  },
+  {
+   "donem": "2021",
+   "deger": "70.9983608541484",
+   "durum": null
+  },
+  {
+   "donem": "2022",
+   "deger": "53.4262221477912",
+   "durum": null
+  },
+  {
+   "donem": "2023",
+   "deger": "48.7952169007542",
+   "durum": null
+  },
+  {
+   "donem": "2024",
+   "deger": "42.9671022144839",
+   "durum": null
+  },
+  {
+   "donem": "2025",
+   "deger": "45.7827602523781",
+   "durum": null
+  }
+ ]
+}

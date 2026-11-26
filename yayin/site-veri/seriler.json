@@ -1,6 +1,6 @@
 {
  "surum": 1,
- "uretildi": "2026-11-26T15:23:52.526434Z",
+ "uretildi": "2026-11-26T19:21:59.416865Z",
  "seriler": [
   {
    "id": "wb-ny-gdp-mktp-cd-tur",
@@ -1708,6 +1708,266 @@
    "deger_turu": "gozlem",
    "api": "/api/v1/seri/eurostat-ekonomik-guven-tr.json",
    "csv": "/api/v1/seri/eurostat-ekonomik-guven-tr.csv"
+  },
+  {
+   "id": "wb-fs-ast-prvt-gd-zs-tur",
+   "baslik": "Özel sektöre yurt içi kredi, GSYH’ye oran",
+   "tema": "bankacilik",
+   "siklik": "yillik",
+   "birim": "yuzde-gsyh",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "45.7827602523781",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-26T19:21:59.416865Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Özel sektöre sağlanan yurt içi finansman. Kurumsal kapsam BIS’in özel kesim kredi serisiyle aynı olmayabilir.",
+   "not": null,
+   "iliskili": [],
+   "deger_turu": "gozlem",
+   "api": "/api/v1/seri/wb-fs-ast-prvt-gd-zs-tur.json",
+   "csv": "/api/v1/seri/wb-fs-ast-prvt-gd-zs-tur.csv"
+  },
+  {
+   "id": "wb-ne-con-govt-zs-tur",
+   "baslik": "Genel devlet nihai tüketim harcamaları, GSYH’ye oran",
+   "tema": "kamu-maliyesi",
+   "siklik": "yillik",
+   "birim": "yuzde-gsyh",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "13.8634290925197",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-26T19:21:59.416865Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Mal ve hizmetlerin nihai tüketimine ilişkin genel devlet harcamaları. Transfer ödemelerini ve toplam kamu harcamasını ölçmez.",
+   "not": null,
+   "iliskili": [],
+   "deger_turu": "gozlem",
+   "api": "/api/v1/seri/wb-ne-con-govt-zs-tur.json",
+   "csv": "/api/v1/seri/wb-ne-con-govt-zs-tur.csv"
+  },
+  {
+   "id": "wb-sp-urb-totl-in-zs-tur",
+   "baslik": "Kentsel nüfus, toplam nüfusa oran",
+   "tema": "toplum",
+   "siklik": "yillik",
+   "birim": "yuzde",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "89.494060002186",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-26T19:21:59.416865Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Kentsel alanlarda yaşayan nüfusun payı. Kentsel alan tanımı ülkelere göre farklılaşabilir.",
+   "not": null,
+   "iliskili": [],
+   "deger_turu": "gozlem",
+   "api": "/api/v1/seri/wb-sp-urb-totl-in-zs-tur.json",
+   "csv": "/api/v1/seri/wb-sp-urb-totl-in-zs-tur.csv"
+  },
+  {
+   "id": "wb-it-cel-sets-p2-tur",
+   "baslik": "Mobil hat aboneliği, 100 kişi başına",
+   "tema": "toplum",
+   "siklik": "yillik",
+   "birim": "abonelik",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2024",
+    "deger": "107.826875714392",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-26T19:21:59.416865Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Her 100 kişiye düşen mobil hat aboneliği. Aynı kişinin birden çok hattı olabileceği için değer 100’ü aşabilir.",
+   "not": null,
+   "iliskili": [],
+   "deger_turu": "gozlem",
+   "api": "/api/v1/seri/wb-it-cel-sets-p2-tur.json",
+   "csv": "/api/v1/seri/wb-it-cel-sets-p2-tur.csv"
+  },
+  {
+   "id": "wb-eg-elc-rnew-zs-tur",
+   "baslik": "Yenilenebilir kaynaklardan elektrik, toplam üretime oran",
+   "tema": "enerji",
+   "siklik": "yillik",
+   "birim": "yuzde",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2021",
+    "deger": "35.4189464124067",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-26T19:21:59.416865Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Yenilenebilir kaynaklardan üretilen elektriğin toplam elektrik üretimindeki payı. Son açıklanan yıl, gözlem dönemi olarak gösterilir.",
+   "not": null,
+   "iliskili": [],
+   "deger_turu": "gozlem",
+   "api": "/api/v1/seri/wb-eg-elc-rnew-zs-tur.json",
+   "csv": "/api/v1/seri/wb-eg-elc-rnew-zs-tur.csv"
+  },
+  {
+   "id": "wb-sl-gdp-pcap-em-kd-tur",
+   "baslik": "Çalışan kişi başına reel GSYH, 2021 SAGP doları",
+   "tema": "isgucu",
+   "siklik": "yillik",
+   "birim": "PPP-2021-USD",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "94941.9657873127",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-26T19:21:59.416865Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "İstihdam edilen kişi başına çıktı. Sabit 2021 satın alma gücü paritesiyle ölçülür; saat başına verimlilik değildir.",
+   "not": null,
+   "iliskili": [],
+   "deger_turu": "gozlem",
+   "api": "/api/v1/seri/wb-sl-gdp-pcap-em-kd-tur.json",
+   "csv": "/api/v1/seri/wb-sl-gdp-pcap-em-kd-tur.csv"
+  },
+  {
+   "id": "wb-nv-srv-totl-zs-tur",
+   "baslik": "Hizmetler katma değeri, GSYH’ye oran",
+   "tema": "buyume",
+   "siklik": "yillik",
+   "birim": "yuzde-gsyh",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "59.4243639680082",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-26T19:21:59.416865Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Hizmet sektörlerinin GSYH içindeki katma değer payı. İstihdam payı ya da üretim hacmi değişimi değildir.",
+   "not": null,
+   "iliskili": [],
+   "deger_turu": "gozlem",
+   "api": "/api/v1/seri/wb-nv-srv-totl-zs-tur.json",
+   "csv": "/api/v1/seri/wb-nv-srv-totl-zs-tur.csv"
+  },
+  {
+   "id": "wb-ne-rsb-gnfs-zs-tur",
+   "baslik": "Mal ve hizmet dış dengesi, GSYH’ye oran",
+   "tema": "dis-ticaret",
+   "siklik": "yillik",
+   "birim": "yuzde-gsyh",
+   "kaynak": "world_bank",
+   "son": {
+    "donem": "2025",
+    "deger": "-0.235134381841593",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-11",
+   "cekildi": "2026-11-26T19:21:59.416865Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "Ulusal hesaplarda mal ve hizmet ihracatı eksi ithalatı. Gelir ve transferleri içeren cari işlemler dengesiyle aynı değildir.",
+   "not": null,
+   "iliskili": [],
+   "deger_turu": "gozlem",
+   "api": "/api/v1/seri/wb-ne-rsb-gnfs-zs-tur.json",
+   "csv": "/api/v1/seri/wb-ne-rsb-gnfs-zs-tur.csv"
+  },
+  {
+   "id": "eurostat-sanayi-uretimi-tr",
+   "baslik": "Sanayi üretim endeksi (2021 = 100), takvim ve mevsim etkilerinden arındırılmış",
+   "tema": "buyume",
+   "siklik": "aylik",
+   "birim": "endeks",
+   "kaynak": "eurostat",
+   "son": {
+    "donem": "2026-09",
+    "deger": "110.8",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-19",
+   "cekildi": "2026-11-26T19:21:59.416865Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "NACE Rev. 2 B–D toplamı: madencilik, imalat ve enerji. İnşaat dahil değildir.",
+   "not": null,
+   "iliskili": [],
+   "deger_turu": "gozlem",
+   "api": "/api/v1/seri/eurostat-sanayi-uretimi-tr.json",
+   "csv": "/api/v1/seri/eurostat-sanayi-uretimi-tr.csv"
+  },
+  {
+   "id": "eurostat-perakende-hacmi-tr",
+   "baslik": "Perakende satış hacmi (2021 = 100), takvim ve mevsim etkilerinden arındırılmış",
+   "tema": "buyume",
+   "siklik": "aylik",
+   "birim": "endeks",
+   "kaynak": "eurostat",
+   "son": {
+    "donem": "2026-09",
+    "deger": "206.2",
+    "durum": null
+   },
+   "kaynak_guncelleme": "2026-11-25",
+   "cekildi": "2026-11-26T19:21:59.416865Z",
+   "izin": {
+    "gosterim": true,
+    "indirme": true,
+    "api": true
+   },
+   "baglam": "NACE Rev. 2 G47: motorlu taşıt ve motosiklet satışları dışındaki perakende ticaretin fiyat etkilerinden arındırılmış hacmi.",
+   "not": null,
+   "iliskili": [],
+   "deger_turu": "gozlem",
+   "api": "/api/v1/seri/eurostat-perakende-hacmi-tr.json",
+   "csv": "/api/v1/seri/eurostat-perakende-hacmi-tr.csv"
   }
  ]
 }

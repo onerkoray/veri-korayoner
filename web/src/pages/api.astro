@@ -1,8 +1,11 @@
 ---
 import Taban from "../layouts/Taban.astro";
-import { seriler, emsal } from "../lib/veri";
+import { seriler, emsal, son, siklikAdi, TEMA, deger } from "../lib/veri";
 const ss = seriler().filter((s) => s.izin.api);
 const ornek = ss.find((s) => s.izin.indirme && s.id === "bis-tufe-yillik-tr") ?? ss.find((s) => s.izin.indirme)!;
+const kurumAdi = (s: (typeof ss)[number]) => s.kaynak.kurum.match(/\(([^)]+)\)$/)?.[1] ?? s.kaynak.kurum;
+const kurumlar = [...new Set(ss.map(kurumAdi))].sort((a, b) => a.localeCompare(b, "tr"));
+const katalog = [...ss].sort((a, b) => a.baslik.localeCompare(b.baslik, "tr"));
 const kok = "https://veri.korayoner.dev";
 const secenek = {
   seri: ss.map((s) => [s.id, s.baslik]),
@@ -30,7 +33,10 @@ const pd = `import pandas as pd
 # Geniş panel: satır dönem, sütun seri; yalnız tam dönemler, dönem ortalaması.
 panel = pd.read_csv("${kok}/api/v1/panel/yillik.csv", index_col="donem", dtype={"donem": str})
 print(panel["${ornek.id}"].dropna().tail())`;
-const js = `const kok = "${kok}/api/v1";
+const js = `const kurumAdi = (s: (typeof ss)[number]) => s.kaynak.kurum.match(/\(([^)]+)\)$/)?.[1] ?? s.kaynak.kurum;
+const kurumlar = [...new Set(ss.map(kurumAdi))].sort((a, b) => a.localeCompare(b, "tr"));
+const katalog = [...ss].sort((a, b) => a.baslik.localeCompare(b.baslik, "tr"));
+const kok = "${kok}/api/v1";
 const yanit = await fetch(\`\${kok}/seri/${ornek.id}.json\`);
 if (!yanit.ok) throw new Error(\`HTTP \${yanit.status}\`);   // izinsiz ya da bilinmeyen seri: 404
 const seri = await yanit.json();
@@ -49,7 +55,7 @@ const ALAN: [string, string][] = [
   ["baslik, tema", "Türkçe ad ve konu grubu."],
   ["ulke", "ISO 3166 alfa-3 (TUR)."],
   ["siklik", "yillik, yariyillik, ceyreklik, aylik, haftalik, gunluk."],
-  ["birim, carpan", "yuzde, yuzde-gsyh, yuzde-puan (iki oranın farkı), USD, endeks, puan, PPS, yil, kisi; değer × carpan gerçek değeri verir."],
+  ["birim, carpan", "yuzde, yuzde-gsyh, yuzde-puan (iki oranın farkı), USD, PPP-2021-USD, abonelik, endeks, puan, PPS, yil, kisi; değer × carpan gerçek değeri verir."],
   ["deger_turu", "gozlem (kaynağın gözlemi) ya da model_tahmini (kaynağın kendi modeliyle ürettiği değer; içinde bulunulan yılın değeri projeksiyondur)."],
   ["kaynak", "Kurum, kaynak adresi, belge, lisans, lisans kanıt adresi, inceleme tarihi, atıf zorunluluğu, koşullar."],
   ["kaynak_kod, kaynak_adi, kaynak_not", "Kurumun kendi seri kodu, adı ve kaynak notu (doğrulama için)."],
@@ -65,10 +71,40 @@ const DONEM: [string, string, string][] = [
 ---
 <Taban baslik="API | Türkiye Verisi" aciklama="Sürümlü, anahtarsız JSON, CSV ve Parquet uç noktaları; curl, Python, JavaScript örnekleri, alan sözlüğü ve tarayıcıda deneme aracı. Yalnız yeniden yayın izni olan seriler." yol="/api">
   <article class="sar metin">
-    <p class="etiket">Geliştirici</p>
-    <h1>API</h1>
-    <p class="ozet">Anahtar gerekmez. Dosyalar CDN'den servis edilir, her yanıt bir saat önbelleğe alınır, her kaynaktan (CORS) okunabilir. Yalnız kaynağının lisansı API üzerinden yeniden yayına izin veren seriler listelenir. Şu an {ss.length} seri.</p>
+    <header class="api-bas"><p class="etiket">Türkiye Verisi / Geliştirici</p>
+    <h1>Açık veri API’si</h1>
+    <p class="ozet">Anahtar gerekmez. Dosyalar CDN'den servis edilir, her yanıt bir saat önbelleğe alınır, her kaynaktan (CORS) okunabilir. Yalnız kaynağının lisansı API üzerinden yeniden yayına izin veren seriler listelenir.</p>
+    <p class="api-kunye"><strong>{ss.length} seri</strong> · {kurumlar.length} kurum · JSON / CSV / Parquet</p>
+    <nav class="api-gecis" aria-label="API sayfası"><a href="#seri-katalogu">Seri kataloğu</a><a href="#deneyin">İstek konsolu</a><a href="#ornekler">Kod örnekleri</a></nav>
+    </header>
 
+    <section class="api-katalog" aria-labelledby="seri-katalogu">
+      <h2 id="seri-katalogu">Seri kataloğu</h2>
+      <p>Seri adını veya kurum kodunu arayın. JSON bağlantısı gözlemleri ve lisans bilgisini içerir. <a href="/api/v1/seriler.json">Makine tarafından okunabilen katalog ↗</a></p>
+      <div class="k-filtreler" id="k-filtreler" hidden>
+        <label>Seri veya kod <input id="k-ara" type="search" placeholder="Örn. kredi veya FS.AST" autocomplete="off" /></label>
+        <div class="k-filtre"><label for="k-kurum">Kurum</label><select id="k-kurum"><option value="">Tüm kurumlar</option>{kurumlar.map((x) => <option value={x}>{x}</option>)}</select></div>
+        <div class="k-filtre"><label for="k-siklik">Sıklık</label><select id="k-siklik"><option value="">Tüm sıklıklar</option>{[...new Set(ss.map((s) => s.siklik))].map((x) => <option value={x}>{siklikAdi(x)}</option>)}</select></div>
+      </div>
+      <p id="k-sonuc" class="api-kunye" role="status" hidden></p>
+      <div class="kaydir k-tablo" tabindex="0" role="region" aria-labelledby="seri-katalogu"><table>
+        <thead><tr><th scope="col">Gösterge / kaynak kodu</th><th scope="col">Kurum / sıklık</th><th scope="col">Son değer / dönem</th><th scope="col">Erişim</th></tr></thead>
+        <tbody>{katalog.map((s) => {
+          const sn = son(s);
+          return <tr data-k-seri={s.id} data-k-kurum={kurumAdi(s)} data-k-siklik={s.siklik} data-k-ara={`${s.baslik} ${s.kaynak_adi ?? ""} ${s.kaynak_kod} ${s.id} ${s.kaynak.kurum} ${TEMA[s.tema] ?? s.tema}`}>
+            <th scope="row"><a href={`/gosterge/${s.id}`}>{s.baslik}</a><small><code>{s.kaynak_kod}</code></small></th>
+            <td>{kurumAdi(s)}<small>{siklikAdi(s.siklik)}</small></td>
+            <td class="sayi">{sn ? <>{deger(s, sn.deger, true)}<small>{sn.donem}</small></> : "—"}</td>
+            <td><div class="k-adresler">
+              <a href={`/api/v1/seri/${s.id}.json`}>JSON</a>
+              {s.izin.indirme && <a href={`/api/v1/seri/${s.id}.csv`} download>CSV</a>}
+              <button type="button" class="k-dene" data-k-dene={s.id} aria-label={`Konsolda dene: ${s.baslik}`}>Dene</button>
+            </div></td>
+          </tr>;
+        })}</tbody>
+      </table></div>
+      <p id="k-bos" class="api-kunye" hidden>Bu filtrelerle eşleşen seri yok.</p>
+    </section>
     <h2>Uç noktalar</h2>
     <div class="kaydir"><table>
       <thead><tr><th scope="col">Adres</th><th scope="col">İçerik</th></tr></thead>
@@ -87,7 +123,7 @@ const DONEM: [string, string, string][] = [
       </tbody>
     </table></div>
 
-    <h2 id="deneyin">Deneyin</h2>
+    <h2 id="deneyin" tabindex="-1">İstek konsolu</h2>
     <p>Uç noktayı seçin, isteği tarayıcınızdan gönderin. Yanıt bu sayfada biçimlenir; uzun yanıtlar ekranda kısaltılır, "Yanıtı kopyala" tamamını kopyalar.</p>
     <form class="dene" id="dene" data-secenek={JSON.stringify(secenek)}>
       <label class="d-alan"><span>Uç nokta</span>
@@ -100,6 +136,8 @@ const DONEM: [string, string, string][] = [
       <div class="d-eylem">
         <button type="submit">İsteği gönder</button>
         <button type="button" id="d-kopyala" disabled>Yanıtı kopyala</button>
+        <button type="button" id="d-curl">curl kopyala</button>
+        <a id="d-ac" href="/api/v1/seriler.json" target="_blank" rel="noopener">Uç noktayı aç ↗</a>
       </div>
       <p class="d-adres"><code id="d-adres">{kok}/api/v1/seriler.json</code></p>
     </form>
@@ -107,7 +145,7 @@ const DONEM: [string, string, string][] = [
     <pre class="d-yanit" id="d-yanit" tabindex="0" aria-label="Yanıt" hidden><code></code></pre>
     <noscript><p>Deneme aracı JavaScript gerektirir; uç noktalar doğrudan tarayıcıda da açılır.</p></noscript>
 
-    <h2>Örnekler</h2>
+    <h2 id="ornekler">Kod örnekleri</h2>
     <h3>curl</h3>
     <pre><code>{`curl -s ${kok}/api/v1/seri/${ornek.id}.json
 curl -s ${kok}/api/v1/seri/${ornek.id}.csv
@@ -164,7 +202,27 @@ Erişim: ${kok}/api/v1/seri/${ornek.id}.json, <erişim tarihi>.`}</code></pre>
   import "../scripts/api-dene.ts";
 </script>
 <style>
-  .metin { padding-block: clamp(2.5rem, 6vw, 4rem); display: grid; gap: 1rem; max-width: 860px; }
+  .metin { padding-block: clamp(2.5rem, 6vw, 4rem); display: grid; gap: 1rem; max-width: 1120px; }
+  .api-bas { display: grid; gap: .7rem; padding-bottom: 1rem; border-bottom: 2px solid var(--metin); }
+  .api-bas h1 { font: 650 clamp(2.3rem, 4.4vw, 3.8rem)/1 Georgia, "Times New Roman", serif; letter-spacing: -.045em; }
+  .api-kunye { color: var(--soluk); font-size: .82rem; }
+  .api-gecis { display: flex; flex-wrap: wrap; gap: .4rem 1rem; font-size: .85rem; font-weight: 650; }
+  .api-katalog { display: grid; gap: .65rem; }
+  .api-katalog > p { color: var(--soluk); font-size: .88rem; }
+  .k-filtreler:not([hidden]) { display: grid; grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr)); gap: .55rem; }
+  .k-filtreler :is(label, .k-filtre) { display: grid; gap: .15rem; min-width: 0; color: var(--soluk); font-size: .8rem; font-weight: 650; }
+  .k-filtreler :is(input, select) { width: 100%; min-width: 0; min-height: 2.5rem; border: 1px solid var(--cizgi); background: var(--yuzey); color: var(--metin); padding: .3rem .55rem; font: inherit; }
+  .k-tablo { max-height: 25rem; border: 1px solid var(--cizgi); background: var(--yuzey); }
+  .k-tablo table { min-width: 34rem; font-size: .83rem; }
+  .k-tablo thead { position: sticky; top: 0; background: var(--yuzey-2); z-index: 1; }
+  .k-tablo small { display: block; color: var(--soluk); font-weight: 400; overflow-wrap: anywhere; }
+  .k-tablo code { font-size: .7rem; }
+  .k-adresler { display: flex; flex-wrap: wrap; gap: .2rem .55rem; align-items: center; }
+  .k-dene { display: none; }
+  .k-dene[data-hazir] { display: inline-block; background: none; color: var(--vurgu); border: 0; padding: .1rem; font: inherit; text-decoration: underline; cursor: pointer; }
+  .d-eylem a[hidden] { display: none; }
+  .d-eylem a { display: inline-flex; align-items: center; min-height: 2.5rem; font-size: .8rem; }
+  @media (max-width: 37rem) { .k-filtreler:not([hidden]) { grid-template-columns: repeat(2, minmax(0, 1fr)); } .k-filtreler label:first-child { grid-column: 1 / -1; } }
   h2 { font-size: 1.2rem; margin-top: 1.25rem; }
   h3 { font-size: .95rem; margin: .4rem 0 0; }
   p, ul { margin: 0; max-width: 70ch; }
