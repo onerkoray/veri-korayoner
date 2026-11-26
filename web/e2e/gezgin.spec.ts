@@ -385,3 +385,27 @@ test.describe("Sade Panorama", () => {
     expect(ust).toBeLessThan(3);
   });
 });
+
+test("istatistik görünümü seçime ve hazır dönem aralığına göre güncellenir", async ({ page, isMobile }) => {
+  await page.goto("/gezgin");
+  await page.getByRole("radio", { name: "İstatistik", exact: true }).check();
+  await expect(page.getByRole("heading", { name: "İstatistik ve ilişkiler" })).toBeVisible();
+  await expect(page.locator(".g-istatistik-panel").first().locator("tbody tr")).toHaveCount(3);
+  await expect(page.locator(".g-korelasyon tbody tr")).toHaveCount(3);
+  await expect(page.locator(".g-iliski-grafik svg")).toBeVisible();
+  const cift = page.getByLabel("Seri çifti");
+  await cift.selectOption({ index: 1 });
+  const secim = await cift.inputValue();
+  await page.getByRole("button", { name: "Son 5 yıl", exact: true }).click();
+  const bitis = Number(await page.locator("#g-e").inputValue());
+  await expect(page).toHaveURL(new RegExp(`b=${bitis - 4}.*v=analiz`));
+  await expect(page.locator(".g-istatistik-panel").first().locator("tbody tr").first()).toContainText("/ 60");
+  await expect(cift).toHaveValue(secim);
+  if (isMobile) {
+    await page.getByRole("button", { name: "Sonuçlara git" }).click();
+    await expect(page.getByRole("heading", { name: "İstatistik ve ilişkiler" })).toBeFocused();
+  }
+  await page.reload();
+  await expect(page.getByRole("heading", { name: "İstatistik ve ilişkiler" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Son 5 yıl", exact: true })).toHaveAttribute("aria-pressed", "true");
+});

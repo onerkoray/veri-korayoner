@@ -1,7 +1,7 @@
 // Veri gezgini çekirdeği: boş aralık, uygunluk, arama, CSV/metaveri — regresyon testleri.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { uygunMu, ortakSiklik, yilAraligi, kapsam, zamanAlani, olcek, eslesir, csvMetni, metaveri, tarih, type Satir, type Tanim } from "../src/lib/gezgin-cekirdek.ts";
+import { uygunMu, ortakSiklik, yilAraligi, kapsam, zamanAlani, olcek, eslesir, csvMetni, metaveri, tarih, seriOzeti, farkIliskisi, type Satir, type Tanim } from "../src/lib/gezgin-cekirdek.ts";
 
 const s = (d: string, v: string, tam = true): Satir => [d, v, v, 1, tam];
 
@@ -88,4 +88,29 @@ test("adres parçası: yalnız varsayılandan farklı alan, virgül kodlanmaz, h
   assert.equal(adresParcasi([["g", "a-1,b-2", "x"], ["s", "yillik", "aylik"], ["d", "ort", "ort"]]), "#g=a-1,b-2&s=yillik");
   assert.equal(adresParcasi([["d", "", "2025"], ["x", "", ""]]), "");
   assert.equal(adresParcasi([["q", "a b&c", ""]]), "#q=a%20b%26c");
+});
+
+
+test("seri özeti kısmi ve boş dönemleri hesaplara katmaz, dönem boşluğunu aşmaz", () => {
+  const veri = [s("2024-01", "2"), s("2024-02", "4"), s("2024-03", "", true), s("2024-04", "6"), s("2024-05", "98", false)];
+  const o = seriOzeti(veri, 1, "aylik", 2024, 2024);
+  assert.equal(o.ortalama, 4);
+  assert.equal(o.standartSapma, 2);
+  assert.deepEqual(o.aralik, [2, 6]);
+  assert.deepEqual([o.tam, o.kismi, o.beklenen], [3, 1, 12]);
+  assert.equal(o.son?.[0], "2024-05");
+  assert.equal(o.degisim, null);
+  assert.equal(seriOzeti(veri.slice(0, 2), 1, "aylik", 2024, 2024).degisim, 2);
+  assert.equal(seriOzeti(veri.slice(0, 4), 1, "aylik", 2024, 2024).degisim, null);
+});
+
+test("ilişki aynı ardışık tam dönemleri eşler; küçük ve sabit örneklem ayrılır", () => {
+  const a = Array.from({length: 18}, (_, i) => s(String(2000+i), String(i*i)));
+  const b = a.map((r, i) => s(r[0], String(-3*Number(r[1])), i !== 5)).filter((_, i) => i !== 10);
+  const sonuc = farkIliskisi(a, b, 1, "yillik");
+  assert.equal(sonuc.n, 13);
+  assert.ok(sonuc.r !== null && Math.abs(sonuc.r + 1) < 1e-12);
+  assert.ok(!sonuc.eslesme.some((p) => ["2005","2006","2010","2011"].includes(p.donem)));
+  assert.equal(farkIliskisi(a.slice(0, 10), b, 1, "yillik").neden, "az");
+  assert.equal(farkIliskisi(a, a.map((r, i) => s(r[0], String(i))), 1, "yillik").neden, "sabit");
 });

@@ -4,10 +4,10 @@
 import * as Plot from "@observablehq/plot";
 import { yaz, donemAdi, n0, n1 } from "../lib/bicim.ts";
 import { uygunMu, ortakSiklik, yilAraligi, kapsam, tarih, zamanAlani, olcek, eslesir, csvMetni, metaveri, olcekUygun, ortakBaz, donustur, sirala, adresParcasi, ORTAK_AZAMI,
-  type Satir, type Tanim, type Olcek, type Nokta } from "../lib/gezgin-cekirdek.ts";
+  seriOzeti, farkIliskisi, donemSirasi, KORELASYON_ASGARI, type Satir, type Tanim, type Olcek, type Nokta } from "../lib/gezgin-cekirdek.ts";
 
 interface Panel { siklik: string; yontem: string; seriler: Tanim[]; veri: Record<string, Satir[]> }
-interface Durum { g: string[]; s: "aylik" | "ceyreklik" | "yillik"; d: "ort" | "son"; b: number; e: number; v: "grafik" | "isi" | "tablo"; o: Olcek }
+interface Durum { g: string[]; s: "aylik" | "ceyreklik" | "yillik"; d: "ort" | "son"; b: number; e: number; v: "grafik" | "isi" | "tablo" | "analiz"; o: Olcek }
 
 const SIKLIK: Record<string, string> = { aylik: "aylık", ceyreklik: "çeyreklik", yariyillik: "yarıyıllık", yillik: "yıllık", gunluk: "günlük", haftalik: "haftalık" };
 const BIRIM: Record<string, string> = { yuzde: "yüzde", "yuzde-gsyh": "GSYH'ye oran, %", "yuzde-puan": "yüzde puan", USD: "ABD doları", endeks: "endeks", puan: "puan (0–100)", PPS: "PPS", yil: "yıl", kisi: "kişi", ay: "ay", dogum: "kadın başına doğum" };
@@ -16,6 +16,8 @@ const AZAMI = 6;
 const VARSAYILAN = ["bis-tufe-yillik-tr", "bis-politika-faizi-tr", "eurostat-issizlik-aylik-tr"];
 const YONTEM_SAYFASI = "https://veri.korayoner.dev/yontem";
 const OLCEK_ADI: Record<Olcek, string> = { deger: "değer", endeks: "endeks (baz = 100)", fark: "baz döneme göre fark (puan)" };
+const GORUNUM_BASLIK = { grafik: "Zaman serileri", isi: "Dönem profili", tablo: "Veri tablosu", analiz: "İstatistik ve ilişkiler" };
+const R_BICIM = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const KAT = ["var(--kat-1)", "var(--kat-2)", "var(--kat-3)", "var(--kat-4)"];
 
 const el = <K extends keyof HTMLElementTagNameMap>(ad: K, ozellik: Partial<HTMLElementTagNameMap[K]> = {}, ...cocuk: (Node | string)[]) => {
@@ -27,6 +29,10 @@ if (form) baslat(form);
 
 function baslat(form: HTMLFormElement) {
   const cikti = document.getElementById("g-cikti")!, durumP = document.getElementById("g-durum")!, sayac = document.getElementById("g-sayac")!;
+  const sonucUst = document.getElementById("g-sonuc-ust")!;
+  const gorunumBaslik = document.getElementById("g-gorunum-bas")!;
+  const seciliListe = document.getElementById("g-secili")!;
+  const hizli = [...form.querySelectorAll<HTMLButtonElement>("[data-g-yil]")];
   const kutular = [...form.querySelectorAll<HTMLInputElement>('input[name="g"]')];
   const siklikOf = (id: string) => kutular.find((k) => k.value === id)?.closest<HTMLElement>("label")?.dataset.siklik ?? "yillik";
   const adOf = (id: string) => kutular.find((k) => k.value === id)?.closest("label")?.querySelector("span")?.textContent ?? id;
@@ -58,7 +64,7 @@ function baslat(form: HTMLFormElement) {
     const sec = <T extends string>(k: string, l: readonly T[], v: T): T => (l.includes(h.get(k) as T) ? (h.get(k) as T) : v);
     const b = sayi("b", 2010), e = sayi("e", yillar.at(-1)!);
     return { g: g.length ? g : VARSAYILAN.filter((x) => gecerli.has(x)), s: sec("s", ["aylik", "ceyreklik", "yillik"] as const, "aylik"),
-      d: sec("d", ["ort", "son"] as const, "ort"), b: Math.min(b, e), e: Math.max(b, e), v: sec("v", ["grafik", "isi", "tablo"] as const, "grafik"),
+      d: sec("d", ["ort", "son"] as const, "ort"), b: Math.min(b, e), e: Math.max(b, e), v: sec("v", ["grafik", "isi", "tablo", "analiz"] as const, "grafik"),
       o: sec("o", ["deger", "endeks", "fark"] as const, "deger") };
   };
   let durum = oku();
@@ -69,7 +75,11 @@ function baslat(form: HTMLFormElement) {
     if (h !== location.hash) history.pushState(null, "", h || location.pathname);
     formaYaz(); ciz();
   };
+  const hizliBas = (n: number) => n ? Math.max(yillar[0], yillar.at(-1)! - n + 1) : yillar[0];
   const formaYaz = () => {
+    gorunumBaslik.textContent = GORUNUM_BASLIK[durum.v];
+    seciliListe.replaceChildren(...durum.g.map((id) => el("li", { textContent: adOf(id) })));
+    hizli.forEach((btn) => btn.setAttribute("aria-pressed", String(durum.b === hizliBas(Number(btn.dataset.gYil)) && durum.e === yillar.at(-1))));
     kutular.forEach((k) => (k.checked = durum.g.includes(k.value)));
     for (const [ad, v] of [["s", durum.s], ["d", durum.d], ["v", durum.v], ["o", durum.o]] as const)
       form.querySelectorAll<HTMLInputElement>(`input[name="${ad}"]`).forEach((r) => (r.checked = r.value === v));
@@ -98,9 +108,11 @@ function baslat(form: HTMLFormElement) {
     el("section", { className: "g-panel g-bos" }, el("p", { textContent: metin }), ...(eylem.length ? [el("p", { className: "g-bos-eylem" }, ...eylem)] : []));
   const sinirla = (y: number) => Math.min(Math.max(y, yillar[0]), yillar.at(-1)!);
 
+  let seciliCift = "";
   let son: { panel: Panel; secili: Tanim[]; satir: Record<string, Satir[]> } | null = null;
   async function ciz() {
     const d = durum;
+    son = null;
     durumP.textContent = "Yükleniyor…";
     let panel: Panel;
     try { panel = await yukle(d.s); } catch (hata) {
@@ -120,7 +132,7 @@ function baslat(form: HTMLFormElement) {
     son = { panel, secili: dolu, satir };
     const i = d.d === "ort" ? 1 : 2;
     durumP.textContent = !d.g.length ? "Gösterge seçin."
-      : `${dolu.length} gösterge çiziliyor · ${SIKLIK[d.s]} · ${d.d === "ort" ? "dönem ortalaması" : "dönem sonu"} · ${d.b}–${d.e}` +
+      : `${dolu.length} ${d.v === "grafik" ? "gösterge çiziliyor" : "gösterge"} · ${SIKLIK[d.s]} · ${d.d === "ort" ? "dönem ortalaması" : "dönem sonu"} · ${d.b}–${d.e}` +
         (bos.length ? ` · aralıkta verisi olmayan: ${bos.length}` : "") + (disarida.length ? ` · bu sıklıkta olmayan: ${disarida.length}` : "");
     cikti.replaceChildren();
     delete cikti.dataset.bekle;
@@ -137,7 +149,8 @@ function baslat(form: HTMLFormElement) {
       else if (d.v === "isi") {
         if (d.o !== "deger") cikti.append(bildirim("Yıl × dönem görünümü ölçek dönüşümü kullanmaz; değerler kaynaktaki ölçekte."));
         isi(dolu, satir, i, d);
-      } else tablo(dolu, satir, i, d);
+      } else if (d.v === "analiz") istatistik(dolu, satir, i, d);
+      else tablo(dolu, satir, i, d);
     }
     for (const t of bos) {
       const k = kapsam(panel.veri[t.id] ?? []);
@@ -147,6 +160,100 @@ function baslat(form: HTMLFormElement) {
         ...(k ? [dugme(`Aralığı ${sinirla(k[0])}–${sinirla(k[1])} yap`, () => uygula({ b: sinirla(k[0]), e: sinirla(k[1]) }))] : [])));
     }
     if (!dolu.length && !bos.length && !disarida.length && d.g.length) cikti.append(bildirim("Seçili göstergelerin hiçbiri bu panelde yok."));
+  }
+
+  function istatistik(secili: Tanim[], satir: Record<string, Satir[]>, i: 1 | 2, d: Durum) {
+    const hucre = (metin: string, alt?: string) => el("td", { className: "n sayi" }, metin, ...(alt ? [el("small", { textContent: alt })] : []));
+    const satirlar = secili.map((t) => {
+      const o = seriOzeti(satir[t.id], i, d.s, d.b, d.e);
+      const birim = BIRIM[t.birim] ?? t.birim;
+      const farkBirim = t.birim.startsWith("yuzde") ? "yuzde-puan" : t.birim;
+      const fark = o.degisim === null ? "—" : farkBirim === "yuzde-puan"
+        ? (o.degisim > 0 ? "+" : "") + R_BICIM.format(o.degisim) + " puan"
+        : (o.degisim > 0 ? "+" : "") + yaz(farkBirim, o.degisim);
+      const w = (n: number | null) => n === null ? "—" : yaz(t.birim, n);
+      const ad = el("th", { scope: "row" }, el("a", { href: `/gosterge/${t.id}`, textContent: t.baslik }), el("small", { textContent: birim }));
+      return el("tr", {}, ad, hucre(o.son ? w(Number(o.son[i])) : "—", o.son && (donemAdi(o.son[0]) + (o.son[4] ? "" : " · kısmi"))),
+        hucre(fark), hucre(w(o.ortalama)), hucre(w(o.standartSapma)),
+        hucre(o.aralik ? o.aralik.map(w).join(" / ") : "—"),
+        hucre(`${o.tam} / ${o.beklenen}`, o.kismi ? `${o.kismi} kısmi` : undefined));
+    });
+    const tabloYap = (ad: string, sinif: string, basliklar: string[], rows: HTMLTableRowElement[], sayisal: boolean) => {
+      const tablo = el("table", { className: sinif }, el("thead", {}, el("tr", {}, ...basliklar.map((v, j) =>
+        el("th", { scope: "col", className: sayisal && j > 0 ? "n" : "", textContent: v })))), el("tbody", {}, ...rows));
+      const kutu = kaydir(tablo);
+      kutu.setAttribute("role", "region");
+      kutu.setAttribute("aria-label", ad);
+      return kutu;
+    };
+    const ad = "Betimleyici istatistikler";
+    cikti.append(el("section", { className: "g-panel g-istatistik-panel" }, el("h3", { textContent: ad }),
+      tabloYap(ad, "g-istatistik", ["Gösterge", "Son değer", "Dönem farkı", "Ortalama", "Std. sapma", "En düşük / En yüksek", "Tam / Beklenen"], satirlar, true),
+      el("p", { className: "g-not", textContent: `Son değer kısmi olabilir. Ortalama, örneklem standart sapması (n−1) ve aralık yalnız tam dönemlerden hesaplanır. Dönem farkı iki ardışık tam gözlem gerektirir. Beklenen dönem sayısı seçili takvim aralığını esas alır.${d.o !== "deger" ? " Bu görünüm ham panel değerlerini kullanır; grafik ölçeği uygulanmaz." : ""}` })));
+    if (secili.length < 2) return;
+    const ciftler = secili.flatMap((a, j) => secili.slice(j + 1).map((b) => ({
+      a, b, id: `${a.id}:${b.id}`, ...farkIliskisi(satir[a.id], satir[b.id], i, d.s),
+    })));
+    const iliskiler = ciftler.map(({ a, b, n, r, neden }) => {
+      const etiket = r === null ? (neden === "az" ? `— (n < ${KORELASYON_ASGARI})` : "— (değişim sabit)") : R_BICIM.format(Math.abs(r) < .005 ? 0 : r);
+      const cel = el("td", { className: "n sayi" }, etiket);
+      if (r !== null) {
+        const bar = el("span", { className: "iliski-cubuk" }, el("span"));
+        bar.setAttribute("aria-hidden", "true");
+        if (r < 0) bar.dataset.eksi = "";
+        (bar.firstElementChild as HTMLElement).style.width = `${Math.abs(r) * 100}%`;
+        cel.append(bar);
+      }
+      return el("tr", {}, el("th", { scope: "row", textContent: `${a.baslik} / ${b.baslik}` }), hucre(String(n)), cel);
+    });
+    const iliskiAdi = "Dönem farklarının korelasyonu";
+    cikti.append(el("section", { className: "g-panel g-istatistik-panel" }, el("h3", { textContent: iliskiAdi }),
+      tabloYap(iliskiAdi, "g-istatistik g-korelasyon", ["Seri çifti", "Eşleşen fark (n)", "Pearson r"], iliskiler, true),
+      el("p", { className: "g-not", textContent: `Her serinin ardışık tam dönemleri arasındaki farklar, aynı döneme göre eşleştirilir. En az ${KORELASYON_ASGARI} eşleşme gerekir. Bu katsayı betimleyicidir; nedensellik veya istatistiksel anlamlılık göstermez.` })));
+    const secim = el("select", { id: "g-iliski-cift" }, ...ciftler.map((c) => el("option", { value: c.id, textContent: `${c.a.baslik} / ${c.b.baslik}` })));
+    const grafikAlani = el("div", { className: "g-iliski-grafik" });
+    const grafikNotu = el("p", { className: "g-not", ariaLive: "polite" });
+    cikti.append(el("section", { className: "g-panel g-istatistik-panel" },
+      el("h3", { textContent: "Dönem farklarının dağılımı" }),
+      el("label", { htmlFor: secim.id, className: "g-iliski-etiket" }, "Seri çifti"), secim,
+      grafikAlani, grafikNotu));
+    secim.value = ciftler.some((c) => c.id === seciliCift) ? seciliCift : (ciftler.find((c) => c.eslesme.length >= 2) ?? ciftler[0]).id;
+    const cizIliski = () => {
+      const c = ciftler.find((x) => x.id === secim.value)!;
+      seciliCift = c.id;
+      grafikAlani.replaceChildren();
+      if (c.n < 2) {
+        grafikNotu.textContent = "Dağılım grafiği için en az iki eşleşen fark gerekir.";
+        return;
+      }
+      const farkBirim = (t: Tanim) => t.birim.startsWith("yuzde") ? "yüzde puan" : (BIRIM[t.birim] ?? t.birim);
+      const farkYaz = (t: Tanim, v: number, kip: "eksen" | "tam" = "tam") => yaz(t.birim.startsWith("yuzde") ? "yuzde-puan" : t.birim, v, kip);
+      const gen = grafikAlani.clientWidth || 600;
+      const g = Plot.plot({
+        ariaLabel: `${c.a.baslik} ve ${c.b.baslik}: aynı döneme ait ${c.n} gözlenen değişim çifti.`,
+        width: gen, height: gen < 520 ? 235 : 300, marginLeft: 55, marginRight: 20, marginBottom: 32, marginTop: 10,
+        style: { background: "transparent", color: "var(--soluk)", fontSize: "12px" },
+        x: { grid: true, nice: true, zero: true, label: null, ticks: Math.max(3, Math.floor(gen / 110)), tickFormat: (v: number) => farkYaz(c.a, v, "eksen") },
+        y: { grid: true, nice: true, zero: true, label: null, tickFormat: (v: number) => farkYaz(c.b, v, "eksen") },
+        marks: [
+          Plot.ruleX([0], { stroke: "var(--soluk)", strokeOpacity: .65 }),
+          Plot.ruleY([0], { stroke: "var(--soluk)", strokeOpacity: .65 }),
+          Plot.dot(c.eslesme, { x: "x", y: "y", r: 3.7, fill: "var(--dv-1)", fillOpacity: .65 }),
+          Plot.tip(c.eslesme, Plot.pointer({ className: "g-ipucu", x: "x", y: "y",
+            title: (p: { donem: string; x: number; y: number }) => `${donemAdi(p.donem)}
+${c.a.baslik}: ${farkYaz(c.a, p.x)}
+${c.b.baslik}: ${farkYaz(c.b, p.y)}` })),
+        ],
+      });
+      const temizle = () => g.querySelectorAll("g[aria-label]").forEach((n) => n.removeAttribute("aria-label"));
+      new MutationObserver(temizle).observe(g, { childList: true, subtree: true });
+      temizle();
+      grafikAlani.append(g);
+      grafikNotu.textContent = `X: ${c.a.baslik} (${farkBirim(c.a)}). Y: ${c.b.baslik} (${farkBirim(c.b)}). Her nokta aynı dönemin iki değişimini gösterir.`;
+    };
+    secim.addEventListener("change", cizIliski);
+    cizIliski();
+
   }
 
   function rozetler(t: Tanim, d: Durum) {
@@ -170,14 +277,22 @@ function baslat(form: HTMLFormElement) {
       : `Kaynaktaki değer (${t.kaynak_kod}).` });
   }
 
-  function grafik(secili: Tanim[], satir: Record<string, Satir[]>, i: number, d: Durum) {
+  function grafik(secili: Tanim[], satir: Record<string, Satir[]>, i: 1 | 2, d: Durum) {
     const z = zamanAlani(secili.map((t) => satir[t.id]));
     if (!z) return;                                                 // dolu seri yoksa çağrılmaz; yine de geçersiz Date üretme
     const alan: [Date, Date] = [new Date(Math.min(+z[0], Date.UTC(d.b, 0, 1))), z[1]];
     for (const t of secili) {
       const tuval = el("div", { className: "g-tuval" });
       cikti.append(el("section", { className: "g-panel" }, baslik(t, satir[t.id], i, d), tuval, not(t, d)));
-      const veri = satir[t.id].map((r) => ({ t: tarih(r[0]), v: Number(r[i]), donem: r[0], tam: r[4] }));
+      let parca = 0;
+      const gecerli = satir[t.id].filter((r) => r[i].trim() && Number.isFinite(Number(r[i])));
+      const veri = gecerli.map((r, j) => {
+        const once = gecerli[j - 1];
+        if (once && donemSirasi(r[0], d.s) - donemSirasi(once[0], d.s) !== 1) parca++;
+        return { t: tarih(r[0]), v: Number(r[i]), donem: r[0], tam: r[4], parca };
+      });
+      const adet = new Map<number, number>();
+      for (const v of veri) adet.set(v.parca, (adet.get(v.parca) ?? 0) + 1);
       const oran = t.birim.startsWith("yuzde");
       const gen = tuval.clientWidth || 900;
       const p = Plot.plot({
@@ -187,9 +302,9 @@ function baslat(form: HTMLFormElement) {
         y: { grid: true, nice: true, label: null, zero: oran || t.birim === "USD", tickFormat: (v: number) => yaz(t.birim, v, "eksen") },
         marks: [
           Plot.ruleY([0], { stroke: "var(--soluk)", strokeOpacity: oran ? 0.7 : 0 }),
-          Plot.lineY(veri, { x: "t", y: "v", stroke: "var(--dv-1)", strokeWidth: 1.8 }),
+          Plot.lineY(veri, { x: "t", y: "v", z: "parca", stroke: "var(--dv-1)", strokeWidth: 1.8 }),
           // Tek gözlemde çizgi görünmez: her noktayı küçük işaretle göster.
-          ...(veri.length < 3 ? [Plot.dot(veri, { x: "t", y: "v", r: 3.5, fill: "var(--dv-1)" })] : []),
+          Plot.dot(veri.filter((x) => x.tam && adet.get(x.parca) === 1), { x: "t", y: "v", r: 3.5, fill: "var(--dv-1)" }),
           Plot.dot(veri.filter((x) => !x.tam), { x: "t", y: "v", r: 3.5, fill: "var(--yuzey)", stroke: "var(--dv-1)", strokeWidth: 1.5 }),
           Plot.ruleX(veri, Plot.pointerX({ className: "g-imlec", x: "t", stroke: "var(--soluk)", strokeDasharray: "3 3" })),
           Plot.dot(veri, Plot.pointerX({ className: "g-imlec", x: "t", y: "v", r: 4, fill: "var(--dv-2)" })),
@@ -420,6 +535,13 @@ function baslat(form: HTMLFormElement) {
   };
   for (const x of suzgec) x.addEventListener(x instanceof HTMLSelectElement ? "change" : "input", (e) => { e.stopPropagation(); suz(); });
 
+  for (const btn of hizli) btn.addEventListener("click", () => uygula({ b: hizliBas(Number(btn.dataset.gYil)), e: yillar.at(-1)! }));
+  sonucUst.hidden = false;
+  const sonucDugme = document.getElementById("g-sonuca-git");
+  if (sonucDugme) {
+    sonucDugme.hidden = false;
+    sonucDugme.addEventListener("click", () => gorunumBaslik.focus());
+  }
   form.addEventListener("submit", (e) => e.preventDefault());       // aramada Enter sayfayı göndermesin
   form.addEventListener("change", (e) => {
     if (suzgec.includes(e.target as HTMLInputElement)) return;
@@ -430,7 +552,7 @@ function baslat(form: HTMLFormElement) {
   addEventListener("popstate", adrestenKur);
   addEventListener("hashchange", adrestenKur);
   let zaman = 0;
-  addEventListener("resize", () => { clearTimeout(zaman); zaman = window.setTimeout(() => durum.v === "grafik" && ciz(), 200); });
+  addEventListener("resize", () => { clearTimeout(zaman); zaman = window.setTimeout(() => (durum.v === "grafik" || durum.v === "analiz") && ciz(), 200); });
   form.hidden = false;
   // Telefonda gösterge listesi kapalı başlar; seçim sayısı özetle görünür.
   const liste = document.getElementById("g-liste") as HTMLDetailsElement | null;

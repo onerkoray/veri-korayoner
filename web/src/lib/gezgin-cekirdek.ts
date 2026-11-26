@@ -22,6 +22,58 @@ export function ortakSiklik(kaynakSiklik: string[]): (typeof GORUNUM_SIKLIK)[num
 export function yilAraligi(satir: Satir[], b: number, e: number): Satir[] {
   return satir.filter((r) => { const y = Number(r[0].slice(0, 4)); return y >= b && y <= e; });
 }
+type PanelSikligi = (typeof GORUNUM_SIKLIK)[number];
+
+/** Düzenli panelde iki dönemin ardışık olup olmadığını sayısal olarak ölçer. */
+export function donemSirasi(donem: string, siklik: PanelSikligi): number {
+  const y = Number(donem.slice(0, 4));
+  if (siklik === "yillik") return y;
+  return siklik === "aylik" ? y * 12 + Number(donem.slice(5)) - 1 : y * 4 + Number(donem.slice(6)) - 1;
+}
+
+const panelDegeri = (r: Satir, i: 1 | 2) => r[i].trim() ? Number(r[i]) : NaN;
+
+/** Betimleyici özet: kısmi dönemler istatistiğe ve dönemlik değişime girmez. */
+export function seriOzeti(satir: Satir[], i: 1 | 2, siklik: PanelSikligi, b: number, e: number) {
+  const gecerli = satir.filter((r) => Number.isFinite(panelDegeri(r, i)));
+  const tam = gecerli.filter((r) => r[4]);
+  const sayilar = tam.map((r) => panelDegeri(r, i));
+  const ortalama = sayilar.length ? sayilar.reduce((a, v) => a + v, 0) / sayilar.length : null;
+  const standartSapma = ortalama !== null && sayilar.length > 1
+    ? Math.sqrt(sayilar.reduce((a, v) => a + (v - ortalama) ** 2, 0) / (sayilar.length - 1)) : null;
+  const son = gecerli.at(-1), onceki = gecerli.at(-2);
+  const degisim = son?.[4] && onceki?.[4] && donemSirasi(son[0], siklik) - donemSirasi(onceki[0], siklik) === 1
+    ? panelDegeri(son, i) - panelDegeri(onceki, i) : null;
+  const beklenen = (e - b + 1) * (siklik === "aylik" ? 12 : siklik === "ceyreklik" ? 4 : 1);
+  return { son, degisim, ortalama, standartSapma, aralik: olcek(sayilar), tam: tam.length,
+    kismi: gecerli.length - tam.length, beklenen };
+}
+
+/** Pearson r yalnız iki seride de gözlenen, ardışık ve tam dönem farklarıyla. */
+export const KORELASYON_ASGARI = 12;
+export function farkIliskisi(a: Satir[], b: Satir[], i: 1 | 2, siklik: PanelSikligi) {
+  const farklar = (satir: Satir[]) => {
+    const sonuc = new Map<string, number>();
+    for (let j = 1; j < satir.length; j++) {
+      const once = satir[j - 1], simdi = satir[j];
+      const fark = panelDegeri(simdi, i) - panelDegeri(once, i);
+      if (simdi[4] && once[4] && Number.isFinite(fark)
+        && donemSirasi(simdi[0], siklik) - donemSirasi(once[0], siklik) === 1) sonuc.set(simdi[0], fark);
+    }
+    return sonuc;
+  };
+  const x = farklar(a), y = farklar(b);
+  const eslesme = [...x].flatMap(([donem, v]) => y.has(donem) ? [{ donem, x: v, y: y.get(donem)! }] : []);
+  const n = eslesme.length;
+  if (n < KORELASYON_ASGARI) return { n, r: null, neden: "az", eslesme } as const;
+  const ox = eslesme.reduce((s, p) => s + p.x, 0) / n, oy = eslesme.reduce((s, p) => s + p.y, 0) / n;
+  let xx = 0, yy = 0, xy = 0;
+  for (const p of eslesme) { const dx = p.x - ox, dy = p.y - oy; xx += dx * dx; yy += dy * dy; xy += dx * dy; }
+  const r = xy / (Math.sqrt(xx) * Math.sqrt(yy));
+  return Number.isFinite(r) ? { n, r: Math.max(-1, Math.min(1, r)), neden: null, eslesme } as const
+    : { n, r: null, neden: "sabit", eslesme } as const;
+}
+
 /** Serinin kapsadığı yıllar; boşsa null. */
 export function kapsam(satir: Satir[]): [number, number] | null {
   return satir.length ? [Number(satir[0][0].slice(0, 4)), Number(satir.at(-1)![0].slice(0, 4))] : null;
