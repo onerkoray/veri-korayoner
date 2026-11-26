@@ -30,6 +30,14 @@ const kaynakAdresi = ({
 } as Record<string, string>)[s.kaynak.id] ?? s.kaynak.adres;
 const gunluk = s.siklik === "gunluk";
 const tablo = s.gozlemler.slice().reverse().slice(0, gunluk ? 90 : undefined);
+// Değer çubuğu: tablodaki değer aralığında sıfır merkezli (negatif sola). Yüzde birimiyle.
+const tv = tablo.filter((g) => g.deger != null).map((g) => Number(g.deger));
+const tlo = Math.min(0, ...tv), thi = Math.max(0, ...tv), tara = thi - tlo || 1;
+const cubuk = (ham: string | null) => {
+  if (ham == null) return undefined;
+  const p = ((Number(ham) - tlo) / tara) * 100, z = (-tlo / tara) * 100;
+  return `--b:${Math.min(p, z).toFixed(2)};--g:${Math.abs(p - z).toFixed(2)}`;
+};
 // Güncellik (durum.json), revizyon kaydı (degisiklikler.json), bir yıl önceye göre değişim.
 const sd = durum()?.seriler.find((r) => r.id === s.id);
 const olaylar = degisiklikler().filter((o) => o.seri === s.id);
@@ -196,13 +204,14 @@ const aciklama = `${s.baslik}: ${sn ? donemAdi(sn.donem) : ""} ${deger(s, sn?.de
     <section aria-labelledby="tb">
       <h2 id="tb">Gözlemler</h2>
       {gunluk && <p class="kucuk">Son 90 iş günü gösteriliyor; {d.length.toLocaleString("tr-TR")} gözlemin tamamı {csv ? <a href={csv}>CSV</a> : "kaynakta"}.</p>}
-      <div class="kaydir">
+      {!gunluk && <p class="kucuk">{tablo.length.toLocaleString("tr-TR")} dönem, yeniden eskiye; tablo kendi içinde kayar.{csv && <> Tamamı: <a href={csv}>CSV</a>.</>}</p>}
+      <div class="kaydir tablo-kutu gozlem-kutu" tabindex="0" role="region" aria-label={`${s.baslik}, gözlem tablosu`}>
         <table>
           <caption class="gizli">{s.baslik}, gözlemler, yeniden eskiye</caption>
           <thead><tr><th scope="col">Dönem</th><th scope="col" class="n">Değer</th>{yillik.size > 0 && <th scope="col" class="n">Bir yıl önceye göre</th>}<th scope="col" class="n">Kaynaktaki ham değer</th></tr></thead>
           <tbody>
             {tablo.map((g) => (
-              <tr><th scope="row">{g.donem}</th><td class="n">{deger(s, g.deger)}</td>{yillik.size > 0 && <td class="n">{yillik.has(g.donem) ? yfYaz(yillik.get(g.donem)!) : "—"}</td>}<td class="n ham">{g.deger ?? "yayımlanmadı"}{g.durum && g.durum !== "A" && <span class="bayrak" title="Kaynağın gözlem bayrağı (A = normal değer gösterilmez)"> {g.durum}</span>}</td></tr>
+              <tr><th scope="row">{g.donem}</th><td class="n cubuklu" style={cubuk(g.deger)} data-eksi={g.deger != null && Number(g.deger) < 0 ? "" : undefined}>{deger(s, g.deger)}</td>{yillik.size > 0 && <td class="n">{yillik.has(g.donem) ? <span class="yon" data-yon={Math.sign(Number(yillik.get(g.donem)!.fark.toFixed(1)))}>{yfYaz(yillik.get(g.donem)!)}</span> : "—"}</td>}<td class="n ham">{g.deger ?? "yayımlanmadı"}{g.durum && g.durum !== "A" && <span class="bayrak" title="Kaynağın gözlem bayrağı (A = normal değer gösterilmez)"> {g.durum}</span>}</td></tr>
             ))}
           </tbody>
         </table>
@@ -212,6 +221,9 @@ const aciklama = `${s.baslik}: ${sn ? donemAdi(sn.donem) : ""} ${deger(s, sn?.de
 </Taban>
 <style>
   .iz { padding-top: 1.5rem; font-size: .85rem; color: var(--soluk); }
+  /* 306 satırlık tablo sayfanın %78'ini tutuyordu (24 Kasım 2026): kutu içinde kayar, başlık sabit. */
+  .gozlem-kutu { max-height: min(70vh, 34rem); max-width: 54rem; }
+  #tb { padding-top: 1.5rem; }
   .bas { display: grid; gap: .6rem; padding-block: 1rem 0; }
   .guncellik { display: flex; flex-wrap: wrap; gap: .3rem 1rem; align-items: center; margin: 0; font-size: .82rem; color: var(--soluk); }
   .eylem { display: flex; flex-wrap: wrap; gap: .5rem 1.2rem; margin: 0; font-weight: 600; font-size: .92rem; }

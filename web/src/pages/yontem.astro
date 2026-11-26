@@ -1,10 +1,12 @@
 ---
 import Taban from "../layouts/Taban.astro";
+import VeriAkisi from "../components/VeriAkisi.astro";
 ---
 <Taban baslik="Yöntem | Türkiye Verisi" aciklama="Verinin nasıl çekildiği, doğrulandığı, saklandığı ve lisans kapısından geçtiği." yol="/yontem">
   <article class="sar metin">
     <p class="etiket">Yöntem</p>
     <h1>Veri nasıl çekilir, doğrulanır ve yayımlanır?</h1>
+    <VeriAkisi />
 
     <h2>Çekme</h2>
     <p>Hafta içi her sabah zamanlanmış bir iş kayıttaki her seriyi kendi kurumunun resmî API'sinden çeker. İstekler yalnız izinli adreslere gider; zaman aşımı, yanıt boyutu sınırı ve kaynağın bekleme isteğine uyan yeniden deneme vardır.</p>

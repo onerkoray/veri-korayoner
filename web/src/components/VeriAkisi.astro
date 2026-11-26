@@ -1,0 +1,65 @@
+---
+// Veri nasıl geliyor: kaynaktan kullanıma beş adım. Sıra gerçek (numaralar sırayı anlatır).
+// Her sayı derleme anındaki dosyalardan: kaynak kaydı, durum.json, manifest.json. Elle sayı yok.
+import { kaynaklar, seriler, durum, tarih } from "../lib/veri";
+import manifest from "../../../yayin/api/v1/manifest.json";
+interface Props { kisa?: boolean; etiket?: boolean }
+const { kisa = false, etiket = true } = Astro.props;
+const ss = seriler();
+const kisaAd = (k: string) => k.replace(/\s*\(.*\)$/, "").replace("Uluslararası Ödemeler Bankası", "BIS")
+  .replace("Avrupa Birliği İstatistik Ofisi", "Eurostat").replace("Uluslararası Çalışma Örgütü", "ILO").replace("Avrupa Merkez Bankası", "ECB");
+const aktif = kaynaklar().filter((k) => ss.some((s) => s.kaynak.id === k.id));
+const d = durum();
+const sayi = (n: number) => n.toLocaleString("tr-TR");
+const adimlar = [
+  { ad: "Kaynak", deger: `${aktif.length} kurum`, alt: aktif.map((k) => kisaAd(k.kurum)).join(" · ") },
+  { ad: "Çekim", deger: "Her iş günü", alt: "08.20 TSİ; zaman aşımı ve 5xx hatasında beş deneme, sonra ikinci tur" },
+  { ad: "Doğrulama", deger: "3 kapı", alt: "lisans izni · kaynak kodu ve ülke eşleşmesi · yayımlanmış dönem kaybolursa durur" },
+  { ad: "Yayın", deger: `${sayi(manifest.series_count)} seri`, alt: `${sayi(manifest.observation_count)} gözlem · ${manifest.files.length} dosya, her biri SHA-256 özetli` },
+  { ad: "Kullanım", deger: "Site ve API", alt: "grafik, emsal karşılaştırması, JSON · CSV · Parquet" },
+];
+---
+<figure class:list={["akis", kisa && "akis--kisa"]} aria-labelledby="akis-baslik">
+  <figcaption id="akis-baslik">
+    {etiket ? <span class="etiket">Veri nasıl geliyor</span> : <span class="gizli">Veri nasıl geliyor</span>}
+    {d && <span class="akis-durum"><span class:list={["nokta", d.ozet.hatali ? "nokta--uyari" : "nokta--iyi"]} aria-hidden="true"></span>Son kontrol {tarih(d.son_kontrol)} · {d.ozet.hatali ? `${d.ozet.hatali} seride son çekim başarısız, önceki veri yerinde` : `${d.ozet.yayinda}/${d.ozet.seri} seri sağlıklı`}</span>}
+  </figcaption>
+  <ol class="akis-adimlar">
+    {adimlar.map((a, i) => (
+      <li>
+        <span class="akis-no">{String(i + 1).padStart(2, "0")}</span>
+        <span class="akis-ad">{a.ad}</span>
+        <span class="akis-deger">{a.deger}</span>
+        {!kisa && <span class="akis-alt">{a.alt}</span>}
+      </li>
+    ))}
+  </ol>
+  {kisa && <p class="akis-devam"><a href="/yontem">Her adım ayrıntısıyla: Yöntem →</a></p>}
+</figure>
+<style>
+  .akis { margin: 0; display: grid; gap: .9rem; }
+  .akis figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .4rem 1rem; align-items: baseline; }
+  .nokta { width: .5rem; height: .5rem; border-radius: 50%; flex: none; }
+  .nokta--iyi { background: var(--dv-iyi); } .nokta--uyari { background: var(--dv-kotu); }
+  .akis-durum { display: inline-flex; align-items: center; gap: .45rem; font-size: .84rem; color: var(--soluk); }
+  .akis-adimlar { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border: 1px solid var(--cizgi); background: var(--yuzey); }
+  .akis-adimlar li { position: relative; display: grid; align-content: start; gap: .3rem; padding: 1rem 1.1rem 1.1rem; }
+  .akis-adimlar li + li { border-left: 1px solid var(--cizgi); }
+  /* Adımlar arası ok: bir sonraki adıma geçişi gösterir, süs değil. */
+  .akis-adimlar li + li::before {
+    content: ""; position: absolute; left: -7px; top: 1.35rem; width: 12px; height: 12px;
+    background: var(--yuzey); border-top: 1px solid var(--cizgi); border-right: 1px solid var(--cizgi); transform: rotate(45deg);
+  }
+  .akis-no { font: 600 .7rem/1 var(--mono); letter-spacing: .08em; color: var(--soluk); }
+  .akis-ad { font-weight: 650; font-size: .95rem; }
+  .akis-deger { font-size: 1.15rem; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+  .akis-alt { font-size: .8rem; line-height: 1.45; color: var(--soluk); }
+  .akis-devam { margin: 0; font-size: .9rem; font-weight: 650; }
+  @media (max-width: 860px) {
+    .akis-adimlar { grid-template-columns: 1fr; }
+    .akis-adimlar li { grid-template-columns: 2.2rem 1fr; column-gap: .6rem; padding: .8rem 1rem; }
+    .akis-adimlar li > :not(.akis-no) { grid-column: 2; }
+    .akis-adimlar li + li { border-left: 0; border-top: 1px solid var(--cizgi); }
+    .akis-adimlar li + li::before { left: 1.55rem; top: -7px; transform: rotate(135deg); }
+  }
+</style>

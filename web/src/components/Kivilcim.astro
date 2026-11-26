@@ -1,10 +1,10 @@
 ---
 // Sunucuda çizilen küçük çizgi: son N gözlem. JS yok.
 import { dolu, type Seri } from "../lib/veri";
-interface Props { seri: Seri; n?: number }
-const { seri, n = 20 } = Astro.props;
+interface Props { seri: Seri; n?: number; kucuk?: boolean }   // kucuk: tablo hücresinde seyir
+const { seri, n = 20, kucuk = false } = Astro.props;
 const d = dolu(seri).slice(-n).map((g) => Number(g.deger));
-const W = 160, H = 40, P = 3;
+const W = kucuk ? 96 : 160, H = kucuk ? 24 : 40, P = kucuk ? 2 : 3;
 const lo = Math.min(...d, seri.birim.startsWith("yuzde") ? 0 : Math.min(...d)), hi = Math.max(...d);
 const x = (i: number) => P + (W - 2 * P) * (d.length > 1 ? i / (d.length - 1) : 0.5);
 const y = (v: number) => H - P - (hi === lo ? 0.5 : (v - lo) / (hi - lo)) * (H - 2 * P);
@@ -12,7 +12,7 @@ const yol = d.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(v).toFixed(1
 const sifir = lo < 0 && hi > 0 ? y(0) : null;
 ---
 {d.length > 1 && (
-  <svg viewBox={`0 0 ${W} ${H}`} width={W} height={H} aria-hidden="true" class="kivilcim">
+  <svg viewBox={`0 0 ${W} ${H}`} width={W} height={H} aria-hidden="true" class:list={["kivilcim", kucuk && "kivilcim--kucuk"]}>
     {sifir !== null && <line x1={P} x2={W - P} y1={sifir} y2={sifir} class="sifir" />}
     <path d={yol} />
     <circle cx={x(d.length - 1)} cy={y(d[d.length - 1])} r="2.6" />
@@ -20,6 +20,7 @@ const sifir = lo < 0 && hi > 0 ? y(0) : null;
 )}
 <style>
   .kivilcim { display: block; width: 100%; max-width: 160px; height: auto; }
+  .kivilcim--kucuk { max-width: 96px; }
   path { fill: none; stroke: var(--dv-1); stroke-width: 1.6; stroke-linejoin: round; }
   circle { fill: var(--dv-1); }
   .sifir { stroke: var(--soluk); stroke-width: .8; stroke-dasharray: 2 2; }

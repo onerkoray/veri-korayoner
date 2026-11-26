@@ -1,5 +1,6 @@
 ---
 import Taban from "../layouts/Taban.astro";
+import VeriAkisi from "../components/VeriAkisi.astro";
 import Kivilcim from "../components/Kivilcim.astro";
 import KpiKart from "../components/KpiKart.astro";
 import AnaGrafik from "../components/AnaGrafik.astro";
@@ -29,8 +30,12 @@ const reelIsaret = reel ? isaretSuresi(reel.r) : null;
 const TARIHSEL_YIL = 5;
 const yilFarki = (r: { trSon: string; sira: { donem: string } }) => Number(r.trSon.slice(0, 4)) - Number(r.sira.donem.slice(0, 4));
 const tumSatirlar = emsalSatirlari();
-const satirlar = tumSatirlar.filter((r) => yilFarki(r) <= TARIHSEL_YIL);
-const tarihsel = tumSatirlar.filter((r) => yilFarki(r) > TARIHSEL_YIL);
+const guncelSatirlar = tumSatirlar.filter((r) => yilFarki(r) <= TARIHSEL_YIL);
+// Panorama özet: KPI'lardaki göstergeler ve reel faiz. 50 şeridin hepsi Karşılaştır'da durur;
+// burada hepsini dizmek sayfanın %39'unu tutuyordu (24 Kasım 2026 ölçümü: 5.800 / 15.000 px).
+const MANSET = new Set(["/hesap/reel-politika-faizi", "/gosterge/bis-politika-faizi-tr", "/gosterge/bis-tufe-yillik-tr",
+  "/gosterge/wb-ny-gdp-mktp-kd-zg-tur", "/gosterge/eurostat-issizlik-aylik-tr", "/gosterge/wb-bn-cab-xoka-gd-zs-tur"]);
+const satirlar = guncelSatirlar.filter((r) => MANSET.has(r.href));
 
 // Panorama KPI'ları: her biri yayımlanmış bir seriden (reel faiz bu sitenin hesabı, işaretli).
 const KPI: [string, string][] = [["bis-tufe-yillik-tr", "Yıllık enflasyon (TÜFE)"], ["bis-politika-faizi-tr", "Politika faizi"],
@@ -93,7 +98,7 @@ const jsonld = {
   {satirlar.length > 0 && (
     <section class="sar nerede" aria-labelledby="n-baslik">
       <h2 id="n-baslik">Türkiye nerede?</h2>
-      <p class="ozet">Her satırda bir gösterge; noktalar emsal ülkeler, mavi nokta Türkiye, dikey çizgi emsal medyanı. Ülke adı ve değer için noktanın üzerine gelin. Emsal kümesi: {["BRA", "MEX", "ZAF", "POL", "HUN", "IND", "IDN", "CHL", "COL"].map(ulkeAdi).join(", ")}; Eurostat satırlarında AB üyeleri ve AB-27.</p>
+      <p class="ozet">Temel göstergelerde Türkiye'nin emsal ekonomiler arasındaki yeri: noktalar emsal ülkeler, mavi nokta Türkiye, dikey çizgi emsal medyanı. Ülke adı ve değer için noktanın üzerine gelin.</p>
       <ul class="satirlar">
         {satirlar.map((r) => (
           <li>
@@ -105,9 +110,7 @@ const jsonld = {
           </li>
         ))}
       </ul>
-      {tarihsel.length > 0 && (
-        <p class="ozet kucuk">{tarihsel.length} göstergede emsallerle ortak son dönem {TARIHSEL_YIL} yıldan eski olduğu için burada yok; sıralama kendi sayfasında tarihsel karşılaştırma olarak duruyor: {tarihsel.map((r, i) => <>{i > 0 && ", "}<a href={r.href}>{r.baslik}</a> ({donemAdi(r.sira.donem)})</>)}.</p>
-      )}
+      <p class="devam"><a href="/karsilastir#k-son">Bütün {tumSatirlar.length} göstergede Türkiye'nin sırası →</a> <span>Emsal kümesi: {["BRA", "MEX", "ZAF", "POL", "HUN", "IND", "IDN", "CHL", "COL"].map(ulkeAdi).join(", ")}; Eurostat'ta AB üyeleri.</span></p>
     </section>
   )}
 
@@ -115,7 +118,7 @@ const jsonld = {
     <h2 id="h-baslik">Son açıklanan veriler</h2>
     <div class="kaydir">
       <table>
-        <thead><tr><th scope="col">Dönem</th><th scope="col">Gösterge</th><th scope="col" class="n">Değer</th><th scope="col" class="n">Önceki</th><th scope="col" class="n">Değişim</th><th scope="col">Güncelleme</th><th scope="col">Kaynak</th></tr></thead>
+        <thead><tr><th scope="col">Dönem</th><th scope="col">Gösterge</th><th scope="col" class="n">Değer</th><th scope="col" class="n">Önceki</th><th scope="col" class="n">Değişim</th><th scope="col">Seyir</th><th scope="col">Güncelleme</th><th scope="col">Kaynak</th></tr></thead>
         <tbody>
           {sonVeriler.map(({ s, sn, on, dg, olay }) => (
             <tr>
@@ -123,7 +126,8 @@ const jsonld = {
               <th scope="row"><a href={`/gosterge/${s.id}`}>{s.baslik}</a></th>
               <td class="n sayi">{deger(s, sn.deger)}</td>
               <td class="n sayi soluk-h">{on ? <>{deger(s, on.deger)}<small> {donemAdi(on.donem)}</small></> : "—"}</td>
-              <td class="n sayi">{dg?.metin ?? "—"}</td>
+              <td class="n sayi">{dg ? <span class="yon" data-yon={dg.yon}>{dg.metin}</span> : "—"}</td>
+              <td class="seyir"><Kivilcim seri={s} n={12} kucuk /></td>
               <td class="tur-h">{olay ? <span class:list={["hap", olay.tur === "revizyon" ? "hap--uyari" : "hap--bilgi"]} title={`Değişiklik günlüğü, ${tarih(olay.gun)}`}>{olay.tur === "revizyon" ? "revizyon" : "yeni dönem"}</span> : <span class="soluk-h" title="Değişiklik günlüğü 17 Kasım 2026'da başladı">—</span>}</td>
               <td class="kaynak-h">{kisaKurum(s.kaynak.kurum)}</td>
             </tr>
@@ -133,7 +137,8 @@ const jsonld = {
     </div>
     {olaylar.length > 0 && (
       <>
-        <h3>Kaynakların düzeltmeleri ve yeni dönemleri</h3>
+        <details class="olay-kutu">
+        <summary>Kaynakların düzeltmeleri ve yeni dönemleri ({olaylar.length})</summary>
         <ul class="olaylar">
           {olaylar.map((o) => {
             const s = baslikOf(o.seri);
@@ -150,14 +155,21 @@ const jsonld = {
             );
           })}
         </ul>
+        </details>
       </>
     )}
     <p class="kucuk">Revizyon kaydı 17 Kasım 2026'da başladı; daha eski düzeltmeler deponun commit geçmişinde. API: <a href="/api/v1/degisiklikler.json">degisiklikler.json</a></p>
   </section>
 
+  <section class="sar temalar" aria-labelledby="tm-baslik">
+    <h2 id="tm-baslik">Bütün göstergeler</h2>
+    <p class="ozet">{ss.length} gösterge, {gruplar.length} temada. Temayı seçin; kartın üzerine tıklayınca göstergenin sayfası açılır.</p>
+    <div class="tema-sekme" role="tablist" aria-label="Tema" hidden>
+      {gruplar.map((g, i) => <button type="button" role="tab" id={`ts-${g.t}`} aria-controls={`tp-${g.t}`} aria-selected={String(i === 0)} tabindex={i === 0 ? 0 : -1}>{g.ad} <span>{g.liste.length}</span></button>)}
+    </div>
   {gruplar.map((g) => (
-    <section class="sar tema" aria-labelledby={`t-${g.t}`}>
-      <h2 id={`t-${g.t}`}>{g.ad}</h2>
+    <section class="tema" id={`tp-${g.t}`} aria-labelledby={`t-${g.t}`}>
+      <h3 id={`t-${g.t}`}>{g.ad}</h3>
       <ul class="kartlar">
         {g.liste.map((s) => {
           const sn = son(s), dg = degisim(s);
@@ -179,19 +191,53 @@ const jsonld = {
       </ul>
     </section>
   ))}
+  </section>
 
-  <section class="sar tema">
+  <section class="sar akis-bolum" aria-labelledby="akis-h">
+    <h2 id="akis-h">Veri nasıl geliyor</h2>
+    <VeriAkisi kisa etiket={false} />
+  </section>
+
+  <section class="sar sirada-bolum">
     <h2>Sırada</h2>
     <p class="ozet">Lisansı ve erişimi doğrulandıkça eklenecek kaynaklar. Planlanan bir kaynak, kullanım şartı okunup kanıt adresi kayda geçmeden yayımlanmaz. <a href="/kaynaklar">Bütün kaynaklar ve durumları</a></p>
     <ul class="sirada">{ks.filter((k) => !k.yayin.gosterim).map((k) => <li>{k.kurum}</li>)}</ul>
   </section>
   <script>
     import { eslesir } from "../lib/gezgin-cekirdek";
+    // Tema sekmeleri: JS yoksa bütün temalar alt alta açık kalır.
+    const sekme = document.querySelector<HTMLElement>(".tema-sekme")!;
+    const dugmeler = [...sekme.querySelectorAll<HTMLButtonElement>("[role=tab]")];
+    const paneller = [...document.querySelectorAll<HTMLElement>("section.tema")];
+    let etkin = 0;
+    const sec = (i: number, odak = false) => {
+      etkin = i;
+      dugmeler.forEach((d, j) => { d.setAttribute("aria-selected", String(j === i)); d.tabIndex = j === i ? 0 : -1; });
+      paneller.forEach((p, j) => { p.hidden = j !== i; p.setAttribute("role", "tabpanel"); p.setAttribute("aria-labelledby", dugmeler[j].id); });
+      if (odak) dugmeler[i].focus();
+    };
+    sekme.hidden = false;
+    sec(0);
+    dugmeler.forEach((d, i) => d.addEventListener("click", () => sec(i)));
+    sekme.addEventListener("keydown", (e) => {
+      const n = dugmeler.length;
+      const yeni = e.key === "ArrowRight" ? (etkin + 1) % n : e.key === "ArrowLeft" ? (etkin - 1 + n) % n : e.key === "Home" ? 0 : e.key === "End" ? n - 1 : -1;
+      if (yeni >= 0) { e.preventDefault(); sec(yeni, true); }
+    });
+
     const ara = document.querySelector<HTMLInputElement>("#panorama-ara")!;
     ara.parentElement!.hidden = false;
     ara.addEventListener("input", () => {
+      if (!ara.value.trim()) {
+        sekme.hidden = false;
+        paneller.forEach((p) => p.querySelectorAll<HTMLElement>("[data-ara]").forEach((k) => { k.hidden = false; }));
+        sec(etkin);
+        document.getElementById("p-sonuc")!.replaceChildren();
+        return;
+      }
+      sekme.hidden = true;
       let toplam = 0;
-      for (const bolum of document.querySelectorAll<HTMLElement>("section[aria-labelledby^='t-']")) {
+      for (const bolum of paneller) {
         let adet = 0;
         for (const kart of bolum.querySelectorAll<HTMLElement>("[data-ara]")) {
           kart.hidden = !eslesir(kart.dataset.ara!, ara.value);
@@ -202,7 +248,7 @@ const jsonld = {
       }
       const sonuc = document.getElementById("p-sonuc")!;
       sonuc.replaceChildren(document.createTextNode(ara.value ? toplam + " gösterge eşleşti. " : ""));
-      const ilk = document.querySelector<HTMLElement>("section[aria-labelledby^='t-']:not([hidden]) h2");
+      const ilk = document.querySelector<HTMLElement>("section.tema:not([hidden]) h3");
       if (ara.value && ilk) {
         const git = document.createElement("a");
         git.href = "#" + ilk.id;
@@ -251,8 +297,25 @@ const jsonld = {
   .olaylar { margin: 0; padding-left: 1.1rem; display: grid; gap: .3rem; font-size: .92rem; }
   .olaylar time { color: var(--soluk); font-size: .82rem; margin-right: .4rem; }
   .kucuk { font-size: .8rem; color: var(--soluk); margin: 0; }
-  .tema { padding-block: 2.5rem 0; }
-  .tema h2 { margin-bottom: 1rem; }
+  .temalar { padding-block: 2.5rem 0; }
+  .temalar > .ozet { margin: .5rem 0 1rem; }
+  .tema { padding-block: 1.25rem 0; }
+  .tema h3 { margin-bottom: .75rem; font-size: 1.05rem; }
+  .tema-sekme:not([hidden]) { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .5rem; }
+  .tema-sekme:not([hidden]) ~ .tema h3 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .tema-sekme button { font: 600 .84rem/1 var(--font); padding: .55rem .8rem; border: 1px solid var(--cizgi); background: var(--yuzey); color: var(--metin); cursor: pointer; }
+  .tema-sekme button span { font: 600 .72rem/1 var(--mono); color: var(--soluk); margin-left: .2rem; }
+  .tema-sekme button:hover { border-color: var(--metin); }
+  .tema-sekme button[aria-selected="true"] { background: var(--metin); color: var(--bg); border-color: var(--metin); }
+  .tema-sekme button[aria-selected="true"] span { color: var(--bg); }
+  .sirada-bolum { padding-block: 2.5rem 0; }
+  .akis-bolum { padding-block: 2.5rem 0; display: grid; gap: .8rem; }
+  .devam { margin: 1rem 0 0; display: flex; flex-wrap: wrap; gap: .3rem 1rem; align-items: baseline; }
+  .devam a { font-weight: 650; }
+  .devam span { color: var(--soluk); font-size: .85rem; }
+  .olay-kutu { margin-top: 1rem; }
+  .olay-kutu summary { cursor: pointer; font-weight: 650; padding: .4rem 0; }
+  .olay-kutu[open] summary { margin-bottom: .5rem; }
   .kartlar { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem;
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 16.5rem), 1fr)); }
   .kart { background: var(--yuzey); border: 1px solid var(--cizgi); }

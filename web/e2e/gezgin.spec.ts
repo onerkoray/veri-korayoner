@@ -311,7 +311,8 @@ test.describe("Konum şeridi ve grafik hareketi", () => {
     await page.goto("/gosterge/bis-politika-faizi-tr");
     const serit = page.locator("nav.konum");
     await expect(serit).not.toHaveClass(/konum--acik/);
-    await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight * 0.6));
+    // Gözlem tablosu kendi kutusunda kayar; kutunun üstü okuma çizgisinin biraz üstüne gelsin.
+    await page.evaluate(() => { const k = document.querySelector(".gozlem-kutu")!; scrollTo(0, k.getBoundingClientRect().top + scrollY - innerHeight * 0.3); });
     await expect(serit).toHaveClass(/konum--acik/);
     await expect(serit.locator(".konum-sira")).toHaveText("07/07");
     await expect(serit.locator(".konum-baslik")).toHaveText("Gözlemler");
@@ -333,5 +334,47 @@ test.describe("Konum şeridi ve grafik hareketi", () => {
       .filter((p) => p.style.strokeDashoffset && p.style.strokeDashoffset !== "0").length);
     expect(gizli).toBe(0);
     await expect(page.locator(".izci")).toHaveCount(0);
+  });
+});
+
+test.describe("Sade Panorama", () => {
+  test("temalar sekmeyle tek tek görünür; arama bütün temalarda arar", async ({ page }) => {
+    await page.goto("/");
+    const sekmeler = page.getByRole("tab");
+    expect(await sekmeler.count()).toBeGreaterThan(5);
+    await expect(sekmeler.first()).toHaveAttribute("aria-selected", "true");
+    await expect(page.locator("section.tema:not([hidden])")).toHaveCount(1);
+    await sekmeler.nth(1).click();
+    await expect(sekmeler.nth(1)).toHaveAttribute("aria-selected", "true");
+    await expect(page.locator("section.tema:not([hidden])")).toHaveCount(1);
+    await sekmeler.nth(1).press("ArrowRight");
+    await expect(sekmeler.nth(2)).toBeFocused();
+    await page.locator("#panorama-ara").fill("işsizlik");
+    await expect(page.locator(".tema-sekme")).toBeHidden();
+    expect(await page.locator("section.tema:not([hidden])").count()).toBeGreaterThan(0);
+    await page.locator("#panorama-ara").fill("");
+    await expect(page.locator(".tema-sekme")).toBeVisible();
+    await expect(page.locator("section.tema:not([hidden])")).toHaveCount(1);
+  });
+
+  test("Türkiye nerede yalnız temel göstergeler; tamamı Karşılaştır'da", async ({ page }) => {
+    await page.goto("/");
+    const n = await page.locator(".nerede .satirlar > li").count();
+    expect(n).toBeGreaterThan(2);
+    expect(n).toBeLessThanOrEqual(6);
+    await expect(page.locator(".nerede .devam a")).toHaveAttribute("href", "/karsilastir#k-son");
+  });
+
+  test("gözlem tablosu kutuda kayar, başlığı sabit", async ({ page }) => {
+    await page.goto("/gosterge/bis-politika-faizi-tr");
+    const kutu = page.locator(".gozlem-kutu");
+    const [yukseklik, ic] = await kutu.evaluate((k) => [k.clientHeight, k.scrollHeight]);
+    expect(ic).toBeGreaterThan(yukseklik);
+    await kutu.evaluate((k) => { k.scrollTop = 2000; });
+    const ust = await page.evaluate(() => {
+      const k = document.querySelector(".gozlem-kutu")!, th = k.querySelector("thead th")!;
+      return Math.abs(th.getBoundingClientRect().top - k.getBoundingClientRect().top);
+    });
+    expect(ust).toBeLessThan(3);
   });
 });
