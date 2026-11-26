@@ -36,7 +36,7 @@ const kisaTarih = d ? tarih(d.son_kontrol).replace(/ \d{4}$/, "") : null;
   {jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />}
 </head>
 <body>
-  <a class="gizli" href="#ana">İçeriğe geç</a>
+  <a class="atla" href="#ana">İçeriğe geç</a>
   <header class="ust">
     <div class="sar ust-ic">
       <a class="marka" href="/" aria-label="Türkiye Verisi ana sayfa">
@@ -59,7 +59,7 @@ const kisaTarih = d ? tarih(d.son_kontrol).replace(/ \d{4}$/, "") : null;
       </nav>
     </div>
   </header>
-  <main id="ana"><slot /></main>
+  <main id="ana" tabindex="-1"><slot /></main>
   <footer class="alt">
     <div class="sar alt-ic">
       <div class="alt-baglantilar">
@@ -81,6 +81,11 @@ const kisaTarih = d ? tarih(d.son_kontrol).replace(/ \d{4}$/, "") : null;
 </body>
 </html>
 <style>
+  .atla { position: absolute; z-index: 50; inset: .5rem auto auto .5rem; transform: translateY(-150%);
+    padding: .55rem .8rem; border-radius: .4rem; background: var(--metin); color: var(--bg); }
+  .atla:focus { transform: none; }
+  .atla:hover { color: var(--bg); }
+  main:focus { outline: none; }
   .ust { border-bottom: 1px solid var(--cizgi); background: var(--yuzey); }
   .ust-ic { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 60px; flex-wrap: wrap; }
   .marka { display: inline-flex; align-items: center; gap: .6rem; font-weight: 700; text-decoration: none; }
@@ -93,17 +98,18 @@ const kisaTarih = d ? tarih(d.son_kontrol).replace(/ \d{4}$/, "") : null;
   /* Masaüstü: marka · menü · araçlar tek satır. Telefon: marka + araçlar, altında yatay kayan menü. */
   .ust-arac { order: 3; display: flex; align-items: center; gap: .5rem; }
   nav { order: 2; min-width: 0; }
-  nav ul { display: flex; gap: 1.2rem; list-style: none; margin: 0; padding: 0; }
-  nav a { text-decoration: none; color: var(--soluk); font-size: .95rem; padding-block: .3rem; white-space: nowrap; }
-  nav a[aria-current="page"] { color: var(--metin); box-shadow: inset 0 -2px 0 var(--metin); }
+  nav ul { display: flex; gap: .3rem; list-style: none; margin: 0; padding: 0; }
+  nav a { text-decoration: none; color: var(--soluk); display: inline-flex; align-items: center; min-height: 2.25rem; font-size: .9rem; padding: .3rem .55rem; border-radius: .45rem; white-space: nowrap; }
+  nav a[aria-current="page"] { color: var(--metin); background: var(--yuzey-2); font-weight: 700; }
+  nav a:hover { background: var(--yuzey-2); color: var(--metin); }
   .ust-durum { display: inline-flex; align-items: center; gap: .4rem; font: 600 .7rem/1 var(--mono); letter-spacing: .03em; color: var(--soluk);
-    text-decoration: none; padding: .45rem .6rem; border: 1px solid var(--cizgi); white-space: nowrap; }
+    text-decoration: none; padding: .45rem .6rem; border: 1px solid var(--cizgi); border-radius: .45rem; white-space: nowrap; }
   .ust-durum:hover { color: var(--metin); border-color: var(--metin); }
   .nokta { width: .5rem; height: .5rem; border-radius: 50%; }
   .nokta--iyi { background: var(--dv-iyi); }
   .nokta--uyari { background: var(--dv-kotu); }
   .tema-dugme { visibility: hidden; display: inline-flex; align-items: center; gap: .4rem; min-height: 2.25rem; padding: .35rem .6rem;
-    font: 600 .7rem/1 var(--mono); color: var(--soluk); background: none; border: 1px solid var(--cizgi); cursor: pointer; }
+    font: 600 .7rem/1 var(--mono); color: var(--soluk); background: none; border: 1px solid var(--cizgi); border-radius: .45rem; cursor: pointer; }
   .tema-dugme:hover { color: var(--metin); border-color: var(--metin); }
   .tema-dugme svg circle { fill: none; stroke: currentColor; stroke-width: 1.6; }
   .tema-dugme svg path { fill: currentColor; }
@@ -112,7 +118,7 @@ const kisaTarih = d ? tarih(d.son_kontrol).replace(/ \d{4}$/, "") : null;
     .ust-ic { padding-top: .5rem; gap: .5rem 1rem; }
     .ust-arac { order: 2; margin-left: auto; }
     nav { order: 3; flex-basis: 100%; }
-    nav ul { overflow-x: auto; scrollbar-width: none; gap: 1.1rem; padding-bottom: .5rem;
+    nav ul { overflow-x: auto; scrollbar-width: none; gap: .25rem; padding: .18rem .15rem .5rem;
       mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent); }
     nav ul::-webkit-scrollbar { display: none; }
     nav li:last-child { padding-right: 2rem; }

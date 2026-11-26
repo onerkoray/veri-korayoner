@@ -112,8 +112,13 @@ test.describe("Panorama", () => {
     await expect(tuval).toHaveCount(1);
     await page.reload();                                           // durum adresten geri kurulur
     await expect(page.locator('.ana-seri button[data-seri="faiz"]')).toHaveAttribute("aria-pressed", "false");
-    // Aralık bütün serilerin en yeni dönemine göre kurulur (faiz Ekim): yalnız TÜFE açıkken Kasım 2025–Eylül 2026.
-    await expect(page.locator(".ana-durum")).toContainText("Kasım 2025 – Eylül 2026 · 11 ay");
+    await expect(page.locator('.ana-seri button[data-seri="enf"]')).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByRole("button", { name: "1 yıl" })).toHaveAttribute("aria-pressed", "true");
+    // TÜFE'nin son ayı yeni kaynak verisiyle değişir. Seçim yeniden kurulduğunda
+    // grafiğin yalnız TÜFE'yi gösterdiğini ve aralığın 12 ayı aşmadığını sına.
+    await expect(tuval).toHaveAttribute("aria-label", /Yıllık TÜFE son:/);
+    await expect(tuval).not.toHaveAttribute("aria-label", /Politika faizi son:|Reel faiz \(ex post\) son:/);
+    await expect(page.locator(".ana-durum")).toContainText(/· (?:[1-9]|1[0-2]) ay$/);
     expect(hata).toEqual([]);
   });
 });
@@ -349,7 +354,9 @@ test.describe("Sade Panorama", () => {
     await expect(page.locator("section.tema:not([hidden])")).toHaveCount(1);
     await sekmeler.nth(1).press("ArrowRight");
     await expect(sekmeler.nth(2)).toBeFocused();
-    await page.locator("#panorama-ara").fill("işsizlik");
+    await page.getByRole("link", { name: "Bütün göstergeler", exact: true }).click();
+    await expect(page).toHaveURL(/#gostergeler$/);
+    await page.getByRole("searchbox", { name: "Gösterge, seri kodu veya kurum ara" }).fill("işsizlik");
     await expect(page.locator(".tema-sekme")).toBeHidden();
     expect(await page.locator("section.tema:not([hidden])").count()).toBeGreaterThan(0);
     await page.locator("#panorama-ara").fill("");
