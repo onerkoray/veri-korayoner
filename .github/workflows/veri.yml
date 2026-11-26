@@ -48,8 +48,8 @@ jobs:
         run: npm test
       - name: Derle ve denetle (satır içi betik, NaN, lisans dışı dosya, tek h1)
         run: npm run build
-      - name: Tarayıcı (Playwright sürümüne kilitli Chromium)
-        run: npx playwright install --with-deps chromium
+      - name: Tarayıcılar (Playwright sürümüne kilitli Chromium, Firefox, WebKit)
+        run: npx playwright install --with-deps chromium firefox webkit
       - name: Gezgin uçtan uca (masaüstü, telefon, klavye, boş aralık, yeniden deneme)
         run: npm run e2e
 

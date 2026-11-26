@@ -12,6 +12,8 @@ export default defineConfig({
   webServer: { command: "npx astro preview --port 4329", url: "http://localhost:4329/gezgin", reuseExistingServer: !process.env.CI, timeout: 60_000 },
   projects: [
     { name: "masaustu", use: { ...devices["Desktop Chrome"], channel: kanal } },
+    { name: "firefox", use: { ...devices["Desktop Firefox"] } },
+    { name: "webkit", use: { ...devices["Desktop Safari"] } },
     { name: "telefon", use: { ...devices["Pixel 7"], channel: kanal } },
   ],
 });
