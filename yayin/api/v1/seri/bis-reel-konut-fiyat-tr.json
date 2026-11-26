@@ -28,7 +28,7 @@
  "kaynak_adi": null,
  "kaynak_not": null,
  "kaynak_guncelleme": null,
- "cekildi": "2026-11-17T10:55:40.719594Z",
+ "cekildi": "2026-11-26T15:23:52.526434Z",
  "izin": {
   "gosterim": true,
   "indirme": true,
@@ -237,77 +237,77 @@
   },
   {
    "donem": "2020-Q1",
-   "deger": "109.122",
+   "deger": "109.111",
    "durum": "A"
   },
   {
    "donem": "2020-Q2",
-   "deger": "112.4422",
+   "deger": "112.4418",
    "durum": "A"
   },
   {
    "donem": "2020-Q3",
-   "deger": "120.9012",
+   "deger": "120.9069",
    "durum": "A"
   },
   {
    "donem": "2020-Q4",
-   "deger": "121.9727",
+   "deger": "121.9675",
    "durum": "A"
   },
   {
    "donem": "2021-Q1",
-   "deger": "124.0875",
+   "deger": "124.1048",
    "durum": "A"
   },
   {
    "donem": "2021-Q2",
-   "deger": "128.9821",
+   "deger": "128.975",
    "durum": "A"
   },
   {
    "donem": "2021-Q3",
-   "deger": "135.1111",
+   "deger": "135.1324",
    "durum": "A"
   },
   {
    "donem": "2021-Q4",
-   "deger": "144.5983",
+   "deger": "144.6049",
    "durum": "A"
   },
   {
    "donem": "2022-Q1",
-   "deger": "154.1213",
+   "deger": "154.1239",
    "durum": "A"
   },
   {
    "donem": "2022-Q2",
-   "deger": "180.2568",
+   "deger": "180.2468",
    "durum": "A"
   },
   {
    "donem": "2022-Q3",
-   "deger": "209.2833",
+   "deger": "209.3029",
    "durum": "A"
   },
   {
    "donem": "2022-Q4",
-   "deger": "220.4977",
+   "deger": "220.5002",
    "durum": "A"
   },
   {
    "donem": "2023-Q1",
-   "deger": "242.3363",
+   "deger": "242.3538",
    "durum": "A"
   },
   {
    "donem": "2023-Q2",
-   "deger": "263.6974",
+   "deger": "263.7019",
    "durum": "A"
   },
   {
    "donem": "2023-Q3",
-   "deger": "259.6401",
+   "deger": "259.6315",
    "durum": "A"
   },
   {
@@ -317,42 +317,42 @@
   },
   {
    "donem": "2024-Q1",
-   "deger": "237.2795",
+   "deger": "237.2817",
    "durum": "A"
   },
   {
    "donem": "2024-Q2",
-   "deger": "229.126",
+   "deger": "229.125",
    "durum": "A"
   },
   {
    "donem": "2024-Q3",
-   "deger": "224.5576",
+   "deger": "224.5586",
    "durum": "A"
   },
   {
    "donem": "2024-Q4",
-   "deger": "222.438",
+   "deger": "222.4345",
    "durum": "A"
   },
   {
    "donem": "2025-Q1",
-   "deger": "223.9213",
+   "deger": "223.9207",
    "durum": "A"
   },
   {
    "donem": "2025-Q2",
-   "deger": "223.3516",
+   "deger": "223.3508",
    "durum": "A"
   },
   {
    "donem": "2025-Q3",
-   "deger": "222.6649",
+   "deger": "222.6666",
    "durum": "A"
   },
   {
    "donem": "2025-Q4",
-   "deger": "220.7692",
+   "deger": "220.7756",
    "durum": "A"
   },
   {

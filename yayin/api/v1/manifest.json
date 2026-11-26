@@ -1,17 +1,17 @@
 {
- "release_id": "c61a9ae9884b51f20bf773e014b4217e22cb5f3d1a1892658afb0c7cd08939e8",
+ "release_id": "6050488045bf0af0e5a502bc1d77ca196f8f5539da8c34b2575878e92c9952c9",
  "series_count": 57,
- "observation_count": 6914,
+ "observation_count": 6915,
  "files": [
   {
    "path": "degisiklikler.json",
-   "bytes": 820,
-   "sha256": "9cf4e51b43da3e52f4d81acd8fba5216b634f0ad67ef62ed224706f6ab6d7c86"
+   "bytes": 1253,
+   "sha256": "79b0e354c16cfce83e3bde1a4dc7482acd907f176a1a82097478c29f292f0fc7"
   },
   {
    "path": "durum.json",
    "bytes": 43249,
-   "sha256": "a1a33afa770a8fb5c2ebd68b6af66bce470d875e33781096751b7641d7b9f731"
+   "sha256": "84678e3535105630236fd57089af23139976a8f1a64e34f18af6ccfabfb62f08"
   },
   {
    "path": "emsal/bis-borc-servis-orani-tr.json",
@@ -35,8 +35,8 @@
   },
   {
    "path": "emsal/bis-tufe-yillik-tr.json",
-   "bytes": 403914,
-   "sha256": "9405ab99e323e689b42e70a2f33f71286d4155f2d6d53f56f79ce1c2b56bbc39"
+   "bytes": 404389,
+   "sha256": "43473a66c1f43f4103be24a0bf8f454ca78107452f85892a580c7ced28b2bb58"
   },
   {
    "path": "emsal/eurostat-asgari-ucret-pps-tr.json",
@@ -250,48 +250,48 @@
   },
   {
    "path": "gozlemler.parquet",
-   "bytes": 56955,
-   "sha256": "23aac2a70f0a12f9fcf9de8cd513250ca0bf35d7986da60447c68a434a4ed76d"
+   "bytes": 57164,
+   "sha256": "678c05dcefaf69f941786eda927d39989298d2665746075b0c648375803420cc"
   },
   {
    "path": "gozlemler.parquet.sha256",
    "bytes": 84,
-   "sha256": "c2c82da779f77744d07220d79f18c6e03baf5ea9738910f117561d2d9cf23aaa"
+   "sha256": "1354917633056156c4fb1c7307424ebc924150722cc0aeef7de11bce67810b21"
   },
   {
    "path": "kaynaklar.json",
    "bytes": 6671,
-   "sha256": "8f3138e7838ade87f6de749e21b99548138fe3314e1b8e14a7f7b306ed52f29a"
+   "sha256": "1af43b34159a56ad143cf26af9def6c4713bc2965850a2e159d9fcf65a54f492"
   },
   {
    "path": "panel/aylik.csv",
-   "bytes": 44848,
-   "sha256": "d8b54786af75020cda7478600c9b4c71aafd8b893165f122751abaaf65133566"
+   "bytes": 44862,
+   "sha256": "b1d116e4c7e3d1ed564af361c88b8d85e747220d1fffdbabbdbe478f704b7b7f"
   },
   {
    "path": "panel/aylik.json",
-   "bytes": 169121,
-   "sha256": "fae55a6baea742870d1af17ccca4bd4740679bc97af04a935a9ab4e1c3cc1b65"
+   "bytes": 169174,
+   "sha256": "44d12092ad7f9e7f6ed2732a29ad6e0996fbbde3a22df9f058324450d9eee141"
   },
   {
    "path": "panel/ceyreklik.csv",
-   "bytes": 26576,
-   "sha256": "b5c7af7f12578b352b7bea123dfc79a70a6223ba70a107c3b2937da220558b5e"
+   "bytes": 26574,
+   "sha256": "b823363077bfb6d3cd2b5eaadb65a48ec17923f31cae3c5d9ecbf82e60e8f9c6"
   },
   {
    "path": "panel/ceyreklik.json",
-   "bytes": 93715,
-   "sha256": "e2da64e7b0c2cb01de5757ca83817c8a4e020961c10374eb2fc1b77a60a42821"
+   "bytes": 93765,
+   "sha256": "621b93be4446f1ca5e2c5a039119e56e12248ceb6b19e318763af068d34beb4e"
   },
   {
    "path": "panel/yillik.csv",
-   "bytes": 37688,
-   "sha256": "f063dc173c05ceaf40e05e725dc1209bd26e803dd768661a18c474427db72c81"
+   "bytes": 37686,
+   "sha256": "8034470e862adbb818928a3920d649408eac95f081caff121a6c2dfee2a5fe4c"
   },
   {
    "path": "panel/yillik.json",
-   "bytes": 138122,
-   "sha256": "2c7341af47e20fea49af3442e97de3a616742dbf47fe24bdcc7dfe04ee8d8009"
+   "bytes": 138124,
+   "sha256": "a8aaa0a68d82064ffcd3204f3e50bd4f593fd5741c9fbfc3b7fdd8771b0e9b19"
   },
   {
    "path": "seri/bis-borc-servis-orani-tr.csv",
@@ -346,22 +346,22 @@
   {
    "path": "seri/bis-reel-konut-fiyat-tr.csv",
    "bytes": 9082,
-   "sha256": "a3c9e7955256445faaed899d51e4da1facb8556a5925357ce24db15321deefdc"
+   "sha256": "42ed57182953b0917ec847c1e7980475c27c6cce38d4dc75983f92d6aa306328"
   },
   {
    "path": "seri/bis-reel-konut-fiyat-tr.json",
    "bytes": 5839,
-   "sha256": "8f330fb7f34ca97913e60dba52cd9c934679969fe730af3e9b7d389ef0685007"
+   "sha256": "2da1017f679287f6f39e75a833d49d67a42f35961b50194e92cd53c2bdd4692f"
   },
   {
    "path": "seri/bis-tufe-yillik-tr.csv",
-   "bytes": 102744,
-   "sha256": "01a273c6f16b9e54f72f40fa3f575db5e940c2e991d5129865d732727977bf88"
+   "bytes": 102884,
+   "sha256": "36227b08dda961bb6e359793e9d0888b15f09d698c956ee81730d617bce1d4d1"
   },
   {
    "path": "seri/bis-tufe-yillik-tr.json",
-   "bytes": 57865,
-   "sha256": "779939cba91e336a3d6bbb17d92eee9ff74e53a368d71e6e24f10eaa871619ac"
+   "bytes": 57943,
+   "sha256": "52bc4e137974b028950590c88e0d0dddab2e297c0a8a36d729bcee50a744af47"
   },
   {
    "path": "seri/eurostat-asgari-ucret-pps-tr.csv",
@@ -866,9 +866,9 @@
   {
    "path": "seriler.json",
    "bytes": 53077,
-   "sha256": "9d4d9d511be8edae7c8e223c0d58f2e99e0773bc7ab188c5de0cdf131b74281d"
+   "sha256": "9458f5b54eb8475ab7cdc14ade0fbf93a40e88dbfef125c81da64f59f54fefb8"
   }
  ],
- "generated_at": "2026-11-25T15:45:22.862779+00:00",
- "build_id": "45648114062"
+ "generated_at": "2026-11-26T15:25:21.358643+00:00",
+ "build_id": "45848625840"
 }

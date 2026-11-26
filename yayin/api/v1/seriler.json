@@ -1,6 +1,6 @@
 {
  "surum": 1,
- "uretildi": "2026-11-25T15:42:30.690949Z",
+ "uretildi": "2026-11-26T15:23:52.526434Z",
  "seriler": [
   {
    "id": "wb-ny-gdp-mktp-cd-tur",
@@ -280,12 +280,12 @@
    "birim": "yuzde",
    "kaynak": "bis",
    "son": {
-    "donem": "2026-09",
-    "deger": "29.7315182454",
+    "donem": "2026-10",
+    "deger": "29.7687491759",
     "durum": "A"
    },
    "kaynak_guncelleme": null,
-   "cekildi": "2026-11-17T10:55:40.719594Z",
+   "cekildi": "2026-11-26T15:23:52.526434Z",
    "izin": {
     "gosterim": true,
     "indirme": true,
@@ -345,7 +345,7 @@
     "durum": "A"
    },
    "kaynak_guncelleme": null,
-   "cekildi": "2026-11-17T10:55:40.719594Z",
+   "cekildi": "2026-11-26T15:23:52.526434Z",
    "izin": {
     "gosterim": true,
     "indirme": true,

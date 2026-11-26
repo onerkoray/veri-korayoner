@@ -2,6 +2,29 @@
  "surum": 1,
  "kayitlar": [
   {
+   "gun": "2026-11-26",
+   "seri": "bis-reel-konut-fiyat-tr",
+   "tur": "revizyon",
+   "adet": 23,
+   "ilk": "2020-Q1",
+   "son": "2025-Q4"
+  },
+  {
+   "gun": "2026-11-26",
+   "seri": "bis-tufe-yillik-tr",
+   "tur": "revizyon",
+   "adet": 81,
+   "ilk": "2020-01",
+   "son": "2026-09"
+  },
+  {
+   "gun": "2026-11-26",
+   "seri": "bis-tufe-yillik-tr",
+   "tur": "yeni-donem",
+   "donem": "2026-10",
+   "yeni": "29.7687491759"
+  },
+  {
    "gun": "2026-11-22",
    "seri": "oecd-gsyh-buyume-ceyrek-tr",
    "tur": "yeni-donem",
