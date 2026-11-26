@@ -18,13 +18,13 @@ const yuzde = (v: number) => (v < 0 ? "−%" : "%") + sayi(Math.abs(v), 1);
 const ozet = `Politika faizi ${yuzde(Number(sonF.deger))} (${donemAdi(sonF.donem)}), yıllık TÜFE ${yuzde(Number(sonE.deger))} (${donemAdi(sonE.donem)}), ex post reel faiz ${yuzde(sonR.v)} (${donemAdi(sonR.donem)}).`;
 const ARALIK: [number, string][] = [[1, "1 yıl"], [3, "3 yıl"], [5, "5 yıl"], [10, "10 yıl"], [0, "Tümü"]];
 ---
-<section class="sar ana" aria-labelledby="a-baslik">
+<section class="ana" aria-labelledby="a-baslik">
   <div class="ana-panel">
   <div class="ana-ust">
     <div class="ana-baslik">
-      <p class="etiket">Aylık karşılaştırma</p>
+      <p class="etiket">Şekil 01 · Aylık veriler</p>
       <h2 id="a-baslik">Enflasyon ve politika faizi</h2>
-      <p class="ozet">{ozet} Üçü de yüzde ve aylık olduğu için aynı eksende. Reel faiz, gerçekleşen enflasyona göre Fisher hesabıdır (kesikli çizgi).</p>
+      <p class="ozet">{ozet}</p>
     </div>
     <div class="ana-aralik" role="group" aria-label="Zaman aralığı" hidden>
       {ARALIK.map(([y, a]) => <button type="button" data-yil={y} aria-pressed={String(y === 10)}>{a}</button>)}
@@ -49,15 +49,16 @@ const ARALIK: [number, string][] = [[1, "1 yıl"], [3, "3 yıl"], [5, "5 yıl"],
     <a href={`/gezgin#g=${enf.id},${faiz.id}&s=aylik&d=ort&b=2016&e=${sonF.donem.slice(0, 4)}&v=grafik`}>Veri gezgininde aç →</a>
   </div>
   </div>
+  <p class="ana-not">Kaynak: BIS. Kesikli çizgi: gerçekleşen enflasyonla hesaplanan <a href="/hesap/reel-politika-faizi">Fisher reel faizi</a>.</p>
   </div>
 </section>
 <script>
   import "../scripts/ana-grafik.ts";
 </script>
 <style>
-  .ana { padding-block: 1.65rem 0; }
-  .ana-panel { display: grid; gap: .85rem; min-width: 0; padding: clamp(.9rem, 2.4vw, 1.6rem);
-    border: 1px solid var(--cizgi); border-radius: 1.05rem; background: var(--yuzey); }
+  .ana { min-width: 0; }
+  .ana-panel { display: grid; gap: .6rem; min-width: 0; padding: clamp(.75rem, 1.6vw, 1.2rem);
+    border: 1px solid var(--cizgi); border-radius: .25rem; background: var(--yuzey); }
   .ana-baslik .etiket { color: var(--marka); }
   .ana-alt { display: flex; flex-wrap: wrap; align-items: center; gap: .55rem 1rem; justify-content: space-between; padding-top: .1rem; }
   .ana-aralik[hidden], .ana-seri[hidden], .ana-eylem[hidden] { display: none; }
@@ -66,7 +67,7 @@ const ARALIK: [number, string][] = [[1, "1 yıl"], [3, "3 yıl"], [5, "5 yıl"],
   .ana-baslik .ozet { margin: 0; font-size: .92rem; }
   .ana-aralik, .ana-seri, .ana-eylem { display: flex; flex-wrap: wrap; gap: .4rem; }
   .ana-aralik button, .ana-seri button, .ana-eylem button, .ana-eylem a {
-    font: 600 .74rem/1 var(--mono); padding: .55rem .7rem; min-height: 2.5rem; border: 1px solid var(--cizgi); border-radius: .5rem;
+    font: 600 .74rem/1 var(--mono); padding: .4rem .55rem; min-height: 2.05rem; border: 1px solid var(--cizgi); border-radius: .2rem;
     background: var(--bg); color: var(--soluk); cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: .45rem; box-sizing: border-box; }
   .ana-aralik button[aria-pressed="true"] { background: var(--metin); color: var(--bg); border-color: var(--metin); }
   .ana-seri button[aria-pressed="true"] { color: var(--metin); background: var(--yuzey-2); border-color: var(--cizgi); }
@@ -76,8 +77,9 @@ const ARALIK: [number, string][] = [[1, "1 yıl"], [3, "3 yıl"], [5, "5 yıl"],
   .ana-eylem button:hover, .ana-eylem a:hover { background: var(--metin); color: var(--bg); }
   .orn { stroke-width: 2.4; }
   .orn-faiz { stroke: var(--dv-1); } .orn-enf { stroke: var(--dv-2); } .orn-reel { stroke: var(--metin); stroke-dasharray: 4 3; }
-  .ana-tuval { background: var(--yuzey); border: 1px solid var(--cizgi); border-radius: .65rem; padding: .55rem .5rem .25rem; min-height: 340px; box-sizing: border-box; }
+  .ana-tuval { background: var(--yuzey); border-block: 1px solid var(--cizgi); padding: .35rem .5rem .15rem; min-height: 330px; box-sizing: border-box; }
   .ana-tuval :global(svg) { display: block; max-width: 100%; height: auto; overflow: visible; }
   @media (max-width: 36rem) { .ana-tuval { min-height: 280px; } .ana-seri small { display: none; } }
+  .ana-not { margin: 0; font-size: .77rem; color: var(--soluk); }
   .ana-durum { margin: 0; font-size: .82rem; color: var(--soluk); min-height: 1.2em; }
 </style>
