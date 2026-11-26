@@ -1,0 +1,34 @@
+/* Modern veri tablosu: sitenin bütün tablolarına ortak okuma düzeni (taban.css'teki
+   temel tablo stilinin üstüne). Renk yalnız taban.css tokenlarından. */
+tbody tr { transition: background-color .12s ease; }
+tbody tr:hover { background: var(--yuzey-2); }
+td.n, th.n, .sayi { font-variant-numeric: tabular-nums; }
+tbody th { font-weight: 600; }
+tbody th a { text-decoration: none; }
+tbody th a:hover { text-decoration: underline; }
+
+/* Değişim yönü sayının kendi işaretiyle okunur (+/−); ayrı glif çift işaret olurdu.
+   Renk iyi/kötü yargısı taşımaz: enflasyonun artışı ile büyümenin artışı aynı anlamda değildir. */
+.yon { white-space: nowrap; }
+
+/* Değer çubuğu: sıfır merkezli. Hücre --b (başlangıç) ve --g (genişlik) yüzdesini taşır;
+   negatif değer sıfırın soluna uzanır. Çubuk metnin arkasında, metin okunur kalır. */
+td.cubuklu { position: relative; isolation: isolate; }
+td.cubuklu::before {
+  content: ""; position: absolute; z-index: -1; top: 22%; bottom: 22%;
+  /* Çubuk hücrenin sol %60'ındaki izde; sayı sağda, çubukla çakışmaz. */
+  left: calc(.5rem + var(--b, 0) * .6%); width: calc(var(--g, 0) * .6%);
+  background: color-mix(in srgb, var(--dv-1) 16%, transparent); border-radius: 1px;
+}
+td.cubuklu[data-eksi]::before { background: color-mix(in srgb, var(--dv-2) 18%, transparent); }
+
+/* Satır içi seyir çizgisi (Kivilcim kucuk) tablo hücresinde. */
+td.seyir { width: 7rem; padding-block: .3rem; }
+td.seyir svg { display: block; }
+
+/* Kayan kutu içinde sabit başlık. */
+.tablo-kutu { overflow: auto; border: 1px solid var(--cizgi); }
+.tablo-kutu thead th { position: sticky; top: 0; background: var(--yuzey); z-index: 1; box-shadow: 0 1px 0 var(--metin); }
+.tablo-kutu:focus-visible { outline: 2px solid var(--vurgu); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) { tbody tr { transition: none; } }
