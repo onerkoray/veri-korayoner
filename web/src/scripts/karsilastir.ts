@@ -5,7 +5,7 @@ import * as Plot from "@observablehq/plot";
 import { yaz, donemAdi } from "../lib/bicim.ts";
 import { tarih, adresParcasi } from "../lib/gezgin-cekirdek.ts";
 import { uygunDonemler, siralaDonem, medyanSerisi, esik } from "../lib/karsilastir-cekirdek.ts";
-import type { Nokta } from "../lib/okuma.ts";
+import { tarihselKiyas, type Nokta } from "../lib/okuma.ts";
 
 interface Kalem { id: string; baslik: string; birim: string; siklik: string; tema: string; kaynak: string; indir: boolean }
 interface Veri { tr: Nokta[]; ulkeler: Record<string, Nokta[]>; kaynakKod: string }
@@ -103,7 +103,8 @@ function baslat(form: HTMLFormElement) {
     son = { k, s };
     const trV = s.satirlar.find((r) => r.kod === "TUR")!.v, trSon = v.tr.at(-1)!;
     const y = (x: number) => yaz(k.birim, x);
-    durumP.textContent = `${k.baslik} · ${donemAdi(donem)} · ${s.toplam} ülke · kaynak ${k.kaynak}`;
+    durumP.textContent = `${k.baslik} · ${donemAdi(donem)} · ${s.toplam} ülke · kaynak ${k.kaynak}` +
+      (tarihselKiyas(trSon.donem, donem) ? " · Tarihsel karşılaştırma" : "");
 
     // 1) Sıralı çubuklar
     const cumle = `${donemAdi(donem)}: Türkiye ${y(trV)}, yüksekten düşüğe ${s.toplam} ülke içinde ${s.sira}. sırada; emsal medyanı ${y(s.medyan)}` +
@@ -111,8 +112,14 @@ function baslat(form: HTMLFormElement) {
       (s.eksik.length ? ` Bu dönemde verisi olmayan: ${s.eksik.map(ad).join(", ")}.` : "") +
       (trSon.donem !== donem ? ` Türkiye'nin en son verisi ${donemAdi(trSon.donem)}: ${y(trSon.v)}.` : "");
     const tuval1 = el("div", { className: "k-tuval" });
+    const tablo = el("table", {},
+      el("caption", { textContent: `${k.baslik} · ${donemAdi(donem)}` }),
+      el("thead", {}, el("tr", {}, ...["Sıra", "Ülke", "Değer"].map((x) => el("th", { scope: "col", textContent: x })))),
+      el("tbody", {}, ...s.satirlar.map((r, i) => el("tr", {}, el("td", { textContent: String(i + 1) }),
+        el("th", { scope: "row", textContent: ad(r.kod) }), el("td", { textContent: y(r.v) })))));
+    const veriTablosu = el("details", {}, el("summary", { textContent: "Sıralama tablosunu aç" }), tablo);
     cikti.append(el("section", { className: "k-panel" }, el("h2", { textContent: "Sıralama" }), el("p", { className: "k-cumle", textContent: cumle }), tuval1,
-      el("p", { className: "g-not", textContent: `Koyu çubuk Türkiye; kesikli dikey çizgi emsal medyanı (Türkiye hariç)${s.toplamlar.length ? ", noktalı çizgi AB-27 (toplam: sıraya girmez)" : ""}. Değerler ${v.kaynakKod} serisinden.` })));
+      el("p", { className: "g-not", textContent: `Seçili emsallerin ${s.toplam - 1}/${sayiUlke} tanesi bu dönemde mevcut. Kesikli çizgi emsal medyanı (Türkiye hariç)${s.toplamlar.length ? ", noktalı çizgi AB-27 (sıraya girmez)" : ""}. Kaynak kodu: ${v.kaynakKod}.` }), veriTablosu));
     const satirlar = s.satirlar.map((r) => ({ ...r, ad: ad(r.kod), tr: r.kod === "TUR" }));
     const gen1 = tuval1.clientWidth || 800;
     const p1 = Plot.plot({

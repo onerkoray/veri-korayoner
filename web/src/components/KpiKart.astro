@@ -24,7 +24,7 @@ const n = seri.siklik === "aylik" ? 36 : seri.siklik === "ceyreklik" ? 20 : 15;
       <Kivilcim seri={seri} n={n} />
       <span class="kpi-kaynak">{kaynak}{hesap && " · bu sitenin hesabı"}</span>
       {not && <span class="kpi-not">{not}</span>}
-      {durum?.gecikti && <span class="hap hap--uyari">gecikmiş</span>}
+      {durum?.gecikti && <span class="hap hap--uyari">tahmini eşik aşıldı</span>}
       {durum && durum.ardisik_hata > 0 && (
         <span class="kpi-not">Son çekim başarısız; önceki veri gösteriliyor{durum.son_basarili_kontrol && ` (son başarılı kontrol ${tarih(durum.son_basarili_kontrol)})`}.</span>
       )}

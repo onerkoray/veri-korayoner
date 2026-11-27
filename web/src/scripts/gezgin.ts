@@ -4,10 +4,10 @@
 import * as Plot from "@observablehq/plot";
 import { yaz, donemAdi, n0, n1 } from "../lib/bicim.ts";
 import { uygunMu, ortakSiklik, yilAraligi, kapsam, tarih, zamanAlani, olcek, eslesir, csvMetni, metaveri, olcekUygun, ortakBaz, donustur, sirala, adresParcasi, ORTAK_AZAMI,
-  seriOzeti, farkIliskisi, donemSirasi, KORELASYON_ASGARI, type Satir, type Tanim, type Olcek, type Nokta } from "../lib/gezgin-cekirdek.ts";
+  seriOzeti, farkIliskisi, donemSirasi, donemSayisi, KORELASYON_ASGARI, type Satir, type Tanim, type Olcek, type Nokta } from "../lib/gezgin-cekirdek.ts";
 
 interface Panel { siklik: string; yontem: string; seriler: Tanim[]; veri: Record<string, Satir[]> }
-interface Durum { g: string[]; s: "aylik" | "ceyreklik" | "yillik"; d: "ort" | "son"; b: number; e: number; v: "grafik" | "isi" | "tablo" | "analiz"; o: Olcek }
+interface Durum { g: string[]; s: "aylik" | "ceyreklik" | "yillik"; d: "ort" | "son"; b: number; e: number; p: number; q: number; v: "grafik" | "isi" | "tablo" | "analiz"; o: Olcek }
 
 const SIKLIK: Record<string, string> = { aylik: "aylık", ceyreklik: "çeyreklik", yariyillik: "yarıyıllık", yillik: "yıllık", gunluk: "günlük", haftalik: "haftalık" };
 const BIRIM: Record<string, string> = { yuzde: "yüzde", "yuzde-gsyh": "GSYH'ye oran, %", "yuzde-puan": "yüzde puan", USD: "ABD doları", "PPP-2021-USD": "sabit 2021 uluslararası doları (SAGP)", abonelik: "100 kişi başına hat aboneliği", endeks: "endeks", puan: "puan (0–100)", PPS: "PPS", yil: "yıl", kisi: "kişi", ay: "ay", dogum: "kadın başına doğum" };
@@ -15,7 +15,7 @@ const AY = ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Ek
 const AZAMI = 6;
 const VARSAYILAN = ["bis-tufe-yillik-tr", "bis-politika-faizi-tr", "eurostat-issizlik-aylik-tr"];
 const YONTEM_SAYFASI = "https://veri.korayoner.dev/yontem";
-const OLCEK_ADI: Record<Olcek, string> = { deger: "değer", endeks: "endeks (baz = 100)", fark: "baz döneme göre fark (puan)" };
+const OLCEK_ADI: Record<Olcek, string> = { deger: "değer", ortak: "aynı eksen", endeks: "endeks (baz = 100)", fark: "baz döneme göre fark (puan)" };
 const GORUNUM_BASLIK = { grafik: "Zaman serileri", isi: "Dönem profili", tablo: "Veri tablosu", analiz: "İstatistik ve ilişkiler" };
 const R_BICIM = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const KAT = ["var(--kat-1)", "var(--kat-2)", "var(--kat-3)", "var(--kat-4)"];
@@ -37,25 +37,39 @@ function baslat(form: HTMLFormElement) {
   const siklikOf = (id: string) => kutular.find((k) => k.value === id)?.closest<HTMLElement>("label")?.dataset.siklik ?? "yillik";
   const adOf = (id: string) => kutular.find((k) => k.value === id)?.closest("label")?.querySelector("span")?.textContent ?? id;
   const yilSec = [form.querySelector<HTMLSelectElement>("#g-b")!, form.querySelector<HTMLSelectElement>("#g-e")!];
+  const altSec = [form.querySelector<HTMLSelectElement>("#g-p")!, form.querySelector<HTMLSelectElement>("#g-q")!];
+  const altKutu = form.querySelector<HTMLElement>("#g-alt-donem")!;
   const yillar = [...yilSec[0].options].map((o) => Number(o.value));
   const ara = document.getElementById("g-ara") as HTMLInputElement | null;
 
   // Başarısız istek önbellekte kalmaz: bir sonraki çizim (ya da "Yeniden dene") yeniden ister.
-  const onbellek = new Map<string, Promise<Panel>>();
-  const yukle = (s: string) => {
-    let p = onbellek.get(s);
-    if (!p) {
-      p = fetch(`/api/v1/panel/${s}.json`, { credentials: "omit", redirect: "error", referrerPolicy: "no-referrer" }).then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() as Promise<Panel>; });
-      p.catch(() => onbellek.delete(s));
-      onbellek.set(s, p);
-    }
-    return p;
+  const onbellek = new Map<string, Panel>();
+  let bekleyen: { s: string; istek: AbortController; sonuc: Promise<Panel> } | undefined;
+  const yukle = async (s: string) => {
+    if (bekleyen?.s === s) return bekleyen.sonuc;
+    bekleyen?.istek.abort();
+    bekleyen = undefined;
+    const hazir = onbellek.get(s);
+    if (hazir) return hazir;
+    const istek = new AbortController(), zaman = window.setTimeout(() => istek.abort(), 12_000);
+    const sonuc = fetch(`/api/v1/panel/${s}.json`, { signal: istek.signal, credentials: "omit", redirect: "error", referrerPolicy: "no-referrer" })
+      .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() as Promise<Panel>; })
+      .then((panel) => { onbellek.set(s, panel); return panel; })
+      .finally(() => { window.clearTimeout(zaman); if (bekleyen?.istek === istek) bekleyen = undefined; });
+    bekleyen = { s, istek, sonuc };
+    return sonuc;
   };
 
   // Adrese yalnız varsayılandan farklı ayar yazılır; varsayılan görünüm düz /gezgin.
   const ayniKume = (a: string[], b: string[]) => a.length === b.length && a.every((x) => b.includes(x));   // seçim sırası adresi değiştirmesin
   const hashMetni = (d: Durum) => adresParcasi([["g", ayniKume(d.g, VARSAYILAN) ? "" : d.g.join(","), ""], ["s", d.s, "aylik"], ["d", d.d, "ort"],
-    ["b", String(d.b), "2010"], ["e", String(d.e), String(yillar.at(-1))], ["v", d.v, "grafik"], ["o", d.o, "deger"]]);
+    ["b", String(d.b), "2010"], ["e", String(d.e), String(yillar.at(-1))], ["v", d.v, "grafik"], ["o", d.o, "deger"],
+    ["p", String(d.p), "1"], ["q", String(d.q), String(donemSayisi(d.s))]]);
+  const altSinir = (v: number, n: number, varsayilan: number) => Number.isInteger(v) && v >= 1 && v <= n ? v : varsayilan;
+  const aralik = (d: Durum): Durum => {
+    const n = donemSayisi(d.s), p = altSinir(d.p, n, 1), q = altSinir(d.q, n, n);
+    return { ...d, p: d.b === d.e ? Math.min(p, q) : p, q: d.b === d.e ? Math.max(p, q) : q };
+  };
   const oku = (): Durum => {
     const h = new URLSearchParams(location.hash.slice(1));
     const gecerli = new Set(kutular.filter((k) => !k.disabled).map((k) => k.value));
@@ -63,14 +77,15 @@ function baslat(form: HTMLFormElement) {
     const sayi = (k: string, v: number) => { const x = Number(h.get(k)); return yillar.includes(x) ? x : v; };
     const sec = <T extends string>(k: string, l: readonly T[], v: T): T => (l.includes(h.get(k) as T) ? (h.get(k) as T) : v);
     const b = sayi("b", 2010), e = sayi("e", yillar.at(-1)!);
-    return { g: g.length ? g : VARSAYILAN.filter((x) => gecerli.has(x)), s: sec("s", ["aylik", "ceyreklik", "yillik"] as const, "aylik"),
+    return aralik({ g: g.length ? g : VARSAYILAN.filter((x) => gecerli.has(x)), s: sec("s", ["aylik", "ceyreklik", "yillik"] as const, "aylik"),
       d: sec("d", ["ort", "son"] as const, "ort"), b: Math.min(b, e), e: Math.max(b, e), v: sec("v", ["grafik", "isi", "tablo", "analiz"] as const, "grafik"),
-      o: sec("o", ["deger", "endeks", "fark"] as const, "deger") };
+      p: Number(h.get("p")), q: Number(h.get("q")), o: sec("o", ["deger", "ortak", "endeks", "fark"] as const, "deger") });
   };
   let durum = oku();
   // Her kullanıcı değişikliği tarayıcı geçmişine yeni kayıt: geri/ileri tuşları görünümler arasında gezer.
   const uygula = (yeni: Partial<Durum>) => {
-    durum = { ...durum, ...yeni };
+    const tamYil = yeni.s && yeni.s !== durum.s ? { p: 1, q: donemSayisi(yeni.s) } : {};
+    durum = aralik({ ...durum, ...yeni, ...tamYil });
     const h = hashMetni(durum);
     if (h !== location.hash) history.pushState(null, "", h || location.pathname);
     formaYaz(); ciz();
@@ -79,11 +94,20 @@ function baslat(form: HTMLFormElement) {
   const formaYaz = () => {
     gorunumBaslik.textContent = GORUNUM_BASLIK[durum.v];
     seciliListe.replaceChildren(...durum.g.map((id) => el("li", { textContent: adOf(id) })));
-    hizli.forEach((btn) => btn.setAttribute("aria-pressed", String(durum.b === hizliBas(Number(btn.dataset.gYil)) && durum.e === yillar.at(-1))));
+    const n = donemSayisi(durum.s);
+    hizli.forEach((btn) => btn.setAttribute("aria-pressed", String(durum.b === hizliBas(Number(btn.dataset.gYil)) && durum.e === yillar.at(-1) && durum.p === 1 && durum.q === n)));
     kutular.forEach((k) => (k.checked = durum.g.includes(k.value)));
     for (const [ad, v] of [["s", durum.s], ["d", durum.d], ["v", durum.v], ["o", durum.o]] as const)
       form.querySelectorAll<HTMLInputElement>(`input[name="${ad}"]`).forEach((r) => (r.checked = r.value === v));
     yilSec[0].value = String(durum.b); yilSec[1].value = String(durum.e);
+    altKutu.hidden = n === 1;
+    altSec.forEach((secim, i) => {
+      if (secim.options.length !== n) {
+        secim.replaceChildren(...Array.from({ length: n }, (_, j) => el("option", { value: String(j + 1),
+          textContent: `${i ? "Son" : "İlk"}: ${n === 12 ? AY[j] : `Ç${j + 1}`}` })));
+      }
+      secim.value = String(i ? durum.q : durum.p);
+    });
     // Bu sıklıkta olmayan seriler (ör. aylıkta yıllık seri) işaretlenir.
     kutular.forEach((k) => {
       const lab = k.closest<HTMLElement>("label")!, yok = !uygunMu(lab.dataset.siklik!, durum.s);
@@ -100,6 +124,7 @@ function baslat(form: HTMLFormElement) {
     const f = new FormData(form);
     const b = Number(yilSec[0].value), e = Number(yilSec[1].value);
     uygula({ g, s: String(f.get("s")) as Durum["s"], d: f.get("d") === "son" ? "son" : "ort", b: Math.min(b, e), e: Math.max(b, e), v: String(f.get("v")) as Durum["v"],
+      p: Number(f.get("p")), q: Number(f.get("q")),
       o: (String(f.get("o") ?? "deger")) as Olcek });
   };
 
@@ -127,7 +152,7 @@ function baslat(form: HTMLFormElement) {
     const tanim = new Map(panel.seriler.map((t) => [t.id, t]));
     const secili = d.g.map((id) => tanim.get(id)).filter((t): t is Tanim => !!t);
     const disarida = d.g.filter((id) => !tanim.has(id));
-    const satir = Object.fromEntries(secili.map((t) => [t.id, yilAraligi(panel.veri[t.id] ?? [], d.b, d.e)]));
+    const satir = Object.fromEntries(secili.map((t) => [t.id, yilAraligi(panel.veri[t.id] ?? [], d.b, d.e, d.s, d.p, d.q)]));
     const dolu = secili.filter((t) => satir[t.id].length), bos = secili.filter((t) => !satir[t.id].length);
     son = { panel, secili: dolu, satir };
     const i = d.d === "ort" ? 1 : 2;
@@ -144,6 +169,8 @@ function baslat(form: HTMLFormElement) {
         ...(ortak !== d.s ? [dugme(`Hepsini ${SIKLIK[ortak]} görünümde göster`, () => uygula({ s: ortak }))] : [])));
     }
     if (dolu.length) {
+      const model = dolu.filter((t) => t.deger_turu === "model_tahmini");
+      if (model.length) cikti.append(bildirim(`Model serileri: ${model.map((t) => t.baslik).join(", ")}. Bu seriler tahmin veya projeksiyon içerebilir.`));
       if (d.v === "grafik" && d.o !== "deger") ortakGrafik(dolu, satir, i, d);
       else if (d.v === "grafik") grafik(dolu, satir, i, d);
       else if (d.v === "isi") {
@@ -165,7 +192,7 @@ function baslat(form: HTMLFormElement) {
   function istatistik(secili: Tanim[], satir: Record<string, Satir[]>, i: 1 | 2, d: Durum) {
     const hucre = (metin: string, alt?: string) => el("td", { className: "n sayi" }, metin, ...(alt ? [el("small", { textContent: alt })] : []));
     const satirlar = secili.map((t) => {
-      const o = seriOzeti(satir[t.id], i, d.s, d.b, d.e);
+      const o = seriOzeti(satir[t.id], i, d.s, d.b, d.e, d.p, d.q);
       const birim = BIRIM[t.birim] ?? t.birim;
       const farkBirim = t.birim.startsWith("yuzde") ? "yuzde-puan" : t.birim;
       const fark = o.degisim === null ? "—" : farkBirim === "yuzde-puan"
@@ -280,7 +307,8 @@ ${c.b.baslik}: ${farkYaz(c.b, p.y)}` })),
   function grafik(secili: Tanim[], satir: Record<string, Satir[]>, i: 1 | 2, d: Durum) {
     const z = zamanAlani(secili.map((t) => satir[t.id]));
     if (!z) return;                                                 // dolu seri yoksa çağrılmaz; yine de geçersiz Date üretme
-    const alan: [Date, Date] = [new Date(Math.min(+z[0], Date.UTC(d.b, 0, 1))), z[1]];
+    const ay = d.s === "ceyreklik" ? (d.p - 1) * 3 : d.p - 1;
+    const alan: [Date, Date] = [new Date(Math.min(+z[0], Date.UTC(d.b, ay, 1))), z[1]];
     for (const t of secili) {
       const tuval = el("div", { className: "g-tuval" });
       cikti.append(el("section", { className: "g-panel" }, baslik(t, satir[t.id], i, d), tuval, not(t, d)));
@@ -324,9 +352,15 @@ ${c.b.baslik}: ${farkYaz(c.b, p.y)}` })),
     }
   }
 
-  // Ölçek "endeks" ya da "fark": uygun seriler ortak baz döneminden itibaren tek eksende, en çok
+  // Ortak eksen ve dönüşümler: uygun seriler tek eksende, en çok
   // ORTAK_AZAMI seri bir panelde (renk körlüğünde ayırt edilen palet); fazlası ikinci panele.
   function ortakGrafik(secili: Tanim[], satir: Record<string, Satir[]>, i: 1 | 2, d: Durum) {
+    const ham = d.o === "ortak", birim = secili[0].birim;
+    if (ham && (birim === "endeks" || birim === "puan" || secili.some((t) => t.birim !== birim))) {
+      cikti.append(bildirim("Bu serilerin birimleri veya ölçekleri farklı. Ayrı eksenlerde gösteriliyor."));
+      grafik(secili, satir, i, d);
+      return;
+    }
     const uygun = secili.filter((t) => olcekUygun(t.birim, d.o)), disari = secili.filter((t) => !olcekUygun(t.birim, d.o));
     if (disari.length) {
       const oneri: Olcek = d.o === "endeks" ? "fark" : "endeks";
@@ -335,8 +369,11 @@ ${c.b.baslik}: ${farkYaz(c.b, p.y)}` })),
         dugme("Değer ölçeğine dön", () => uygula({ o: "deger" }))));
     }
     if (!uygun.length) return;
-    const baz = ortakBaz(uygun.map((t) => satir[t.id]), i);
-    if (!baz) { cikti.append(bildirim("Seçili serilerin bu aralıkta ortak dönemi yok; ortak baz kurulamıyor. Aralığı genişletin ya da seri çıkarın.")); return; }
+    const baz = ham ? null : ortakBaz(uygun.map((t) => satir[t.id]), i);
+    if (!ham && !baz) { cikti.append(bildirim("Seçili serilerin bu aralıkta ortak dönemi yok; ortak baz kurulamıyor. Aralığı genişletin ya da seri çıkarın.")); return; }
+    const bazAdi = baz ? donemAdi(baz) : "";
+    const degerYaz = (v: number, eksen = false) => ham ? yaz(birim, v, eksen ? "eksen" : "tam") : olcekYaz(d.o, v, eksen);
+    const baslik = ham ? `Aynı eksen · ${BIRIM[birim] ?? birim}` : d.o === "endeks" ? `Endeks, ${bazAdi} = 100` : `${bazAdi} değerine göre fark, yüzde puan`;
     const veri = uygun.map((t) => ({ t, n: donustur(satir[t.id], i, d.o, baz) }));
     const negatif = veri.filter((x) => !x.n).map((x) => x.t.baslik);
     if (negatif.length) cikti.append(bildirim(`${negatif.join(", ")}: baz dönemindeki değer sıfır ya da negatif, endeks hesaplanamaz.`));
@@ -348,30 +385,42 @@ ${c.b.baslik}: ${farkYaz(c.b, p.y)}` })),
         const sn = x.n.at(-1);
         return el("li", {}, el("span", { className: "g-ornek", style: `background:${KAT[j]}` } as Partial<HTMLSpanElement>),
           el("a", { href: `/gosterge/${x.t.id}`, textContent: x.t.baslik }),
-          el("span", { className: "g-lejant-v", textContent: sn ? ` ${olcekYaz(d.o, sn.v)} · ${donemAdi(sn.donem)}` : "" }));
+          el("span", { className: "g-lejant-v", textContent: sn ? ` ${degerYaz(sn.v)} · ${donemAdi(sn.donem)}` : "" }));
       }));
-      const baslikP = el("p", { className: "g-ortak-bas" }, el("strong", { textContent: d.o === "endeks" ? `Endeks, ${donemAdi(baz)} = 100` : `${donemAdi(baz)} değerine göre fark, yüzde puan` }),
+      const baslikP = el("p", { className: "g-ortak-bas" }, el("strong", { textContent: baslik }),
         ` · ${SIKLIK[d.s]} · ${d.d === "ort" ? "dönem ortalaması" : "dönem sonu"}${ciz_.length > ORTAK_AZAMI ? ` · panel ${k / ORTAK_AZAMI + 1}/${Math.ceil(ciz_.length / ORTAK_AZAMI)}` : ""}`);
       cikti.append(el("section", { className: "g-panel" }, baslikP, lejant, tuval, el("p", { className: "g-not",
-        textContent: `Ortak baz: bütün serilerin değeri olan ilk dönem (${donemAdi(baz)}). Dönüşüm bu sitenin hesabıdır; CSV ham değerleri verir.${ciz_.length > ORTAK_AZAMI ? ` Bir panelde en çok ${ORTAK_AZAMI} seri: daha fazlası renkle ayırt edilemez.` : ""}` })));
+        textContent: ham ? "Serilerin değerleri aynı birimde, ölçek dönüşümü uygulanmadan çiziliyor. Veri boşluklarında çizgi kesilir."
+          : `Ortak baz: bütün serilerin değeri olan ilk dönem (${bazAdi}). CSV ham değerleri verir.${ciz_.length > ORTAK_AZAMI ? ` Bir panelde en çok ${ORTAK_AZAMI} seri.` : ""}` })));
       const gen = tuval.clientWidth || 900;
-      const uzun = grup.flatMap((x, j) => x.n.map((p) => ({ j, ad: x.t.baslik, t: tarih(p.donem), donem: p.donem, v: p.v })));
+      const uzun = grup.flatMap((x, j) => {
+        let parca = 0;
+        return x.n.map((p, k) => {
+          if (k && donemSirasi(p.donem, d.s) - donemSirasi(x.n[k - 1].donem, d.s) !== 1) parca++;
+          return { j, ad: x.t.baslik, t: tarih(p.donem), donem: p.donem, v: p.v, parca };
+        });
+      });
       const p = Plot.plot({
         width: gen, height: gen < 520 ? 240 : 300, marginLeft: 52, marginRight: 12,
         style: { background: "transparent", color: "var(--soluk)", fontSize: "12px" },
         x: { type: "utc", label: null, ticks: Math.max(3, Math.floor(gen / 110)) },
-        y: { grid: true, nice: true, label: null, tickFormat: (v: number) => olcekYaz(d.o, v, true) },
+        y: { grid: true, nice: true, label: null, tickFormat: (v: number) => degerYaz(v, true) },
         marks: [
-          Plot.ruleY([d.o === "endeks" ? 100 : 0], { stroke: "var(--soluk)", strokeOpacity: 0.8 }),
-          ...grup.map((_, j) => Plot.lineY(uzun.filter((x) => x.j === j), { x: "t", y: "v", stroke: KAT[j], strokeWidth: 2 })),
-          Plot.tip(uzun, Plot.pointer({ className: "g-ipucu", x: "t", y: "v", title: (x: { ad: string; donem: string; v: number }) => `${x.ad}\n${donemAdi(x.donem)}: ${olcekYaz(d.o, x.v)}` })),
+          ...(ham ? [] : [Plot.ruleY([d.o === "endeks" ? 100 : 0], { stroke: "var(--soluk)", strokeOpacity: 0.8 })]),
+          ...grup.flatMap((_, j) => {
+            const noktalar = uzun.filter((x) => x.j === j);
+            const tekler = noktalar.filter((x, k) => noktalar[k - 1]?.parca !== x.parca && noktalar[k + 1]?.parca !== x.parca);
+            return [Plot.lineY(noktalar, { x: "t", y: "v", z: "parca", stroke: KAT[j], strokeWidth: 2, strokeDasharray: [undefined, "7 3", "3 2", "9 3 2 3"][j] }),
+              Plot.dot(tekler, { x: "t", y: "v", fill: KAT[j], r: 3 })];
+          }),
+          Plot.tip(uzun, Plot.pointer({ className: "g-ipucu", x: "t", y: "v", title: (x: { ad: string; donem: string; v: number }) => `${x.ad}\n${donemAdi(x.donem)}: ${degerYaz(x.v)}` })),
         ],
       });
       const temizle = () => p.querySelectorAll("g[aria-label]").forEach((g) => g.removeAttribute("aria-label"));
       new MutationObserver(temizle).observe(p, { childList: true, subtree: true });
       temizle();
       p.setAttribute("role", "img");
-      p.setAttribute("aria-label", `${d.o === "endeks" ? "Endeks" : "Fark"}, baz ${donemAdi(baz)}: ${grup.map((x) => `${x.t.baslik} son ${olcekYaz(d.o, x.n.at(-1)?.v ?? NaN)}`).join("; ")}. Değerler Tablo görünümünde.`);
+      p.setAttribute("aria-label", `${baslik}: ${grup.map((x) => `${x.t.baslik} son ${degerYaz(x.n.at(-1)?.v ?? NaN)}`).join("; ")}. Değerler Tablo görünümünde.`);
       tuval.append(p);
     }
   }
@@ -446,7 +495,7 @@ ${c.b.baslik}: ${farkYaz(c.b, p.y)}` })),
   // Tablo sıralaması görünüm içi tercih: adrese yazılmaz. -1 dönem sütunu.
   let siralama: { kolon: number; yon: "artan" | "azalan" } = { kolon: -1, yon: "azalan" };
   function tablo(secili: Tanim[], satir: Record<string, Satir[]>, i: 1 | 2, d: Durum) {
-    const olcekli = d.o !== "deger";
+    const olcekli = d.o === "endeks" || d.o === "fark";
     const baz = olcekli ? ortakBaz(secili.filter((t) => olcekUygun(t.birim, d.o)).map((t) => satir[t.id]), i) : null;
     const kolonlar = secili.map((t) => {
       const donus = olcekli && olcekUygun(t.birim, d.o) && baz ? donustur(satir[t.id], i, d.o, baz) : null;
@@ -508,6 +557,12 @@ ${c.b.baslik}: ${farkYaz(c.b, p.y)}` })),
     const m = metaveri(son.secili, durum, `${son.panel.yontem} Ayrıntı: ${YONTEM_SAYFASI}`, baglanti(), new Date());
     indir(JSON.stringify(m, null, 1) + "\n", "application/json;charset=utf-8", dosyaAdi("metaveri.json"));
   });
+  document.getElementById("g-json")?.addEventListener("click", () => {
+    if (!son?.secili.length) { durumP.textContent = "İndirilecek veri yok: aralıkta gözlemi olan bir gösterge seçin."; return; }
+    const m = metaveri(son.secili, durum, son.panel.yontem, baglanti(), new Date());
+    const veri = { ...m, sutunlar_panel: ["donem", "ort", "son", "n", "tam"], seriler: son.secili, veri: son.satir };
+    indir(JSON.stringify(veri, null, 1) + "\n", "application/json;charset=utf-8", dosyaAdi("json"));
+  });
   document.getElementById("g-bagla")?.addEventListener("click", async () => {
     const url = baglanti();
     try { await navigator.clipboard.writeText(url); durumP.textContent = "Bağlantı kopyalandı: bu görünümü aynen açar."; }
@@ -535,7 +590,7 @@ ${c.b.baslik}: ${farkYaz(c.b, p.y)}` })),
   };
   for (const x of suzgec) x.addEventListener(x instanceof HTMLSelectElement ? "change" : "input", (e) => { e.stopPropagation(); suz(); });
 
-  for (const btn of hizli) btn.addEventListener("click", () => uygula({ b: hizliBas(Number(btn.dataset.gYil)), e: yillar.at(-1)! }));
+  for (const btn of hizli) btn.addEventListener("click", () => uygula({ b: hizliBas(Number(btn.dataset.gYil)), e: yillar.at(-1)!, p: 1, q: donemSayisi(durum.s) }));
   sonucUst.hidden = false;
   const sonucDugme = document.getElementById("g-sonuca-git");
   if (sonucDugme) {

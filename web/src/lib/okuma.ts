@@ -12,7 +12,24 @@ export function zaman(d: string): number {
   const q = /-Q([1-4])$/.exec(d.replace(/-S([12])$/, (_: string, s: string) => (s === "1" ? "-Q1" : "-Q3")));
   if (q) return Date.UTC(y, (Number(q[1]) - 1) * 3, 1);
   const p = d.split("-");
+  if (p[1]?.startsWith("W")) {
+    const ocak = new Date(Date.UTC(y, 0, 4));
+    return +ocak + (7 * (Number(p[1].slice(1)) - 1) - (ocak.getUTCDay() + 6) % 7) * 864e5;
+  }
   return Date.UTC(y, p[1] ? Number(p[1]) - 1 : 0, p[2] ? Number(p[2]) : 1);
+}
+
+export function tarihselKiyas(son: string, ortak: string): boolean {
+  const esik = new Date(zaman(son));
+  esik.setUTCFullYear(esik.getUTCFullYear() - 2);
+  return zaman(ortak) < +esik;
+}
+
+export function ardisikDonem(onceki: string, son: string, siklik: string): boolean {
+  if (siklik === "gunluk" || siklik === "haftalik") return zaman(son) - zaman(onceki) === (siklik === "gunluk" ? 1 : 7) * 864e5;
+  const a = new Date(zaman(onceki)), b = new Date(zaman(son));
+  const ay = (b.getUTCFullYear() - a.getUTCFullYear()) * 12 + b.getUTCMonth() - a.getUTCMonth();
+  return ay === ({ aylik: 1, ceyreklik: 3, yariyillik: 6, yillik: 12 } as Record<string, number>)[siklik];
 }
 
 /** "2025", "Mart 2025", "2025 2. çeyrek", "3 Mart 2025". */

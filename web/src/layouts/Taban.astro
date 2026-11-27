@@ -11,7 +11,8 @@ const etkin = (h: string) => (h === "/" ? yol === "/" : yol.startsWith(h));
 // Veri durumu derlemede durum.json'dan (site her veri commit'inde yeniden derlenir).
 const d = durum();
 const sorun = d ? d.ozet.hatali + d.ozet.geciken : 0;
-const kisaTarih = d ? tarih(d.son_kontrol).replace(/ \d{4}$/, "") : null;
+const sonKontrol = d?.last_attempt_at === undefined ? d?.son_kontrol ?? null : d.last_attempt_at;
+const kisaTarih = tarih(sonKontrol).replace(/ \d{4}$/, "");
 ---
 <!doctype html>
 <html lang="tr">
@@ -48,7 +49,7 @@ const kisaTarih = d ? tarih(d.son_kontrol).replace(/ \d{4}$/, "") : null;
       </a>
       <div class="ust-arac">
         {d && (
-          <a class="ust-durum" href="/kaynaklar" title={`Son veri kontrolü ${tarih(d.son_kontrol)}; ${d.ozet.yayinda}/${d.ozet.seri} seri yayında`}>
+          <a class="ust-durum" href="/kaynaklar" title={`Son veri kontrolü ${tarih(sonKontrol)} · ${d.ozet.yayinda}/${d.ozet.seri} seri yayında`}>
             <span class:list={["nokta", sorun ? "nokta--uyari" : "nokta--iyi"]} aria-hidden="true"></span>
             <span>Veri {kisaTarih}{sorun > 0 && <span class="ust-sorun"> · {sorun} uyarı</span>}</span>
           </a>

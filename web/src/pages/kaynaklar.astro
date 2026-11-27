@@ -26,13 +26,13 @@ const saat = (iso: string | null) => (iso ? `${tarih(iso)}, ${iso.slice(11, 16)}
         <div><dt>Veri yayımlayan kurum</dt><dd class="sayi">{yayimlayan.length}</dd></div>
         <div><dt>Yayında seri</dt><dd class="sayi">{d.ozet.yayinda}/{d.ozet.seri}</dd></div>
         <div><dt>Gözlem</dt><dd class="sayi">{gozlem.toLocaleString("tr-TR")}</dd></div>
-        <div><dt>Son kontrol</dt><dd>{saat(d.son_kontrol)}</dd></div>
+        <div><dt>Son kontrol</dt><dd>{saat(d.last_attempt_at === undefined ? d.son_kontrol : d.last_attempt_at)}</dd></div>
         <div><dt>Son çekimi başarısız</dt><dd class="sayi">{d.ozet.hatali}</dd></div>
-        <div><dt>Takvimin gerisinde</dt><dd class="sayi">{d.ozet.geciken}</dd></div>
+        <div><dt>Tahmini eşiği aşan seri</dt><dd class="sayi">{d.ozet.geciken}</dd></div>
       </dl>
       <div class="kaydir">
         <table>
-          <thead><tr><th scope="col">Kurum</th><th scope="col" class="n">Seri</th><th scope="col">Son başarılı kontrol</th><th scope="col">Son çekimi başarısız</th><th scope="col">Takvimin gerisinde</th></tr></thead>
+          <thead><tr><th scope="col">Kurum</th><th scope="col" class="n">Seri</th><th scope="col">Son başarılı kontrol</th><th scope="col">Son çekimi başarısız</th><th scope="col">Tahmini güncellik eşiğini aşan</th></tr></thead>
           <tbody>
             {d.kaynaklar.map((k) => (
               <tr>

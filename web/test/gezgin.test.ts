@@ -24,6 +24,13 @@ test("tek noktalı seride zaman alanı genişletilir, ters değil", () => {
   assert.ok(Number.isFinite(+tarih("2025-S2")) && Number.isFinite(+tarih("2025-Q4")));
 });
 
+test("çeyrek aralığı yıllar arasında iki ucu da kapsar", () => {
+  const veri = [s("2024-Q2", "1"), s("2024-Q3", "2"), s("2024-Q4", "3"), s("2025-Q1", "4"), s("2025-Q2", "5")];
+  const secili = yilAraligi(veri, 2024, 2025, "ceyreklik", 3, 1);
+  assert.deepEqual(secili.map(([d]) => d), ["2024-Q3", "2024-Q4", "2025-Q1"]);
+  assert.equal(seriOzeti(secili, 1, "ceyreklik", 2024, 2025, 3, 1).beklenen, 3);
+});
+
 test("sıklık uygunluğu: yıllıktan aylık üretilmez, ortak sıklık seçilir", () => {
   assert.equal(uygunMu("aylik", "yillik"), true);
   assert.equal(uygunMu("yillik", "aylik"), false);
@@ -37,6 +44,7 @@ test("arama Türkçe harf ve büyük/küçük duyarsız", () => {
   assert.ok(eslesir("İşsizlik oranı, aylık", "issizlik"));
   assert.ok(eslesir("Kadınların işgücüne katılım oranı", "KADIN katılım"));
   assert.ok(eslesir("Gini katsayısı", ""));
+  assert.ok(eslesir("Kişi başına gelir, sabit PPP", "SAGP gelir"));
   assert.ok(!eslesir("Nüfus", "faiz"));
 });
 

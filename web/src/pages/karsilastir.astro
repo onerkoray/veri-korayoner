@@ -4,7 +4,7 @@
 // Tarayıcıda: ../scripts/karsilastir.ts yalnız API izinli /api/v1/emsal ve /api/v1/seri dosyalarını okur.
 import Taban from "../layouts/Taban.astro";
 import { seriler, emsal, TEMA, TEMA_SIRA, ULKE, ulkeAdi } from "../lib/veri";
-import { donemAdi } from "../lib/okuma.ts";
+import { donemAdi, tarihselKiyas } from "../lib/okuma.ts";
 import { emsalSatirlari } from "../lib/turetilmis";
 import { KISI_REF } from "../lib/kimlik";
 
@@ -62,7 +62,7 @@ const jsonld = {
             {satirlar.map((r) => { const tr = r.sira.satirlar.find((x) => x.kod === "TUR")!; return (
               <tr>
                 <th scope="row"><a href={r.href}>{r.baslik}</a></th>
-                <td class="kucuk-h">{donemAdi(r.sira.donem)}{r.trSon !== r.sira.donem && <> (son: {donemAdi(r.trSon)})</>}</td>
+                <td class="kucuk-h">{donemAdi(r.sira.donem)}{r.trSon !== r.sira.donem && <><br />Türkiye son: {donemAdi(r.trSon)}</>}{tarihselKiyas(r.trSon, r.sira.donem) && <><br /><span class="hap hap--uyari">Tarihsel</span></>}</td>
                 <td class="n sayi">{r.yaz(tr.v)}</td>
                 <td class="n sayi">{r.yaz(r.sira.medyan)}</td>
                 <td class="kucuk-h">{r.sira.toplam} ülke içinde {r.sira.sira}.</td>

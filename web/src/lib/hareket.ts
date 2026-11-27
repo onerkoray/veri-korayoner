@@ -149,14 +149,14 @@ export function konumSeridi() {
   const git = (h: HTMLElement) => yumusakKaydir(h.getBoundingClientRect().top + scrollY - ustBosluk());
 
   const nav = document.createElement("nav");
-  nav.className = "konum"; nav.setAttribute("aria-label", "Sayfada konum");
+  nav.className = "konum"; nav.inert = true; nav.setAttribute("aria-label", "Sayfada konum");
   const iki = (n: number) => String(n).padStart(2, "0");
   const cok = bolumler.length >= 2;
   nav.innerHTML = `
     <div class="konum-ic">
       <button type="button" class="konum-dugme konum-ust" aria-label="Sayfanın başına dön" title="Başa dön">↑</button>
       ${cok ? `<button type="button" class="konum-dugme konum-onceki" aria-label="Önceki bölüm">‹</button>
-      <button type="button" class="konum-ad" aria-expanded="false" aria-controls="konum-liste"><span class="konum-sira"></span><span class="konum-baslik"></span><span class="konum-satir"></span></button>
+      <button type="button" class="konum-ad" aria-label="İçindekiler" aria-expanded="false" aria-controls="konum-liste"><span class="konum-sira"></span><span class="konum-baslik">Giriş</span><span class="konum-satir"></span></button>
       <button type="button" class="konum-dugme konum-sonraki" aria-label="Sonraki bölüm">›</button>` : `<span class="konum-yuzde" aria-live="off"></span><span class="konum-satir"></span>`}
       <span class="konum-cubuk" aria-hidden="true"><i></i></span>
     </div>
@@ -191,7 +191,9 @@ export function konumSeridi() {
     bekliyor = false;
     const uzun = document.documentElement.scrollHeight;
     const yeterli = uzun > innerHeight * 2.2;
-    nav.classList.toggle("konum--acik", yeterli && scrollY > innerHeight * 0.5);
+    const acik = yeterli && scrollY > innerHeight * 0.5;
+    nav.inert = !acik;
+    nav.classList.toggle("konum--acik", acik);
     const oran = Math.max(0, Math.min(1, scrollY / Math.max(1, uzun - innerHeight)));
     cubuk.style.transform = `scaleX(${oran.toFixed(3)})`;
     if (yuzde) yuzde.textContent = `%${Math.round(oran * 100)}`;
@@ -210,6 +212,7 @@ export function konumSeridi() {
     etkin = i;
     sira!.textContent = i < 0 ? `00/${iki(bolumler.length)}` : `${iki(i + 1)}/${iki(bolumler.length)}`;
     baslik!.textContent = i < 0 ? "Giriş" : bolumler[i].textContent!.trim();
+    ad?.setAttribute("aria-label", `İçindekiler · ${baslik!.textContent}`);
     liste!.querySelectorAll("button").forEach((b, j) => { if (j === i) b.setAttribute("aria-current", "true"); else b.removeAttribute("aria-current"); });
   };
   addEventListener("scroll", () => { if (!bekliyor) { bekliyor = true; requestAnimationFrame(guncelle); } }, { passive: true });

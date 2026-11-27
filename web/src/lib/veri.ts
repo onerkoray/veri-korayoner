@@ -1,6 +1,6 @@
 // Derleme zamanı veri katmanı: yayin/site-veri (kanonik) ve yayin/api (katalog).
 import { readFileSync, existsSync } from "node:fs";
-import { FARK_BIRIM, type Nokta } from "./okuma.ts";
+import { FARK_BIRIM, ardisikDonem, type Nokta } from "./okuma.ts";
 import { join } from "node:path";
 
 const YAYIN = join(process.cwd(), "..", "yayin");
@@ -36,6 +36,14 @@ export function degerTuru(s: Pick<Seri, "deger_turu" | "gozlemler" | "cekildi">)
   const proj = sn && Number(sn.donem.slice(0, 4)) >= Number(s.cekildi.slice(0, 4));
   return proj ? `Model tahmini · ${sn!.donem.slice(0, 4)} projeksiyon` : "Model tahmini";
 }
+
+export function gozlemEtiketi(s: Pick<Seri, "deger_turu" | "cekildi">, g: Gozlem): string | null {
+  if (g.deger == null) return null;
+  if (s.deger_turu === "model_tahmini") {
+    return Number(g.donem.slice(0, 4)) >= Number(s.cekildi.slice(0, 4)) ? "Projeksiyon" : "Model serisi";
+  }
+  return g.durum && g.durum !== "A" ? `Kaynak bayrağı: ${g.durum}` : null;
+}
 export function kaynaklar(): Kaynak[] { return oku("api/v1/kaynaklar.json").kaynaklar; }
 /** Kayıttaki okuma bilgisi (site-veri/seriler.json): bağlam metni, not, ilişkili göstergeler. */
 export interface Baglam { baglam: string | null; not: string | null; iliskili: string[] }
@@ -58,9 +66,13 @@ export function degisiklikler(): Olay[] {
   const y = "site-veri/degisiklikler.json";
   return existsSync(join(YAYIN, y)) ? oku(y).kayitlar : [];
 }
-export interface SeriDurumu { id: string; gecikti: boolean; ardisik_hata: number; son_basarili_kontrol: string | null; son_gozlem: string | null }
+export interface SeriDurumu {
+  id: string; gecikti: boolean; ardisik_hata: number; son_kontrol: string | null; son_basarili_kontrol: string | null;
+  son_gozlem: string | null; estimated_release_at?: string | null; source_release_at?: string | null;
+  site_published_at?: string | null; error_class?: string | null;
+}
 export interface KaynakDurumu { id: string; seri: number; son_basarili_kontrol: string | null; hatali: string[]; geciken: string[] }
-export interface Durum { son_kontrol: string; ozet: { seri: number; yayinda: number; hatali: number; geciken: number }; kaynaklar: KaynakDurumu[]; seriler: SeriDurumu[] }
+export interface Durum { son_kontrol: string; last_attempt_at?: string | null; ozet: { seri: number; yayinda: number; hatali: number; geciken: number }; kaynaklar: KaynakDurumu[]; seriler: SeriDurumu[] }
 /** api/v1/durum.json: sağlık ve tazelik (yoksa null). */
 export function durum(): Durum | null {
   const y = "api/v1/durum.json";
@@ -96,23 +108,29 @@ export function sayi(v: number, ondalik = 0): string {
   return new Intl.NumberFormat("tr-TR", { minimumFractionDigits: ondalik, maximumFractionDigits: ondalik })
     .format(v).replace("-", "−");
 }
+export function farkYaz(v: number, ondalik: number, onEk = ""): string {
+  const isaret = new Intl.NumberFormat("tr-TR", { maximumFractionDigits: ondalik, signDisplay: "exceptZero" })
+    .formatToParts(v).find((p) => p.type === "plusSign" || p.type === "minusSign")?.value.replace("-", "−") ?? "";
+  return isaret + onEk + sayi(Math.abs(v), ondalik);
+}
+
 export function deger(s: Pick<Seri, "birim" | "carpan">, ham: string | number | null, kisa = false): string {
   if (ham == null) return "—";
   const v = Number(ham) * (s.carpan || 1);
   if (!Number.isFinite(v)) return "—";
   switch (s.birim) {
-    case "yuzde": return (v < 0 ? "−%" : "%") + sayi(Math.abs(v), 1);
-    case "yuzde-gsyh": return (v < 0 ? "−%" : "%") + sayi(Math.abs(v), 1) + (kisa ? "" : " GSYH");
+    case "yuzde": return `${sayi(v, 1).startsWith("−") ? "−" : ""}%${sayi(Math.abs(v), 1)}`;
+    case "yuzde-gsyh": return `${deger({ birim: "yuzde", carpan: 1 }, v)}${kisa ? "" : " GSYH"}`;
     // İki oranın farkı (ör. BIS kredi açığı: fiili − eğilim): yüzde değil yüzde puan.
     case "yuzde-puan": return sayi(v, 1) + (kisa ? "" : " yüzde puan");
     case "PPP-2021-USD": return sayi(v, 0) + " SAGP $";
     case "abonelik": return sayi(v, 1) + (kisa ? "" : " hat / 100 kişi");
     case "USD": {
-      const a = Math.abs(v), isaret = v < 0 ? "−" : "";
-      if (a >= 1e12) return isaret + sayi(a / 1e12, 2) + " trilyon $";
-      if (a >= 1e9) return isaret + sayi(a / 1e9, 1) + " milyar $";
-      if (a >= 1e6) return isaret + sayi(a / 1e6, 1) + " milyon $";
-      return isaret + sayi(a, 0) + " $";
+      const a = Math.abs(v);
+      if (a >= 1e12) return sayi(v / 1e12, 2) + " trilyon $";
+      if (a >= 1e9) return sayi(v / 1e9, 1) + " milyar $";
+      if (a >= 1e6) return sayi(v / 1e6, 1) + " milyon $";
+      return sayi(v, 0) + " $";
     }
     case "TRY/USD": case "TRY/EUR": return sayi(v, 2) + " TL";
     case "endeks": case "puan": return sayi(v, 1);
@@ -150,18 +168,18 @@ export function onceki(s: Seri): Gozlem | null { const d = dolu(s); return d.len
 /** Son değişim: oranlarda puan farkı, düzeylerde yüzde değişim. Formül sayfada yazılı. */
 export function degisim(s: Seri): { metin: string; yon: number } | null {
   const a = onceki(s), b = son(s);
-  if (!a || !b) return null;
+  if (!a || !b || !ardisikDonem(a.donem, b.donem, s.siklik)) return null;
   const x = Number(a.deger), y = Number(b.deger);
   if (s.birim.startsWith("yuzde")) {
     const f = y - x;
-    return { metin: (Math.abs(f) < 0.05 ? "" : f > 0 ? "+" : "−") + sayi(Math.abs(f), 1) + " puan", yon: Math.sign(f) };
+    return { metin: farkYaz(f, 1) + " puan", yon: Math.sign(f) };
   }
   // Sınırlı ölçekli düzeyler: fark birincil; Gini'de göreli değişim yanında.
   if (s.birim === "puan" || s.birim in FARK_BIRIM) {
-    const f = y - x, rel = x ? ` (göreli ${(f >= 0 ? "+%" : "−%") + sayi(Math.abs(f / x) * 100, 1)})` : "";
-    return { metin: (f >= 0 ? "+" : "−") + sayi(Math.abs(f), s.birim === "dogum" ? 2 : 1) + (s.birim === "puan" ? " puan" + rel : " " + FARK_BIRIM[s.birim]), yon: Math.sign(f) };
+    const f = y - x, rel = x ? ` (göreli ${farkYaz(f / x * 100, 1, "%")})` : "";
+    return { metin: farkYaz(f, s.birim === "dogum" ? 2 : 1) + (s.birim === "puan" ? " puan" + rel : " " + FARK_BIRIM[s.birim]), yon: Math.sign(f) };
   }
   if (x === 0) return null;
   const f = (y / x - 1) * 100;
-  return { metin: (f >= 0 ? "+%" : "−%") + sayi(Math.abs(f), 1), yon: Math.sign(f) };
+  return { metin: farkYaz(f, 1, "%"), yon: Math.sign(f) };
 }

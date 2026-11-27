@@ -1,7 +1,7 @@
 // Panorama ana grafiği: aralık (1/3/5/10 yıl, tümü), seri aç/kapa, imleçte üç değer,
 // CSV ve bağlantı. Durum yalnız adresin # kısmında (sorgu dizesi yok).
 import * as Plot from "@observablehq/plot";
-import { tarih, adresParcasi } from "../lib/gezgin-cekirdek.ts";
+import { tarih, adresParcasi, donemSirasi } from "../lib/gezgin-cekirdek.ts";
 import { aralikBaslangici, genisTablo, type AnaSeri } from "../lib/ana-grafik-cekirdek.ts";
 
 const RENK: Record<string, string> = { faiz: "var(--dv-1)", enf: "var(--dv-2)", reel: "var(--metin)" };
@@ -10,6 +10,41 @@ const n1 = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 1, maximumFra
 const n0 = new Intl.NumberFormat("tr-TR", { maximumFractionDigits: 0 });
 const yuzde = (v: number, f = n1) => (v < 0 ? "−%" : "%") + f.format(Math.abs(v));
 const donemAdi = (d: string) => `${AY[Number(d.slice(5, 7)) - 1]} ${d.slice(0, 4)}`;
+const svgNS = "http://www.w3.org/2000/svg";
+
+function indir(dosya: Blob, ad: string) {
+  const href = URL.createObjectURL(dosya);
+  const a = Object.assign(document.createElement("a"), { href, download: ad });
+  document.body.append(a); a.click(); a.remove();
+  window.setTimeout(() => URL.revokeObjectURL(href), 1000);
+}
+
+function grafikBelgesi(grafik: SVGSVGElement, seriler: AnaSeri[], ilk: string, son: string) {
+  const stil = getComputedStyle(grafik), gen = Math.max(320, grafik.width.baseVal.value), boy = grafik.height.baseVal.value;
+  const ust = 58 + 17 * seriler.length, kok = document.createElementNS(svgNS, "svg");
+  const ekle = (etiket: string, alanlar: Record<string, string | number>, metin = "") => {
+    const n = document.createElementNS(svgNS, etiket);
+    for (const [k, v] of Object.entries(alanlar)) n.setAttribute(k, String(v));
+    if (metin) n.textContent = metin;
+    kok.append(n);
+  };
+  for (const [k, v] of [["width", gen], ["height", boy + ust], ["viewBox", `0 0 ${gen} ${boy + ust}`]]) kok.setAttribute(String(k), String(v));
+  const renk = (token: string) => stil.getPropertyValue(token).trim();
+  ekle("rect", { width: gen, height: boy + ust, fill: renk("--yuzey") });
+  const metin = { x: 14, fill: renk("--metin"), "font-family": "system-ui, sans-serif", "font-size": 12 };
+  ekle("text", { ...metin, y: 22, "font-size": 15, "font-weight": 700 }, "Türkiye · enflasyon ve politika faizi");
+  ekle("text", { ...metin, y: 41 }, `${donemAdi(ilk)} – ${donemAdi(son)} · yüzde`);
+  seriler.forEach((s, i) => {
+    const y = 60 + i * 17;
+    ekle("line", { x1: 14, x2: 31, y1: y - 4, y2: y - 4, stroke: RENK[s.k], "stroke-width": 2, "stroke-dasharray": s.turetilmis ? "5 3" : "none" });
+    ekle("text", { ...metin, x: 37, y }, `${s.ad} · ${s.turetilmis ? "BIS verileriyle Fisher hesabı" : "Kaynak: BIS"}`);
+  });
+  const cizim = grafik.cloneNode(true) as SVGSVGElement;
+  cizim.querySelectorAll(".g-ipucu, .g-imlec").forEach((x) => x.remove());
+  cizim.setAttribute("y", String(ust));
+  kok.append(cizim);
+  return new XMLSerializer().serializeToString(kok).replace(/var\((--[a-z0-9-]+)\)/g, (_, token: string) => renk(token));
+}
 
 const tuval = document.querySelector<HTMLElement>("[data-ana-grafik]");
 if (tuval) kur(tuval);
@@ -43,7 +78,14 @@ function kur(tuval: HTMLElement) {
     const ilk = tablo[0].donem, son = tablo.at(-1)!.donem;
     durumP.textContent = `${donemAdi(ilk)} – ${donemAdi(son)} · ${tablo.length} ay`;
     const gen = tuval.clientWidth - 16 || 900;
-    const uzun = gorunen.flatMap((s) => tablo.filter((r) => r.v[s.k] != null).map((r) => ({ k: s.k, t: tarih(r.donem), v: r.v[s.k]! })));
+    const uzun = gorunen.flatMap((s) => {
+      const dolu = tablo.filter((r) => r.v[s.k] != null);
+      let parca = 0;
+      return dolu.map((r, i) => {
+        if (i && donemSirasi(r.donem, "aylik") - donemSirasi(dolu[i - 1].donem, "aylik") !== 1) parca++;
+        return { k: s.k, t: tarih(r.donem), v: r.v[s.k]!, parca };
+      });
+    });
     const p = Plot.plot({
       width: gen, height: gen < 520 ? 260 : 320, marginLeft: 48, marginRight: 14, marginTop: 14,
       style: { background: "transparent", color: "var(--soluk)", fontSize: "12px" },
@@ -51,7 +93,12 @@ function kur(tuval: HTMLElement) {
       y: { grid: true, nice: true, label: null, tickFormat: (v: number) => yuzde(v, n0) },
       marks: [
         Plot.ruleY([0], { stroke: "var(--soluk)", strokeOpacity: 0.8 }),
-        ...gorunen.map((s) => Plot.lineY(uzun.filter((x) => x.k === s.k), { x: "t", y: "v", stroke: RENK[s.k], strokeWidth: 2, strokeDasharray: s.turetilmis ? "5 3" : undefined })),
+        ...gorunen.flatMap((s) => {
+          const veri = uzun.filter((x) => x.k === s.k);
+          const tek = veri.filter((x, i) => veri[i - 1]?.parca !== x.parca && veri[i + 1]?.parca !== x.parca);
+          return [Plot.lineY(veri, { x: "t", y: "v", z: "parca", stroke: RENK[s.k], strokeWidth: 2, strokeDasharray: s.turetilmis ? "5 3" : undefined }),
+            Plot.dot(tek, { x: "t", y: "v", fill: RENK[s.k], r: 3 })];
+        }),
         Plot.ruleX(tablo, Plot.pointerX({ className: "g-imlec", x: (r: { donem: string }) => tarih(r.donem), stroke: "var(--soluk)", strokeDasharray: "3 3" })),
         Plot.tip(tablo, Plot.pointerX({
           className: "g-ipucu", x: (r: { donem: string }) => tarih(r.donem),
@@ -79,11 +126,29 @@ function kur(tuval: HTMLElement) {
     const gorunen = seriler.filter((s) => acik.has(s.k));
     const sat = [["donem", ...gorunen.map((s) => s.id ?? `${s.k}_bu_sitenin_hesabi`)].join(",")];
     for (const r of tablo) sat.push([r.donem, ...gorunen.map((s) => r.ham[s.k] ?? "")].join(","));
-    const a = Object.assign(document.createElement("a"), {
-      href: URL.createObjectURL(new Blob([sat.join("\n") + "\n"], { type: "text/csv;charset=utf-8" })),
-      download: `turkiye-faiz-enflasyon-${tablo[0].donem}-${tablo.at(-1)!.donem}.csv`,
-    });
-    document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    indir(new Blob([sat.join("\n") + "\n"], { type: "text/csv;charset=utf-8" }),
+      `turkiye-faiz-enflasyon-${tablo[0].donem}-${tablo.at(-1)!.donem}.csv`);
+  });
+  for (const tur of ["svg", "png"]) bolum.querySelector(`[data-eylem="${tur}"]`)?.addEventListener("click", async () => {
+    const grafik = tuval.querySelector("svg");
+    if (!grafik || !tablo.length) { durumP.textContent = "İndirilecek grafik yok."; return; }
+    const ilk = tablo[0].donem, son = tablo.at(-1)!.donem;
+    const svg = grafikBelgesi(grafik, seriler.filter((s) => acik.has(s.k)), ilk, son);
+    const ad = `turkiye-faiz-enflasyon-${ilk}-${son}.${tur}`;
+    if (tur === "svg") { indir(new Blob([svg], { type: "image/svg+xml" }), ad); return; }
+    try {
+      const resim = new Image();
+      resim.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+      await resim.decode();
+      const tuval = document.createElement("canvas");
+      tuval.width = resim.width * 2; tuval.height = resim.height * 2;
+      const cizici = tuval.getContext("2d");
+      if (!cizici) throw new Error("canvas");
+      cizici.drawImage(resim, 0, 0, tuval.width, tuval.height);
+      const png = await new Promise<Blob | null>((bitir) => tuval.toBlob(bitir, "image/png"));
+      if (!png) throw new Error("png");
+      indir(png, ad);
+    } catch { durumP.textContent = "PNG hazırlanamadı. Grafiği SVG olarak indirebilirsiniz."; }
   });
   bolum.querySelector('[data-eylem="bagla"]')?.addEventListener("click", async () => {
     const url = `${location.origin}${location.pathname}${parca()}`;

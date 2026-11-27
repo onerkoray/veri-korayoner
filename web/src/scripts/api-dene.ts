@@ -4,7 +4,7 @@ import { eslesir } from "../lib/gezgin-cekirdek.ts";
 const SATIR = 400;
 const AZAMI_YANIT = 2 * 1024 * 1024;
 const ISTEK_SURESI = 12_000;
-const UCLAR = /^\/api\/v1\/(?:manifest\.json|seriler\.json|kaynaklar\.json|durum\.json|degisiklikler\.json|seri\/[a-z0-9-]+\.(?:json|csv)|emsal\/[a-z0-9-]+\.json|panel\/(?:aylik|ceyreklik|yillik)\.(?:json|csv))$/;
+const UCLAR = /^\/api\/v1\/(?:manifest\.json|seriler\.json|kaynaklar\.json|durum\.json|degisiklikler\.json|sema\/seri\.json|seri\/[a-z0-9-]+\.(?:json|csv)|emsal\/[a-z0-9-]+\.json|panel\/(?:aylik|ceyreklik|yillik)\.(?:json|csv))$/;
 
 async function oku(yanit: Response): Promise<{ metin: string; bayt: number }> {
   if (Number(yanit.headers.get("Content-Length")) > AZAMI_YANIT) {

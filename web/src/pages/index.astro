@@ -5,8 +5,8 @@ import Kivilcim from "../components/Kivilcim.astro";
 import KpiKart from "../components/KpiKart.astro";
 import AnaGrafik from "../components/AnaGrafik.astro";
 import Serit from "../components/Serit.astro";
-import { seriler, degerTuru, kaynaklar, uretildi, TEMA, TEMA_SIRA, deger, degisim, son, onceki, tarih, siklikAdi, ulkeAdi, degisiklikler, durum } from "../lib/veri";
-import { donemAdi, zaman, ek } from "../lib/okuma.ts";
+import { seriler, degerTuru, kaynaklar, TEMA, TEMA_SIRA, deger, degisim, son, onceki, tarih, siklikAdi, ulkeAdi, degisiklikler, durum } from "../lib/veri";
+import { donemAdi, zaman, ek, tarihselKiyas } from "../lib/okuma.ts";
 import { reelPaket, isaretSuresi, emsalSatirlari } from "../lib/turetilmis";
 import { KISI } from "../lib/kimlik";
 
@@ -18,6 +18,7 @@ const gozlemSayisi = ss.reduce((a, s) => a + s.gozlemler.filter((g) => g.deger !
 const kisaKurum = (k: string) => k.replace(/\s*\(.*\)$/, "").replace("Uluslararası Ödemeler Bankası", "BIS").replace("Avrupa Birliği İstatistik Ofisi", "Eurostat").replace("Uluslararası Çalışma Örgütü", "ILO");
 const kaynakListesi = new Intl.ListFormat("tr", { type: "conjunction" }).format(aktif.map((k) => kisaKurum(k.kurum)));
 const saglik = durum();
+const sonKontrol = saglik?.last_attempt_at === undefined ? saglik?.son_kontrol ?? null : saglik.last_attempt_at;
 const durumOf = (id: string) => saglik?.seriler.find((r) => r.id === id);
 
 // Manşet: bu sitenin hesabı
@@ -27,12 +28,10 @@ const reelSon = reel ? son(reel.seri) : null;
 const reelDegisim = reel ? degisim(reel.seri) : null;
 
 // Türkiye nerede: emsali olan her gösterge bir şerit. Ortak dönem Türkiye'nin son verisinden
-// TARIHSEL_YIL yıldan eskiyse (ör. 2024 verisine karşı 1998 sıralaması) satır bugünkü konum gibi
+// İki yıldan eskiyse (ör. 2024 verisine karşı 1998 sıralaması) satır bugünkü konum gibi
 // okunmasın diye burada gösterilmez; gösterge sayfasında "tarihsel karşılaştırma" etiketiyle durur (D-07).
-const TARIHSEL_YIL = 5;
-const yilFarki = (r: { trSon: string; sira: { donem: string } }) => Number(r.trSon.slice(0, 4)) - Number(r.sira.donem.slice(0, 4));
 const tumSatirlar = emsalSatirlari();
-const guncelSatirlar = tumSatirlar.filter((r) => yilFarki(r) <= TARIHSEL_YIL);
+const guncelSatirlar = tumSatirlar.filter((r) => !tarihselKiyas(r.trSon, r.sira.donem));
 // Panorama özet: KPI'lardaki göstergeler ve reel faiz. 50 şeridin hepsi Karşılaştır'da durur;
 // burada hepsini dizmek sayfanın %39'unu tutuyordu (24 Kasım 2026 ölçümü: 5.800 / 15.000 px).
 const MANSET = new Set(["/hesap/reel-politika-faizi", "/gosterge/bis-politika-faizi-tr", "/gosterge/bis-tufe-yillik-tr",
@@ -65,11 +64,11 @@ const jsonld = {
   <div class="sar pano">
     <div class="bulten">
       <p class="etiket">Türkiye Verisi · Ekonomi bülteni</p>
-      <p class="bulten-tarih"><span>Son veri kontrolü</span> <strong>{tarih(saglik?.son_kontrol ?? uretildi())}</strong></p>
+      <p class="bulten-tarih"><span>Son veri kontrolü</span> <strong>{tarih(sonKontrol)}</strong></p>
     </div>
     <div class:list={["pano-izgara", !reel && "pano-izgara--tek"]}>
       <section class="giris" aria-labelledby="p-baslik">
-        <h1 id="p-baslik">Türkiye ekonomisinin görünümü</h1>
+      <h1 id="p-baslik">Türkiye Ekonomik Görünümü</h1>
         <p class="ozet">Para politikası, büyüme ve işgücü göstergeleri. Türkiye verilerini dönemleri ve kaynaklarıyla inceleyin.</p>
 
         {reel && reelSon && (
@@ -83,7 +82,7 @@ const jsonld = {
 
         <div class="gezgin-cta">
           <a href="/gezgin">Veri gezginini açın <span aria-hidden="true">↗</span></a>
-          <a href="#gostergeler">Bütün göstergeler <span aria-hidden="true">↓</span></a>
+          <a href="#gostergeler">Gösterge, kod veya kurum ara <span aria-hidden="true">↓</span></a>
         </div>
       </section>
       {reel && <AnaGrafik faiz={reel.faiz} enf={reel.enf} reel={reel.r} />}
@@ -92,7 +91,7 @@ const jsonld = {
       <p><strong class="sayi">{ss.length}</strong> gösterge · <strong class="sayi">{gozlemSayisi.toLocaleString("tr-TR")}</strong> gözlem · <strong class="sayi">{aktif.length}</strong> kurum</p>
       <p>{kaynakListesi} · <a href="/kaynaklar">Kaynaklar ve veri durumu <span aria-hidden="true">↗</span></a></p>
       {saglik && (saglik.ozet.hatali > 0 || saglik.ozet.geciken > 0) && (
-        <p class="saglik-not">{[saglik.ozet.hatali && `${saglik.ozet.hatali} seride son çekim başarısız (önceki veri gösteriliyor)`, saglik.ozet.geciken && `${saglik.ozet.geciken} seri gecikmiş`].filter(Boolean).join(" · ")}</p>
+        <p class="saglik-not">{[saglik.ozet.hatali && `${saglik.ozet.hatali} seride son çekim başarısız (önceki veri gösteriliyor)`, saglik.ozet.geciken && `${saglik.ozet.geciken} seri tahmini güncellik eşiğini aştı`].filter(Boolean).join(" · ")}</p>
       )}
     </div>
   </div>
@@ -118,7 +117,7 @@ const jsonld = {
           <li>
             <div class="satir-bas">
               <a href={r.href}>{r.baslik}</a>
-              <span class="satir-yer">{yilFarki(r) > 2 && "Tarihsel karşılaştırma · "}{donemAdi(r.sira.donem)} · {r.sira.sira === 1 ? "en yüksek" : r.sira.sira === r.sira.toplam ? "en düşük" : `${r.sira.toplam} ülke içinde ${r.sira.sira}.`}{r.trSon !== r.sira.donem && ` (Türkiye'nin son verisi ${donemAdi(r.trSon)})`} · {r.kaynak}</span>
+              <span class="satir-yer">{donemAdi(r.sira.donem)} · {r.sira.sira === 1 ? "en yüksek" : r.sira.sira === r.sira.toplam ? "en düşük" : `${r.sira.toplam} ülke içinde ${r.sira.sira}.`}{r.trSon !== r.sira.donem && ` (Türkiye'nin son verisi ${donemAdi(r.trSon)})`} · {r.kaynak}</span>
             </div>
             <Serit sira={r.sira} yaz={r.yaz} />
           </li>
@@ -130,7 +129,7 @@ const jsonld = {
 
   <section class="sar hareket" aria-labelledby="h-baslik">
     <h2 id="h-baslik">Son açıklanan veriler</h2>
-    <div class="kaydir veri-akis-tablosu" role="region" aria-labelledby="h-baslik" tabindex="0">
+    <div class="kaydir veri-akis-tablosu" role="region" aria-label="Son açıklanan veri tablosu" tabindex="0">
       <table>
         <thead><tr><th scope="col">Dönem</th><th scope="col">Gösterge</th><th scope="col" class="n">Değer</th><th scope="col" class="n">Önceki</th><th scope="col" class="n">Değişim</th><th scope="col">Seyir</th><th scope="col">Güncelleme</th><th scope="col">Kaynak</th></tr></thead>
         <tbody>

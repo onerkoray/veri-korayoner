@@ -3,8 +3,8 @@ import Taban from "../../layouts/Taban.astro";
 import SeriGrafik from "../../components/SeriGrafik.astro";
 import EmsalGrafik from "../../components/EmsalGrafik.astro";
 import Serit from "../../components/Serit.astro";
-import { seriler, degerTuru, deger, degisim, son, dolu, tarih, birimAdi, siklikAdi, TEMA, emsal, emsalNoktalari, noktalar, ulkeAdi, durum, degisiklikler, baglamlar, type Seri } from "../../lib/veri";
-import { oku, sirala, siraCumlesi, donemAdi, yillikDegisimler, type YillikFark } from "../../lib/okuma.ts";
+import { seriler, degerTuru, deger, degisim, son, dolu, tarih, birimAdi, siklikAdi, TEMA, emsal, emsalNoktalari, noktalar, ulkeAdi, durum, degisiklikler, baglamlar, farkYaz, gozlemEtiketi, type Seri } from "../../lib/veri";
+import { oku, sirala, siraCumlesi, donemAdi, tarihselKiyas, yillikDegisimler, type YillikFark } from "../../lib/okuma.ts";
 import { KISI_REF } from "../../lib/kimlik";
 
 export function getStaticPaths() {
@@ -43,9 +43,7 @@ const sd = durum()?.seriler.find((r) => r.id === s.id);
 const olaylar = degisiklikler().filter((o) => o.seri === s.id);
 const yillik = yillikDegisimler(noktalar(s), s.siklik, s.birim);
 const yfYaz = (f: YillikFark) => {
-  const isaret = f.fark > 0 ? "+" : f.fark < 0 ? "−" : "";
-  const sayi = Math.abs(f.fark).toLocaleString("tr-TR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-  return f.ek === "%" ? `${isaret}%${sayi}` : `${isaret}${sayi} ${f.ek}`;
+  return f.ek === "%" ? farkYaz(f.fark, 1, "%") : `${farkYaz(f.fark, 1)} ${f.ek}`;
 };
 const gecmis = `https://github.com/onerkoray/veri-korayoner/commits/main/yayin/site-veri/seri/${s.id}.json`;
 const gezginS = ({ aylik: "aylik", ceyreklik: "ceyreklik" } as Record<string, string>)[s.siklik] ?? "yillik";
@@ -86,7 +84,7 @@ const aciklama = `${s.baslik}: ${sn ? donemAdi(sn.donem) : ""} ${deger(s, sn?.de
       <p class="guncellik">
         <span>Kaynağın son güncellemesi: {s.kaynak_guncelleme ? tarih(s.kaynak_guncelleme) : "bilinmiyor"}</span>
         {sd && <span>Son başarılı kontrol: {sd.son_basarili_kontrol ? tarih(sd.son_basarili_kontrol) : "bilinmiyor"}</span>}
-        {sd?.gecikti && <span class="hap hap--uyari" title="Beklenen yayın takviminin gerisinde">gecikmiş</span>}
+        {sd?.gecikti && <span class="hap hap--uyari">tahmini eşik aşıldı</span>}
         {sd && sd.ardisik_hata > 0 && <span class="hap hap--uyari" title="Son çekim başarısız; önceki veri gösteriliyor">son çekim başarısız</span>}
       </p>
       {(gezginAdres || karsiAdres) && (
@@ -134,7 +132,7 @@ const aciklama = `${s.baslik}: ${sn ? donemAdi(sn.donem) : ""} ${deger(s, sn?.de
     {sira && emN && (
       <section class="emsal" aria-labelledby="em">
         <h2 id="em">Emsallerle</h2>
-        {sn && Number(sn.donem.slice(0, 4)) - Number(sira.donem.slice(0, 4)) > 2 && <p><span class="hap hap--uyari">Tarihsel karşılaştırma</span> Emsallerle ortak son dönem {donemAdi(sira.donem)}; Türkiye'nin son verisi {donemAdi(sn.donem)}. Sıralama bugünkü konumu değil o dönemi anlatır.</p>}
+        {sn && tarihselKiyas(sn.donem, sira.donem) && <p><span class="hap hap--uyari">Tarihsel karşılaştırma</span> Emsallerle ortak son dönem {donemAdi(sira.donem)}. Türkiye'nin son verisi {donemAdi(sn.donem)}.</p>}
         <p class="ozet">{siraCumlesi(sira, yaz, ulkeAdi, noktalar(s).at(-1))} Emsal kümesi, Türkiye'yle sık karşılaştırılan yükselen ekonomilerdir{Object.keys(emN).includes("EUU") ? "; Eurostat serilerinde AB üyeleri ve AB-27 toplamı" : ""}. <a href="/yontem#emsal">Neden bu ülkeler</a></p>
         <Serit sira={sira} yaz={yaz} />
         <EmsalGrafik tr={noktalar(s)} ulkeler={emN} birim={s.birim} baslik={s.baslik} />
@@ -161,7 +159,11 @@ const aciklama = `${s.baslik}: ${sn ? donemAdi(sn.donem) : ""} ${deger(s, sn?.de
           <div><dt>Sıklık</dt><dd>{siklikAdi(s.siklik)}</dd></div>
           <div><dt>Kapsam</dt><dd>{d[0] && donemAdi(d[0].donem)} – {sn && donemAdi(sn.donem)}, {d.length.toLocaleString("tr-TR")} gözlem</dd></div>
           <div><dt>Kaynağın son güncellemesi</dt><dd>{s.kaynak_guncelleme ? tarih(s.kaynak_guncelleme) : "bilinmiyor"}</dd></div>
+          <div><dt>Kaynağın seri yayım tarihi</dt><dd>{tarih(sd?.source_release_at ?? null)}</dd></div>
+          <div><dt>Son çekim denemesi</dt><dd>{tarih(sd?.son_kontrol ?? null)}{sd?.error_class && ` · ${sd.error_class}`}</dd></div>
           <div><dt>Verinin son değiştiği çekim</dt><dd>{tarih(s.cekildi)}</dd></div>
+          <div><dt>Sitede son yayım</dt><dd>{tarih(sd?.site_published_at ?? null)}</dd></div>
+          {sd?.estimated_release_at && <div><dt>Tahmini güncellik eşiği</dt><dd>{tarih(sd.estimated_release_at)}</dd></div>}
           {s.kaynak_not && <div><dt>Kaynağın veri notu</dt><dd class="not">{s.kaynak_not}</dd></div>}
         </dl>
       </section>
@@ -211,7 +213,7 @@ const aciklama = `${s.baslik}: ${sn ? donemAdi(sn.donem) : ""} ${deger(s, sn?.de
           <thead><tr><th scope="col">Dönem</th><th scope="col" class="n">Değer</th>{yillik.size > 0 && <th scope="col" class="n">Bir yıl önceye göre</th>}<th scope="col" class="n">Kaynaktaki ham değer</th></tr></thead>
           <tbody>
             {tablo.map((g) => (
-              <tr><th scope="row">{g.donem}</th><td class="n cubuklu" style={cubuk(g.deger)} data-eksi={g.deger != null && Number(g.deger) < 0 ? "" : undefined}>{deger(s, g.deger)}</td>{yillik.size > 0 && <td class="n">{yillik.has(g.donem) ? <span class="yon" data-yon={Math.sign(Number(yillik.get(g.donem)!.fark.toFixed(1)))}>{yfYaz(yillik.get(g.donem)!)}</span> : "—"}</td>}<td class="n ham">{g.deger ?? "yayımlanmadı"}{g.durum && g.durum !== "A" && <span class="bayrak" title="Kaynağın gözlem bayrağı (A = normal değer gösterilmez)"> {g.durum}</span>}</td></tr>
+              <tr><th scope="row">{g.donem}{gozlemEtiketi(s, g) && <small class="bayrak"> · {gozlemEtiketi(s, g)}</small>}</th><td class="n cubuklu" style={cubuk(g.deger)} data-eksi={g.deger != null && Number(g.deger) < 0 ? "" : undefined}>{deger(s, g.deger)}</td>{yillik.size > 0 && <td class="n">{yillik.has(g.donem) ? <span class="yon" data-yon={Math.sign(Number(yillik.get(g.donem)!.fark.toFixed(1)))}>{yfYaz(yillik.get(g.donem)!)}</span> : "—"}</td>}<td class="n ham">{g.deger ?? "yayımlanmadı"}{g.durum && g.durum !== "A" && <span class="bayrak" title="Kaynağın gözlem bayrağı"> {g.durum}</span>}</td></tr>
             ))}
           </tbody>
         </table>

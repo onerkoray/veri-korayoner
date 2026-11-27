@@ -70,7 +70,7 @@ const jsonld = {
             <div class="g-tema">
               <p>{g.ad}</p>
               {g.liste.map((s) => (
-                <label class:list={["g-sec", !s.izin.indirme && "kapali"]} data-tema={g.t} data-arama={`${g.ad} ${s.kaynak_kod} ${s.kaynak.id} ${s.kaynak_adi ?? ""}`} data-siklik={s.siklik} data-kurum={kisaAd(s.kaynak.kurum).replace("Avrupa Merkez Bankası", "ECB")}>
+                <label class:list={["g-sec", !s.izin.indirme && "kapali"]} data-tema={g.t} data-arama={`${g.ad} ${s.id} ${s.kaynak_kod} ${s.kaynak.id} ${s.kaynak.kurum} ${s.kaynak_adi ?? ""}`} data-siklik={s.siklik} data-kurum={kisaAd(s.kaynak.kurum).replace("Avrupa Merkez Bankası", "ECB")}>
                   <input type="checkbox" name="g" value={s.id} disabled={!s.izin.indirme} />
                   <span>{s.baslik}</span>
                   <small>{s.kaynak.kurum.replace(/\s*\(.*\)$/, "").replace("Uluslararası Ödemeler Bankası", "BIS").replace("Avrupa Birliği İstatistik Ofisi", "Eurostat").replace("Avrupa Merkez Bankası", "ECB")} · {siklikAdi(s.siklik).toLowerCase()}{!s.izin.indirme && " · yalnız gösterim"}</small>
@@ -93,7 +93,13 @@ const jsonld = {
           <label><span class="gizli">Başlangıç yılı</span><select name="b" id="g-b">{Array.from({ length: sonYil - ilkYil + 1 }, (_, i) => ilkYil + i).map((y) => <option value={y} selected={y === 2010}>{y}</option>)}</select></label>
           <span aria-hidden="true">–</span>
           <label><span class="gizli">Bitiş yılı</span><select name="e" id="g-e">{Array.from({ length: sonYil - ilkYil + 1 }, (_, i) => ilkYil + i).map((y) => <option value={y} selected={y === sonYil}>{y}</option>)}</select></label>
+          <div class="g-alt-donem" id="g-alt-donem" hidden>
+            <label><span class="gizli">Başlangıç alt dönemi</span><select name="p" id="g-p"></select></label>
+            <label><span class="gizli">Bitiş alt dönemi</span><select name="q" id="g-q"></select></label>
+          </div>
           <div class="g-hizli" aria-label="Hazır dönemler">
+            <button type="button" data-g-yil="1">Son 1 yıl</button>
+            <button type="button" data-g-yil="3">Son 3 yıl</button>
             <button type="button" data-g-yil="5">Son 5 yıl</button>
             <button type="button" data-g-yil="10">Son 10 yıl</button>
             <button type="button" data-g-yil="0">Tümü</button>
@@ -101,6 +107,7 @@ const jsonld = {
         </fieldset>
         <fieldset class="g-dugme"><legend>Ölçek</legend>
           <label title="Kaynaktaki ölçek"><input type="radio" name="o" value="deger" checked /><span>Değer</span></label>
+          <label title="Aynı birimdeki serileri tek eksende gösterir"><input type="radio" name="o" value="ortak" /><span>Aynı eksen</span></label>
           <label title="Düzey serileri ortak baz dönemine göre (baz = 100), tek eksende"><input type="radio" name="o" value="endeks" /><span>Baz = 100</span></label>
           <label title="Yüzde serileri baz döneme göre yüzde puan farkı, tek eksende"><input type="radio" name="o" value="fark" /><span>Fark (puan)</span></label>
         </fieldset>
@@ -112,6 +119,7 @@ const jsonld = {
         </fieldset>
         <div class="g-eylem">
           <button type="button" class="g-indir" id="g-indir">CSV indir</button>
+          <button type="button" class="g-indir ikincil" id="g-json">JSON indir</button>
           <button type="button" class="g-indir ikincil" id="g-meta" title="Her sütunun kaynağı, lisansı ve türetilmiş olup olmadığı">Metaveri (JSON)</button>
           <button type="button" class="g-indir ikincil" id="g-bagla">Bağlantıyı kopyala</button>
         </div>
@@ -178,6 +186,8 @@ const jsonld = {
   .g-secili:empty { display: none; }
   .g-secili li { font-size: .73rem; color: var(--soluk); padding: .12rem .4rem; border: 1px solid var(--cizgi); background: var(--yuzey); }
   .g-hizli { display: flex; flex-wrap: wrap; gap: .3rem; width: 100%; padding-top: .25rem; }
+  .g-alt-donem:not([hidden]) { display: flex; gap: .35rem; flex-wrap: wrap; width: 100%; }
+  .g-alt-donem select { max-width: 100%; }
   .g-hizli button { min-height: 2rem; padding: .1rem .36rem; border: 0; background: transparent; color: var(--vurgu); font: 600 .75rem var(--font); text-decoration: underline; text-underline-offset: .2em; cursor: pointer; }
   .g-hizli button[aria-pressed="true"] { background: var(--yuzey-2); color: var(--metin); }
   .g-istatistik { font-size: .82rem; min-width: 43rem; }
@@ -203,7 +213,8 @@ const jsonld = {
   .g-sec { display: grid; grid-template-columns: auto 1fr; gap: 0 .45rem; align-items: start; padding: .2rem 0; cursor: pointer; font-size: .86rem; line-height: 1.35; }
   .g-sec input { margin: .15rem 0 0; accent-color: var(--dv-1); }
   .g-sec small { grid-column: 2; color: var(--soluk); font-size: .72rem; }
-  .g-sec.kapali, .g-sec.yok { opacity: .45; cursor: not-allowed; }
+  .g-sec.kapali { color: var(--soluk); cursor: not-allowed; }
+  .g-sec.yok > span { text-decoration: underline dotted; text-underline-offset: .2em; }
   .g-satir { display: flex; flex-wrap: wrap; gap: .7rem 1rem; align-items: end; border-top: 1px solid var(--cizgi); padding-top: .9rem; }
   .g-dugme { display: inline-flex; flex-wrap: wrap; }
   .g-dugme legend { width: 100%; }

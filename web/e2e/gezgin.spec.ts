@@ -317,7 +317,9 @@ test.describe("Tema ve başlık", () => {
 
   test("favicon SVG ve tema renkli; telefonda menü tek satır, etkin öğe görünür", async ({ page, isMobile }) => {
     await page.goto("/koray-oner");
-    await expect(page.locator('link[rel="icon"]')).toHaveAttribute("href", "/favicon.svg");
+    await expect(page.locator('link[rel="icon"][type="image/svg+xml"]')).toHaveAttribute("href", "/favicon.svg");
+    await expect(page.locator('link[rel="icon"][type="image/png"]')).toHaveAttribute("sizes", "96x96");
+    await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveAttribute("sizes", "180x180");
     if (!isMobile) return;
     const ul = page.locator(".ust nav ul");
     const [h, sh] = await ul.evaluate((e) => [e.clientHeight, e.scrollWidth > e.clientWidth]);
@@ -402,7 +404,7 @@ test.describe("Sade Panorama", () => {
     await expect(page.locator("section.tema:not([hidden])")).toHaveCount(1);
     await sekmeler.nth(1).press("ArrowRight");
     await expect(sekmeler.nth(2)).toBeFocused();
-    await page.getByRole("link", { name: "Bütün göstergeler", exact: true }).click();
+    await page.getByRole("link", { name: "Gösterge, kod veya kurum ara", exact: true }).click();
     await expect(page).toHaveURL(/#gostergeler$/);
     await page.getByRole("searchbox", { name: "Gösterge, seri kodu veya kurum ara" }).fill("işsizlik");
     await expect(page.locator(".tema-sekme")).toBeHidden();
@@ -456,4 +458,38 @@ test("istatistik görünümü seçime ve hazır dönem aralığına göre günce
   await page.reload();
   await expect(page.getByRole("heading", { name: "İstatistik ve ilişkiler" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Son 5 yıl", exact: true })).toHaveAttribute("aria-pressed", "true");
+});
+test("Gezgin dar dönemi ve aynı ekseni bağlantıdan açar, yalnız seçili ayları JSON indirir", async ({ page }) => {
+  await page.goto("/gezgin#g=bis-tufe-yillik-tr,bis-politika-faizi-tr&b=2024&e=2024&o=ortak&p=4&q=6");
+  await expect(page.getByText("Aynı eksen · yüzde", { exact: true })).toBeVisible();
+  await expect(page.locator("#g-p")).toHaveValue("4");
+  await expect(page.locator("#g-q")).toHaveValue("6");
+  const indirme = page.waitForEvent("download");
+  await page.getByRole("button", { name: "JSON indir", exact: true }).click();
+  const dosya = await (await indirme).createReadStream();
+  const parcalar: Buffer[] = [];
+  for await (const parca of dosya!) parcalar.push(parca as Buffer);
+  const secim = JSON.parse(Buffer.concat(parcalar).toString("utf-8"));
+  expect(secim.veri["bis-tufe-yillik-tr"].map((x: string[]) => x[0])).toEqual(["2024-04", "2024-05", "2024-06"]);
+});
+
+test("Panorama grafiği kaynaklı SVG ve PNG olarak iner", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator(".ana-tuval svg")).toBeVisible();
+  for (const tur of ["SVG", "PNG"]) {
+    const bekle = page.waitForEvent("download");
+    await page.getByRole("button", { name: `${tur} indir`, exact: true }).click();
+    const dosya = await bekle;
+    expect(dosya.suggestedFilename()).toMatch(new RegExp(`\\.${tur.toLowerCase()}$`));
+    const akim = await dosya.createReadStream();
+    const parcalar: Buffer[] = [];
+    for await (const parca of akim!) parcalar.push(parca as Buffer);
+    const veri = Buffer.concat(parcalar);
+    if (tur === "PNG") expect(veri.subarray(0, 8).toString("hex")).toBe("89504e470d0a1a0a");
+    else {
+      const metin = veri.toString("utf-8");
+      expect(metin).toContain("Kaynak: BIS");
+      expect(metin).not.toMatch(/<script\b|var\(--/);
+    }
+  }
 });

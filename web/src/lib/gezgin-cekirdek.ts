@@ -5,6 +5,7 @@ export type Satir = [string, string, string, number, boolean];   // donem, ort, 
 export interface Tanim {
   id: string; baslik: string; birim: string; tema: string; kaynak: string; kaynak_kod: string;
   kaynak_siklik: string; lisans: string | null; turetilmis: boolean;
+  deger_turu?: "gozlem" | "model_tahmini";
 }
 
 export const SIRA = ["gunluk", "haftalik", "aylik", "ceyreklik", "yariyillik", "yillik"];
@@ -19,10 +20,17 @@ export function ortakSiklik(kaynakSiklik: string[]): (typeof GORUNUM_SIKLIK)[num
   return GORUNUM_SIKLIK.find((g) => kaynakSiklik.every((k) => uygunMu(k, g))) ?? "yillik";
 }
 
-export function yilAraligi(satir: Satir[], b: number, e: number): Satir[] {
-  return satir.filter((r) => { const y = Number(r[0].slice(0, 4)); return y >= b && y <= e; });
-}
 type PanelSikligi = (typeof GORUNUM_SIKLIK)[number];
+
+export const donemSayisi = (siklik: PanelSikligi) => siklik === "aylik" ? 12 : siklik === "ceyreklik" ? 4 : 1;
+
+export function yilAraligi(satir: Satir[], b: number, e: number, siklik?: PanelSikligi, ilk = 1, son = 0): Satir[] {
+  const n = siklik ? donemSayisi(siklik) : 1;
+  return satir.filter((r) => {
+    const p = siklik ? donemSirasi(r[0], siklik) : Number(r[0].slice(0, 4));
+    return p >= b * n + ilk - 1 && p < e * n + (son || n);
+  });
+}
 
 /** Düzenli panelde iki dönemin ardışık olup olmadığını sayısal olarak ölçer. */
 export function donemSirasi(donem: string, siklik: PanelSikligi): number {
@@ -34,7 +42,7 @@ export function donemSirasi(donem: string, siklik: PanelSikligi): number {
 const panelDegeri = (r: Satir, i: 1 | 2) => r[i].trim() ? Number(r[i]) : NaN;
 
 /** Betimleyici özet: kısmi dönemler istatistiğe ve dönemlik değişime girmez. */
-export function seriOzeti(satir: Satir[], i: 1 | 2, siklik: PanelSikligi, b: number, e: number) {
+export function seriOzeti(satir: Satir[], i: 1 | 2, siklik: PanelSikligi, b: number, e: number, ilk = 1, sonDonem = 0) {
   const gecerli = satir.filter((r) => Number.isFinite(panelDegeri(r, i)));
   const tam = gecerli.filter((r) => r[4]);
   const sayilar = tam.map((r) => panelDegeri(r, i));
@@ -44,7 +52,8 @@ export function seriOzeti(satir: Satir[], i: 1 | 2, siklik: PanelSikligi, b: num
   const son = gecerli.at(-1), onceki = gecerli.at(-2);
   const degisim = son?.[4] && onceki?.[4] && donemSirasi(son[0], siklik) - donemSirasi(onceki[0], siklik) === 1
     ? panelDegeri(son, i) - panelDegeri(onceki, i) : null;
-  const beklenen = (e - b + 1) * (siklik === "aylik" ? 12 : siklik === "ceyreklik" ? 4 : 1);
+  const n = donemSayisi(siklik);
+  const beklenen = (e - b) * n - ilk + 1 + (sonDonem || n);
   return { son, degisim, ortalama, standartSapma, aralik: olcek(sayilar), tam: tam.length,
     kismi: gecerli.length - tam.length, beklenen };
 }
@@ -108,7 +117,9 @@ export function anahtar(s: string): string {
 }
 export function eslesir(metin: string, sorgu: string): boolean {
   const q = anahtar(sorgu).trim();
-  return !q || q.split(/\s+/).every((p) => anahtar(metin).includes(p));
+  const m = anahtar(metin);
+  const es: Record<string, string> = { tufe: "enflasyon", enflasyon: "tufe", gsyih: "gsyh", issizlik: "issiz", sagp: "ppp", ppp: "sagp" };
+  return !q || q.split(/\s+/).every((p) => m.includes(p) || (Object.hasOwn(es, p) && m.includes(es[p])));
 }
 
 export function csvMetni(secili: Tanim[], satir: Record<string, Satir[]>, kolon: 1 | 2): string {
@@ -119,13 +130,13 @@ export function csvMetni(secili: Tanim[], satir: Record<string, Satir[]>, kolon:
   return satirlar.join("\n") + "\n";
 }
 
-export type Olcek = "deger" | "endeks" | "fark";
+export type Olcek = "deger" | "ortak" | "endeks" | "fark";
 /** Ortak grafikte aynı eksene konabilecek seri sayısı: renk körlüğünde ayırt edilebilen palet 4 renk. */
 export const ORTAK_AZAMI = 4;
 /** Ölçek uygun mu: endeks (baz = 100) yalnız pozitif düzeylerde; oran ve puan serisinde oranın
  *  oranı anlamsız. Fark (baz döneme göre puan) yalnız yüzde serilerinde. */
 export function olcekUygun(birim: string, o: Olcek): boolean {
-  if (o === "deger") return true;
+  if (o === "deger" || o === "ortak") return true;
   const oran = birim.startsWith("yuzde");
   return o === "endeks" ? !oran && birim !== "puan" : oran;
 }
@@ -139,8 +150,8 @@ export interface Nokta { donem: string; v: number; tam: boolean }
 /** Baz döneme göre dönüştürür; bazdan önceki dönemler düşer. Endeks: v / v0 × 100 (v0 > 0 değilse null).
  *  Fark: v − v0 (yüzde puan). Değer: aynen. */
 export function donustur(sat: Satir[], i: 1 | 2, o: Olcek, baz: string | null): Nokta[] | null {
-  const n = sat.map((r) => ({ donem: r[0], v: Number(r[i]), tam: r[4] })).filter((x) => Number.isFinite(x.v) && (!baz || x.donem >= baz));
-  if (o === "deger") return n;
+  const n = sat.map((r) => ({ donem: r[0], v: panelDegeri(r, i), tam: r[4] })).filter((x) => Number.isFinite(x.v) && (!baz || x.donem >= baz));
+  if (o === "deger" || o === "ortak") return n;
   const v0 = n.find((x) => x.donem === baz)?.v;
   if (v0 === undefined) return null;
   if (o === "endeks") return v0 > 0 ? n.map((x) => ({ ...x, v: (x.v / v0) * 100 })) : null;
@@ -156,18 +167,19 @@ export function sirala<T extends { donem: string }>(satirlar: T[], deger: (s: T)
   });
 }
 
-export interface GorunumDurumu { s: string; d: "ort" | "son"; b: number; e: number; o?: Olcek }
+export interface GorunumDurumu { s: string; d: "ort" | "son"; b: number; e: number; p?: number; q?: number; o?: Olcek }
 /** CSV'nin yanında indirilen metaveri: her sütunun kaynağı, lisansı, türetilmiş olup olmadığı. */
 export function metaveri(secili: Tanim[], g: GorunumDurumu, yontem: string, baglanti: string, simdi: Date) {
   return {
     olusturuldu: simdi.toISOString(), baglanti, kaynak_site: "https://veri.korayoner.dev/gezgin",
     gorunum: { siklik: g.s, deger: g.d === "ort" ? "dönem ortalaması" : "dönem sonu", baslangic_yili: g.b, bitis_yili: g.e,
+      ...(g.p && { baslangic_alt_donemi: g.p }), ...(g.q && { bitis_alt_donemi: g.q }),
       olcek: g.o === "endeks" ? "ekranda endeks (ortak baz dönemi = 100); CSV ham değerdir" : g.o === "fark" ? "ekranda baz döneme göre yüzde puan farkı; CSV ham değerdir" : "değer" },
     yontem,
     sutunlar: [{ ad: "donem", aciklama: "dönem anahtarı (YYYY, YYYY-Qn ya da YYYY-AA)" },
       ...secili.flatMap((t) => [
         { ad: t.id, baslik: t.baslik, birim: t.birim, kaynak: t.kaynak, kaynak_kod: t.kaynak_kod, lisans: t.lisans,
-          kaynak_siklik: t.kaynak_siklik, turetilmis: t.turetilmis,
+          kaynak_siklik: t.kaynak_siklik, turetilmis: t.turetilmis, deger_turu: t.deger_turu ?? "gozlem",
           deger: t.turetilmis ? `bu sitenin hesabı: ${g.d === "ort" ? "dönem ortalaması" : "dönemin son gözlemi"}` : "kaynaktaki değer" },
         { ad: `${t.id}__tam`, aciklama: "1: dönemin bütün alt dönemleri var; 0: eksik dönem" },
       ])],

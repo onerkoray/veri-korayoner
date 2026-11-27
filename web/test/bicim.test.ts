@@ -20,8 +20,11 @@ test("sıfıra yuvarlanan negatif değer −0,0 yazılmaz", () => {
   assert.equal(sayi(-0.06, 1), "−0,1");
   assert.equal(yaz("yuzde", -0.004), "%0,0");
   assert.equal(yaz("yuzde-puan", -0.004), "0,0 puan");
-  const s = { birim: "yuzde", carpan: 1, gozlemler: [{ donem: "2025-09", deger: "36.02" }, { donem: "2025-10", deger: "36.0" }] } as unknown as Seri;
+  assert.equal(yaz("yuzde", -0.04), "%0,0");
+  assert.equal(deger({ birim: "yuzde", carpan: 1 }, -0.04), "%0,0");
+  const s = { birim: "yuzde", carpan: 1, siklik: "aylik", gozlemler: [{ donem: "2025-09", deger: "36.02" }, { donem: "2025-10", deger: "36.0" }] } as unknown as Seri;
   assert.equal(degisim(s)!.metin, "0,0 puan");
+  assert.equal(degisim({ ...s, gozlemler: [s.gozlemler[0], { donem: "2025-11", deger: "36" }] }), null);
 });
 
 test("model tahmini: içinde bulunulan yılın değeri projeksiyon", () => {

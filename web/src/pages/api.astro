@@ -1,6 +1,6 @@
 ---
 import Taban from "../layouts/Taban.astro";
-import { seriler, emsal, son, siklikAdi, TEMA, deger } from "../lib/veri";
+import { seriler, emsal, son, siklikAdi, TEMA, deger, degerTuru } from "../lib/veri";
 const ss = seriler().filter((s) => s.izin.api);
 const ornek = ss.find((s) => s.izin.indirme && s.id === "bis-tufe-yillik-tr") ?? ss.find((s) => s.izin.indirme)!;
 const kurumAdi = (s: (typeof ss)[number]) => s.kaynak.kurum.match(/\(([^)]+)\)$/)?.[1] ?? s.kaynak.kurum;
@@ -16,6 +16,7 @@ const UC: [string, string][] = [
   ["/api/v1/manifest.json", "Yayın kimliği, dosya boyutları ve SHA-256 özetleri"], ["/api/v1/seriler.json", "Katalog"], ["/api/v1/kaynaklar.json", "Kaynaklar"], ["/api/v1/durum.json", "Sağlık ve tazelik"],
   ["/api/v1/degisiklikler.json", "Değişiklik günlüğü"], ["/api/v1/seri/{id}.json", "Tek seri (JSON)"], ["/api/v1/seri/{id}.csv", "Tek seri (CSV)"],
   ["/api/v1/emsal/{id}.json", "Emsal ülkeler"], ["/api/v1/panel/{siklik}.json", "Panel (JSON)"], ["/api/v1/panel/{siklik}.csv", "Panel (CSV)"],
+  ["/api/v1/sema/seri.json", "Tek seri JSON Schema"],
 ];
 const py = `import json, urllib.request
 from decimal import Decimal
@@ -33,15 +34,12 @@ const pd = `import pandas as pd
 # Geniş panel: satır dönem, sütun seri; yalnız tam dönemler, dönem ortalaması.
 panel = pd.read_csv("${kok}/api/v1/panel/yillik.csv", index_col="donem", dtype={"donem": str})
 print(panel["${ornek.id}"].dropna().tail())`;
-const js = `const kurumAdi = (s: (typeof ss)[number]) => s.kaynak.kurum.match(/\(([^)]+)\)$/)?.[1] ?? s.kaynak.kurum;
-const kurumlar = [...new Set(ss.map(kurumAdi))].sort((a, b) => a.localeCompare(b, "tr"));
-const katalog = [...ss].sort((a, b) => a.baslik.localeCompare(b.baslik, "tr"));
-const kok = "${kok}/api/v1";
+const js = `const kok = "${kok}/api/v1";
 const yanit = await fetch(\`\${kok}/seri/${ornek.id}.json\`);
 if (!yanit.ok) throw new Error(\`HTTP \${yanit.status}\`);   // izinsiz ya da bilinmeyen seri: 404
 const seri = await yanit.json();
 const son = seri.gozlemler.filter((g) => g.deger !== null).at(-1);
-console.log(seri.baslik, son.donem, Number(son.deger), seri.birim);`;
+if (son) console.log(seri.baslik, son.donem, son.deger, seri.birim);`;
 const duck = `import duckdb
 duckdb.sql("""
   SELECT seri, donem, deger
@@ -55,8 +53,7 @@ const ALAN: [string, string][] = [
   ["baslik, tema", "Türkçe ad ve konu grubu."],
   ["ulke", "ISO 3166 alfa-3 (TUR)."],
   ["siklik", "yillik, yariyillik, ceyreklik, aylik, haftalik, gunluk."],
-  ["birim, carpan", "yuzde, yuzde-gsyh, yuzde-puan (iki oranın farkı), USD, PPP-2021-USD, abonelik, endeks, puan, PPS, yil, kisi; değer × carpan gerçek değeri verir."],
-  ["deger_turu", "gozlem (kaynağın gözlemi) ya da model_tahmini (kaynağın kendi modeliyle ürettiği değer; içinde bulunulan yılın değeri projeksiyondur)."],
+  ["birim, carpan", "Serinin birim kodu ve ölçek çarpanı. Örneğin yuzde-puan iki oranın farkıdır. Gösterim değeri, ham değer × carpan olarak hesaplanır."],
   ["kaynak", "Kurum, kaynak adresi, belge, lisans, lisans kanıt adresi, inceleme tarihi, atıf zorunluluğu, koşullar."],
   ["kaynak_kod, kaynak_adi, kaynak_not", "Kurumun kendi seri kodu, adı ve kaynak notu (doğrulama için)."],
   ["kaynak_guncelleme", "Kurumun bildirdiği son güncelleme günü; bilinmiyorsa null."],
@@ -73,7 +70,7 @@ const DONEM: [string, string, string][] = [
   <article class="sar metin">
     <header class="api-bas"><p class="etiket">Türkiye Verisi / Geliştirici</p>
     <h1>Açık veri API’si</h1>
-    <p class="ozet">Anahtar gerekmez. Dosyalar CDN'den servis edilir, her yanıt bir saat önbelleğe alınır, her kaynaktan (CORS) okunabilir. Yalnız kaynağının lisansı API üzerinden yeniden yayına izin veren seriler listelenir.</p>
+    <p class="ozet">Anahtar gerekmez. CDN’deki dosyalar CORS ile okunabilir. Yanıtlar beş dakika önbellekte tutulabilir. Yalnız API üzerinden yeniden yayına izin verilen seriler listelenir.</p>
     <p class="api-kunye"><strong>{ss.length} seri</strong> · {kurumlar.length} kurum · JSON / CSV / Parquet</p>
     <nav class="api-gecis" aria-label="API sayfası"><a href="#seri-katalogu">Seri kataloğu</a><a href="#deneyin">İstek konsolu</a><a href="#ornekler">Kod örnekleri</a></nav>
     </header>
@@ -87,14 +84,14 @@ const DONEM: [string, string, string][] = [
         <div class="k-filtre"><label for="k-siklik">Sıklık</label><select id="k-siklik"><option value="">Tüm sıklıklar</option>{[...new Set(ss.map((s) => s.siklik))].map((x) => <option value={x}>{siklikAdi(x)}</option>)}</select></div>
       </div>
       <p id="k-sonuc" class="api-kunye" role="status" hidden></p>
-      <div class="kaydir k-tablo" tabindex="0" role="region" aria-labelledby="seri-katalogu"><table>
+      <div class="kaydir k-tablo" tabindex="0" role="region" aria-label="API seri kataloğu tablosu"><table>
         <thead><tr><th scope="col">Gösterge / kaynak kodu</th><th scope="col">Kurum / sıklık</th><th scope="col">Son değer / dönem</th><th scope="col">Erişim</th></tr></thead>
         <tbody>{katalog.map((s) => {
           const sn = son(s);
           return <tr data-k-seri={s.id} data-k-kurum={kurumAdi(s)} data-k-siklik={s.siklik} data-k-ara={`${s.baslik} ${s.kaynak_adi ?? ""} ${s.kaynak_kod} ${s.id} ${s.kaynak.kurum} ${TEMA[s.tema] ?? s.tema}`}>
             <th scope="row"><a href={`/gosterge/${s.id}`}>{s.baslik}</a><small><code>{s.kaynak_kod}</code></small></th>
             <td>{kurumAdi(s)}<small>{siklikAdi(s.siklik)}</small></td>
-            <td class="sayi">{sn ? <>{deger(s, sn.deger, true)}<small>{sn.donem}</small></> : "—"}</td>
+            <td class="sayi">{sn ? <>{deger(s, sn.deger, true)}<small>{sn.donem}{degerTuru(s) && ` · ${degerTuru(s)}`}</small></> : "—"}</td>
             <td><div class="k-adresler">
               <a href={`/api/v1/seri/${s.id}.json`}>JSON</a>
               {s.izin.indirme && <a href={`/api/v1/seri/${s.id}.csv`} download>CSV</a>}
@@ -106,9 +103,11 @@ const DONEM: [string, string, string][] = [
       <p id="k-bos" class="api-kunye" hidden>Bu filtrelerle eşleşen seri yok.</p>
     </section>
     <h2>Uç noktalar</h2>
-    <div class="kaydir"><table>
+    <div class="kaydir" tabindex="0" role="region" aria-label="API uç noktaları tablosu"><table>
       <thead><tr><th scope="col">Adres</th><th scope="col">İçerik</th></tr></thead>
       <tbody>
+        <tr><th scope="row"><a href="/api/v1/manifest.json"><code>/api/v1/manifest.json</code></a></th><td>Yayının kimliği, dosyaların bayt boyutları ve SHA-256 değerleri.</td></tr>
+        <tr><th scope="row"><a href="/api/v1/sema/seri.json"><code>/api/v1/sema/seri.json</code></a></th><td>Tek seri JSON yanıtı için JSON Schema. İstemciler yeni v1 alanlarını kabul edebilir.</td></tr>
         <tr><th scope="row"><code>/api/v1/seriler.json</code></th><td>API izni olan seriler: son değer, kaynak güncelleme tarihi, çekilme zamanı, dosya adresleri.</td></tr>
         <tr><th scope="row"><code>/api/v1/kaynaklar.json</code></th><td>Kayıtlı bütün kurumlar, durumları ve izinleri.</td></tr>
         <tr><th scope="row"><code>/api/v1/seri/&#123;id&#125;.json</code></th><td>Tek seri: metaveri, lisans, bütün gözlemler.</td></tr>
@@ -117,9 +116,9 @@ const DONEM: [string, string, string][] = [
         <tr><th scope="row"><code>/api/v1/panel/&#123;aylik|ceyreklik|yillik&#125;.json</code></th><td>Aynı panel, uzun biçim: her seri için <code>[donem, ort, son, n, tam]</code>; eksik dönemler işaretli, seri metaverisi ve yöntem notuyla. <a href="/gezgin">Veri gezgini</a> bu dosyaları okur.</td></tr>
         <tr><th scope="row"><code>/api/v1/emsal/&#123;id&#125;.json</code></th><td>Aynı serinin emsal ülkelerdeki değerleri (alfa-3 ülke kodu → gözlemler). Yalnız emsali tanımlı seriler. <a href="/karsilastir">Ülke karşılaştırması</a> bu dosyaları okur.</td></tr>
         <tr><th scope="row"><code>/api/v1/degisiklikler.json</code></th><td>Değişiklik günlüğü: kaynakların açıkladığı yeni dönemler ve önceki değerleri düzelttiği revizyonlar, tarihiyle, yeniden eskiye.</td></tr>
-        <tr><th scope="row"><code>/api/v1/gozlemler.parquet</code></th><td>API izinli bütün gözlemler, uzun biçim; değer DECIMAL(38,14).</td></tr>
+        <tr><th scope="row"><code>/api/v1/gozlemler.parquet</code></th><td>API izinli bütün gözlemler, uzun biçim. DECIMAL(38,14) 14 ondalık basamağa yuvarlar. Tam basamaklar JSON ve CSV’de korunur.</td></tr>
         <tr><th scope="row"><code>/api/v1/gozlemler.parquet.sha256</code></th><td>Parquet dosyasının SHA-256 özeti, <code>sha256sum</code> biçiminde: indirdiğiniz dosyayı <code>sha256sum -c gozlemler.parquet.sha256</code> ile doğrulayın.</td></tr>
-        <tr><th scope="row"><code>/api/v1/durum.json</code></th><td>Sağlık ve tazelik: her seri için son kontrol, son başarılı kontrol, son veri değişimi, en yeni dönem, ardışık hata sayısı, son hata ve beklenen takvimin gerisinde mi (<code>gecikti</code>). Kaynak bazında özet. Veri değişmese de her çalıştırmada yazılır.</td></tr>
+        <tr><th scope="row"><code>/api/v1/durum.json</code></th><td>Seri ve kaynak sağlığı, son deneme ve başarı, en yeni dönem, hata sınıfı ve tahmini gecikme. Gecikme, resmî yayın günü bilinmediğinde toleransa göre ölçülür.</td></tr>
       </tbody>
     </table></div>
 
@@ -147,32 +146,38 @@ const DONEM: [string, string, string][] = [
 
     <h2 id="ornekler">Kod örnekleri</h2>
     <h3>curl</h3>
-    <pre><code>{`curl -s ${kok}/api/v1/seri/${ornek.id}.json
+    <pre tabindex="0" aria-label="curl örneği"><code>{`curl -s ${kok}/api/v1/seri/${ornek.id}.json
 curl -s ${kok}/api/v1/seri/${ornek.id}.csv
 curl -sO ${kok}/api/v1/gozlemler.parquet && curl -sO ${kok}/api/v1/gozlemler.parquet.sha256 && sha256sum -c gozlemler.parquet.sha256`}</code></pre>
     <h3>Python (yalnız standart kitaplık)</h3>
-    <pre><code>{py}</code></pre>
+    <pre tabindex="0" aria-label="Python standart kitaplık örneği"><code>{py}</code></pre>
     <h3>Python (pandas, panel)</h3>
-    <pre><code>{pd}</code></pre>
+    <pre tabindex="0" aria-label="Python pandas örneği"><code>{pd}</code></pre>
     <h3>JavaScript / TypeScript</h3>
-    <pre><code>{js}</code></pre>
+    <pre tabindex="0" aria-label="JavaScript ve TypeScript örneği"><code>{js}</code></pre>
     <h3>DuckDB (Parquet)</h3>
-    <pre><code>{duck}</code></pre>
+    <pre tabindex="0" aria-label="DuckDB Parquet örneği"><code>{duck}</code></pre>
 
     <h2>Alanlar: <code>/api/v1/seri/&#123;id&#125;.json</code></h2>
-    <div class="kaydir"><table>
+    <div class="kaydir" tabindex="0" role="region" aria-label="Seri JSON alanları tablosu"><table>
       <thead><tr><th scope="col">Alan</th><th scope="col">Anlamı</th></tr></thead>
       <tbody>{ALAN.map(([a, b]) => <tr><th scope="row"><code>{a}</code></th><td>{b}</td></tr>)}</tbody>
     </table></div>
 
     <h2>Dönem biçimi</h2>
-    <div class="kaydir"><table>
+    <div class="kaydir" tabindex="0" role="region" aria-label="Veri dönemi biçimleri tablosu"><table>
       <thead><tr><th scope="col">Sıklık</th><th scope="col">Biçim</th><th scope="col">Örnek</th></tr></thead>
       <tbody>{DONEM.map(([a, b, c]) => <tr><th scope="row"><code>{a}</code></th><td><code>{b}</code></td><td><code>{c}</code></td></tr>)}</tbody>
     </table></div>
 
     <h2>Değerler</h2>
-    <p>Gözlem değeri JSON'da <strong>metin</strong> olarak durur (<code>"1141242864657.45"</code>): kaynaktaki basamaklar kayan nokta yuvarlamasına uğramaz. Yayımlanmamış dönem <code>null</code>'dır, sıfır değildir. <code>donem</code> gözlemin ait olduğu dönem, <code>kaynak_guncelleme</code> kurumun bildirdiği son güncelleme, <code>cekildi</code> bu sitenin çektiği an (UTC). CSV'de ondalık ayırıcı noktadır, boş hücre yayımlanmamış dönemdir.</p>
+    <p>Gözlem değeri JSON’da <strong>metin</strong> olarak korunur (<code>"1141242864657.45"</code>). Yayımlanmamış dönem <code>null</code> olur ve CSV’de boş hücreye karşılık gelir. <code>donem</code> referans dönemi, <code>kaynak_guncelleme</code> kurumun bildirdiği son güncelleme, <code>cekildi</code> dosyanın son değiştiği çekim anıdır (UTC). CSV’de ondalık ayırıcı noktadır.</p>
+    <p>Katalog ve panel metaverisindeki <code>deger_turu</code> alanı model serilerini belirtir. Tek seri dosyası, varsa kaynağın dönem bazındaki özgün <code>durum</code> kodunu taşır. Revizyon olayları değişiklik günlüğünde listelenir.</p>
+
+    <h2>Sağlık tarihleri ve HTTP</h2>
+    <p><code>last_reference_period</code> en yeni dolu referans dönemidir. <code>last_attempt_at</code> son deneme, <code>last_successful_fetch</code> son başarılı kontrol, <code>site_data_prepared_at</code> veri dosyasının son değiştiği işlemdir. <code>source_updated_at</code> kurumun bildirdiği güncelleme günüdür. Gerçek seri yayımı (<code>source_release_at</code>) ve site yayımı (<code>site_published_at</code>) doğrulanamıyorsa alanlar <code>null</code> kalır.</p>
+    <p><code>expected_release_at</code> resmî yayın tarihi içindir. <code>estimated_release_at</code>, dönem sonuna eklenen toleranstan türetilir ve <code>lag_days</code> bu eşiği aşan gün sayısıdır. Eski <code>source_published_at</code> alanı uyumluluk için kurumun güncelleme gününü taşımaya devam eder.</p>
+    <p>JSON ve CSV UTF-8’dir. <code>ETag</code> ve <code>If-None-Match</code> ile değişmeyen yanıtı tekrar indirmeden kontrol edebilirsiniz. Birlikte indirilen dosyaları manifestteki boyut ve SHA-256 ile doğrulayın.</p>
 
     <h2>Hata ve boş veri</h2>
     <ul>
@@ -187,7 +192,7 @@ curl -sO ${kok}/api/v1/gozlemler.parquet && curl -sO ${kok}/api/v1/gozlemler.par
 
     <h2>Atıf ve sürüm</h2>
     <p>Veriyi kullanırken asıl kaynak kuruma ve seri koduna atıf yapın; her dosya lisansı ve şart metni adresini taşır. Örnek:</p>
-    <pre><code>{`Kaynak: ${ornek.kaynak.kurum}, ${ornek.kaynak_kod} (${ornek.kaynak.lisans ?? "lisans dosyada"}).
+    <pre tabindex="0" aria-label="Seri atıf örneği"><code>{`Kaynak: ${ornek.kaynak.kurum}, ${ornek.kaynak_kod} (${ornek.kaynak.lisans ?? "lisans dosyada"}).
 Erişim: ${kok}/api/v1/seri/${ornek.id}.json, <erişim tarihi>.`}</code></pre>
     <p><code>v1</code> geriye dönük uyumlu kalır; alan silinmez, anlamı değişmez, yalnız alan eklenir. Kırıcı değişiklik <code>v2</code> altında yayımlanır.</p>
   </article>
