@@ -39,6 +39,10 @@ for (const y of sayfalar) {
       continue;
     }
     if (!/\bsrc=/.test(m[1]) && m[2].trim()) hatalar.push(ad + ": satır içi betik");
+    const src = m[1].match(/\bsrc\s*=\s*["']([^"']+)["']/i)?.[1];
+    if (src && (/^(?:[a-z][a-z\d+.-]*:)?[\/\\]{2}/i.test(src) || /^[a-z][a-z\d+.-]*:/i.test(src))) {
+      hatalar.push(ad + ": dış kaynaklı betik");
+    }
   }
   const metin = s.replace(/<script[\s\S]*?<\/script>/g, "").replace(/<[^>]+>/g, " ");
   for (const k of ["NaN", "undefined", "Infinity"]) if (new RegExp("\\b" + k + "\\b").test(metin)) hatalar.push(ad + ": '" + k + "' yazılmış");

@@ -124,7 +124,7 @@ const DONEM: [string, string, string][] = [
     </table></div>
 
     <h2 id="deneyin" tabindex="-1">İstek konsolu</h2>
-    <p>Uç noktayı seçin, isteği tarayıcınızdan gönderin. Yanıt bu sayfada biçimlenir; uzun yanıtlar ekranda kısaltılır, "Yanıtı kopyala" tamamını kopyalar.</p>
+    <p>Uç noktayı seçin, isteği tarayıcınızdan gönderin. Yanıt burada önizlenir. “Yanıtı kopyala” özgün yanıtı alır; 2 MiB üstündeki dosyaları “Uç noktayı aç” bağlantısından açın.</p>
     <form class="dene" id="dene" data-secenek={JSON.stringify(secenek)}>
       <label class="d-alan"><span>Uç nokta</span>
         <select id="d-uc">{UC.map(([u, a]) => <option value={u}>{a} · {u}</option>)}</select>
@@ -137,7 +137,7 @@ const DONEM: [string, string, string][] = [
         <button type="submit">İsteği gönder</button>
         <button type="button" id="d-kopyala" disabled>Yanıtı kopyala</button>
         <button type="button" id="d-curl">curl kopyala</button>
-        <a id="d-ac" href="/api/v1/seriler.json" target="_blank" rel="noopener">Uç noktayı aç ↗</a>
+        <a id="d-ac" href="/api/v1/seriler.json" target="_blank" rel="noopener noreferrer">Uç noktayı aç ↗</a>
       </div>
       <p class="d-adres"><code id="d-adres">{kok}/api/v1/seriler.json</code></p>
     </form>

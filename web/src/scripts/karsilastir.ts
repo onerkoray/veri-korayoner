@@ -27,7 +27,7 @@ function baslat(form: HTMLFormElement) {
   const yukle = (id: string) => {
     let p = onbellek.get(id);
     if (!p) {
-      const al = (u: string) => fetch(u).then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); });
+      const al = (u: string) => fetch(u, { credentials: "omit", redirect: "error", referrerPolicy: "no-referrer" }).then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); });
       const nokta = (g: { donem: string; deger: string | null }[]) => g.filter((x) => x.deger != null).map((x) => ({ donem: x.donem, v: Number(x.deger) }));
       p = Promise.all([al(`/api/v1/seri/${id}.json`), al(`/api/v1/emsal/${id}.json`)]).then(([s, e]) => ({
         tr: nokta(s.gozlemler), kaynakKod: s.kaynak_kod,

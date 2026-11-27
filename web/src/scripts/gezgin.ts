@@ -45,7 +45,7 @@ function baslat(form: HTMLFormElement) {
   const yukle = (s: string) => {
     let p = onbellek.get(s);
     if (!p) {
-      p = fetch(`/api/v1/panel/${s}.json`).then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() as Promise<Panel>; });
+      p = fetch(`/api/v1/panel/${s}.json`, { credentials: "omit", redirect: "error", referrerPolicy: "no-referrer" }).then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() as Promise<Panel>; });
       p.catch(() => onbellek.delete(s));
       onbellek.set(s, p);
     }

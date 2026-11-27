@@ -247,6 +247,36 @@ test.describe("Kaynaklar ve API", () => {
     await expect(page.getByText("Bu filtrelerle eşleşen seri yok.")).toBeVisible();
   });
 
+  test("API konsolu dış yönlendirmeyi takip etmez", async ({ page, browserName }) => {
+    test.skip(browserName === "webkit", "WebKit route.fulfill ile yönlendirme yanıtı üretemiyor.");
+    const dis = "https://example.invalid/istek";
+    let disIstek = false;
+    await page.route(dis, (r) => { disIstek = true; return r.abort(); });
+    await page.route("**/api/v1/seriler.json", (r) => r.fulfill({ status: 302, headers: { location: dis } }));
+    await page.goto("/api");
+    await page.locator("#d-uc").selectOption("/api/v1/seriler.json");
+    await page.getByRole("button", { name: "İsteği gönder" }).click();
+    await expect(page.locator("#d-durum")).toContainText("İstek tamamlanamadı");
+    expect(disIstek).toBe(false);
+  });
+
+  test("API konsolu çerez göndermez ve büyük yanıtı önizlemez", async ({ page, context, baseURL }) => {
+    await context.addCookies([{ name: "deneme", value: "1", url: baseURL! }]);
+    let basliklar: Record<string, string> = {};
+    await page.route("**/api/v1/seriler.json", async (r) => {
+      basliklar = await r.request().allHeaders();
+      await r.fulfill({ status: 200, contentType: "text/plain", body: "x".repeat(2 * 1024 * 1024 + 1) });
+    });
+    await page.goto("/api");
+    await page.locator("#d-uc").selectOption("/api/v1/seriler.json");
+    await page.getByRole("button", { name: "İsteği gönder" }).click();
+    await expect(page.locator("#d-durum")).toContainText("Yanıt önizleme sınırını aşıyor");
+    expect(basliklar.cookie).toBeUndefined();
+    expect(basliklar.referer).toBeUndefined();
+    await expect(page.locator("#d-yanit")).toBeHidden();
+    await expect(page.getByRole("button", { name: "Yanıtı kopyala" })).toBeDisabled();
+  });
+
   test("API deneme aracı: seri seçimi, yanıt, 404 açıklaması", async ({ page }) => {
     const hata = hataTopla(page);
     await page.goto("/api");
