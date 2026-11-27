@@ -1,18 +1,39 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Türkiye Verisi">
-  <!-- Beş kaynak, tek seri (27 Kasım 2026). Soldaki beş ince çizgi verisi yayımlanan
-       beş kurum (Dünya Bankası, BIS, OECD, Eurostat, ILO). Hepsi doğrulama noktasında
-       buluşur (lisans, kod ve dönem kapıları); oradan tek bir yeşil seri yükselir:
-       sitede yayımlanan, kaynağı belli tek seri. Elle değiştirince PNG ve ICO'yu
+  <!-- Gözlem ızgarası (27 Kasım 2026, site sahibinin seçtiği tasarım). 5×5 hücre bir veri
+       tablosudur: satırlar seriler, sütunlar dönemler. Nane yeşili bant sol alttan sağ üste
+       yükselen tek okumadır: tablonun içinden geçen seri. Renkler: Midnight #0B111D,
+       Mint Signal #43D9B8, Data Slate #B5C2D4 (dört saydamlık kademesi), Ice White #F1F5F9.
+       16 px için 3×3 sürüm web/betikler/favicon-16.svg. Değişince PNG ve ICO'yu
        web/betikler/ikon.mjs ile yeniden üret. -->
-  <rect x=".5" y=".5" width="31" height="31" rx="7.5" fill="#0b1220" stroke="#324158"/>
-  <g fill="none" stroke="#a3afc2" stroke-width="1.5" stroke-linecap="round">
-    <path d="M5 7.5 13.6 16.4"/>
-    <path d="M5 12 13.6 16.6"/>
-    <path d="M5 16.8H13.4"/>
-    <path d="M5 21.5 13.6 17.1"/>
-    <path d="M5 26 13.6 17.3"/>
+  <rect width="32" height="32" rx="7" fill="#0B111D"/>
+  <rect x=".5" y=".5" width="31" height="31" rx="6.5" fill="none" stroke="#B5C2D4" stroke-opacity=".14"/>
+  <g fill="#B5C2D4">
+    <rect x="2.9" y="2.9" width="4.2" height="4.2" rx="1" fill-opacity=".12"/>
+    <rect x="8.4" y="2.9" width="4.2" height="4.2" rx="1" fill-opacity=".55"/>
+    <rect x="13.9" y="2.9" width="4.2" height="4.2" rx="1" fill-opacity=".32"/>
+    <rect x="19.4" y="2.9" width="4.2" height="4.2" rx="1" fill-opacity=".78"/>
+    <rect x="2.9" y="8.4" width="4.2" height="4.2" rx="1" fill-opacity=".32"/>
+    <rect x="8.4" y="8.4" width="4.2" height="4.2" rx="1" fill-opacity=".12"/>
+    <rect x="13.9" y="8.4" width="4.2" height="4.2" rx="1" fill-opacity=".55"/>
+    <rect x="2.9" y="13.9" width="4.2" height="4.2" rx="1" fill-opacity=".78"/>
+    <rect x="8.4" y="13.9" width="4.2" height="4.2" rx="1" fill-opacity=".32"/>
+    <rect x="24.9" y="13.9" width="4.2" height="4.2" rx="1" fill-opacity=".32"/>
+    <rect x="2.9" y="19.4" width="4.2" height="4.2" rx="1" fill-opacity=".32"/>
+    <rect x="19.4" y="19.4" width="4.2" height="4.2" rx="1" fill-opacity=".12"/>
+    <rect x="24.9" y="19.4" width="4.2" height="4.2" rx="1" fill-opacity=".55"/>
+    <rect x="13.9" y="24.9" width="4.2" height="4.2" rx="1" fill-opacity=".78"/>
+    <rect x="19.4" y="24.9" width="4.2" height="4.2" rx="1" fill-opacity=".32"/>
+    <rect x="24.9" y="24.9" width="4.2" height="4.2" rx="1" fill-opacity=".12"/>
   </g>
-  <path d="M15.5 16.8 20.5 13.6 23 15.2 27 8.8" fill="none" stroke="#3fbf9a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="15.5" cy="16.8" r="2.4" fill="#f4f8f7"/>
-  <circle cx="27" cy="8.8" r="2.1" fill="#3fbf9a"/>
+  <g fill="#43D9B8">
+    <rect x="24.9" y="2.9" width="4.2" height="4.2" rx="1"/>
+    <rect x="19.4" y="8.4" width="4.2" height="4.2" rx="1"/>
+    <rect x="24.9" y="8.4" width="4.2" height="4.2" rx="1"/>
+    <rect x="13.9" y="13.9" width="4.2" height="4.2" rx="1"/>
+    <rect x="19.4" y="13.9" width="4.2" height="4.2" rx="1"/>
+    <rect x="8.4" y="19.4" width="4.2" height="4.2" rx="1"/>
+    <rect x="13.9" y="19.4" width="4.2" height="4.2" rx="1"/>
+    <rect x="2.9" y="24.9" width="4.2" height="4.2" rx="1"/>
+    <rect x="8.4" y="24.9" width="4.2" height="4.2" rx="1"/>
+  </g>
 </svg>

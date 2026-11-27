@@ -11,10 +11,14 @@ const kok = fileURLToPath(new URL("../public/", import.meta.url));
 const svg = readFileSync(kok + "favicon.svg", "utf8");
 const tarayici = await chromium.launch(process.env.PW_KANAL ? { channel: process.env.PW_KANAL } : {});
 
-// tam: iOS saydam köşeyi siyaha boyar; apple-touch simgesi zemini dolu kare çizilir.
-async function png(boy, tam = false) {
+const kucuk = readFileSync(fileURLToPath(new URL("./favicon-16.svg", import.meta.url)), "utf8");
+
+// tam: iOS saydam köşeyi siyaha boyar; apple-touch simgesi zemini dolu kare çizilir
+// (köşe yuvarlaması ve kenar çizgisi atılır).
+async function png(boy, tam = false, kaynak = svg) {
   const s = await tarayici.newPage({ viewport: { width: boy, height: boy }, deviceScaleFactor: 1 });
-  const govde = (tam ? svg.replace('x=".5" y=".5" width="31" height="31" rx="7.5"', 'x="0" y="0" width="32" height="32" rx="0"').replace('stroke="#324158"', "") : svg).replace("<svg ", `<svg width="${boy}" height="${boy}" `);
+  const govde = (tam ? kaynak.replace('rx="7" fill="#0B111D"', 'fill="#0B111D"').replace(/<rect x="\.5"[^>]*stroke[^>]*\/>/, "") : kaynak)
+    .replace("<svg ", `<svg width="${boy}" height="${boy}" `);
   await s.setContent(`<!doctype html><html><body style="margin:0;background:transparent">${govde}</body></html>`);
   const b = await s.screenshot({ omitBackground: true, clip: { x: 0, y: 0, width: boy, height: boy } });
   await s.close();
@@ -36,7 +40,7 @@ function ico(kareler) {
 }
 
 const kareler = [];
-for (const boy of [16, 32, 48]) kareler.push([boy, await png(boy)]);
+for (const boy of [16, 32, 48]) kareler.push([boy, await png(boy, false, boy === 16 ? kucuk : svg)]);
 writeFileSync(kok + "favicon.ico", ico(kareler));
 writeFileSync(kok + "favicon-96.png", await png(96));
 writeFileSync(kok + "apple-touch-icon.png", await png(180, true));
