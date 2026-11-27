@@ -190,6 +190,13 @@ const jsonld = {
   .g-kontrol-bas { display: flex; justify-content: space-between; align-items: center; gap: .25rem .65rem; flex-wrap: wrap; border-bottom: 1px solid var(--cizgi); padding-bottom: .65rem; }
   .g-kontrol-bas h2 { margin: 0; color: var(--metin); font-size: 1.09rem; letter-spacing: 0; }
   @media (min-width: 56.01rem) { #g-sonuca-git { display: none; } }
+  /* Masaüstü: ayarlar yapışkan ve ekran boyuyla sınırlı, kendi içinde kayar. Aksi halde
+     satırın boyunu uzun ayar paneli belirliyor, yıllık görünümde kısa grafiklerin altında
+     ekran boyu boşluk kalıyordu (27 Kasım 2026). Sonuç sütunu verinin kendi boyunda. */
+  @media (min-width: 56.01rem) {
+    .g-kontrol { position: sticky; top: 1rem; max-height: calc(100vh - 2rem); max-height: calc(100dvh - 2rem);
+      overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
+  }
   .g-sonuclar { min-width: 0; }
   .g-sonuc-ust { display: grid; gap: .3rem; margin-bottom: .8rem; padding: .2rem 0 .65rem; border-bottom: 1px solid var(--cizgi); }
   .g-secili { list-style: none; display: flex; flex-wrap: wrap; gap: .25rem .4rem; margin: .2rem 0 0; padding: 0; }

@@ -533,3 +533,19 @@ test("Panorama grafiği kaynaklı SVG ve PNG olarak iner", async ({ page }) => {
     }
   }
 });
+
+test("masaüstünde ayar paneli ekran boyunda kalır, kısa sonuçların altında boşluk açmaz", async ({ page, isMobile }) => {
+  test.skip(isMobile, "telefonda tek sütun: panel ve sonuçlar alt alta");
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/gezgin#s=yillik");
+  await expect(page.locator(".g-tuval svg")).toHaveCount(3);
+  const olcu = await page.evaluate(() => {
+    const k = document.querySelector(".g-kontrol")!.getBoundingClientRect();
+    const s = document.querySelector(".g-sonuclar")!.getBoundingClientRect();
+    const c = document.querySelector(".g-calisma")!.getBoundingClientRect();
+    return { panel: k.height, sonuc: s.height, alan: c.height, ekran: innerHeight };
+  });
+  expect(olcu.panel).toBeLessThanOrEqual(olcu.ekran);
+  // Çalışma alanı ya sonuç sütunu ya da (sonuç kısaysa) en çok bir ekran boyu kadar uzar.
+  expect(olcu.alan - Math.max(olcu.sonuc, olcu.panel)).toBeLessThan(2);
+});
