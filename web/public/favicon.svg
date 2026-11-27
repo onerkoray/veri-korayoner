@@ -1,12 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect x=".5" y=".5" width="31" height="31" rx="7.5" fill="#102532" stroke="#547382"/>
-  <g fill="#f4f8f7">
-    <rect x="4" y="8" width="6" height="4" rx=".5"/>
-    <rect x="8" y="14" width="6" height="4" rx=".5"/>
-    <rect x="13" y="20" width="6" height="4" rx=".5"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Türkiye Verisi">
+  <!-- Beş kaynak, tek seri (27 Kasım 2026). Soldaki beş ince çizgi verisi yayımlanan
+       beş kurum (Dünya Bankası, BIS, OECD, Eurostat, ILO). Hepsi doğrulama noktasında
+       buluşur (lisans, kod ve dönem kapıları); oradan tek bir yeşil seri yükselir:
+       sitede yayımlanan, kaynağı belli tek seri. Elle değiştirince PNG ve ICO'yu
+       web/betikler/ikon.mjs ile yeniden üret. -->
+  <rect x=".5" y=".5" width="31" height="31" rx="7.5" fill="#0b1220" stroke="#324158"/>
+  <g fill="none" stroke="#a3afc2" stroke-width="1.5" stroke-linecap="round">
+    <path d="M5 7.5 13.6 16.4"/>
+    <path d="M5 12 13.6 16.6"/>
+    <path d="M5 16.8H13.4"/>
+    <path d="M5 21.5 13.6 17.1"/>
+    <path d="M5 26 13.6 17.3"/>
   </g>
-  <g fill="#69d4b3">
-    <rect x="18" y="14" width="6" height="4" rx=".5"/>
-    <rect x="22" y="8" width="6" height="4" rx=".5"/>
-  </g>
+  <path d="M15.5 16.8 20.5 13.6 23 15.2 27 8.8" fill="none" stroke="#3fbf9a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="15.5" cy="16.8" r="2.4" fill="#f4f8f7"/>
+  <circle cx="27" cy="8.8" r="2.1" fill="#3fbf9a"/>
 </svg>
