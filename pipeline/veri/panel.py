@@ -91,7 +91,8 @@ def yaz(cikti: Path, yaz_atomik) -> list[Path]:
                 continue
             tanim.append({"id": s["id"], "baslik": d["baslik"], "birim": d["birim"], "tema": d["tema"],
                           "kaynak": d["kaynak"]["kurum"], "kaynak_kod": d["kaynak_kod"], "kaynak_siklik": d["siklik"],
-                          "lisans": d["kaynak"].get("lisans"), "turetilmis": d["siklik"] != hedef})
+                          "lisans": d["kaynak"].get("lisans"), "turetilmis": d["siklik"] != hedef,
+                          "deger_turu": s.get("deger_turu", "gozlem")})
             veri[s["id"]] = satir
         icerik = {"surum": 1, "siklik": hedef, "yontem": YONTEM,
                   "sutunlar": ["donem", "ort", "son", "n", "tam"], "seriler": tanim, "veri": veri}

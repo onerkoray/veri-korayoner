@@ -115,6 +115,22 @@ def test_degismeyen_seri_dosyaya_dokunmaz_ve_kayip_donem_durdurur(tmp_path):
     assert "2023" in (tmp_path / "site-veri/seri/t-seri.json").read_text(encoding="utf-8")
 
 
+def test_bosalan_gozlem_korunur_ve_eksik_kopya_ayni_tarihle_onarilir(tmp_path):
+    g, _, _ = ayristir_gozlem(GOZ, "NY.GDP.MKTP.CD", "TUR")
+    site, api, csv = yayinla(_dosya(g), tmp_path)
+    ilk = [p.read_bytes() for p in (site, api, csv)]
+    with pytest.raises(YayinHatasi, match="eksik veya boş"):
+        yayinla(_dosya([g[0].model_copy(update={"deger": None}), *g[1:]]), tmp_path)
+    with pytest.raises(YayinHatasi, match="hiç dolu gözlem"):
+        yayinla(_dosya([]), tmp_path)
+    assert [p.read_bytes() for p in (site, api, csv)] == ilk
+    api.unlink()
+    csv.unlink()
+    sonraki = _dosya(g).model_copy(update={"cekildi": datetime(2026, 11, 18, tzinfo=UTC)})
+    assert yayinla(sonraki, tmp_path) == [api, csv]
+    assert [p.read_bytes() for p in (site, api, csv)] == ilk
+
+
 def test_json_degerleri_metin_olarak_kayipsiz():
     g, _, _ = ayristir_gozlem(GOZ, "NY.GDP.MKTP.CD", "TUR")
     v = json.loads(json_metni(_dosya(g)))

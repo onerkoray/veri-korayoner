@@ -63,6 +63,9 @@ def test_gecikme_toleransi_ve_seri_bazinda_ezme(tmp_path):
     d = yaz(tmp_path, ss, ks, _izin, {}, datetime(2026, 11, 19, tzinfo=UTC), _yaz_atomik)
     r = {x["id"]: x for x in d["seriler"]}
     assert r["eski"]["gecikti"] and r["eski"]["gecikme_gun"] == 113
+    assert r["eski"]["estimated_release_at"] == "2026-07-29"
+    assert r["eski"]["expected_release_at"] is None and r["eski"]["schedule"] == "unknown_schedule"
+    assert r["eski"]["site_published_at"] is None and r["eski"]["site_data_prepared_at"] == "2026-10-01T05:00:00Z"
     assert not r["gini"]["gecikti"]
     kirmizi, uyari = saglik(d, datetime(2026, 11, 19, tzinfo=UTC))
     assert kirmizi == [] and any("eski" in u for u in uyari)
@@ -81,6 +84,9 @@ def test_saglik_kirmizi_kosullari():
 def test_hic_seri_denenmediyse_ust_kontrol_ilerlemez(tmp_path):
     ks, ss = {"k": _kaynak()}, [_seri("s-a")]
     _yayinla(tmp_path, "s-a", ["2026-09"])
+    bos = yaz(tmp_path, ss, ks, _izin, {}, datetime(2026, 11, 17, tzinfo=UTC), _yaz_atomik)
+    assert bos["last_attempt_at"] is None and bos["seriler"][0]["last_successful_fetch"] is None
     yaz(tmp_path, ss, ks, _izin, {"s-a": None}, datetime(2026, 11, 18, 5, 20, tzinfo=UTC), _yaz_atomik)
     d = yaz(tmp_path, ss, ks, _izin, {}, datetime(2026, 11, 22, 20, 0, tzinfo=UTC), _yaz_atomik)
     assert d["son_kontrol"] == "2026-11-18T05:20:00Z"
+    assert d["last_attempt_at"] == d["son_kontrol"]

@@ -47,7 +47,7 @@ npm run build             # derle + denetle (satır içi betik, NaN, lisans dı�
 
 ## Sağlık ve tazelik
 
-`/api/v1/durum.json` her çalıştırmada yazılır ve üç zamanı ayrı tutar:
+`/api/v1/durum.json` son deneme, son başarı ve veri dönemini birbirinden ayrı tutar:
 
 - `son_kontrol`: seri bu çalıştırmada denendi mi, ne zaman.
 - `son_basarili_kontrol`: kaynaktan en son ne zaman başarıyla okundu (veri
@@ -55,11 +55,20 @@ npm run build             # derle + denetle (satır içi betik, NaN, lisans dı�
 - `son_veri_degisimi` ve `son_gozlem`: dosya en son ne zaman değişti, en yeni
   dönem hangisi.
 
-`ardisik_hata` ve `son_hata` düşen kaynağı, `gecikti` ise beklenen yayın
-takviminin gerisinde kalan seriyi gösterir. Kırmızı koşullar (`veri saglik`):
-üç ardışık hata ya da yedi günden eski başarılı kontrol. Zamanlanmış iş
-kırmızıda issue açar; Vercel main commit'ine başarılı statü yazınca `canli.yml` canlı
-dosyaları depodakiyle karşılaştırır.
+`source_updated_at` kurumun ilettiği güncelleme günüdür. `source_release_at` ve
+`site_published_at` doğrulanmış yayın tarihleri yoksa `null` kalır.
+`estimated_release_at`, son referans dönemi bitişi artı toleranstır.
+`gecikti` ve `lag_days` bu tahmini eşiğe göre hesaplanır. Resmî yayın tarihi
+bilinmediğinde `schedule` değeri `unknown_schedule` olur.
+
+`veri saglik` üç ardışık hatada veya son başarı yedi günden eskiyse kırmızı
+döner. Ayrı zamanlama kontrolü eksik başarılı koşuyu izler. Vercel `main`
+için başarı durumu yazdığında `canli.yml` web yayın kimliğini ve seçilen
+API gövdelerinin boyut ve SHA-256 değerlerini doğrular.
+
+Tek seri sözleşmesi `/api/v1/sema/seri.json`, dosya envanteri ve özetleri
+`/api/v1/manifest.json` altında. JSON ve CSV tam kaynak basamaklarını taşır.
+Parquet `DECIMAL(38,14)` olarak yuvarlanır.
 
 ## Atıf
 

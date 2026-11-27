@@ -57,6 +57,7 @@ jobs:
     needs: test
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
+    timeout-minutes: 55
     permissions:
       contents: write     # yalnız bu iş yazar; yalnız veri commit'i
       issues: write
@@ -104,3 +105,6 @@ jobs:
           baslik="Veri hattında düşen seri"
           no=$(gh issue list --state open --search "$baslik in:title" --json number --jq '.[0].number // empty')
           if [ -n "$no" ]; then gh issue comment "$no" --body "Yine: $KOSU"; else gh issue create --title "$baslik" --body "Düşen seri yazılmadı; eski dosya yerinde. Koşu: $KOSU"; fi
+      - name: Kritik sağlık sonucu
+        if: steps.saglik.outcome == 'failure'
+        run: exit 1

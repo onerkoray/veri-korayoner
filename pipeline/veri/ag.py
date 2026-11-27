@@ -10,6 +10,8 @@ from __future__ import annotations
 
 import random
 import time
+from datetime import UTC, datetime
+from email.utils import parsedate_to_datetime
 from urllib.parse import urlsplit
 
 import httpx
@@ -30,8 +32,10 @@ def istemci_ac() -> httpx.Client:
 
 
 def getir(url: str, *, istemci: httpx.Client | None = None, uyu=time.sleep) -> bytes:
-    host = urlsplit(url).hostname
-    if urlsplit(url).scheme != "https" or host not in IZINLI_HOSTLAR:
+    adres = urlsplit(url)
+    host = adres.hostname
+    if (adres.scheme != "https" or host not in IZINLI_HOSTLAR or adres.port not in (None, 443)
+            or adres.username is not None or adres.password is not None):
         raise AgHatasi("izinsiz adres")
     kendi = istemci is None
     ist = istemci or istemci_ac()
@@ -47,6 +51,8 @@ def getir(url: str, *, istemci: httpx.Client | None = None, uyu=time.sleep) -> b
                 timeout = httpx.Timeout(min(kalan, okuma), connect=min(kalan, 10))
                 with ist.stream("GET", url, timeout=timeout) as y:
                     if y.status_code == 200:
+                        if y.headers.get("Content-Type", "").split(";", 1)[0].lower() == "text/html":
+                            raise AgHatasi("beklenmeyen içerik türü")
                         parca: list[bytes] = []
                         boyut = 0
                         for b in y.iter_bytes():
@@ -75,10 +81,13 @@ def getir(url: str, *, istemci: httpx.Client | None = None, uyu=time.sleep) -> b
             ist.close()
 
 
-def _retry_after(deger: str | None) -> float | None:
+def _retry_after(deger: str | None, simdi: datetime | None = None) -> float | None:
     if not deger:
         return None
     try:
-        return min(120.0, max(0.0, float(deger)))
-    except ValueError:
+        if deger.isdigit():
+            return float(deger)
+        zaman = parsedate_to_datetime(deger)
+        return max(0.0, (zaman - (simdi or datetime.now(UTC))).total_seconds()) if zaman.tzinfo else None
+    except (ValueError, TypeError, OverflowError):
         return None

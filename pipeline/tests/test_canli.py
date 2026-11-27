@@ -3,11 +3,12 @@
 from __future__ import annotations
 
 import json
+from hashlib import sha256
 
 import httpx
 import pytest
 
-from veri.canli import denetle
+from veri.canli import SAYFALAR, denetle
 
 
 def _yayin(tmp):
@@ -48,3 +49,17 @@ def test_eski_derleme_ve_eksik_dosya_yakalanir(tmp_path):
 def test_baska_host_reddedilir(tmp_path):
     with pytest.raises(ValueError):
         denetle("https://ornek.com", tmp_path)
+
+
+def test_karisik_surumu_ve_parquet_govdesini_yakalar(tmp_path):
+    yayin, katalog = _yayin(tmp_path)
+    m = {"release_id": "yeni", "files": [{"path": "gozlemler.parquet", "bytes": 4, "sha256": sha256(b"PAR1").hexdigest()}]}
+    metin = json.dumps(m).encode()
+    (yayin / "api/v1/manifest.json").write_bytes(metin)
+    uzak = {sayfa: b'<meta name="veri-release" content="yeni">' for sayfa in SAYFALAR}
+    uzak.update({"/gezgin": b'<meta name="veri-release" content="eski">', "/api/v1/manifest.json": metin,
+                 "/api/v1/seriler.json": json.dumps(katalog).encode(), "/api/v1/durum.json": b"<html>",
+                 "/api/v1/seri/s-a.json": b"{}", "/api/v1/seri/s-a.csv": b"deger\n", "/api/v1/gozlemler.parquet": b"PAR0"})
+    sorun = denetle("https://veri.korayoner.dev", yayin, deneme=1, istemci=_istemci(uzak))
+    assert sorun == ["api/v1/durum.json: geçersiz yanıt gövdesi", "/gezgin: HTML yayın kimliği farklı",
+                     "gozlemler.parquet: içerik özeti farklı"]

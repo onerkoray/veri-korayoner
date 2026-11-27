@@ -1,5 +1,5 @@
 {
- "release_id": "e939f90705e5f2c7bba0086b9a523878aca8bab8b726e049252fffe3cc3a429d",
+ "release_id": "d08977c7a4267badf11ba3441925ae528b6f3be0062540ebcfb3aeb32564a83c",
  "series_count": 67,
  "observation_count": 8007,
  "files": [
@@ -10,8 +10,8 @@
   },
   {
    "path": "durum.json",
-   "bytes": 50733,
-   "sha256": "a7c7362b8585d9cac309822bbd88124dbdda8d506b84a804c6355ce05fe10878"
+   "bytes": 64955,
+   "sha256": "c613cd15cbdc4a08f4917b44ea77174f9586daa5bcbbe5001d792a205f12322b"
   },
   {
    "path": "emsal/bis-borc-servis-orani-tr.json",
@@ -260,8 +260,8 @@
   },
   {
    "path": "kaynaklar.json",
-   "bytes": 6671,
-   "sha256": "d66d78bc64dd85d04fc138199250b39c400d45961095f5344963308826a4d930"
+   "bytes": 6756,
+   "sha256": "49b0fcad0a208861021bf4d50b05c369f470b81b4e32127c5e504e743efad869"
   },
   {
    "path": "panel/aylik.csv",
@@ -270,8 +270,8 @@
   },
   {
    "path": "panel/aylik.json",
-   "bytes": 192989,
-   "sha256": "18f9a532149182b9300ef29261eb0ed0cf6ae4a8a38487e0eeb50880a07ae2d6"
+   "bytes": 193275,
+   "sha256": "e1a02f55506e8689a48f0047cadeb203f2793a067974e3ca690f6d7850b68462"
   },
   {
    "path": "panel/ceyreklik.csv",
@@ -280,8 +280,8 @@
   },
   {
    "path": "panel/ceyreklik.json",
-   "bytes": 103590,
-   "sha256": "56149d9b94f5ad8498797f5b6deb4dc7fe12309bf85c57589bf8af3304521905"
+   "bytes": 104008,
+   "sha256": "32022d5e5ed6ba7b27eb838da10d5362a848392e696d91240439b01037c81dbd"
   },
   {
    "path": "panel/yillik.csv",
@@ -290,8 +290,13 @@
   },
   {
    "path": "panel/yillik.json",
-   "bytes": 164629,
-   "sha256": "55ab0512166110525bf4073ae0a9e9d58c0fe722bbf5a52ba93b8716535bb18d"
+   "bytes": 166117,
+   "sha256": "f9f47c1a3838ec8307d8b2d680f44a128fdf6314be1937c732e194e7ff94db00"
+  },
+  {
+   "path": "sema/seri.json",
+   "bytes": 3443,
+   "sha256": "53e3d8fd9d430fc74f796955b73d4c660dbca549b2997b98d57e01757e86caf0"
   },
   {
    "path": "seri/bis-borc-servis-orani-tr.csv",
@@ -966,9 +971,9 @@
   {
    "path": "seriler.json",
    "bytes": 60775,
-   "sha256": "80f6d35f9fcd0fa987ad1d93cebca195002eddad1af286476837dbee3e228bd8"
+   "sha256": "98cf089e9d607cb89896c2eb363c5cc0efdc6e312fafbb58435de839c8a41a8d"
   }
  ],
- "generated_at": "2026-11-26T19:23:19.349058+00:00",
- "build_id": "e939f90705e5f2c7bba0086b9a523878aca8bab8b726e049252fffe3cc3a429d"
+ "generated_at": "2026-11-27T04:41:59.026385+00:00",
+ "build_id": "d08977c7a4267badf11ba3441925ae528b6f3be0062540ebcfb3aeb32564a83c"
 }

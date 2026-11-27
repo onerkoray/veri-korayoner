@@ -1,6 +1,6 @@
 {
  "surum": 1,
- "uretildi": "2026-11-26T19:21:59.416865Z",
+ "uretildi": "2026-11-27T04:41:57.956237Z",
  "kaynaklar": [
   {
    "id": "world_bank",
@@ -159,13 +159,13 @@
    "ad": "TCMB EVDS 3",
    "kurum": "Türkiye Cumhuriyet Merkez Bankası",
    "adres": "https://evds3.tcmb.gov.tr/",
-   "belge": "https://evds3.tcmb.gov.tr/hakkinda",
+   "belge": "https://evds3.tcmb.gov.tr/dokumanlar",
    "lisans": "EVDS kullanım şartları",
-   "lisans_kanit": null,
-   "lisans_inceleme": null,
+   "lisans_kanit": "https://evds3.tcmb.gov.tr/igmevdsms-dis/documents/showDocument?docId=18",
+   "lisans_inceleme": "2026-11-27",
    "atif_zorunlu": true,
    "kosullar": [],
-   "durum": "planlandi",
+   "durum": "anahtar-gerekli",
    "erisim": "REST JSON/CSV/XML",
    "yayin": {
     "gosterim": false,

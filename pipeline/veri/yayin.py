@@ -27,6 +27,14 @@ class YayinHatasi(RuntimeError):
     pass
 
 
+class GozlemYok(YayinHatasi):
+    pass
+
+
+class GozlemKaybi(YayinHatasi):
+    pass
+
+
 def izin(kaynak: Kaynak, seri: SeriTanimi) -> Izin:
     return kaynak.yayin.daralt(seri.yayin)
 
@@ -77,30 +85,36 @@ def yayinla(d: SeriDosyasi, cikti: Path) -> list[Path]:
     """Seriyi izinlere göre yazar; değişmediyse dokunmaz (cekildi hariç). Yazılan yolları döndürür."""
     if not d.izin.gosterim:
         return []
+    dolu = {g.donem for g in d.gozlemler if g.deger is not None}
+    if not dolu:
+        raise GozlemYok(f"{d.id}: kaynak hiç dolu gözlem vermiyor")
     hedefler = [cikti / "site-veri" / "seri" / f"{d.id}.json"]
     if d.izin.api:
         hedefler.append(cikti / "api" / "v1" / "seri" / f"{d.id}.json")
     eski = onceki(hedefler[0])
     if eski:
         yeni_d = {g.donem for g in d.gozlemler}
-        kayip = [g["donem"] for g in eski.get("gozlemler", []) if g["donem"] not in yeni_d]
+        kayip = [g["donem"] for g in eski["gozlemler"]
+                 if g["donem"] not in yeni_d or (g["deger"] is not None and g["donem"] not in dolu)]
         if kayip:
-            raise YayinHatasi(f"{d.id}: kaynak önceden yayımlanmış dönemleri vermiyor: {kayip[:5]}")
+            raise GozlemKaybi(f"{d.id}: kaynak önceden yayımlanmış dönemleri eksik veya boş veriyor: {kayip[:5]}")
         # Değer ve metaveri aynıysa dosyaya dokunma: commit gürültüsü ve sahte vintage olmasın.
         kiyas = json.loads(json_metni(d))
         kiyas.pop("cekildi")
         eski_k = dict(eski)
         eski_k.pop("cekildi", None)
         if kiyas == eski_k:
-            return []
+            d = d.model_copy(update={"cekildi": datetime.fromisoformat(eski["cekildi"])})
     metin = json_metni(d)
     yazilan = []
-    for h in hedefler:
-        _yaz_atomik(h, metin)
-        yazilan.append(h)
+    icerik = {h: metin for h in hedefler}
     if d.izin.indirme:
         h = cikti / "api" / "v1" / "seri" / f"{d.id}.csv"
-        _yaz_atomik(h, csv_metni(d))
+        icerik[h] = csv_metni(d)
+    for h, veri in icerik.items():
+        if h.exists() and h.read_bytes() == veri.encode("utf-8"):
+            continue
+        _yaz_atomik(h, veri)
         yazilan.append(h)
     return yazilan
 

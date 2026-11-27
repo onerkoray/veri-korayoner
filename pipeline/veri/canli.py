@@ -21,19 +21,22 @@ from .ag import KULLANICI
 IZINLI = frozenset({"veri.korayoner.dev"})
 KARSILASTIR = ("api/v1/manifest.json", "api/v1/seriler.json", "api/v1/kaynaklar.json", "api/v1/durum.json",
                "api/v1/gozlemler.parquet.sha256")
-ORNEK = 12   # manifestten gövdesi indirilip özeti karşılaştırılan dosya sayısı
+ORNEK = 12
+SAYFALAR = ("/", "/gezgin", "/karsilastir", "/kaynaklar", "/api", "/yontem", "/hesap/reel-politika-faizi")
 
 
 def ornekle(dosyalar: list[dict], n: int = ORNEK) -> list[dict]:
     """Deterministik örneklem: her dosya türünden (seri json/csv, emsal, panel) en az biri,
     kalanlar yola göre sıralı listeden eşit aralıkla. Rastgele değil: aynı sürüm aynı dosyaları sınar."""
     secim: dict[str, dict] = {}
-    for tur in ("seri/*.json", "seri/*.csv", "emsal/", "panel/"):
+    for tur in ("seri/*.json", "seri/*.csv", "emsal/", "panel/*.json", "panel/*.csv", "gozlemler.parquet", "sema/"):
+        if len(secim) >= n:
+            break
         bas, _, son = tur.partition("*")
         f = next((x for x in dosyalar if x["path"].startswith(bas) and x["path"].endswith(son)), None)
         if f:
             secim[f["path"]] = f
-    kalan = [x for x in dosyalar if x["path"] not in secim and not x["path"].endswith(".parquet")]
+    kalan = [x for x in dosyalar if x["path"] not in secim]
     adim = max(1, len(kalan) // max(1, n - len(secim)))
     for x in kalan[::adim]:
         if len(secim) >= n:
@@ -55,18 +58,23 @@ def bir_tur(taban: str, yayin: Path, ist: httpx.Client) -> list[str]:
         y = ist.get(f"{taban}/{yol}")
         if y.status_code != 200:
             sorun.append(f"{yol}: HTTP {y.status_code}")
-        elif _icerik(yol, y.content) != _icerik(yol, yerel.read_bytes()):
-            sorun.append(f"{yol}: canlı sürüm depodakinden farklı")
+        else:
+            try:
+                if _icerik(yol, y.content) != _icerik(yol, yerel.read_bytes()):
+                    sorun.append(f"{yol}: canlı sürüm depodakinden farklı")
+            except ValueError:
+                sorun.append(f"{yol}: geçersiz yanıt gövdesi")
     manifest = yayin / "api/v1/manifest.json"
     if manifest.exists():
         m = json.loads(manifest.read_bytes())
-        for sayfa in ("/", "/gezgin"):
+        for sayfa in SAYFALAR:
             html = ist.get(taban + sayfa)
             if html.status_code != 200 or f'name="veri-release" content="{m["release_id"]}"' not in html.text:
                 sorun.append(f"{sayfa}: HTML yayın kimliği farklı")
         for dosya in ornekle(m["files"]):
             y = ist.get(f"{taban}/api/v1/{dosya['path']}")
-            if y.status_code != 200 or hashlib.sha256(y.content).hexdigest() != dosya["sha256"]:
+            if (y.status_code != 200 or len(y.content) != dosya["bytes"]
+                    or hashlib.sha256(y.content).hexdigest() != dosya["sha256"]):
                 sorun.append(f"{dosya['path']}: içerik özeti farklı")
     katalog = json.loads((yayin / "api/v1/seriler.json").read_text(encoding="utf-8"))
     for s in katalog["seriler"]:

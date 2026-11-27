@@ -56,8 +56,9 @@ HATA_SINIFLARI = (
     (r"HTTP 4\d\d", "http_4xx"),
     (r"baytı aştı", "too_large"),
     (r"izinsiz adres", "forbidden_host"),
-    (r"boş yanıt|boş seri", "empty"),
-    (r"KaynakUyusmazligi|JSONDecodeError|ValueError|KeyError|ValidationError|ParserError", "schema"),
+    (r"GozlemYok|boş yanıt|boş seri", "empty"),
+    (r"GozlemKaybi", "observation_loss"),
+    (r"KaynakUyusmazligi|JSONDecodeError|ValueError|KeyError|ValidationError|ParserError|beklenmeyen içerik türü", "schema"),
     (r"TransportError|RemoteProtocolError|NetworkError|ProxyError", "transport"),
 )
 
@@ -72,7 +73,8 @@ def _z(t: datetime) -> str:
     return t.astimezone(UTC).isoformat(timespec="seconds").replace("+00:00", "Z")
 
 
-def yaz(cikti: Path, seriler, kaynaklar, izin, sonuc: dict[str, str | None], simdi: datetime, yaz_atomik) -> dict:
+def yaz(cikti: Path, seriler, kaynaklar, izin, sonuc: dict[str, str | None], simdi: datetime, yaz_atomik,
+        *, denemeler: dict[str, datetime] | None = None) -> dict:
     """`sonuc`: bu çalıştırmada denenen seri → None (başarılı) ya da hata iletisi."""
     yol = cikti / "api" / "v1" / "durum.json"
     try:
@@ -89,18 +91,18 @@ def yaz(cikti: Path, seriler, kaynaklar, izin, sonuc: dict[str, str | None], sim
              "son_kontrol": o.get("son_kontrol"), "son_basarili_kontrol": o.get("son_basarili_kontrol"),
              "ardisik_hata": o.get("ardisik_hata", 0), "son_hata": o.get("son_hata")}
         if s.id in sonuc:
-            r["son_kontrol"] = _z(simdi)
+            r["son_kontrol"] = _z((denemeler or {}).get(s.id, simdi))
             if sonuc[s.id] is None:
-                r["son_basarili_kontrol"], r["ardisik_hata"], r["son_hata"] = _z(simdi), 0, None
+                r["son_basarili_kontrol"], r["ardisik_hata"], r["son_hata"] = r["son_kontrol"], 0, None
             else:
                 r["ardisik_hata"] += 1
                 ileti = str(sonuc[s.id])[:300]
-                r["son_hata"] = {"zaman": _z(simdi), "ileti": ileti, "sinif": hata_sinifi(ileti)}
+                r["son_hata"] = {"zaman": r["son_kontrol"], "ileti": ileti, "sinif": hata_sinifi(ileti)}
         dosya = cikti / "site-veri" / "seri" / f"{s.id}.json"
         r["yayinda"] = dosya.exists()
         r["son_gozlem"] = r["son_veri_degisimi"] = None
         r["gecikme_gun"], r["gecikti"] = None, False
-        r["source_published_at"] = None
+        r["source_published_at"] = r["estimated_release_at"] = None
         if dosya.exists():
             d = json.loads(dosya.read_text(encoding="utf-8"))
             r["source_published_at"] = d.get("kaynak_guncelleme")
@@ -108,9 +110,12 @@ def yaz(cikti: Path, seriler, kaynaklar, izin, sonuc: dict[str, str | None], sim
             r["son_gozlem"], r["son_veri_degisimi"] = son, d["cekildi"]
             if son:
                 sinir = donem_sonu(son) + timedelta(days=s.gecikme_gun or TOLERANS[s.siklik])
+                r["estimated_release_at"] = sinir.isoformat()
                 r["gecikme_gun"] = max(0, (bugun - sinir).days)
                 r["gecikti"] = bugun > sinir
-        r.update(last_reference_period=r["son_gozlem"], last_successful_fetch=r["son_basarili_kontrol"],
+        r.update(last_reference_period=r["son_gozlem"], last_attempt_at=r["son_kontrol"],
+                 last_successful_fetch=r["son_basarili_kontrol"], site_data_prepared_at=r["son_veri_degisimi"],
+                 source_updated_at=r["source_published_at"], source_release_at=None,
                  site_published_at=None, expected_release_at=None, schedule="unknown_schedule",
                  freshness_method="estimated", lag_days=r["gecikme_gun"],
                  data_freshness=("unknown" if not r["son_gozlem"] else "delayed" if r["gecikti"] else "within_tolerance"),
@@ -128,8 +133,8 @@ def yaz(cikti: Path, seriler, kaynaklar, izin, sonuc: dict[str, str | None], sim
                             "geciken": [r["id"] for r in rs if r["gecikti"]]})
     # Üst düzey son kontrol: bu çalıştırmada en az bir seri denendiyse şimdi; denenmediyse
     # (yalnız katalog/tolerans güncellemesi) önceki an korunur, olmayan kontrol yazılmaz.
-    ust_kontrol = _z(simdi) if sonuc else max((r["son_kontrol"] for r in kayit if r.get("son_kontrol")), default=_z(simdi))
-    icerik = {"surum": 1, "son_kontrol": ust_kontrol,
+    ust_kontrol = max((r["son_kontrol"] for r in kayit if r["son_kontrol"]), default=None)
+    icerik = {"surum": 1, "son_kontrol": ust_kontrol or _z(simdi), "last_attempt_at": ust_kontrol,
               "aciklama": "son_kontrol: hattın denediği an; son_basarili_kontrol: kaynağın doğrulanmış yanıt verdiği an; "
                           "son_gozlem: yayımlanmış en yeni dönem; gecikti: son gözlem, sıklığa göre beklenen süreyi aştı.",
               "ozet": {"seri": len(kayit), "yayinda": sum(r["yayinda"] for r in kayit),
@@ -150,7 +155,7 @@ def saglik(icerik: dict, simdi: datetime) -> tuple[list[str], list[str]]:
         elif r["ardisik_hata"]:
             uyari.append(f"{r['id']}: son çekim başarısız ({r['ardisik_hata']} kez, {sinif})")
         sb = r["son_basarili_kontrol"]
-        if sb and (simdi - datetime.fromisoformat(sb.replace("Z", "+00:00"))).days > KONTROL_ESIK:
+        if sb and simdi - datetime.fromisoformat(sb) > timedelta(days=KONTROL_ESIK):
             kirmizi.append(f"{r['id']}: {KONTROL_ESIK} günden uzun süredir başarılı kontrol yok (son {sb})")
         if r["gecikti"]:
             uyari.append(f"{r['id']}: son gözlem {r['son_gozlem']}, beklenenden {r['gecikme_gun']} gün geç")

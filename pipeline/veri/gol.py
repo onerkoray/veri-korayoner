@@ -1,7 +1,7 @@
 """Analitik göl: kanonik seri dosyalarından tek Parquet (ADR 0002, katman 2).
 
-Yalnız API izni olan seriler girer. Değer DECIMAL(38,14): kanonik metinden
-kayıpsız. Dosya her çalıştırmada baştan üretilir; içerik aynıysa yeniden
+Yalnız API izni olan seriler girer. Değer DECIMAL(38,14); kaynakta daha fazla
+ondalık basamak varsa yuvarlanır. Tam metin JSON/CSV'de korunur. İçerik aynıysa yeniden
 yazılmaz (karar satır özetiyle verilir: site-veri/gol-satir-ozeti.txt).
 `gozlemler.parquet.sha256` dosyanın kendisinin SHA-256 özetidir (sha256sum biçimi);
 istemci indirdiği dosyayı onunla doğrular.

@@ -50,6 +50,7 @@ def _guncelle(secili, cikti, getirici, uyu=None):
     olaylar: list[dict] = []
     bag: dict = {}       # kaynak başına tek bağlayıcı (metaveri önbelleği çekim boyunca yaşar)
     sonuc: dict[str, str | None] = {}   # seri → None (başarılı) ya da hata iletisi; durum.json için
+    denemeler: dict[str, datetime] = {}
     hedef = []
     for s in ss:
         if secili and s.id not in secili:
@@ -61,18 +62,20 @@ def _guncelle(secili, cikti, getirici, uyu=None):
         hedef.append(s)
     for s in hedef:
         _seri_isle(s, ks[s.kaynak], cikti, getirici, bag, simdi, gun, olaylar, sonuc)
+        denemeler[s.id] = datetime.now(UTC)
     tekrar = [s for s in hedef if sonuc.get(s.id) and durum.hata_sinifi(sonuc[s.id]) in GECICI]
     if tekrar:
         print(f"ikinci tur: {len(tekrar)} seri {IKINCI_TUR_BEKLEME:.0f} sn sonra yeniden denenecek")
         uyu(IKINCI_TUR_BEKLEME)
         for s in tekrar:
             _seri_isle(s, ks[s.kaynak], cikti, getirici, bag, simdi, gun, olaylar, sonuc)
+            denemeler[s.id] = datetime.now(UTC)
     hata = sum(1 for s in hedef if sonuc.get(s.id))
     gunluge_ekle(olaylar, cikti)
     katalog(ks, ss, cikti, simdi)
     print('göl  ' + ('yazıldı' if gol.yaz(cikti) else 'aynı'))
     print(f"panel  {len(panel.yaz(cikti, _yaz_atomik))} dosya yazıldı")
-    d = durum.yaz(cikti, ss, ks, izin, sonuc, simdi, _yaz_atomik)
+    d = durum.yaz(cikti, ss, ks, izin, sonuc, datetime.now(UTC), _yaz_atomik, denemeler=denemeler)
     print(f"durum  {d['ozet']}")
     manifest.yaz(cikti)
     return 1 if hata else 0
@@ -135,6 +138,16 @@ def denetle(cikti: Path = CIKTI) -> int:
     sorun = []
     for s in ss:
         iz = izin(ks[s.kaynak], s)
+        site = cikti / f"site-veri/seri/{s.id}.json"
+        api = cikti / f"api/v1/seri/{s.id}.json"
+        csvyol = cikti / f"api/v1/seri/{s.id}.csv"
+        if site.exists() and iz.gosterim:
+            if iz.api and (not api.exists() or site.read_bytes() != api.read_bytes()):
+                sorun.append(f"{s.id}: web ve API JSON dosyaları uyuşmuyor")
+            if iz.indirme and not csvyol.exists():
+                sorun.append(f"{s.id}: CSV eksik")
+        elif api.exists() or csvyol.exists():
+            sorun.append(f"{s.id}: web seri dosyası olmadan API çıktısı var")
         for alt, gerekli in (("site-veri/seri", iz.gosterim), ("api/v1/seri", iz.api)):
             yol = cikti / alt / f"{s.id}.json"
             if yol.exists() and not gerekli:
@@ -149,13 +162,18 @@ def denetle(cikti: Path = CIKTI) -> int:
             yol = cikti / alt / f"{s.id}.json"
             if yol.exists() and not gerekli:
                 sorun.append(f"{yol.relative_to(cikti)}: izin ya da emsal kaydı yokken yayımlanmış")
-        csvyol = cikti / "api" / "v1" / "seri" / f"{s.id}.csv"
         if csvyol.exists() and not iz.indirme:
             sorun.append(f"{csvyol.relative_to(cikti)}: indirme izni yokken yayımlanmış")
     myol = cikti / "api/v1/manifest.json"
-    mevcut = json.loads(myol.read_bytes()) if myol.exists() else {}
-    if any(mevcut.get(k) != v for k, v in manifest.envanter(cikti).items()):
-        sorun.append("manifest: dosya envanteri ile yayın farklı")
+    sema = cikti / "api/v1/sema/seri.json"
+    if not sema.exists() or sema.read_text(encoding="utf-8") != manifest.seri_semasi():
+        sorun.append("tek seri JSON Schema: dosya eksik veya yayın modeliyle farklı")
+    try:
+        mevcut = json.loads(myol.read_bytes()) if myol.exists() else {}
+        if any(mevcut.get(k) != v for k, v in manifest.envanter(cikti).items()):
+            sorun.append("manifest: dosya envanteri ile yayın farklı")
+    except (ValueError, KeyError, OSError) as e:
+        sorun.append(f"manifest: yayın envanteri doğrulanamadı ({type(e).__name__})")
     bilinen = {s.id for s in ss}
     for yol in [*(cikti / "api" / "v1" / "seri").glob("*"), *(cikti / "api" / "v1" / "emsal").glob("*")]:
         if yol.stem not in bilinen:

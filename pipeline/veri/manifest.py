@@ -5,7 +5,20 @@ import os
 from datetime import UTC, datetime
 from pathlib import Path
 
+from .modeller import SeriDosyasi
 from .yayin import _yaz_atomik
+
+
+def seri_semasi() -> str:
+    """Dış istemci şeması: v1'e daha sonra eklenen alanlar da kabul edilir."""
+    sema = SeriDosyasi.model_json_schema(mode="serialization")
+    for nesne in (sema, *sema.get("$defs", {}).values()):
+        if nesne.get("additionalProperties") is False:
+            del nesne["additionalProperties"]
+    sema["required"].append("surum")
+    sema["$schema"] = "https://json-schema.org/draft/2020-12/schema"
+    sema["$id"] = "https://veri.korayoner.dev/api/v1/sema/seri.json"
+    return json.dumps(sema, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
 
 
 def envanter(cikti: Path) -> dict:
@@ -26,6 +39,10 @@ def envanter(cikti: Path) -> dict:
 
 
 def yaz(cikti: Path):
+    sema_yolu = cikti / "api/v1/sema/seri.json"
+    sema = seri_semasi()
+    if not sema_yolu.exists() or sema_yolu.read_text(encoding="utf-8") != sema:
+        _yaz_atomik(sema_yolu, sema)
     kayit = envanter(cikti)
     yol = cikti / "api/v1/manifest.json"
     if yol.exists() and json.loads(yol.read_bytes()).get("release_id") == kayit["release_id"]:

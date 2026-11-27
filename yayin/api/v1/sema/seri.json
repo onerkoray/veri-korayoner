@@ -1,0 +1,187 @@
+{
+  "$defs": {
+    "Gozlem": {
+      "properties": {
+        "deger": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Deger"
+        },
+        "donem": {
+          "title": "Donem",
+          "type": "string"
+        },
+        "durum": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Durum"
+        }
+      },
+      "required": [
+        "donem",
+        "deger"
+      ],
+      "title": "Gozlem",
+      "type": "object"
+    },
+    "Izin": {
+      "properties": {
+        "api": {
+          "default": false,
+          "title": "Api",
+          "type": "boolean"
+        },
+        "gosterim": {
+          "default": false,
+          "title": "Gosterim",
+          "type": "boolean"
+        },
+        "indirme": {
+          "default": false,
+          "title": "Indirme",
+          "type": "boolean"
+        }
+      },
+      "title": "Izin",
+      "type": "object"
+    }
+  },
+  "$id": "https://veri.korayoner.dev/api/v1/sema/seri.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Yayımlanan tek seri: /api/v1/seri/{id}.json",
+  "properties": {
+    "baslik": {
+      "title": "Baslik",
+      "type": "string"
+    },
+    "birim": {
+      "title": "Birim",
+      "type": "string"
+    },
+    "carpan": {
+      "title": "Carpan",
+      "type": "integer"
+    },
+    "cekildi": {
+      "format": "date-time",
+      "title": "Cekildi",
+      "type": "string"
+    },
+    "gozlemler": {
+      "items": {
+        "$ref": "#/$defs/Gozlem"
+      },
+      "title": "Gozlemler",
+      "type": "array"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "izin": {
+      "$ref": "#/$defs/Izin"
+    },
+    "kaynak": {
+      "additionalProperties": true,
+      "title": "Kaynak",
+      "type": "object"
+    },
+    "kaynak_adi": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Kaynak Adi"
+    },
+    "kaynak_guncelleme": {
+      "anyOf": [
+        {
+          "format": "date",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Kaynak Guncelleme"
+    },
+    "kaynak_kod": {
+      "title": "Kaynak Kod",
+      "type": "string"
+    },
+    "kaynak_not": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Kaynak Not"
+    },
+    "siklik": {
+      "enum": [
+        "yillik",
+        "yariyillik",
+        "ceyreklik",
+        "aylik",
+        "haftalik",
+        "gunluk"
+      ],
+      "title": "Siklik",
+      "type": "string"
+    },
+    "surum": {
+      "const": 1,
+      "default": 1,
+      "title": "Surum",
+      "type": "integer"
+    },
+    "tema": {
+      "title": "Tema",
+      "type": "string"
+    },
+    "ulke": {
+      "title": "Ulke",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "baslik",
+    "ulke",
+    "siklik",
+    "birim",
+    "carpan",
+    "tema",
+    "kaynak",
+    "kaynak_kod",
+    "cekildi",
+    "izin",
+    "gozlemler",
+    "surum"
+  ],
+  "title": "SeriDosyasi",
+  "type": "object"
+}

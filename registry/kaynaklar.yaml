@@ -207,19 +207,19 @@ kaynaklar:
     kurum: Türkiye Cumhuriyet Merkez Bankası
     adres: https://evds3.tcmb.gov.tr/
     api: null
-    belge: https://evds3.tcmb.gov.tr/hakkinda
+    belge: https://evds3.tcmb.gov.tr/dokumanlar
     erisim: REST JSON/CSV/XML
-    anahtar: null
-    durum: planlandi
+    anahtar: true
+    durum: anahtar-gerekli
     lisans:
       ad: EVDS kullanım şartları
-      kanit: null
-      inceleme_tarihi: null
+      kanit: https://evds3.tcmb.gov.tr/igmevdsms-dis/documents/showDocument?docId=18
+      inceleme_tarihi: 2026-11-27
       atif_zorunlu: true
       not: >-
-        Kullanıcı notu: şartlar kaynak gösterilerek yayına ve ücret
-        alınmamasına bağlı. Şart metni okunup kanıt adresi yazılmadan
-        yayın izni açılmaz.
+        EVDS şartları kaynak gösterimiyle yeniden yayına izin veriyor. Veri
+        kullanımı abonelere ek ücret olarak yansıtılamaz. TCMB'nin ürettiği
+        dağıtılabilir pilot seriler, API anahtarıyla seri bazında doğrulanacak.
     yayin: { gosterim: false, indirme: false, api: false }
 
   - id: un_comtrade

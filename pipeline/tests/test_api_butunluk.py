@@ -10,8 +10,9 @@ import csv
 import hashlib
 import io
 import json
-from decimal import Decimal
+from decimal import ROUND_HALF_UP, Decimal, localcontext
 
+import duckdb
 import pytest
 
 from veri.kayit import KOK, kaynaklar, seriler
@@ -81,6 +82,26 @@ def test_parquet_ozeti_dosyanin_kendisi():
     beklenen, ad = (API / "gozlemler.parquet.sha256").read_text(encoding="utf-8").split()
     assert ad == "gozlemler.parquet"
     assert hashlib.sha256((API / "gozlemler.parquet").read_bytes()).hexdigest() == beklenen
+
+
+def test_parquet_ve_json_tum_donemlerde_eslesir():
+    with duckdb.connect() as baglanti:
+        satirlar = baglanti.execute(
+            "SELECT seri, donem, deger, birim, siklik, kaynak, kaynak_kod, ulke FROM read_parquet(?)",
+            [str(API / "gozlemler.parquet")],
+        ).fetchall()
+    beklenen = set()
+    with localcontext() as ctx:
+        ctx.prec = 38
+        for yol in (API / "seri").glob("*.json"):
+            d = _j(yol)
+            for g in d["gozlemler"]:
+                ham = g["deger"]
+                deger = Decimal(ham).quantize(Decimal("1e-14"), rounding=ROUND_HALF_UP) if ham is not None else None
+                beklenen.add((d["id"], g["donem"], deger, d["birim"], d["siklik"],
+                              d["kaynak"]["id"], d["kaynak_kod"], d["ulke"]))
+    assert len(satirlar) == len(beklenen)
+    assert set(satirlar) == beklenen
 
 
 def test_durum_ve_gunluk_semasi():

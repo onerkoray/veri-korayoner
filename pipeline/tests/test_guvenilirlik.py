@@ -4,6 +4,7 @@ Ağ yok: httpx.MockTransport ve sahte saat. Her test deterministik.
 """
 
 import json
+from datetime import UTC, datetime
 
 import httpx
 import pytest
@@ -61,6 +62,16 @@ def test_gecici_hatadan_sonra_basarili_yanit_doner():
     assert sayac["n"] == 3
 
 
+def test_retry_after_http_tarihi_ve_butce():
+    assert ag._retry_after("Fri, 27 Nov 2026 08:00:07 GMT", datetime(2026, 11, 27, 8, tzinfo=UTC)) == 7
+    assert ag._retry_after("hatalı") is None
+    with httpx.Client(transport=httpx.MockTransport(lambda _: httpx.Response(429, headers={"Retry-After": "600"}))) as ist:
+        bekleme = []
+        with pytest.raises(ag.AgHatasi, match="1 denemede.*429"):
+            ag.getir("https://api.worldbank.org/v2/x", istemci=ist, uyu=bekleme.append)
+        assert bekleme == []
+
+
 # ---------------------------------------------------------------- sağlık alanları
 class _Izin:
     gosterim = True
@@ -111,9 +122,13 @@ def test_manifest_deterministik_ve_bozulmayi_yakalar(tmp_path):
     assert {f["path"] for f in e1["files"]} == {"seri/a.json", "seri/a.csv", "seriler.json"}
     manifest.yaz(tmp_path)
     m = json.loads((api / "manifest.json").read_text(encoding="utf-8"))
-    assert m["release_id"] == e1["release_id"] and "manifest.json" not in {f["path"] for f in m["files"]}
+    assert m["release_id"] == manifest.envanter(tmp_path)["release_id"]
+    assert {f["path"] for f in m["files"]} == {"seri/a.json", "seri/a.csv", "seriler.json", "sema/seri.json"}
+    sema = json.loads((api / "sema/seri.json").read_bytes())
+    assert sema["properties"]["surum"]["const"] == 1 and "surum" in sema["required"]
+    assert "additionalProperties" not in sema
     (api / "seri/a.csv").write_text("donem,deger\n2025,2\n", encoding="utf-8")
-    assert manifest.envanter(tmp_path)["release_id"] != e1["release_id"]
+    assert manifest.envanter(tmp_path)["release_id"] != m["release_id"]
 
 
 def test_canli_ornek_her_turden_dosya_icerir():
@@ -121,7 +136,7 @@ def test_canli_ornek_her_turden_dosya_icerir():
                                       "seri/a.csv", "seri/a.json", "seri/b.csv", "seri/b.json", "seriler.json"]]
     secim = {f["path"] for f in canli.ornekle(dosyalar, n=6)}
     assert {"seri/a.json", "seri/a.csv", "emsal/a.json", "panel/aylik.csv"} <= secim
-    assert "gozlemler.parquet" not in secim and len(secim) <= 6
+    assert "gozlemler.parquet" in secim and len(secim) <= 6
     assert secim == {f["path"] for f in canli.ornekle(dosyalar, n=6)}   # deterministik
 
 
