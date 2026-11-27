@@ -1,17 +1,17 @@
 {
- "release_id": "d08977c7a4267badf11ba3441925ae528b6f3be0062540ebcfb3aeb32564a83c",
+ "release_id": "ea6d98edd2d77d6f303c3dbac2e1608785037f15f5571e53e5a209ce5808795c",
  "series_count": 67,
- "observation_count": 8007,
+ "observation_count": 8008,
  "files": [
   {
    "path": "degisiklikler.json",
-   "bytes": 1253,
-   "sha256": "79b0e354c16cfce83e3bde1a4dc7482acd907f176a1a82097478c29f292f0fc7"
+   "bytes": 1544,
+   "sha256": "732deb4c3788b30270677ccefa7df7be6978effe3792a65539813976849f3ff6"
   },
   {
    "path": "durum.json",
    "bytes": 64955,
-   "sha256": "c613cd15cbdc4a08f4917b44ea77174f9586daa5bcbbe5001d792a205f12322b"
+   "sha256": "9cae4cde24de239a903a5520df8ca607335176ed6b9246b03ae32ab305158c83"
   },
   {
    "path": "emsal/bis-borc-servis-orani-tr.json",
@@ -45,8 +45,8 @@
   },
   {
    "path": "emsal/eurostat-ekonomik-guven-tr.json",
-   "bytes": 97602,
-   "sha256": "a76ecffca656a576b6e1f550004f564580fa4130320e0c7d4bf6ee63cab65cb3"
+   "bytes": 97821,
+   "sha256": "db3fa5139971f84e30b72f5d1e6c6de7073530949c72523cb8612a0e65b76e1b"
   },
   {
    "path": "emsal/eurostat-hicp-yillik-tr.json",
@@ -90,8 +90,8 @@
   },
   {
    "path": "emsal/oecd-gsyh-buyume-yillik-tr.json",
-   "bytes": 83810,
-   "sha256": "e9148050989260e5c65d2bed2e4aabf0cd12066f9a75e39d74b0700cca198a7d"
+   "bytes": 83821,
+   "sha256": "a58915c95a8b77a8ebe0aead78ebe07fa92fd263604b291e1fa142a26690f0b5"
   },
   {
    "path": "emsal/oecd-is-guveni-tr.json",
@@ -250,48 +250,48 @@
   },
   {
    "path": "gozlemler.parquet",
-   "bytes": 64683,
-   "sha256": "36e29f380ec655524879d66bd7fdfe5ba902bc9080d1c041d0309fbdb034a910"
+   "bytes": 65099,
+   "sha256": "b0d5a945cb4745772ab5bdcec77db282eaab3a823fd30e9a36cc46e72c7be214"
   },
   {
    "path": "gozlemler.parquet.sha256",
    "bytes": 84,
-   "sha256": "1cadd3d238f9cbc53fd49c827b2c4baca3feb5cd117661334bb95b42836ba879"
+   "sha256": "62341e622a46a7cae672f83e7c15c60f4690fa2b507c9f712b9b46a8a218da7e"
   },
   {
    "path": "kaynaklar.json",
    "bytes": 6756,
-   "sha256": "49b0fcad0a208861021bf4d50b05c369f470b81b4e32127c5e504e743efad869"
+   "sha256": "a42fdf01956d711f24bcd78d6c63f44f8035f5223f77afd7c4220b1ceeaf30ad"
   },
   {
    "path": "panel/aylik.csv",
-   "bytes": 49286,
-   "sha256": "f12be44ca81c22c5ef016574245a521dd5a5eaa84c5c0b6122fead9897474145"
+   "bytes": 49311,
+   "sha256": "23b288d6995b114432b59b964f90f3911404ec523df490f90a193487c38d7fd6"
   },
   {
    "path": "panel/aylik.json",
-   "bytes": 193275,
-   "sha256": "e1a02f55506e8689a48f0047cadeb203f2793a067974e3ca690f6d7850b68462"
+   "bytes": 193308,
+   "sha256": "8d11402341f659376f7a128137aa17972b14fde4c2f1c0edffa85281ed93c94f"
   },
   {
    "path": "panel/ceyreklik.csv",
-   "bytes": 29442,
-   "sha256": "a31a7a310100e918291eaafb2e3ce4699034d3354095829248f8032ba3e03c64"
+   "bytes": 29454,
+   "sha256": "9e8d40ebdf4380e39d8d4549649a9c0f5d0a3e488af07a85854c943458f7cdbe"
   },
   {
    "path": "panel/ceyreklik.json",
-   "bytes": 104008,
-   "sha256": "32022d5e5ed6ba7b27eb838da10d5362a848392e696d91240439b01037c81dbd"
+   "bytes": 104021,
+   "sha256": "d5a893e296f83cc690347951da5c6baffdbfe7685d09eb34244723a22f4da623"
   },
   {
    "path": "panel/yillik.csv",
-   "bytes": 45327,
-   "sha256": "19553b77eb0868200989c71efbc64f545a3563c961fa76c62365af99b8fe19a1"
+   "bytes": 45322,
+   "sha256": "d67621dd94944a336e37a24e09c51ee6151e491994cc63a55af7b8dcb79998bf"
   },
   {
    "path": "panel/yillik.json",
-   "bytes": 166117,
-   "sha256": "f9f47c1a3838ec8307d8b2d680f44a128fdf6314be1937c732e194e7ff94db00"
+   "bytes": 166120,
+   "sha256": "adfb105bae44862324ae7c87fb033052e2fe7f19b9832ca82210265c29d3d4c6"
   },
   {
    "path": "sema/seri.json",
@@ -380,13 +380,13 @@
   },
   {
    "path": "seri/eurostat-ekonomik-guven-tr.csv",
-   "bytes": 35875,
-   "sha256": "05cdea71ec5d0505ac0072328f8611b65818b932ee2d4b720e94ae1e910fb36f"
+   "bytes": 36025,
+   "sha256": "0b8653054c8de7b6a984e86a3b4d065aac838a741cb85a075d72dcc56a043eec"
   },
   {
    "path": "seri/eurostat-ekonomik-guven-tr.json",
-   "bytes": 17684,
-   "sha256": "ba2479bced32f57578e369a86a7f4ccf4fe6d6f176c60b88743f8cb0a62332f0"
+   "bytes": 17753,
+   "sha256": "18675c11c389b1cef092ad324e85ccb22ccce3c0b59a9ab5e9450d96840dc366"
   },
   {
    "path": "seri/eurostat-hicp-yillik-tr.csv",
@@ -411,12 +411,12 @@
   {
    "path": "seri/eurostat-perakende-hacmi-tr.csv",
    "bytes": 31670,
-   "sha256": "543e3ec8f9ac449fa77e742cb241c23bae60dfe89f1059dc4815c0c12d5ad211"
+   "sha256": "1b24d3d4cc90e1199f17841685828443c293aee5e17e4ac3433472a3af617b2c"
   },
   {
    "path": "seri/eurostat-perakende-hacmi-tr.json",
    "bytes": 15086,
-   "sha256": "13937c13c98cacaebe2ef178b7ed8bf3aab68168edcdf17c5a73393dace0ba73"
+   "sha256": "90590600e42388334ca0b4d65992380882574954fb26f051db909795930a50fa"
   },
   {
    "path": "seri/eurostat-sanayi-uretimi-tr.csv",
@@ -971,9 +971,9 @@
   {
    "path": "seriler.json",
    "bytes": 60775,
-   "sha256": "98cf089e9d607cb89896c2eb363c5cc0efdc6e312fafbb58435de839c8a41a8d"
+   "sha256": "0c75f077fd66525e6690c91b73ee8cf53e198710f0fd18d8e7bcee93815070e6"
   }
  ],
- "generated_at": "2026-11-27T04:41:59.026385+00:00",
- "build_id": "d08977c7a4267badf11ba3441925ae528b6f3be0062540ebcfb3aeb32564a83c"
+ "generated_at": "2026-11-27T15:13:38.743540+00:00",
+ "build_id": "46022514627"
 }

@@ -26,8 +26,8 @@
  "kaynak_kod": "ei_bssi_m_r2/M.BS-ESI-I.SA.TR",
  "kaynak_adi": "ei_bssi_m_r2",
  "kaynak_not": null,
- "kaynak_guncelleme": "2026-10-29",
- "cekildi": "2026-11-22T20:38:23.869457Z",
+ "kaynak_guncelleme": "2026-11-27",
+ "cekildi": "2026-11-27T15:10:55.045217Z",
  "izin": {
   "gosterim": true,
   "indirme": true,
@@ -106,7 +106,7 @@
   },
   {
    "donem": "2008-03",
-   "deger": "102.9",
+   "deger": "103.0",
    "durum": null
   },
   {
@@ -421,7 +421,7 @@
   },
   {
    "donem": "2013-06",
-   "deger": "108.0",
+   "deger": "108.1",
    "durum": null
   },
   {
@@ -571,7 +571,7 @@
   },
   {
    "donem": "2015-12",
-   "deger": "106.2",
+   "deger": "106.3",
    "durum": null
   },
   {
@@ -606,7 +606,7 @@
   },
   {
    "donem": "2016-07",
-   "deger": "103.4",
+   "deger": "103.5",
    "durum": null
   },
   {
@@ -761,7 +761,7 @@
   },
   {
    "donem": "2019-02",
-   "deger": "83.6",
+   "deger": "83.7",
    "durum": null
   },
   {
@@ -801,7 +801,7 @@
   },
   {
    "donem": "2019-10",
-   "deger": "93.1",
+   "deger": "93.2",
    "durum": null
   },
   {
@@ -846,7 +846,7 @@
   },
   {
    "donem": "2020-07",
-   "deger": "89.4",
+   "deger": "89.5",
    "durum": null
   },
   {
@@ -861,7 +861,7 @@
   },
   {
    "donem": "2020-10",
-   "deger": "93.9",
+   "deger": "94.0",
    "durum": null
   },
   {
@@ -936,7 +936,7 @@
   },
   {
    "donem": "2022-01",
-   "deger": "101.3",
+   "deger": "101.2",
    "durum": null
   },
   {
@@ -986,12 +986,12 @@
   },
   {
    "donem": "2022-11",
-   "deger": "96.3",
+   "deger": "96.2",
    "durum": null
   },
   {
    "donem": "2022-12",
-   "deger": "96.9",
+   "deger": "96.8",
    "durum": null
   },
   {
@@ -1006,7 +1006,7 @@
   },
   {
    "donem": "2023-03",
-   "deger": "98.5",
+   "deger": "98.6",
    "durum": null
   },
   {
@@ -1036,7 +1036,7 @@
   },
   {
    "donem": "2023-09",
-   "deger": "93.1",
+   "deger": "93.2",
    "durum": null
   },
   {
@@ -1066,7 +1066,7 @@
   },
   {
    "donem": "2024-03",
-   "deger": "96.2",
+   "deger": "96.3",
    "durum": null
   },
   {
@@ -1076,7 +1076,7 @@
   },
   {
    "donem": "2024-05",
-   "deger": "95.7",
+   "deger": "95.8",
    "durum": null
   },
   {
@@ -1091,7 +1091,7 @@
   },
   {
    "donem": "2024-08",
-   "deger": "91.4",
+   "deger": "91.5",
    "durum": null
   },
   {
@@ -1101,22 +1101,22 @@
   },
   {
    "donem": "2024-10",
-   "deger": "96.8",
+   "deger": "96.9",
    "durum": null
   },
   {
    "donem": "2024-11",
-   "deger": "96.5",
+   "deger": "96.4",
    "durum": null
   },
   {
    "donem": "2024-12",
-   "deger": "97.4",
+   "deger": "97.3",
    "durum": null
   },
   {
    "donem": "2025-01",
-   "deger": "98.2",
+   "deger": "98.1",
    "durum": null
   },
   {
@@ -1131,32 +1131,32 @@
   },
   {
    "donem": "2025-04",
-   "deger": "96.8",
+   "deger": "96.9",
    "durum": null
   },
   {
    "donem": "2025-05",
-   "deger": "96.8",
+   "deger": "96.9",
    "durum": null
   },
   {
    "donem": "2025-06",
-   "deger": "97.0",
+   "deger": "97.1",
    "durum": null
   },
   {
    "donem": "2025-07",
-   "deger": "96.4",
+   "deger": "96.5",
    "durum": null
   },
   {
    "donem": "2025-08",
-   "deger": "98.1",
+   "deger": "98.2",
    "durum": null
   },
   {
    "donem": "2025-09",
-   "deger": "98.0",
+   "deger": "98.1",
    "durum": null
   },
   {
@@ -1191,37 +1191,42 @@
   },
   {
    "donem": "2026-04",
-   "deger": "96.0",
+   "deger": "95.9",
    "durum": null
   },
   {
    "donem": "2026-05",
-   "deger": "96.2",
+   "deger": "96.1",
    "durum": null
   },
   {
    "donem": "2026-06",
-   "deger": "97.7",
+   "deger": "97.5",
    "durum": null
   },
   {
    "donem": "2026-07",
-   "deger": "98.5",
+   "deger": "98.2",
    "durum": null
   },
   {
    "donem": "2026-08",
-   "deger": "99.5",
+   "deger": "99.0",
    "durum": null
   },
   {
    "donem": "2026-09",
-   "deger": "100.9",
+   "deger": "100.5",
    "durum": null
   },
   {
    "donem": "2026-10",
-   "deger": "95.9",
+   "deger": "95.7",
+   "durum": null
+  },
+  {
+   "donem": "2026-11",
+   "deger": "96.8",
    "durum": null
   }
  ]

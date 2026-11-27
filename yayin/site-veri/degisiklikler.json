@@ -2,6 +2,21 @@
  "surum": 1,
  "kayitlar": [
   {
+   "gun": "2026-11-27",
+   "seri": "eurostat-ekonomik-guven-tr",
+   "tur": "revizyon",
+   "adet": 33,
+   "ilk": "2008-03",
+   "son": "2026-10"
+  },
+  {
+   "gun": "2026-11-27",
+   "seri": "eurostat-ekonomik-guven-tr",
+   "tur": "yeni-donem",
+   "donem": "2026-11",
+   "yeni": "96.8"
+  },
+  {
    "gun": "2026-11-26",
    "seri": "bis-reel-konut-fiyat-tr",
    "tur": "revizyon",

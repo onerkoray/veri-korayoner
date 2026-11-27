@@ -1,6 +1,6 @@
 {
  "surum": 1,
- "uretildi": "2026-11-27T04:41:57.956237Z",
+ "uretildi": "2026-11-27T15:10:55.045217Z",
  "seriler": [
   {
    "id": "wb-ny-gdp-mktp-cd-tur",
@@ -1687,12 +1687,12 @@
    "birim": "endeks",
    "kaynak": "eurostat",
    "son": {
-    "donem": "2026-10",
-    "deger": "95.9",
+    "donem": "2026-11",
+    "deger": "96.8",
     "durum": null
    },
-   "kaynak_guncelleme": "2026-10-29",
-   "cekildi": "2026-11-22T20:38:23.869457Z",
+   "kaynak_guncelleme": "2026-11-27",
+   "cekildi": "2026-11-27T15:10:55.045217Z",
    "izin": {
     "gosterim": true,
     "indirme": true,
@@ -1955,8 +1955,8 @@
     "deger": "206.2",
     "durum": null
    },
-   "kaynak_guncelleme": "2026-11-25",
-   "cekildi": "2026-11-26T19:21:59.416865Z",
+   "kaynak_guncelleme": "2026-11-27",
+   "cekildi": "2026-11-27T15:10:55.045217Z",
    "izin": {
     "gosterim": true,
     "indirme": true,
