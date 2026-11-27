@@ -1,0 +1,20 @@
+.secim-alani, .secim-kutu { display: grid; min-width: 0; }
+.secim-alani { gap: .28rem; }
+.secim-alani[hidden] { display: none; }
+.secim-etiket { color: var(--soluk); font: 650 .77rem/1.4 var(--font); }
+.secim-kutu { position: relative; }
+.secim-kutu::after { content: ""; position: absolute; inset-inline-end: .85rem; inset-block-start: calc(50% - .25rem);
+  width: .43rem; height: .43rem; border: solid var(--soluk); border-width: 0 1.5px 1.5px 0; transform: rotate(45deg); pointer-events: none; }
+.secim-girdi, .secim-kutu select { width: 100%; min-width: 0; min-height: 2.75rem; padding: .46rem .65rem;
+  font: 560 .84rem/1.4 var(--font); color: var(--metin); background: var(--yuzey); border: 1px solid var(--cizgi); border-radius: .36rem; }
+.secim-kutu select { appearance: none; padding-inline-end: 1.95rem; text-overflow: ellipsis; cursor: pointer; }
+.secim-kutu select option { color: var(--metin); background: var(--yuzey); }
+.secim-girdi:hover, .secim-kutu select:hover { border-color: var(--soluk); }
+.secim-girdi:focus, .secim-kutu select:focus { border-color: var(--vurgu); outline: 2px solid var(--vurgu); outline-offset: 1px; }
+.secim-girdi::placeholder { color: var(--soluk); opacity: 1; }
+.secim-eylem { border: 1px solid var(--cizgi); border-radius: .3rem; min-height: 2.25rem; padding: .27rem .55rem;
+  background: var(--yuzey); color: var(--metin); font: 650 .76rem/1.35 var(--font); cursor: pointer; }
+.secim-eylem:hover:not(:disabled) { border-color: var(--soluk); background: var(--yuzey-2); }
+.secim-eylem:disabled { color: var(--soluk); background: transparent; cursor: default; }
+.secim-eylem[aria-pressed="true"] { border-color: var(--marka); box-shadow: inset 0 -2px var(--marka); }
+@media (forced-colors: active) { .secim-kutu select { appearance: auto; padding-inline-end: .65rem; } .secim-kutu::after { display: none; } }

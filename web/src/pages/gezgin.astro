@@ -3,6 +3,7 @@
 // Sunucuda: veri seti kataloğu (JS'siz okunur, dizinlenir). Tarayıcıda: gezgin.ts
 // /api/v1/panel/{sıklık}.json dosyasını okur; durum adresin # kısmında tutulur.
 import Taban from "../layouts/Taban.astro";
+import "../styles/secim.css";
 import { seriler, kaynaklar, TEMA, TEMA_SIRA, siklikAdi, tarih, uretildi, dolu } from "../lib/veri";
 import { donemAdi } from "../lib/okuma.ts";
 import { KISI_REF } from "../lib/kimlik";
@@ -49,22 +50,30 @@ const jsonld = {
 
     <div class="g-calisma">
     <form class="g-kontrol" id="g-form" aria-label="Gezgin ayarları" hidden>
-      <div class="g-kontrol-bas"><p class="etiket">Analiz ayarları</p><button type="button" id="g-sonuca-git" hidden>Sonuçlara git ↓</button></div>
+      <div class="g-kontrol-bas"><h2>Analiz ayarları</h2><button type="button" class="secim-eylem" id="g-sonuca-git" hidden>Sonuçlara git ↓</button></div>
       <fieldset class="g-gostergeler">
         <legend>Göstergeler <span class="g-sayac" id="g-sayac"></span></legend>
         <div class="g-ara">
-          <label for="g-ara" class="gizli">Gösterge ara</label>
-          <input type="search" id="g-ara" placeholder="Gösterge ara: işsizlik, Gini, faiz…" autocomplete="off" enterkeyhint="search" />
-          <label for="g-kurum" class="gizli">Kuruma göre süz</label>
-          <select id="g-kurum"><option value="">Bütün kurumlar</option>{kurumlar.map((k) => <option value={k}>{k}</option>)}</select>
-          <label class="gizli" for="g-tema-sec">Temaya göre süz</label>
-          <select id="g-tema-sec"><option value="">Bütün temalar</option>{gruplar.map((g) => <option value={g.t}>{g.ad}</option>)}</select>
-          <label for="g-ssuz" class="gizli">Kaynak sıklığına göre süz</label>
-          <select id="g-ssuz"><option value="">Bütün sıklıklar</option>{sikliklar.map((h) => <option value={h}>{siklikAdi(h)}</option>)}</select>
-          <span id="g-ara-sonuc" class="g-not" aria-live="polite"></span>
+          <label class="secim-alani g-ara-tam"><span class="gizli">Gösterge ara</span>
+            <input class="secim-girdi" type="search" id="g-ara" placeholder="Gösterge adı veya seri kodu" autocomplete="off" enterkeyhint="search" />
+          </label>
+          <label class="secim-alani"><span class="secim-etiket">Kurum</span><span class="secim-kutu">
+            <select id="g-kurum" aria-label="Kuruma göre süz"><option value="">Tüm kurumlar</option>{kurumlar.map((k) => <option value={k}>{k}</option>)}</select>
+          </span></label>
+          <label class="secim-alani"><span class="secim-etiket">Tema</span><span class="secim-kutu">
+            <select id="g-tema-sec" aria-label="Temaya göre süz"><option value="">Tüm temalar</option>{gruplar.map((g) => <option value={g.t}>{g.ad}</option>)}</select>
+          </span></label>
+          <label class="secim-alani g-ara-tam"><span class="secim-etiket">Kaynak sıklığı</span><span class="secim-kutu">
+            <select id="g-ssuz" aria-label="Kaynak sıklığına göre süz"><option value="">Tüm sıklıklar</option>{sikliklar.map((h) => <option value={h}>{siklikAdi(h)}</option>)}</select>
+          </span></label>
+          <div class="g-suz-eylem g-ara-tam">
+            <button class="secim-eylem" type="button" id="g-yalniz-secili" aria-pressed="false" aria-controls="g-liste">Yalnız seçili</button>
+            <button class="secim-eylem" type="button" id="g-temizle" disabled>Filtreleri temizle</button>
+          </div>
+          <span id="g-ara-sonuc" class="g-not g-ara-tam" role="status"></span>
         </div>
         <details class="g-acilir" id="g-liste" open data-ilk>
-        <summary>Gösterge listesi · 3 seçili</summary>
+        <summary>Gösterge listesi <span id="g-liste-sayac">{ss.length} seri</span></summary>
         <div class="g-temalar">
           {gruplar.map((g) => (
             <div class="g-tema">
@@ -73,7 +82,7 @@ const jsonld = {
                 <label class:list={["g-sec", !s.izin.indirme && "kapali"]} data-tema={g.t} data-arama={`${g.ad} ${s.id} ${s.kaynak_kod} ${s.kaynak.id} ${s.kaynak.kurum} ${s.kaynak_adi ?? ""}`} data-siklik={s.siklik} data-kurum={kisaAd(s.kaynak.kurum).replace("Avrupa Merkez Bankası", "ECB")}>
                   <input type="checkbox" name="g" value={s.id} disabled={!s.izin.indirme} />
                   <span>{s.baslik}</span>
-                  <small>{s.kaynak.kurum.replace(/\s*\(.*\)$/, "").replace("Uluslararası Ödemeler Bankası", "BIS").replace("Avrupa Birliği İstatistik Ofisi", "Eurostat").replace("Avrupa Merkez Bankası", "ECB")} · {siklikAdi(s.siklik).toLowerCase()}{!s.izin.indirme && " · yalnız gösterim"}</small>
+                  <small>{kisaAd(s.kaynak.kurum).replace("Avrupa Merkez Bankası", "ECB")} · {siklikAdi(s.siklik).toLowerCase()}{!s.izin.indirme && " · yalnız gösterim"}<span class="g-uygunluk" hidden> · Seçili sıklıkta yok</span></small>
                 </label>
               ))}
             </div>
@@ -82,20 +91,21 @@ const jsonld = {
         </details>
       </fieldset>
       <div class="g-satir">
-        <fieldset class="g-dugme"><legend>Sıklık</legend>
+        <fieldset class="g-dugme g-dugme-3"><legend>Analiz sıklığı</legend>
           {["aylik", "ceyreklik", "yillik"].map((h, i) => <label><input type="radio" name="s" value={h} checked={i === 0} /><span>{siklikAdi(h)}</span></label>)}
         </fieldset>
-        <fieldset class="g-dugme"><legend>Değer</legend>
+        <fieldset class="g-dugme"><legend>Değer hesabı</legend>
           <label><input type="radio" name="d" value="ort" checked /><span>Dönem ortalaması</span></label>
           <label><input type="radio" name="d" value="son" /><span>Dönem sonu</span></label>
         </fieldset>
         <fieldset class="g-aralik"><legend>Dönem aralığı</legend>
-          <label><span class="gizli">Başlangıç yılı</span><select name="b" id="g-b">{Array.from({ length: sonYil - ilkYil + 1 }, (_, i) => ilkYil + i).map((y) => <option value={y} selected={y === 2010}>{y}</option>)}</select></label>
-          <span aria-hidden="true">–</span>
-          <label><span class="gizli">Bitiş yılı</span><select name="e" id="g-e">{Array.from({ length: sonYil - ilkYil + 1 }, (_, i) => ilkYil + i).map((y) => <option value={y} selected={y === sonYil}>{y}</option>)}</select></label>
+          <div class="g-donem-kutulari">
+            <div class="secim-alani"><label class="secim-etiket" for="g-b">Başlangıç yılı</label><span class="secim-kutu"><select name="b" id="g-b">{Array.from({ length: sonYil - ilkYil + 1 }, (_, i) => ilkYil + i).map((y) => <option value={y} selected={y === 2010}>{y}</option>)}</select></span></div>
+            <div class="secim-alani"><label class="secim-etiket" for="g-e">Bitiş yılı</label><span class="secim-kutu"><select name="e" id="g-e">{Array.from({ length: sonYil - ilkYil + 1 }, (_, i) => ilkYil + i).map((y) => <option value={y} selected={y === sonYil}>{y}</option>)}</select></span></div>
+          </div>
           <div class="g-alt-donem" id="g-alt-donem" hidden>
-            <label><span class="gizli">Başlangıç alt dönemi</span><select name="p" id="g-p"></select></label>
-            <label><span class="gizli">Bitiş alt dönemi</span><select name="q" id="g-q"></select></label>
+            <div class="secim-alani"><label class="secim-etiket" id="g-p-ad" for="g-p">Başlangıç ayı</label><span class="secim-kutu"><select name="p" id="g-p"></select></span></div>
+            <div class="secim-alani"><label class="secim-etiket" id="g-q-ad" for="g-q">Bitiş ayı</label><span class="secim-kutu"><select name="q" id="g-q"></select></span></div>
           </div>
           <div class="g-hizli" aria-label="Hazır dönemler">
             <button type="button" data-g-yil="1">Son 1 yıl</button>
@@ -105,24 +115,25 @@ const jsonld = {
             <button type="button" data-g-yil="0">Tümü</button>
           </div>
         </fieldset>
-        <fieldset class="g-dugme"><legend>Ölçek</legend>
+        <fieldset class="g-dugme" aria-describedby="g-olcek-not"><legend>Grafik ölçeği</legend>
           <label title="Kaynaktaki ölçek"><input type="radio" name="o" value="deger" checked /><span>Değer</span></label>
           <label title="Aynı birimdeki serileri tek eksende gösterir"><input type="radio" name="o" value="ortak" /><span>Aynı eksen</span></label>
           <label title="Düzey serileri ortak baz dönemine göre (baz = 100), tek eksende"><input type="radio" name="o" value="endeks" /><span>Baz = 100</span></label>
           <label title="Yüzde serileri baz döneme göre yüzde puan farkı, tek eksende"><input type="radio" name="o" value="fark" /><span>Fark (puan)</span></label>
         </fieldset>
+        <p id="g-olcek-not" class="g-not g-olcek-not"></p>
         <fieldset class="g-dugme"><legend>Görünüm</legend>
           <label><input type="radio" name="v" value="grafik" checked /><span>Grafik</span></label>
           <label><input type="radio" name="v" value="isi" /><span>Yıl × dönem</span></label>
           <label><input type="radio" name="v" value="tablo" /><span>Tablo</span></label>
           <label><input type="radio" name="v" value="analiz" /><span>İstatistik</span></label>
         </fieldset>
-        <div class="g-eylem">
-          <button type="button" class="g-indir" id="g-indir">CSV indir</button>
-          <button type="button" class="g-indir ikincil" id="g-json">JSON indir</button>
-          <button type="button" class="g-indir ikincil" id="g-meta" title="Her sütunun kaynağı, lisansı ve türetilmiş olup olmadığı">Metaveri (JSON)</button>
-          <button type="button" class="g-indir ikincil" id="g-bagla">Bağlantıyı kopyala</button>
-        </div>
+      </div>
+      <div class="g-eylem" role="group" aria-label="Dışa aktarma">
+        <button type="button" class="g-indir" id="g-indir">CSV indir</button>
+        <button type="button" class="g-indir ikincil" id="g-json">JSON indir</button>
+        <button type="button" class="g-indir ikincil" id="g-meta" title="Her sütunun kaynağı, lisansı ve türetilmiş olup olmadığı">Metaveri (JSON)</button>
+        <button type="button" class="g-indir ikincil" id="g-bagla">Bağlantıyı kopyala</button>
       </div>
     </form>
     <script is:inline src="/gezgin-erken.js"></script>
@@ -174,22 +185,28 @@ const jsonld = {
   .g-kunye { display: flex; flex-wrap: wrap; column-gap: .4rem; font-size: .79rem; color: var(--soluk); }
   .g-kunye a { margin-inline-start: .35rem; }
   .g-calisma { display: grid; grid-template-columns: minmax(0, 19rem) minmax(0, 1fr); gap: 1.3rem; align-items: start; }
-  .g-kontrol { display: grid; gap: .85rem; background: var(--yuzey); border: 1px solid var(--cizgi); padding: .9rem; min-width: 0; }
+  .g-kontrol { display: grid; gap: 1rem; background: var(--yuzey); border: 1px solid var(--cizgi); border-radius: .45rem; padding: .9rem; min-width: 0; }
   .g-kontrol[hidden], .g-sonuc-ust[hidden] { display: none; }
-  .g-kontrol-bas { display: flex; justify-content: space-between; align-items: baseline; gap: .25rem .65rem; flex-wrap: wrap; border-bottom: 1px solid var(--cizgi); padding-bottom: .55rem; }
-  .g-kontrol-bas .etiket { color: var(--metin); }
-  #g-sonuca-git { min-height: 1.8rem; background: none; border: 0; padding: 0; color: var(--vurgu); font: 650 .8rem var(--font); text-decoration: underline; text-underline-offset: .2em; cursor: pointer; }
+  .g-kontrol-bas { display: flex; justify-content: space-between; align-items: center; gap: .25rem .65rem; flex-wrap: wrap; border-bottom: 1px solid var(--cizgi); padding-bottom: .65rem; }
+  .g-kontrol-bas h2 { margin: 0; color: var(--metin); font-size: 1.09rem; letter-spacing: 0; }
   @media (min-width: 56.01rem) { #g-sonuca-git { display: none; } }
   .g-sonuclar { min-width: 0; }
   .g-sonuc-ust { display: grid; gap: .3rem; margin-bottom: .8rem; padding: .2rem 0 .65rem; border-bottom: 1px solid var(--cizgi); }
   .g-secili { list-style: none; display: flex; flex-wrap: wrap; gap: .25rem .4rem; margin: .2rem 0 0; padding: 0; }
   .g-secili:empty { display: none; }
-  .g-secili li { font-size: .73rem; color: var(--soluk); padding: .12rem .4rem; border: 1px solid var(--cizgi); background: var(--yuzey); }
-  .g-hizli { display: flex; flex-wrap: wrap; gap: .3rem; width: 100%; padding-top: .25rem; }
-  .g-alt-donem:not([hidden]) { display: flex; gap: .35rem; flex-wrap: wrap; width: 100%; }
-  .g-alt-donem select { max-width: 100%; }
-  .g-hizli button { min-height: 2rem; padding: .1rem .36rem; border: 0; background: transparent; color: var(--vurgu); font: 600 .75rem var(--font); text-decoration: underline; text-underline-offset: .2em; cursor: pointer; }
-  .g-hizli button[aria-pressed="true"] { background: var(--yuzey-2); color: var(--metin); }
+  .g-secili li { min-width: 0; }
+  .g-secim-kaldir { display: flex; align-items: center; gap: .5rem; min-height: 2.25rem; padding: .22rem .45rem;
+    border: 1px solid var(--cizgi); border-radius: .3rem; background: var(--yuzey); color: var(--metin);
+    font: 600 .75rem/1.35 var(--font); text-align: start; cursor: pointer; }
+  .g-secim-kaldir:hover { border-color: var(--soluk); background: var(--yuzey-2); }
+  .g-secim-kaldir span[aria-hidden] { margin-inline-start: auto; color: var(--soluk); font-size: 1.1rem; line-height: 1; }
+  .g-hizli { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .55rem; }
+  .g-donem-kutulari, .g-alt-donem:not([hidden]) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .4rem; }
+  .g-alt-donem:not([hidden]) { margin-top: .45rem; }
+  .g-hizli button { min-height: 2rem; padding: .15rem .38rem; border: 1px solid var(--cizgi); border-radius: .25rem;
+    background: var(--yuzey); color: var(--soluk); font: 600 .72rem/1.25 var(--font); cursor: pointer; }
+  .g-hizli button:hover { border-color: var(--soluk); }
+  .g-hizli button[aria-pressed="true"] { border-color: var(--marka); box-shadow: inset 0 -2px var(--marka); color: var(--metin); }
   .g-istatistik { font-size: .82rem; min-width: 43rem; }
   .g-istatistik td, .g-istatistik th { padding: .48rem .55rem; }
   .g-istatistik small { display: block; color: var(--soluk); font-weight: 400; }
@@ -206,39 +223,46 @@ const jsonld = {
   .iliski-cubuk[data-eksi] span { background: var(--dv-kotu); }
   @media (max-width: 56rem) { .g-calisma { grid-template-columns: minmax(0, 1fr); gap: 1rem; } }
   .g-kontrol fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
-  .g-kontrol legend { font: 600 .68rem/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--soluk); margin-bottom: .45rem; padding: 0; }
+  .g-kontrol legend { font: 700 .8rem/1.4 var(--font); color: var(--metin); margin-bottom: .45rem; padding: 0; }
   .g-sayac { text-transform: none; letter-spacing: 0; font-weight: 500; }
-  .g-temalar { display: grid; gap: .75rem; max-height: 16rem; overflow: auto; padding: .4rem .3rem .6rem; }
-  .g-tema > p { margin: 0 0 .3rem; font-weight: 650; font-size: .85rem; }
-  .g-sec { display: grid; grid-template-columns: auto 1fr; gap: 0 .45rem; align-items: start; padding: .2rem 0; cursor: pointer; font-size: .86rem; line-height: 1.35; }
+  .g-acilir { border: 1px solid var(--cizgi); border-radius: .36rem; }
+  .g-acilir > summary { padding: .6rem; font: 700 .8rem/1.4 var(--font); cursor: pointer; }
+  .g-acilir[open] > summary { border-bottom: 1px solid var(--cizgi); }
+  .g-acilir summary span { float: inline-end; color: var(--soluk); font: 550 .72rem/1.55 var(--mono); }
+  .g-acilir summary:hover { background: var(--yuzey-2); }
+  .g-temalar { display: grid; gap: .7rem; max-height: clamp(12rem, 37vh, 19rem); overflow: auto; padding: .5rem; }
+  .g-tema > p { margin: 0 0 .25rem; padding: .2rem .3rem; color: var(--soluk); font: 650 .74rem/1.4 var(--font); }
+  .g-sec { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0 .48rem; align-items: start;
+    padding: .34rem .3rem; border: 1px solid transparent; border-radius: .26rem; cursor: pointer; font-size: .82rem; line-height: 1.35; }
+  .g-sec:hover { background: var(--yuzey-2); }
+  .g-sec:has(input:checked) { border-color: var(--cizgi); background: var(--yuzey-2); }
   .g-sec input { margin: .15rem 0 0; accent-color: var(--dv-1); }
   .g-sec small { grid-column: 2; color: var(--soluk); font-size: .72rem; }
   .g-sec.kapali { color: var(--soluk); cursor: not-allowed; }
-  .g-sec.yok > span { text-decoration: underline dotted; text-underline-offset: .2em; }
-  .g-satir { display: flex; flex-wrap: wrap; gap: .7rem 1rem; align-items: end; border-top: 1px solid var(--cizgi); padding-top: .9rem; }
-  .g-dugme { display: inline-flex; flex-wrap: wrap; }
-  .g-dugme legend { width: 100%; }
-  .g-dugme label { position: relative; }
+  .g-uygunluk { font-weight: 650; }
+  .g-satir { display: grid; grid-template-columns: minmax(0, 1fr); gap: .86rem; border-top: 1px solid var(--cizgi); padding-top: .85rem; }
+  .g-dugme { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .3rem; }
+  .g-dugme-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .g-dugme label { position: relative; min-width: 0; }
   .g-dugme input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
-  .g-dugme span { display: inline-block; font: 600 .74rem/1 var(--mono); padding: .55rem .7rem; border: 1px solid var(--cizgi); margin-right: -1px; color: var(--soluk); }
+  .g-dugme span { display: flex; align-items: center; justify-content: center; height: 100%; min-height: 2.45rem;
+    padding: .35rem .25rem; border: 1px solid var(--cizgi); border-radius: .28rem; color: var(--soluk);
+    font: 650 .76rem/1.3 var(--font); text-align: center; }
+  .g-dugme label:hover span { border-color: var(--soluk); }
   .g-dugme input:checked + span { background: var(--metin); color: var(--bg); border-color: var(--metin); }
   .g-dugme input:focus-visible + span { outline: 2px solid var(--vurgu); outline-offset: 2px; }
   .g-dugme input:disabled + span { opacity: .4; }
-  .g-aralik { display: inline-flex; gap: .4rem; align-items: center; flex-wrap: wrap; }
-  .g-aralik legend { width: 100%; }
-  .g-aralik select { font: .9rem var(--font); padding: .4rem .5rem; background: var(--bg); color: var(--metin); border: 1px solid var(--cizgi); }
-  .g-eylem { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .g-not.g-olcek-not { margin: -.5rem 0 0; }
+  .g-eylem { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .4rem; border-top: 1px solid var(--cizgi); padding-top: .85rem; }
+  .g-eylem .g-indir { border-radius: .28rem; padding-inline: .4rem; line-height: 1.35; }
   .g-indir, .g-eylem-d { font: 600 .78rem/1 var(--mono); padding: .6rem .9rem; min-height: 2.5rem; background: none; color: var(--metin); border: 1px solid var(--metin); cursor: pointer; }
   .g-indir.ikincil { border-color: var(--cizgi); }
   .g-indir:hover, .g-eylem-d:hover { background: var(--metin); color: var(--bg); }
   .g-indir:focus-visible, .g-eylem-d:focus-visible, .g-ara input:focus-visible, .kaydir:focus-visible { outline: 2px solid var(--vurgu); outline-offset: 2px; }
-  .g-ara { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .35rem; margin-bottom: .6rem; }
-  .g-ara input, #g-ara-sonuc { grid-column: 1 / -1; }
+  .g-ara { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .48rem; margin-bottom: .6rem; }
+  .g-ara-tam { grid-column: 1 / -1; }
+  .g-suz-eylem { display: flex; flex-wrap: wrap; gap: .35rem; }
   #g-ara-sonuc:empty { display: none; }
-  .g-ara input, .g-ara select { font: .9rem var(--font); padding: .5rem .6rem; min-height: 2.5rem; background: var(--bg); color: var(--metin); border: 1px solid var(--cizgi); }
-  .g-ara input { min-width: 0; width: 100%; }
-  .g-ara select { min-width: 0; max-width: 100%; padding-inline: .3rem; font-size: .8rem; }
-  .g-ara select:focus-visible { outline: 2px solid var(--vurgu); outline-offset: 2px; }
   .g-ortak-bas { margin: 0 0 .4rem; font-size: .85rem; color: var(--soluk); }
   .g-ortak-bas strong { color: var(--metin); }
   .g-lejant { list-style: none; margin: 0 0 .4rem; padding: 0; display: flex; flex-wrap: wrap; gap: .3rem 1.2rem; font-size: .82rem; }
@@ -252,6 +276,11 @@ const jsonld = {
   .g-sirala:focus-visible { outline: 2px solid var(--vurgu); outline-offset: 2px; }
   .g-ok { color: var(--soluk); }
   .g-sec[hidden], .g-tema[hidden] { display: none; }
+  @media (forced-colors: active) {
+    .g-dugme input:checked + span, .g-hizli button[aria-pressed="true"], .secim-eylem[aria-pressed="true"] {
+      border: 2px solid Highlight; color: Highlight;
+    }
+  }
   .g-panel.g-bos { display: grid; gap: .5rem; border-style: dashed; }
   .g-bos p { margin: 0; font-size: .88rem; }
   .g-bos-eylem { display: flex; gap: .5rem; flex-wrap: wrap; }
@@ -275,9 +304,6 @@ const jsonld = {
   .g-isi { border-collapse: separate; border-spacing: 2px; font-size: .78rem; width: 100%; }
   .g-isi th, .g-isi td { padding: .35rem .3rem; border: 0; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .g-isi thead th { font: 600 .66rem/1.25 var(--mono); color: var(--soluk); text-align: center; white-space: normal; vertical-align: bottom; min-width: 3.2rem; }
-  .g-acilir > summary { cursor: pointer; font-size: .85rem; color: var(--soluk); margin-bottom: .6rem; }
-  .g-acilir { border-block: 1px solid var(--cizgi); }
-  .g-acilir > summary { padding: .45rem .15rem; margin: 0; }
   /* Telefonda liste ilk boyamada da kapalı görünsün: erken betik indirilirken boyama olursa
      sonradan kapanıp alttaki içeriği kaydırmasın (CLS). Betik data-ilk'i kaldırır. */
   @media (max-width: 40rem) { .g-acilir[data-ilk] > .g-temalar { display: none; } }

@@ -83,6 +83,25 @@ test("grafik üzerinde gezinme ipucu gösterir", async ({ page, isMobile }) => {
   await expect(page.locator(".g-tuval g[aria-label]")).toHaveCount(0);
 });
 
+test("seçili seri filtresi ve boş seçim bağlantıda korunur", async ({ page }) => {
+  await page.goto(`/gezgin#g=${TUFE}&s=yillik&b=2020`);
+  const liste = page.locator("#g-liste");
+  const secili = page.getByRole("button", { name: "Yalnız seçili" });
+  await secili.click();
+  await expect(secili).toHaveAttribute("aria-pressed", "true");
+  await expect(liste.locator(".g-sec:visible")).toHaveCount(1);
+  await page.getByRole("button", { name: "Filtreleri temizle" }).click();
+  await expect(page.getByRole("searchbox", { name: "Gösterge ara" })).toBeFocused();
+  await expect(secili).toHaveAttribute("aria-pressed", "false");
+  await expect(liste.locator(`input[value="${TUFE}"]`)).toBeChecked();
+  await page.getByRole("button", { name: /seçimini kaldır/ }).press("Enter");
+  await expect(page).toHaveURL(/#g=none&s=yillik&b=2020$/);
+  await expect(page.getByRole("searchbox", { name: "Gösterge ara" })).toBeFocused();
+  await page.reload();
+  await expect(page.locator("#g-durum")).toContainText("Gösterge seçin.");
+  await expect(page.locator('input[name="g"]:checked')).toHaveCount(0);
+});
+
 const grafikHazir: Record<string, string> = { "/": ".ana-tuval svg", "/gezgin": ".g-tuval svg", "/karsilastir": ".k-tuval svg" };
 for (const yol of ["/", "/gezgin", "/karsilastir", `/gosterge/${GINI}`, "/hesap/reel-politika-faizi", "/api", "/kaynaklar"]) {
   test(`yatay taşma yok: ${yol}`, async ({ page }) => {
@@ -246,6 +265,26 @@ test.describe("Kaynaklar ve API", () => {
     await expect(page.locator("#d-yanit")).toContainText("sts_inpr_m");
     await page.getByLabel("Seri veya kod").fill("eşleşmeyen gösterge");
     await expect(page.getByText("Bu filtrelerle eşleşen seri yok.")).toBeVisible();
+  });
+
+  test("API kataloğu tema seçimi ve konsol araması bağımsız çalışır", async ({ page }) => {
+    await page.goto("/api");
+    const seri = page.locator('[data-k-seri="eurostat-sanayi-uretimi-tr"]');
+    const tema = (await seri.getAttribute("data-k-tema"))!;
+    const satirlar = page.locator("[data-k-seri]:visible");
+    const toplam = await satirlar.count();
+    await page.getByLabel("Tema", { exact: true }).selectOption(tema);
+    await expect(seri).toBeVisible();
+    await expect(page.locator(`[data-k-seri]:not([data-k-tema="${tema}"]):visible`)).toHaveCount(0);
+    await page.getByRole("button", { name: "Filtreleri temizle" }).click();
+    await expect(satirlar).toHaveCount(toplam);
+    await expect(page.getByLabel("Seri veya kod")).toBeFocused();
+    await page.locator("#d-uc").selectOption("/api/v1/seri/{id}.json");
+    const ara = page.getByRole("searchbox", { name: "Konsolda seri ara" });
+    await ara.fill("sts_inpr_m");
+    await expect(page.locator("#d-id")).toHaveValue("eurostat-sanayi-uretimi-tr");
+    await ara.fill("eşleşmeyen-gösterge");
+    await expect(page.getByRole("button", { name: "İsteği gönder" })).toBeDisabled();
   });
 
   test("API konsolu dış yönlendirmeyi takip etmez", async ({ page, browserName }) => {

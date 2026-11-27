@@ -32,6 +32,8 @@ function baslat(form: HTMLFormElement) {
   const sonucUst = document.getElementById("g-sonuc-ust")!;
   const gorunumBaslik = document.getElementById("g-gorunum-bas")!;
   const seciliListe = document.getElementById("g-secili")!;
+  const olcekNotu = document.getElementById("g-olcek-not")!;
+  const altAd = [document.getElementById("g-p-ad")!, document.getElementById("g-q-ad")!];
   const hizli = [...form.querySelectorAll<HTMLButtonElement>("[data-g-yil]")];
   const kutular = [...form.querySelectorAll<HTMLInputElement>('input[name="g"]')];
   const siklikOf = (id: string) => kutular.find((k) => k.value === id)?.closest<HTMLElement>("label")?.dataset.siklik ?? "yillik";
@@ -40,7 +42,7 @@ function baslat(form: HTMLFormElement) {
   const altSec = [form.querySelector<HTMLSelectElement>("#g-p")!, form.querySelector<HTMLSelectElement>("#g-q")!];
   const altKutu = form.querySelector<HTMLElement>("#g-alt-donem")!;
   const yillar = [...yilSec[0].options].map((o) => Number(o.value));
-  const ara = document.getElementById("g-ara") as HTMLInputElement | null;
+  const ara = form.querySelector<HTMLInputElement>("#g-ara")!;
 
   // Başarısız istek önbellekte kalmaz: bir sonraki çizim (ya da "Yeniden dene") yeniden ister.
   const onbellek = new Map<string, Panel>();
@@ -62,7 +64,7 @@ function baslat(form: HTMLFormElement) {
 
   // Adrese yalnız varsayılandan farklı ayar yazılır; varsayılan görünüm düz /gezgin.
   const ayniKume = (a: string[], b: string[]) => a.length === b.length && a.every((x) => b.includes(x));   // seçim sırası adresi değiştirmesin
-  const hashMetni = (d: Durum) => adresParcasi([["g", ayniKume(d.g, VARSAYILAN) ? "" : d.g.join(","), ""], ["s", d.s, "aylik"], ["d", d.d, "ort"],
+  const hashMetni = (d: Durum) => adresParcasi([["g", ayniKume(d.g, VARSAYILAN) ? "" : d.g.join(",") || "none", ""], ["s", d.s, "aylik"], ["d", d.d, "ort"],
     ["b", String(d.b), "2010"], ["e", String(d.e), String(yillar.at(-1))], ["v", d.v, "grafik"], ["o", d.o, "deger"],
     ["p", String(d.p), "1"], ["q", String(d.q), String(donemSayisi(d.s))]]);
   const altSinir = (v: number, n: number, varsayilan: number) => Number.isInteger(v) && v >= 1 && v <= n ? v : varsayilan;
@@ -73,11 +75,12 @@ function baslat(form: HTMLFormElement) {
   const oku = (): Durum => {
     const h = new URLSearchParams(location.hash.slice(1));
     const gecerli = new Set(kutular.filter((k) => !k.disabled).map((k) => k.value));
-    const g = (h.get("g") ?? "").split(",").filter((x) => gecerli.has(x)).slice(0, AZAMI);
+    const gParam = h.get("g");
+    const g = [...new Set((gParam ?? "").split(",").filter((x) => gecerli.has(x)))].slice(0, AZAMI);
     const sayi = (k: string, v: number) => { const x = Number(h.get(k)); return yillar.includes(x) ? x : v; };
     const sec = <T extends string>(k: string, l: readonly T[], v: T): T => (l.includes(h.get(k) as T) ? (h.get(k) as T) : v);
     const b = sayi("b", 2010), e = sayi("e", yillar.at(-1)!);
-    return aralik({ g: g.length ? g : VARSAYILAN.filter((x) => gecerli.has(x)), s: sec("s", ["aylik", "ceyreklik", "yillik"] as const, "aylik"),
+    return aralik({ g: g.length || gParam === "none" ? g : VARSAYILAN.filter((x) => gecerli.has(x)), s: sec("s", ["aylik", "ceyreklik", "yillik"] as const, "aylik"),
       d: sec("d", ["ort", "son"] as const, "ort"), b: Math.min(b, e), e: Math.max(b, e), v: sec("v", ["grafik", "isi", "tablo", "analiz"] as const, "grafik"),
       p: Number(h.get("p")), q: Number(h.get("q")), o: sec("o", ["deger", "ortak", "endeks", "fark"] as const, "deger") });
   };
@@ -91,9 +94,30 @@ function baslat(form: HTMLFormElement) {
     formaYaz(); ciz();
   };
   const hizliBas = (n: number) => n ? Math.max(yillar[0], yillar.at(-1)! - n + 1) : yillar[0];
+  const olcekNotlari: Record<Olcek, string> = {
+    deger: "Her seri kendi ölçü biriminde gösterilir.",
+    ortak: "Aynı birimdeki seriler ortak eksende gösterilir.",
+    endeks: "Düzey serileri ortak baz dönemi 100 alınarak gösterilir.",
+    fark: "Yüzde serilerinde baz döneme göre yüzde puan farkı gösterilir.",
+  };
+  let yazilanSecim = "";
   const formaYaz = () => {
     gorunumBaslik.textContent = GORUNUM_BASLIK[durum.v];
-    seciliListe.replaceChildren(...durum.g.map((id) => el("li", { textContent: adOf(id) })));
+    const secim = durum.g.join(",");
+    if (secim !== yazilanSecim) {
+      yazilanSecim = secim;
+      seciliListe.replaceChildren(...durum.g.map((id, i) => {
+        const ad = adOf(id);
+        const kaldir = el("button", { type: "button", className: "g-secim-kaldir", ariaLabel: `${ad} seçimini kaldır` },
+          el("span", { textContent: ad }), el("span", { textContent: "×", ariaHidden: "true" }));
+        kaldir.addEventListener("click", () => {
+          uygula({ g: durum.g.filter((x) => x !== id) });
+          const dugmeler = seciliListe.querySelectorAll<HTMLButtonElement>("button");
+          (dugmeler[Math.min(i, dugmeler.length - 1)] ?? ara).focus();
+        });
+        return el("li", {}, kaldir);
+      }));
+    }
     const n = donemSayisi(durum.s);
     hizli.forEach((btn) => btn.setAttribute("aria-pressed", String(durum.b === hizliBas(Number(btn.dataset.gYil)) && durum.e === yillar.at(-1) && durum.p === 1 && durum.q === n)));
     kutular.forEach((k) => (k.checked = durum.g.includes(k.value)));
@@ -102,30 +126,35 @@ function baslat(form: HTMLFormElement) {
     yilSec[0].value = String(durum.b); yilSec[1].value = String(durum.e);
     altKutu.hidden = n === 1;
     altSec.forEach((secim, i) => {
+      altAd[i].textContent = `${i ? "Bitiş" : "Başlangıç"} ${n === 12 ? "ayı" : "çeyreği"}`;
       if (secim.options.length !== n) {
         secim.replaceChildren(...Array.from({ length: n }, (_, j) => el("option", { value: String(j + 1),
-          textContent: `${i ? "Son" : "İlk"}: ${n === 12 ? AY[j] : `Ç${j + 1}`}` })));
+          textContent: n === 12 ? AY[j] : `${j + 1}. çeyrek` })));
       }
       secim.value = String(i ? durum.q : durum.p);
     });
     // Bu sıklıkta olmayan seriler (ör. aylıkta yıllık seri) işaretlenir.
     kutular.forEach((k) => {
       const lab = k.closest<HTMLElement>("label")!, yok = !uygunMu(lab.dataset.siklik!, durum.s);
-      lab.classList.toggle("yok", yok && !k.disabled);
-      lab.title = yok ? `${SIKLIK[durum.s]} görünümde yok: kaynak seri daha seyrek` : "";
+      lab.querySelector<HTMLElement>(".g-uygunluk")!.hidden = !yok || k.disabled;
     });
     sayac.textContent = `· ${durum.g.length}/${AZAMI} seçili`;
-    const ozet = document.querySelector<HTMLElement>("#g-liste > summary");
-    if (ozet) ozet.textContent = `Gösterge listesi · ${durum.g.length} seçili`;
+    olcekNotu.textContent = olcekNotlari[durum.o];
+    suz();
   };
   const formdanOku = (degisen?: HTMLInputElement) => {
-    let g = kutular.filter((k) => k.checked).map((k) => k.value);
-    if (g.length > AZAMI && degisen) { degisen.checked = false; g = g.filter((x) => x !== degisen.value); durumP.textContent = `En çok ${AZAMI} gösterge seçilebilir.`; }
+    const g = kutular.filter((k) => k.checked).map((k) => k.value);
+    if (g.length > AZAMI && degisen) {
+      degisen.checked = false;
+      araSonuc.textContent = `En çok ${AZAMI} gösterge seçilebilir.`;
+      return;
+    }
     const f = new FormData(form);
     const b = Number(yilSec[0].value), e = Number(yilSec[1].value);
     uygula({ g, s: String(f.get("s")) as Durum["s"], d: f.get("d") === "son" ? "son" : "ort", b: Math.min(b, e), e: Math.max(b, e), v: String(f.get("v")) as Durum["v"],
       p: Number(f.get("p")), q: Number(f.get("q")),
       o: (String(f.get("o") ?? "deger")) as Olcek });
+    if (degisen && yalnizSecili && !degisen.checked) seciliFiltre.focus();
   };
 
   const dugme = (metin: string, is: () => void) => { const b = el("button", { type: "button", className: "g-eylem-d", textContent: metin }); b.addEventListener("click", is); return b; };
@@ -570,25 +599,45 @@ ${c.b.baslik}: ${farkYaz(c.b, p.y)}` })),
   });
 
   // Arama, kurum ve sıklık süzgeçleri gösterge listesini süzer; seçimi değiştirmez, adrese yazılmaz.
-  const kurumSec = document.getElementById("g-kurum") as HTMLSelectElement | null, siklikSec = document.getElementById("g-ssuz") as HTMLSelectElement | null;
-  const temaSec = document.querySelector<HTMLSelectElement>("#g-tema-sec");
-  const suzgec = [ara, kurumSec, siklikSec, temaSec].filter((x): x is HTMLInputElement | HTMLSelectElement => !!x);
-  const suz = () => {
-    const q = ara?.value ?? "", kr = kurumSec?.value ?? "", sk = siklikSec?.value ?? "";
-    const sec = [...form.querySelectorAll<HTMLElement>(".g-sec")], temalar = [...form.querySelectorAll<HTMLElement>(".g-tema")];
+  const kurumSec = form.querySelector<HTMLSelectElement>("#g-kurum")!, siklikSec = form.querySelector<HTMLSelectElement>("#g-ssuz")!;
+  const temaSec = form.querySelector<HTMLSelectElement>("#g-tema-sec")!;
+  const suzgec = [ara, kurumSec, siklikSec, temaSec];
+  const liste = form.querySelector<HTMLDetailsElement>("#g-liste")!;
+  const listeSayac = form.querySelector<HTMLElement>("#g-liste-sayac")!;
+  const araSonuc = form.querySelector<HTMLElement>("#g-ara-sonuc")!;
+  const temizle = form.querySelector<HTMLButtonElement>("#g-temizle")!;
+  const seciliFiltre = form.querySelector<HTMLButtonElement>("#g-yalniz-secili")!;
+  const temalar = [...form.querySelectorAll<HTMLElement>(".g-tema")];
+  const satirlar = kutular.map((k) => {
+    const satir = k.closest<HTMLElement>(".g-sec")!;
+    return { k, satir, arama: `${satir.dataset.arama} ${adOf(k.value)}` };
+  });
+  let yalnizSecili = false;
+  const suz = (ac = false) => {
+    const q = ara.value.trim(), kr = kurumSec.value, sk = siklikSec.value, tm = temaSec.value;
     let n = 0;
-    for (const l of sec) {
-      const ok = eslesir(`${l.dataset.arama} ${l.textContent ?? ""} ${l.querySelector("input")?.value ?? ""}`, q) && (!temaSec?.value || l.dataset.tema === temaSec.value) && (!kr || l.dataset.kurum === kr) && (!sk || l.dataset.siklik === sk);
-      l.hidden = !ok; if (ok) n++;
+    for (const { k, satir, arama } of satirlar) {
+      const ok = (!yalnizSecili || k.checked) && (!tm || satir.dataset.tema === tm) &&
+        (!kr || satir.dataset.kurum === kr) && (!sk || satir.dataset.siklik === sk) && eslesir(arama, q);
+      satir.hidden = !ok;
+      if (ok) n++;
     }
     for (const t of temalar) t.hidden = ![...t.querySelectorAll<HTMLElement>(".g-sec")].some((l) => !l.hidden);
-    const sonuc = document.getElementById("g-ara-sonuc");
-    const aktif = q.trim() || kr || sk || temaSec?.value;
-    if (sonuc) sonuc.textContent = aktif ? (n ? `${n} gösterge eşleşti.` : "Eşleşen gösterge yok; süzgeçleri gevşetin.") : "";
-    const liste = document.getElementById("g-liste") as HTMLDetailsElement | null;
-    if (liste && aktif) liste.open = true;
+    const aktif = q || kr || sk || tm || yalnizSecili;
+    listeSayac.textContent = `${n} seri`;
+    seciliFiltre.setAttribute("aria-pressed", String(yalnizSecili));
+    temizle.disabled = !aktif;
+    araSonuc.textContent = aktif ? (n ? `${n} gösterge eşleşti.` : "Eşleşen gösterge yok; süzgeçleri gevşetin.") : "";
+    if (ac) liste.open = true;
   };
-  for (const x of suzgec) x.addEventListener(x instanceof HTMLSelectElement ? "change" : "input", (e) => { e.stopPropagation(); suz(); });
+  for (const x of suzgec) x.addEventListener(x instanceof HTMLSelectElement ? "change" : "input", () => suz(true));
+  seciliFiltre.addEventListener("click", () => { yalnizSecili = !yalnizSecili; suz(true); });
+  temizle.addEventListener("click", () => {
+    suzgec.forEach((x) => { x.value = ""; });
+    yalnizSecili = false;
+    suz(true);
+    ara.focus();
+  });
 
   for (const btn of hizli) btn.addEventListener("click", () => uygula({ b: hizliBas(Number(btn.dataset.gYil)), e: yillar.at(-1)!, p: 1, q: donemSayisi(durum.s) }));
   sonucUst.hidden = false;
@@ -610,8 +659,7 @@ ${c.b.baslik}: ${farkYaz(c.b, p.y)}` })),
   addEventListener("resize", () => { clearTimeout(zaman); zaman = window.setTimeout(() => (durum.v === "grafik" || durum.v === "analiz") && ciz(), 200); });
   form.hidden = false;
   // Telefonda gösterge listesi kapalı başlar; seçim sayısı özetle görünür.
-  const liste = document.getElementById("g-liste") as HTMLDetailsElement | null;
-  if (liste && matchMedia("(max-width: 40rem)").matches) liste.open = false;
+  if (matchMedia("(max-width: 40rem)").matches) liste.open = false;
   history.replaceState(null, "", hashMetni(durum) || location.pathname);   // adresi sadeleştir; geri tuşu buraya döner
   formaYaz();
   ciz();

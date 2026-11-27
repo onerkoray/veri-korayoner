@@ -36,10 +36,11 @@ const form = document.getElementById("dene") as HTMLFormElement | null;
 if (form) kur(form);
 
 function kur(form: HTMLFormElement) {
-  const secenek = JSON.parse(form.dataset.secenek!) as Record<"seri" | "csv" | "emsal", [string, string][]>;
+  const secenek = JSON.parse(form.dataset.secenek!) as Record<"seri" | "csv" | "emsal", [string, string, string][]>;
   const uc = document.getElementById("d-uc") as HTMLSelectElement, id = document.getElementById("d-id") as HTMLSelectElement;
   const siklik = document.getElementById("d-siklik") as HTMLSelectElement;
   const idAlan = document.getElementById("d-id-alan")!, sAlan = document.getElementById("d-siklik-alan")!;
+  const idAra = document.getElementById("d-ara") as HTMLInputElement;
   const adres = document.getElementById("d-adres")!, durum = document.getElementById("d-durum")!;
   const yanit = document.getElementById("d-yanit")!, kod = yanit.querySelector("code")!, kopyala = document.getElementById("d-kopyala") as HTMLButtonElement;
   const ac = document.getElementById("d-ac") as HTMLAnchorElement;
@@ -51,6 +52,9 @@ function kur(form: HTMLFormElement) {
   const ara = document.getElementById("k-ara") as HTMLInputElement;
   const kurum = document.getElementById("k-kurum") as HTMLSelectElement;
   const sik = document.getElementById("k-siklik") as HTMLSelectElement;
+  const tema = document.getElementById("k-tema") as HTMLSelectElement;
+  const temizle = document.getElementById("k-temizle") as HTMLButtonElement;
+  const tablo = document.querySelector<HTMLElement>(".k-tablo")!;
   const listeDurumu = document.getElementById("k-sonuc")!;
   const bos = document.getElementById("k-bos")!;
   const satirlar = [...document.querySelectorAll<HTMLElement>("[data-k-seri]")];
@@ -58,19 +62,26 @@ function kur(form: HTMLFormElement) {
     let n = 0;
     for (const sat of satirlar) {
       const secili = (!kurum.value || kurum.value === sat.dataset.kKurum)
+        && (!tema.value || tema.value === sat.dataset.kTema)
         && (!sik.value || sik.value === sat.dataset.kSiklik)
         && eslesir(sat.dataset.kAra ?? "", ara.value);
       sat.hidden = !secili;
       if (secili) n++;
     }
     bos.hidden = n > 0;
+    tablo.hidden = n === 0;
+    tablo.scrollTop = 0;
+    temizle.disabled = !(ara.value.trim() || kurum.value || tema.value || sik.value);
     listeDurumu.textContent = `${n} / ${satirlar.length} seri`;
   };
   ara.addEventListener("input", suz);
-  kurum.addEventListener("change", suz);
-  sik.addEventListener("change", suz);
+  [kurum, tema, sik].forEach((s) => s.addEventListener("change", suz));
+  temizle.addEventListener("click", () => {
+    [ara, kurum, tema, sik].forEach((s) => { s.value = ""; });
+    suz();
+    ara.focus();
+  });
   filtre.hidden = false;
-  listeDurumu.hidden = false;
   suz();
 
   const liste = () => (uc.value.includes("/emsal/") ? secenek.emsal : uc.value.endsWith(".csv") && uc.value.includes("/seri/") ? secenek.csv : secenek.seri);
@@ -81,23 +92,30 @@ function kur(form: HTMLFormElement) {
     const idli = uc.value.includes("{id}");
     idAlan.hidden = !idli; sAlan.hidden = !uc.value.includes("{siklik}");
     if (idli) {
-      const onceki = id.value, l = liste();
-      id.replaceChildren(...l.map(([v, a]) => Object.assign(document.createElement("option"), { value: v, textContent: a })));
-      id.value = l.some(([v]) => v === onceki) ? onceki : l[0]?.[0] ?? "";
+      const onceki = id.value, q = idAra.value.trim(), l = liste().filter(([v, a, k]) => eslesir(`${a} ${v} ${k}`, q));
+      const sec = l.some(([v]) => v === onceki) ? onceki : !q || l.length === 1 ? l[0]?.[0] ?? "" : "";
+      const bos = new Option(l.length ? "Bir seri seçin" : "Eşleşen seri yok", "");
+      bos.disabled = l.length > 0;
+      id.replaceChildren(...(!sec ? [bos] : []), ...l.map(([v, a]) => new Option(a, v)));
+      id.value = sec;
+      id.disabled = l.length === 0;
     }
     const eksik = !UCLAR.test(yol());
     gonder.disabled = eksik; curl.disabled = eksik; ac.hidden = eksik;
     if (eksik) ac.removeAttribute("href");
     else ac.href = yol();
-    adres.textContent = eksik ? "Bu uç nokta için uygun seri yok." : location.origin + yol();
+    adres.textContent = eksik ? (id.disabled ? "Bu uç nokta için uygun seri yok." : "İstek için bir seri seçin.") : location.origin + yol();
   };
-  uc.addEventListener("change", guncelle);
+  uc.addEventListener("change", () => { idAra.value = ""; guncelle(); });
+  idAra.addEventListener("input", guncelle);
+  idAra.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); if (!id.disabled) id.focus(); } });
   id.addEventListener("change", guncelle);
   siklik.addEventListener("change", guncelle);
 
   document.querySelectorAll<HTMLButtonElement>("[data-k-dene]").forEach((b) => {
     b.dataset.hazir = "";
     b.addEventListener("click", () => {
+      idAra.value = "";
       uc.value = "/api/v1/seri/{id}.json";
       guncelle();
       id.value = b.dataset.kDene!;

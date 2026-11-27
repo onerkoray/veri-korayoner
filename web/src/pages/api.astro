@@ -1,16 +1,18 @@
 ---
 import Taban from "../layouts/Taban.astro";
+import "../styles/secim.css";
 import { seriler, emsal, son, siklikAdi, TEMA, deger, degerTuru } from "../lib/veri";
 const ss = seriler().filter((s) => s.izin.api);
 const ornek = ss.find((s) => s.izin.indirme && s.id === "bis-tufe-yillik-tr") ?? ss.find((s) => s.izin.indirme)!;
 const kurumAdi = (s: (typeof ss)[number]) => s.kaynak.kurum.match(/\(([^)]+)\)$/)?.[1] ?? s.kaynak.kurum;
 const kurumlar = [...new Set(ss.map(kurumAdi))].sort((a, b) => a.localeCompare(b, "tr"));
+const temalar = Object.entries(TEMA).filter(([id]) => ss.some((s) => s.tema === id));
 const katalog = [...ss].sort((a, b) => a.baslik.localeCompare(b.baslik, "tr"));
 const kok = "https://veri.korayoner.dev";
 const secenek = {
-  seri: ss.map((s) => [s.id, s.baslik]),
-  csv: ss.filter((s) => s.izin.indirme).map((s) => [s.id, s.baslik]),
-  emsal: ss.filter((s) => emsal(s.id)).map((s) => [s.id, s.baslik]),
+  seri: ss.map((s) => [s.id, s.baslik, s.kaynak_kod]),
+  csv: ss.filter((s) => s.izin.indirme).map((s) => [s.id, s.baslik, s.kaynak_kod]),
+  emsal: ss.filter((s) => emsal(s.id)).map((s) => [s.id, s.baslik, s.kaynak_kod]),
 };
 const UC: [string, string][] = [
   ["/api/v1/manifest.json", "Yayın kimliği, dosya boyutları ve SHA-256 özetleri"], ["/api/v1/seriler.json", "Katalog"], ["/api/v1/kaynaklar.json", "Kaynaklar"], ["/api/v1/durum.json", "Sağlık ve tazelik"],
@@ -78,21 +80,22 @@ const DONEM: [string, string, string][] = [
     <section class="api-katalog" aria-labelledby="seri-katalogu">
       <h2 id="seri-katalogu">Seri kataloğu</h2>
       <p>Seri adını veya kurum kodunu arayın. JSON bağlantısı gözlemleri ve lisans bilgisini içerir. <a href="/api/v1/seriler.json">Makine tarafından okunabilen katalog ↗</a></p>
-      <div class="k-filtreler" id="k-filtreler" hidden>
-        <label>Seri veya kod <input id="k-ara" type="search" placeholder="Örn. kredi veya FS.AST" autocomplete="off" /></label>
-        <div class="k-filtre"><label for="k-kurum">Kurum</label><select id="k-kurum"><option value="">Tüm kurumlar</option>{kurumlar.map((x) => <option value={x}>{x}</option>)}</select></div>
-        <div class="k-filtre"><label for="k-siklik">Sıklık</label><select id="k-siklik"><option value="">Tüm sıklıklar</option>{[...new Set(ss.map((s) => s.siklik))].map((x) => <option value={x}>{siklikAdi(x)}</option>)}</select></div>
+      <div class="k-filtreler" id="k-filtreler" role="search" aria-label="Seri kataloğunda ara" hidden>
+        <label class="secim-alani k-ara-alan"><span class="secim-etiket">Seri veya kod</span><input class="secim-girdi" id="k-ara" type="search" placeholder="Örn. kredi veya FS.AST" autocomplete="off" /></label>
+        <div class="secim-alani"><label class="secim-etiket" for="k-kurum">Kurum</label><span class="secim-kutu"><select id="k-kurum"><option value="">Tüm kurumlar</option>{kurumlar.map((x) => <option value={x}>{x}</option>)}</select></span></div>
+        <div class="secim-alani"><label class="secim-etiket" for="k-tema">Tema</label><span class="secim-kutu"><select id="k-tema"><option value="">Tüm temalar</option>{temalar.map(([id, ad]) => <option value={id}>{ad}</option>)}</select></span></div>
+        <div class="secim-alani"><label class="secim-etiket" for="k-siklik">Sıklık</label><span class="secim-kutu"><select id="k-siklik"><option value="">Tüm sıklıklar</option>{[...new Set(ss.map((s) => s.siklik))].map((x) => <option value={x}>{siklikAdi(x)}</option>)}</select></span></div>
+        <div class="k-filtre-ozet"><p id="k-sonuc" class="api-kunye" role="status"></p><button class="secim-eylem" type="button" id="k-temizle" disabled>Filtreleri temizle</button></div>
       </div>
-      <p id="k-sonuc" class="api-kunye" role="status" hidden></p>
-      <div class="kaydir k-tablo" tabindex="0" role="region" aria-label="API seri kataloğu tablosu"><table>
-        <thead><tr><th scope="col">Gösterge / kaynak kodu</th><th scope="col">Kurum / sıklık</th><th scope="col">Son değer / dönem</th><th scope="col">Erişim</th></tr></thead>
-        <tbody>{katalog.map((s) => {
+      <div class="kaydir k-tablo" tabindex="0" role="region" aria-label="API seri kataloğu tablosu"><table role="table">
+        <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Gösterge / kaynak kodu</th><th scope="col" role="columnheader">Kurum / sıklık</th><th scope="col" role="columnheader">Son değer / dönem</th><th scope="col" role="columnheader">Erişim</th></tr></thead>
+        <tbody role="rowgroup">{katalog.map((s) => {
           const sn = son(s);
-          return <tr data-k-seri={s.id} data-k-kurum={kurumAdi(s)} data-k-siklik={s.siklik} data-k-ara={`${s.baslik} ${s.kaynak_adi ?? ""} ${s.kaynak_kod} ${s.id} ${s.kaynak.kurum} ${TEMA[s.tema] ?? s.tema}`}>
-            <th scope="row"><a href={`/gosterge/${s.id}`}>{s.baslik}</a><small><code>{s.kaynak_kod}</code></small></th>
-            <td>{kurumAdi(s)}<small>{siklikAdi(s.siklik)}</small></td>
-            <td class="sayi">{sn ? <>{deger(s, sn.deger, true)}<small>{sn.donem}{degerTuru(s) && ` · ${degerTuru(s)}`}</small></> : "—"}</td>
-            <td><div class="k-adresler">
+          return <tr role="row" data-k-seri={s.id} data-k-kurum={kurumAdi(s)} data-k-tema={s.tema} data-k-siklik={s.siklik} data-k-ara={`${s.baslik} ${s.kaynak_adi ?? ""} ${s.kaynak_kod} ${s.id} ${s.kaynak.kurum} ${TEMA[s.tema] ?? s.tema}`}>
+            <th scope="row" role="rowheader"><a href={`/gosterge/${s.id}`}>{s.baslik}</a><small><code>{s.kaynak_kod}</code></small></th>
+            <td role="cell">{kurumAdi(s)}<small>{siklikAdi(s.siklik)}</small></td>
+            <td role="cell" class="sayi">{sn ? <>{deger(s, sn.deger, true)}<small>{sn.donem}{degerTuru(s) && ` · ${degerTuru(s)}`}</small></> : "—"}</td>
+            <td role="cell"><div class="k-adresler">
               <a href={`/api/v1/seri/${s.id}.json`}>JSON</a>
               {s.izin.indirme && <a href={`/api/v1/seri/${s.id}.csv`} download>CSV</a>}
               <button type="button" class="k-dene" data-k-dene={s.id} aria-label={`Konsolda dene: ${s.baslik}`}>Dene</button>
@@ -125,13 +128,16 @@ const DONEM: [string, string, string][] = [
     <h2 id="deneyin" tabindex="-1">İstek konsolu</h2>
     <p>Uç noktayı seçin, isteği tarayıcınızdan gönderin. Yanıt burada önizlenir. “Yanıtı kopyala” özgün yanıtı alır; 2 MiB üstündeki dosyaları “Uç noktayı aç” bağlantısından açın.</p>
     <form class="dene" id="dene" data-secenek={JSON.stringify(secenek)}>
-      <label class="d-alan"><span>Uç nokta</span>
-        <select id="d-uc">{UC.map(([u, a]) => <option value={u}>{a} · {u}</option>)}</select>
-      </label>
-      <label class="d-alan" id="d-id-alan" hidden><span>Seri</span><select id="d-id"></select></label>
-      <label class="d-alan" id="d-siklik-alan" hidden><span>Sıklık</span>
-        <select id="d-siklik"><option value="aylik">aylık</option><option value="ceyreklik">çeyreklik</option><option value="yillik" selected>yıllık</option></select>
-      </label>
+      <div class="secim-alani"><label class="secim-etiket" for="d-uc">Uç nokta</label>
+        <span class="secim-kutu"><select id="d-uc">{UC.map(([u, a]) => <option value={u}>{a} · {u}</option>)}</select></span>
+      </div>
+      <div class="d-seri" id="d-id-alan" hidden>
+        <label class="secim-alani"><span class="secim-etiket">Konsolda seri ara</span><input id="d-ara" class="secim-girdi" type="search" placeholder="Seri adı, kimliği veya kaynak kodu" autocomplete="off" /></label>
+        <div class="secim-alani"><label class="secim-etiket" for="d-id">Seri</label><span class="secim-kutu"><select id="d-id"></select></span></div>
+      </div>
+      <div class="secim-alani" id="d-siklik-alan" hidden><label class="secim-etiket" for="d-siklik">Sıklık</label>
+        <span class="secim-kutu"><select id="d-siklik"><option value="aylik">aylık</option><option value="ceyreklik">çeyreklik</option><option value="yillik" selected>yıllık</option></select></span>
+      </div>
       <div class="d-eylem">
         <button type="submit">İsteği gönder</button>
         <button type="button" id="d-kopyala" disabled>Yanıtı kopyala</button>
@@ -214,20 +220,33 @@ Erişim: ${kok}/api/v1/seri/${ornek.id}.json, <erişim tarihi>.`}</code></pre>
   .api-gecis { display: flex; flex-wrap: wrap; gap: .4rem 1rem; font-size: .85rem; font-weight: 650; }
   .api-katalog { display: grid; gap: .65rem; }
   .api-katalog > p { color: var(--soluk); font-size: .88rem; }
-  .k-filtreler:not([hidden]) { display: grid; grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr)); gap: .55rem; }
-  .k-filtreler :is(label, .k-filtre) { display: grid; gap: .15rem; min-width: 0; color: var(--soluk); font-size: .8rem; font-weight: 650; }
-  .k-filtreler :is(input, select) { width: 100%; min-width: 0; min-height: 2.5rem; border: 1px solid var(--cizgi); background: var(--yuzey); color: var(--metin); padding: .3rem .55rem; font: inherit; }
+  .k-filtreler:not([hidden]) { display: grid; grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr)); gap: .65rem;
+    border: 1px solid var(--cizgi); border-radius: .45rem; padding: .75rem; background: var(--yuzey-2); }
+  .k-filtre-ozet { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: .45rem; flex-wrap: wrap; }
   .k-tablo { max-height: 25rem; border: 1px solid var(--cizgi); background: var(--yuzey); }
+  .k-tablo[hidden], .k-tablo tr[hidden] { display: none; }
   .k-tablo table { min-width: 34rem; font-size: .83rem; }
   .k-tablo thead { position: sticky; top: 0; background: var(--yuzey-2); z-index: 1; }
   .k-tablo small { display: block; color: var(--soluk); font-weight: 400; overflow-wrap: anywhere; }
   .k-tablo code { font-size: .7rem; }
   .k-adresler { display: flex; flex-wrap: wrap; gap: .2rem .55rem; align-items: center; }
   .k-dene { display: none; }
-  .k-dene[data-hazir] { display: inline-block; background: none; color: var(--vurgu); border: 0; padding: .1rem; font: inherit; text-decoration: underline; cursor: pointer; }
+  .k-dene[data-hazir], .k-adresler a { display: inline-flex; align-items: center; min-height: 2rem; padding: .14rem .38rem;
+    border: 1px solid var(--cizgi); border-radius: .23rem; background: var(--yuzey); color: var(--vurgu); font: 650 .72rem/1.2 var(--font); text-decoration: none; cursor: pointer; }
+  .k-dene[data-hazir]:hover, .k-adresler a:hover { border-color: var(--soluk); background: var(--yuzey-2); }
   .d-eylem a[hidden] { display: none; }
   .d-eylem a { display: inline-flex; align-items: center; min-height: 2.5rem; font-size: .8rem; }
-  @media (max-width: 37rem) { .k-filtreler:not([hidden]) { grid-template-columns: repeat(2, minmax(0, 1fr)); } .k-filtreler label:first-child { grid-column: 1 / -1; } }
+  @media (max-width: 42rem) {
+    .k-filtreler:not([hidden]) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .k-ara-alan { grid-column: 1 / -1; }
+    .k-tablo table { display: block; min-width: 0; }
+    .k-tablo thead { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .k-tablo tbody { display: block; }
+    .k-tablo tr:not([hidden]) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .32rem .65rem; padding: .63rem .72rem; border-bottom: 1px solid var(--cizgi); }
+    .k-tablo th, .k-tablo td { display: block; min-width: 0; padding: 0; border: 0; overflow-wrap: anywhere; }
+    .k-tablo th[scope="row"], .k-tablo td:last-child { grid-column: 1 / -1; }
+    .k-tablo .sayi { text-align: right; }
+  }
   h2 { font-size: 1.2rem; margin-top: 1.25rem; }
   h3 { font-size: .95rem; margin: .4rem 0 0; }
   p, ul { margin: 0; max-width: 70ch; }
@@ -235,15 +254,13 @@ Erişim: ${kok}/api/v1/seri/${ornek.id}.json, <erişim tarihi>.`}</code></pre>
   pre { background: var(--yuzey); border: 1px solid var(--cizgi); padding: 1rem; overflow-x: auto; margin: 0; }
   code { font: .85rem/1.5 var(--mono); }
   .dene { display: grid; gap: .8rem; background: var(--yuzey); border: 1px solid var(--cizgi); padding: 1rem; }
-  .d-alan { display: grid; gap: .3rem; min-width: 0; }
-  .d-alan[hidden] { display: none; }
-  .d-alan > span { font: 600 .68rem/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--soluk); }
-  .d-alan select { font: .9rem var(--font); padding: .5rem .6rem; min-height: 2.6rem; width: 100%; background: var(--bg); color: var(--metin); border: 1px solid var(--cizgi); }
+  .d-seri:not([hidden]) { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.65fr); gap: .65rem; }
+  @media (max-width: 37rem) { .d-seri:not([hidden]) { grid-template-columns: minmax(0, 1fr); } }
   .d-eylem { display: flex; flex-wrap: wrap; gap: .5rem; }
   .d-eylem button { font: 600 .78rem/1 var(--mono); padding: .6rem .9rem; min-height: 2.5rem; background: none; color: var(--metin); border: 1px solid var(--metin); cursor: pointer; }
   .d-eylem button[type="submit"] { background: var(--metin); color: var(--bg); }
   .d-eylem button:disabled { opacity: .45; cursor: not-allowed; }
-  .d-eylem button:focus-visible, .d-alan select:focus-visible, .d-yanit:focus-visible { outline: 2px solid var(--vurgu); outline-offset: 2px; }
+  .d-eylem button:focus-visible, .d-yanit:focus-visible { outline: 2px solid var(--vurgu); outline-offset: 2px; }
   .d-adres { margin: 0; overflow-wrap: anywhere; color: var(--soluk); }
   .d-durum { min-height: 1.2em; font-size: .85rem; color: var(--soluk); }
   .d-yanit { max-height: 28rem; overflow: auto; }
