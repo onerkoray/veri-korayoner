@@ -83,10 +83,11 @@ test("grafik üzerinde gezinme ipucu gösterir", async ({ page, isMobile }) => {
   await expect(page.locator(".g-tuval g[aria-label]")).toHaveCount(0);
 });
 
+const grafikHazir: Record<string, string> = { "/": ".ana-tuval svg", "/gezgin": ".g-tuval svg", "/karsilastir": ".k-tuval svg" };
 for (const yol of ["/", "/gezgin", "/karsilastir", `/gosterge/${GINI}`, "/hesap/reel-politika-faizi", "/api", "/kaynaklar"]) {
   test(`yatay taşma yok: ${yol}`, async ({ page }) => {
     await page.goto(yol);
-    await page.waitForLoadState("networkidle");
+    await expect(page.locator(grafikHazir[yol] ?? "main h1").first()).toBeVisible();
     const [sw, cw] = await page.evaluate(() => [document.documentElement.scrollWidth, document.documentElement.clientWidth]);
     expect(sw).toBeLessThanOrEqual(cw + 1);
   });
